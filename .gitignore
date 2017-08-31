@@ -1,0 +1,47 @@
+*.zip
+*.rar
+
+*.exe
+*.asi
+*.dll
+*.log
+
+*.cs
+*.cm
+*.scm
+
+*.dff
+*.txd
+*.img
+*.mp3
+
+stream.ini
+
+!anim/
+anim/*
+
+audio/CONFIG
+audio/SFX
+audio/streams
+
+cleo/
+data/
+models/
+
+!modloader/
+modloader/*
+# !modloader/2hu GTA/
+!modloader/LC/
+!modloader/LCS/
+!modloader/scripts/
+modloader/scripts/old script [deprecated]/
+!modloader/VCS/
+!modloader/2hu GTA/
+!modloader/skins/
+modloader/skins/*.dff
+modloader/skins/*.txd
+
+movies/
+ReadMe/
+scripts/
+text/

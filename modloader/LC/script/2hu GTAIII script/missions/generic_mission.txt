@@ -1,0 +1,52 @@
+//-------------Mission x---------------
+// Name of Mission
+{
+}
+
+:NAME
+thread '' 
+gosub @_START
+if wasted_or_busted 
+then gosub @_FAIL
+end
+gosub @_CLEANUP
+end_thread 
+
+:_START
+$ONMISSION=1
+00BA: text_styled '' 15000 ms 2  // Name of Mission
+016A: fade 0 1000 ms
+wait 1000 ms
+0110: clear_player $PLAYER_CHAR wanted_level 
+01B8: set_player $PLAYER_CHAR armed_weapon_to 0
+01B4: set_player $PLAYER_CHAR frozen_state 0 
+0055: put_player $PLAYER_CHAR at 1294.2474 -967.8536 14.8813
+0171: set_player $PLAYER_CHAR z_angle_to 35.0 
+
+{===================================================
+Name - MAIN LOOP
+===================================================}
+:_LOOP
+wait 0 ms
+jump @_LOOP
+
+{===================================================
+LOCAL SUBROUTINES
+===================================================}
+
+{===================================================
+END OF THE MISSION
+===================================================}
+:_PASSED
+0318: set_latest_mission_passed ''  // Name of Mission
+return
+
+:_FAIL
+return
+
+:_CLEANUP
+$ONMISSION = 0 // integer values
+00D8: mission_cleanup 
+return
+
+

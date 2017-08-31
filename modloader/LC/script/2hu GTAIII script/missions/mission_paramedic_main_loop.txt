@@ -1,0 +1,800 @@
+{===================================================
+Paramedic - MAIN LOOP
+===================================================}
+{
+La mision ambulan en principio constará de las siguientes actividades:
+-Un actor moribundo (o muerto) es marcado en el radar
+-Cuando estás cerca de él, se te mostrarán 4 opciones: "dar respiración boca a boca", "reanimacion cardiopulmonar", "torniquete detener sangrado",
+"aplicación de anestecia". Tus pacientes pueden sufrir de varias clases de males, por lo que la opción a elegir puede variar de caso a caso,
+cuando aplicas un proceso equivocado, se le restan puntos de vida al paciente, pero cuando aplicas la opción correcta, lo "salvas".
+-Una vez salvado, lo montas en la ambulancia, y te lo llevas al hospital. Cada choque que haces desde la ambulancia disminuye las esperanzas de vida del paciente.
+-Algunos pacientes pierden vida progresivamente mientras los trasladas al hospital, otros, no requieren traslado a ninguna parte.
+-Cuando inicias la jornada, en el radar se te señala una cantidad de pacientes que puede variar desde 1 hasta quien sabe cuantos, pero dicha cantidad máxima
+depende de tus puntos de experiencia como paramédico.
+
+Edit: hay varios modos de rescatar a un paciente:
+1- él aparece como muerto. Te acercas a él y pruebas 1 de 4 opciones de primeros auxilios. 1 es correcta y le restora vida, las otras 3 le quitan vida.
+Si oprimer 3 veces la tecla correcta, ésta cambiará y deberás probar de nuevo con todas las teclas hasta reencontrarla.
+2- el paciente aparece como muerto. Deberás aplicar método de reanimación cardio-pulmonar y boca a boca para "resucitarlo". Aparece una barra que deberás llenar
+con una pulsación específica de teclas.
+3- el paciente aparece como en el juego original, de pié y sangrando. Te aproximas a éste y él se monta en el vehículo.
+4- ??
+
+Pierdes cuando:
+-Se daña la ambulancia.
+-La variable "vida" (representada por $m_dummy) llega a cero.
+-El actor muere.
+-La poli te pone una estrella de persecución (disminuir la densidad de patruyas policíacas durante misión para no hacerla tan jodida), y hacer 'max wanted level'
+igual a cerapio mientras resucitas a un paciente en la calle y lo montas en la ambulancia).
+-El jugador presiona el boton de finalizar mision mientras se encuentra dentro de la ambulancia.
+
+Descripción de los estados (representados por la variable 10@):
+0 y 1:
+10, 11, 12, 13:
+20, 21, 22, 23:
+25, 26, 27:
+30:
+40, 41, 42, 43, 44:
+}
+:M_AMBULAN_LOOP
+wait 0 ms
+gosub @M_AMBULAN_CHANGE_PATIENT
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////
+if 10@==0
+then
+    if 001C:   $m_ambul_level > $m_ambul_index // integer values
+    then
+        gosub @M_AMBULAN_GET_PATIENT_COORDS
+        gosub @M_AMBULAN_CREATE_PATIENT // on variable 11@
+        0187: 12@ = create_marker_above_actor 11@ 
+        $m_ambulan_mode=40//0209: $m_ambulan_mode = random_int 0 100
+        if not $m_ambulan_mode>=70
+        then 0321: kill_actor 11@
+        else
+            0319: set_actor 11@ wander_state_to 1 
+            0192: set_actor 11@ objective_to_stand_still 
+            0332: set_actor 11@ bleeding_to 1 
+            02A9: set_actor 11@ immune_to_nonplayer 1
+            15@=1 // Flan-Flan is a beautiful female 
+        end
+        0209: 13@ = random_int 0 4 // 13@: actor disease
+        10@=1
+    end
+end
+
+if 10@==1
+then
+    if $m_ambulan_mode<15
+    then 10@=10 // Resucitar paciente mediante 4 técnicas de primeros auxilios
+    end
+    if and
+    $m_ambulan_mode>=15
+    $m_ambulan_mode<40
+    then 10@=20 // Resucitar paciente con RCP y boca a boca
+    end
+    if and
+    $m_ambulan_mode>=40
+    $m_ambulan_mode<70
+    then 10@=60 // Detener sangrado
+    end
+    if $m_ambulan_mode>=70
+    then 10@=30 // No es necesario resucitar
+    end
+    6@=0 // Inicializar contador
+end
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//////////      Resucitar paciente mediante 4 técnicas de primeros auxilios        ///////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////
+:M_AMBULAN_LOOP_A
+if 10@==10
+then if 00FC:   player $PLAYER_CHAR 0 11@ on_foot radius 2.0 2.0 2.0
+    then 03E5: text_box 'M_AMB03' // ~h~ESPACIO:~w~ Respiracion boca a boca, ~h~CLICK:~w~ Reanimacion cardiopulmonar, ~h~ENTER/F:~w~ Aplicar insulina, ~h~R-SHIFT:~w~ Torniquete (detener sangrado).
+         0151: remove_status_text $m_dummy 
+         03C4: set_status_text_to $m_dummy 1 'M_AMB02' // Vida:
+         10@=11
+    end
+end
+
+if 10@==11
+then
+    if or
+    00E1:   pad 0 key_pressed K_JUMP
+    00E1:   pad 0 key_pressed K_PUNCH
+    00E1:   pad 0 key_pressed K_ENTER
+    00E1:   pad 0 key_pressed K_SPRINT
+    then 10@=12
+        if 00E1:   pad 0 key_pressed K_JUMP
+        then 5@=K_JUMP
+        end
+        if 00E1:   pad 0 key_pressed K_PUNCH
+        then 5@=K_PUNCH
+        end
+        if 00E1:   pad 0 key_pressed K_ENTER
+        then 5@=K_ENTER
+        end
+        if 00E1:   pad 0 key_pressed K_SPRINT
+        then 5@=K_SPRINT
+        end
+        01B4: set_player $PLAYER_CHAR frozen_state 0
+    end
+    if 80FC:   not player $PLAYER_CHAR 0 11@ on_foot radius 2.0 2.0 2.0
+    then 10@=10
+         03E6: remove_text_box 
+    end
+end
+
+if 10@==12
+then
+    if 80E1:   not pad 0 key_pressed 5@
+    then 10@=13
+        17@=0
+        gosub @M_AMBUL_DISEASE
+    end
+end
+
+if 10@==13
+then
+    if 17@>3000
+    then
+        01B4: set_player $PLAYER_CHAR frozen_state 1
+        if 14@>0 // 14@ es positivo: el jugador oprimió el botón correcto
+        then 0209: 4@ = random_int 6 18
+             0068: 14@ *= 4@ // integer values 
+             0084: 4@ = $m_ambulan_exp // integer values and handles 
+             0010: 4@ *= 24 // integer values 
+             0014: 4@ /= 200 // integer values 
+             0058: 14@ += 4@ // integer values 
+             00BA: text_styled 'M_AMB16' 2000 ms 6 // + Salud!
+        else 0209: 4@ = random_int 4 10
+             0068: 14@ *= 4@ // integer values 
+             00BB: text_lowpriority 'M_AMB15' 5000 ms 1 // ~r~Mala praxis. El paciente pierde salud.
+        end
+        0058: $m_dummy += 14@ // integer values
+        10@=10
+    end
+end
+
+if and
+10@>=11
+13>=10@
+then if $m_dummy>100
+     then $m_dummy=100
+          6@=0
+          10@=40
+     end
+     if $m_dummy<=0
+     then 10@=50
+          00BE: text_clear_all 
+          00BB: text_lowpriority 'M_AMB10' 5000 ms 1 // ~r~Haz perdido al paciente.
+          0164: disable_marker 12@ 
+          01C2: remove_references_to_actor 11@ // Like turning an actor into a random pedestrian 
+          Inc($m_ambul_lost)
+          0209: $m_dummy = random_int 60 90
+          0151: remove_status_text $m_dummy 
+          03C4: set_status_text_to $m_dummy 1 'M_AMB02' // Vida:
+     end
+end
+
+if and
+10@>=11
+13>=10@
+then wait 0 ms
+     jump @M_AMBULAN_LOOP_A
+end
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//////////                 Resucitar paciente con RCP y boca a boca                ///////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////
+:M_AMBULAN_LOOP_B
+// Reanimación cardiopulmonar
+if 10@==20
+then
+    if 00FC:   player $PLAYER_CHAR 0 11@ on_foot radius 2.0 2.0 2.0
+    then 10@=21
+         0209: 5@ = random_int 24 61 // Inicializando salud del paciente
+    end
+end
+
+if 10@==21
+then
+    01B4: set_player $PLAYER_CHAR frozen_state 0
+    03E5: text_box 'M_AMB17' // Presiona ~h~Click~w~ y ~h~ESPACIO~w~ alternadamente para aplicar reanimacion cardio-pulmonar.
+    wait 1500 // Darle tiempo al jugador de dejar de presionar las teclas antes de pasar a la siguiente actividad
+    10@=22
+end
+
+if 10@==22
+then if or
+     00E1:   pad 0 key_pressed K_PUNCH
+     00E1:   pad 0 key_pressed K_JUMP
+     then 0151: remove_status_text $m_dummy
+          0151: remove_status_text $m_ambul_health
+          0209: $m_ambul_health = random_int 35 66
+          03C4: set_status_text_to $m_ambul_health 1 'M_AMB22' // Presi¦n:
+          10@=23
+     end
+end
+
+if 10@==23
+then
+    if and
+    00E1:   pad 0 key_pressed K_PUNCH
+    80E1:   not pad 0 key_pressed K_JUMP
+    then 10@=24
+         $m_ambul_health+=3
+    end
+end
+
+if 10@==24
+then
+    if and
+    00E1:   pad 0 key_pressed K_JUMP
+    80E1:   not pad 0 key_pressed K_PUNCH
+    then 10@=23
+         $m_ambul_health+=3
+    end
+end
+
+if or
+10@==23
+10@==24
+then
+    if 17@>200
+    then 17@=0
+         000C: $m_ambul_health -= 3 // integer values 
+    end
+    if $m_ambul_health>100
+    then 0209: 4@ = random_int 8 17
+         0058: 5@ += 4@ // integer values 
+         00BA: text_styled 'M_AMB16' 2000 ms 6 // + Salud!
+         if 5@>100
+         then
+         else 10@=25
+         end
+    end
+    if 0>=$m_ambul_health
+    then 0209: 4@ = random_int 8 17
+         0060: 5@ -= 4@ // integer values 
+         00BB: text_lowpriority 'M_AMB15' 5000 ms 1 // ~r~Mala praxis. El paciente pierde salud.
+         10@=25
+    end
+end
+
+// Respiración boca a boca
+if 10@==25
+then if 00FC:   player $PLAYER_CHAR 0 11@ on_foot radius 2.0 2.0 2.0
+    then 03E5: text_box 'M_AMB18' // Presiona y manten ~h~ESPACIO~w~ cuando la barra este vacia para aplicar respiración boca a boca. No permitas que la barra llegue al maximo.
+         0151: remove_status_text $m_ambul_health
+         $m_ambul_health=0
+         03C4: set_status_text_to $m_ambul_health 1 'M_AMB19' // Respiracion:
+         wait 1500 // Darle tiempo al jugador de dejar de presionar las teclas antes de pasar a la siguiente actividad
+         10@=26
+    end
+end
+
+if 10@==26
+then
+    if $m_ambul_health>0
+    then $m_ambul_health-=3
+    else
+        if 00E1:   pad 0 key_pressed K_JUMP
+        then 10@=27
+        end
+    end
+end
+
+if 10@==27
+then
+    if 00E1:   pad 0 key_pressed K_JUMP
+    then
+        $m_ambul_health+=4
+        if $m_ambul_health>100
+        then 0209: 4@ = random_int 8 17
+             0060: 5@ -= 4@ // integer values 
+             00BB: text_lowpriority 'M_AMB20' 5000 ms 1 // ~r~Le suministraste demasiado oxigeno. El paciente se ahoga y pierde salud.
+             10@=26
+        end
+    else 10@=26
+        if 80>$m_ambul_health
+        then 0209: 4@ = random_int 8 17
+             0060: 5@ -= 4@ // integer values 
+             00BB: text_lowpriority 'M_AMB21' 5000 ms 1 // ~r~Le suministraste muy poco oxigeno. El paciente pierde salud.
+        else 0209: 4@ = random_int 8 17
+             0058: 5@ += 4@ // integer values 
+             00BA: text_styled 'M_AMB16' 1200 ms 6 // + Salud!
+             Inc(6@)
+             if 6@>=3
+             then 0209: $m_ambul_health = random_int 35 66
+                  10@=21
+                  6@=0
+             end
+        end
+    end
+end
+
+if or
+10@==22
+10@==23
+10@==24
+10@==25
+10@==26
+10@==27
+then if 5@>100
+     then 01B4: set_player $PLAYER_CHAR frozen_state 1
+          0151: remove_status_text $m_ambul_health
+          0209: 4@ = random_int 25 46
+          0058: $m_dummy += 4@ // integer values 
+          if $m_dummy>100
+          then $m_dummy=100
+          end
+          6@=0
+          0209: 5@ = random_int 24 61 // Salud del paciente
+          10@=40
+     end
+     if 0>=5@
+     then 01B4: set_player $PLAYER_CHAR frozen_state 1
+          10@=50
+          00BE: text_clear_all 
+          00BB: text_lowpriority 'M_AMB10' 5000 ms 1 // ~r~Haz perdido al paciente.
+          0164: disable_marker 12@ 
+          01C2: remove_references_to_actor 11@ // Like turning an actor into a random pedestrian 
+          Inc($m_ambul_lost)
+          0209: $m_dummy = random_int 60 90
+          0151: remove_status_text $m_ambul_health 
+          03C4: set_status_text_to $m_dummy 1 'M_AMB02' // Vida:
+     end
+end
+
+if or
+10@==22
+10@==23
+10@==24
+10@==25
+10@==26
+10@==27
+then wait 0 ms
+     jump @M_AMBULAN_LOOP_B
+end
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//////////                     Detener sangrado - Aplicar Insulina                 ///////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////
+:M_AMBULAN_LOOP_C
+if 10@==60
+then
+    if 00FC:   player $PLAYER_CHAR 0 11@ on_foot radius 2.0 2.0 2.0
+    then 01B4: set_player $PLAYER_CHAR frozen_state 0
+         $m_ambul_health=0
+         0209: $m_dummy = random_int 35 50
+         10@=61
+    end
+end
+
+if 10@==61
+then
+    03E5: text_box 'M_AMB24' // Presiona ~h~W, A, S, D~w~ ¦ ~h~Arriba, Abajo, Izq, Der~w~ para detener sangrado - ~h~ESPACIO~w~ para aplicar insulina.
+    0151: remove_status_text $m_dummy
+    0151: remove_status_text $m_ambul_health
+    03C4: set_status_text_to $m_ambul_health 1 'M_AMB25' // Dolor:
+    wait 2000
+    16@=0
+    17@=0
+    10@=62
+end
+
+if 10@==62
+then
+    0218: text_1number_styled 'M_AMB31' $m_dummy 800 ms 6 // Parar sangrado: ~1~%
+    03D5: remove_text 'M_AMB26' 
+    03D5: remove_text 'M_AMB27' 
+    03D5: remove_text 'M_AMB28' 
+    03D5: remove_text 'M_AMB29' 
+    0209: 5@ = random_int 0 4
+    if 5@==0
+    then 00BB: text_lowpriority 'M_AMB26' 1600 ms 1 // Pulsa: ~b~'~k~~GO_FORWARD~'~h~.
+    end
+    if 5@==1
+    then 00BB: text_lowpriority 'M_AMB27' 1600 ms 1 // Pulsa: ~r~'~k~~GO_BACK~'~h~.
+    end
+    if 5@==2
+    then 00BB: text_lowpriority 'M_AMB28' 1600 ms 1 // Pulsa: ~g~'~k~~GO_RIGHT~'~h~.
+    end
+    if 5@==3
+    then 00BB: text_lowpriority 'M_AMB29' 1600 ms 1 // Pulsa: ~y~'~k~~GO_LEFT~'~h~.
+    end
+    17@=0
+    10@=63
+end
+
+// Incrementar dolor
+if or
+10@==62
+10@==63
+10@==64 // teclas WASD oprimidas
+10@==65 // esperando a liberar teclas WASD
+then
+    if 16@>500
+    then
+        0209: 4@ = random_int 1 4
+        0058: $m_ambul_health += 4@ // integer values
+        16@=0
+    end
+end
+
+if 10@==63
+then
+    // Disminuir vida si el jugador no oprime ninguna tecla
+    if 17@>2000
+    then
+        0209: 4@ = random_int 4 10
+        0060: $m_dummy -= 4@ // integer values
+        if 0>=$m_dummy
+        then $m_dummy=0
+        end
+        17@=0
+        10@=62
+    end
+    // Esperar a que jugador oprima alguna tecla
+    if or
+    00E1:   pad 0 key_pressed K_UP
+    00E1:   pad 0 key_pressed K_DOWN
+    00E1:   pad 0 key_pressed K_LEFT
+    00E1:   pad 0 key_pressed K_RIGHT
+    then 10@=64
+        if 00E1:   pad 0 key_pressed K_UP
+        then 6@=0
+        end
+        if 00E1:   pad 0 key_pressed K_DOWN
+        then 6@=1
+        end
+        if 00E1:   pad 0 key_pressed K_RIGHT
+        then 6@=2
+        end
+        if 00E1:   pad 0 key_pressed K_LEFT
+        then 6@=3
+        end
+    end
+    // Aplicar insulina
+    if 00E1:   pad 0 key_pressed K_JUMP
+    then 10@=66
+         03D5: remove_text 'M_AMB26' 
+         03D5: remove_text 'M_AMB27' 
+         03D5: remove_text 'M_AMB28' 
+         03D5: remove_text 'M_AMB29' 
+         0151: remove_status_text $m_ambul_health
+         0084: 6@ = $m_ambul_health // integer values and handles
+         $m_ambul_health=0
+         03C4: set_status_text_to $m_ambul_health 1 'M_AMB30' // Insulina:
+    end
+    // Fin del paciente si su dolor alcanza el máximo
+    if $m_ambul_health>100
+    then $m_dummy=0
+    end
+end
+
+// Teclas WASD oprimidas
+if 10@==64
+then
+    if 003A:   6@ == 5@ // integer values and handles
+    then
+        0209: 4@ = random_int 6 18
+        0058: $m_dummy += 4@ // integer values
+        0209: 4@ = random_int 4 10
+        0058: $m_ambul_health += 4@ // integer values
+    else
+        0209: 4@ = random_int 4 10
+        0060: $m_dummy -= 4@ // integer values
+        0209: 4@ = random_int 8 22
+        0058: $m_ambul_health += 4@ // integer values
+    end
+    10@=65
+end
+
+// Esperando a liberar teclas WASD
+if 10@==65
+then
+    if and
+    80E1:   not pad 0 key_pressed K_UP
+    80E1:   not pad 0 key_pressed K_DOWN
+    80E1:   not pad 0 key_pressed K_LEFT
+    80E1:   not pad 0 key_pressed K_RIGHT
+    then 10@=62
+    end
+end
+
+// Aplicación de Insulina - disminuir dolor
+if 10@==66
+then
+    if 00E1:   pad 0 key_pressed K_JUMP
+    then
+        00BC: text_highpriority 'M_AMB06' 10 ms 1 // Aplicando dosis de insulina....
+        $m_ambul_health+=1
+        if $m_ambul_health>100
+        then
+            0084: $m_ambul_health = 6@ // integer values and handles
+            $m_ambul_health=0
+            10@=61
+        end
+    else
+        0084: $m_ambul_health = 6@ // integer values and handles
+        10@=61
+    end
+end
+
+// Repetir ó finalizar ciclo
+if and
+10@>=62
+66>=10@
+then
+    if and
+    not $m_dummy==0
+    not $m_dummy>=100
+    then
+        wait 0 ms
+        jump @M_AMBULAN_LOOP_C
+    else // ( $m_dummy==0 or $m_dummy>=100 )
+        03D5: remove_text 'M_AMB26' 
+        03D5: remove_text 'M_AMB27' 
+        03D5: remove_text 'M_AMB28' 
+        03D5: remove_text 'M_AMB29' 
+        0151: remove_status_text $m_ambul_health
+        01B4: set_player $PLAYER_CHAR frozen_state 1
+        if $m_dummy>=100
+        then 10@=40
+        else 10@=50
+            00BE: text_clear_all 
+            00BB: text_lowpriority 'M_AMB10' 5000 ms 1 // ~r~Haz perdido al paciente.
+            0164: disable_marker 12@ 
+            01C2: remove_references_to_actor 11@ // Like turning an actor into a random pedestrian 
+            Inc($m_ambul_lost)
+            0209: $m_dummy = random_int 60 90
+            03C4: set_status_text_to $m_dummy 1 'M_AMB02' // Vida:
+        end
+    end
+end
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//////////                         No es necesario resucitar                       ///////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////
+if 10@==30
+then
+    if 00FD:   player $PLAYER_CHAR 0 11@ in_car radius 10.0 10.0 2.0
+    then 
+        01E9: 4@ = car 0@ num_passengers
+        if 4@ == 3
+        then 00BC: text_highpriority 'A_FULL' 4000 ms 1  // ~r~°Ambulancia llena!
+        else 01D4: actor 11@ go_to_car 0@ and_enter_it_as_a_passenger
+             10@=43
+             6@=0
+        end
+    end
+end
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////
+if 10@==40
+then
+    0151: remove_status_text $m_dummy 
+    03C4: set_status_text_to $m_dummy 1 'M_AMB02' // Vida:
+    03E6: remove_text_box 
+    0164: disable_marker 12@
+    009B: destroy_actor_instantly 11@ 
+    gosub @M_AMBULAN_CREATE_PATIENT // on variable 11@
+    15@=1 // Flan-Flan is female
+    0319: set_actor 11@ wander_state_to 1 
+    0192: set_actor 11@ objective_to_stand_still 
+    0332: set_actor 11@ bleeding_to 1 
+    02A9: set_actor 11@ immune_to_nonplayer 1 
+    020F: actor 11@ look_at_player $PLAYER_CHAR
+    00BB: text_lowpriority 'M_AMB08' 5000 ms 1 // El paciente ha sido reanimado... Ahora llevalo al ~p~hospital~h~.
+    0164: disable_marker $m_ambul_marker
+    0186: $m_ambul_marker = create_marker_above_car 0@
+    10@=41 
+end
+
+if 10@==41
+then
+    if 00FB:   player $PLAYER_CHAR 0 11@ radius 10.0 10.0 10.0 
+    then 01DF: tie_actor 11@ to_player $PLAYER_CHAR
+         10@=42
+    end
+end
+
+if 10@==42
+then
+    if 00DB:   actor $PLAYER_ACTOR in_car 0@
+    then
+        0164: disable_marker $m_ambul_marker
+        0187: 12@ = create_marker_above_actor 11@ 
+        10@=30
+    end
+end
+
+
+if 10@==43
+then
+    if 00DB:   actor 11@ in_car 0@
+    then
+        03D5: remove_text 'M_AMB09' // Regresa al ~p~vehiculo~h~.
+        //00BB: text_lowpriority 'M_AMB12' 5000 ms 1 // Lleva al paciente al ~p~hospital~h~.
+        //00BB: text_lowpriority 'M_AMB13' 5000 ms 1 // Lleva a los pacientes al ~p~hospital~h~.
+        //03E5: text_box 'M_AMB14' // Debes tener cuidado, cada choque reducira su esperanza de vida.
+        0164: disable_marker 12@
+        01E0: clear_leader 11@
+        0332: set_actor 11@ bleeding_to 0 
+        0151: remove_status_text $m_dummy 
+        03C4: set_status_text_to $m_dummy 1 'M_AMB02' // Vida:
+        0209: 4@ = random_int 18 26
+        0058: $m_dummy += 4@ // integer values
+        if $m_dummy>100
+        then $m_dummy=100
+        end
+        01E9: 4@ = car 0@ num_passengers
+        if 4@ == 1 // Crear checkpoint en hospital solo cuando estas subiendo en ambulancia al primero de los pacientes
+        then 0164: disable_marker $m_ambul_checkpoint
+             018A: $m_ambul_checkpoint = create_checkpoint_at $PARAMEDIC_CHECKPOINT_X $PARAMEDIC_CHECKPOINT_Y $PARAMEDIC_CHECKPOINT_Z
+        end
+        if 4@ == 3
+        then 00BA: text_styled 'A_FULL' 5000 ms 6 // ~r~°Ambulancia llena!
+        end
+        10@=44
+    end
+end
+if 10@==44
+then if 80DB:   not actor 11@ in_car 0@
+     then 10@=30
+          0187: 12@ = create_marker_above_actor 11@ 
+     end
+end
+
+01E9: 4@ = car 0@ num_passengers
+if 4@>0
+then
+    if 10@==44
+    then gosub @M_AMBULAN_CAR_DAMAGE
+    end
+    if 00FA:   player $PLAYER_CHAR stopped 1 $PARAMEDIC_CHECKPOINT_X $PARAMEDIC_CHECKPOINT_Y $PARAMEDIC_CHECKPOINT_Z radius 6.0 6.0 2.0 
+    then
+        if 10@==44
+        then
+            0164: disable_marker $m_ambul_checkpoint 
+            01D3: actor 11@ leave_car 0@
+            10@=45
+        end
+    end
+//    if 80DB:   not actor $PLAYER_ACTOR in_car 0@
+//    then
+//        03E6: remove_text_box
+//        0164: disable_marker $m_ambul_checkpoint
+//        0186: $m_ambul_checkpoint = create_marker_above_car 0@ 
+//        00BB: text_lowpriority 'M_AMB09' 5000 ms 1 // Regresa al ~p~vehiculo~h~.
+//        10@=41
+//    end
+end
+
+if 10@==45
+then
+    if 80DB:   not actor 11@ in_car 0@
+    then
+        //0211: actor 11@ walk_to $PARAMEDIC_INSIDE_HOSPITAL_X $PARAMEDIC_INSIDE_HOSPITAL_Y
+        01C2: remove_references_to_actor 11@ // Like turning an actor into a random pedestrian 
+        018C: play_sound 94 at 0.0 0.0 0.0
+        gosub @M_AMBULAN_MONEY
+        Inc($m_ambul_rescued)
+        Inc($m_ambulan_exp)
+        create_thread @DRAW_STATS ID_PARAMEDIC_EXP
+        0084: 4@ = $m_ambul_rescued // integer values and handles 
+        0058: 4@ += $m_ambul_lost // integer values 
+        if 803A:   not 4@ == $m_ambul_level // integer values and handles 
+        then
+            00BA: text_styled 'M_AMB23' 3000 ms 6 // °Rescatados!
+            0209: 4@ = random_int 18 26
+            0058: $m_dummy += 4@ // integer values 
+            if $m_dummy>100
+            then $m_dummy=100
+            end
+        end
+        10@=50
+    end
+end
+
+0084: 4@ = $m_ambul_rescued // integer values and handles 
+0058: 4@ += $m_ambul_lost // integer values 
+if 003A:   4@ == $m_ambul_level // integer values and handles 
+then jump @M_AMBULAN_PASSED
+end
+
+if $m_dummy<=0
+then
+    01E9: 4@ = car 0@ num_passengers
+    if 4@>0
+    then
+        gosub @M_AMBULAN_UNLOAD_PATIENT                      // respaldando datos del paciente actualmente cargado
+        0084: 5@ = $m_ambul_index // integer values and handles
+        $m_ambul_index=11                         // necesito cargar en 10@, 11@, 12@, etc los datos del paciente 12
+        gosub @M_AMBULAN_LOAD_PATIENT             // porque cuando el código entre en el ciclo for, y en "gosub @M_AMBULAN_CHANGE_PATIENT",
+        for $m_ambul_index = 0 to 11              // tomará dichos datos y los respaldará en paciente 12 (aún si éste no existe)
+            gosub @M_AMBULAN_CHANGE_PATIENT
+            if or
+            10@==44
+            10@==45
+            then
+                if 00DB:   actor 11@ in_car 0@
+                then
+                    10@=50
+                    034F: destroy_actor_with_fade 11@ // The actor fades away like a ghost 
+                    Inc($m_ambul_lost)
+                end
+            end
+        end
+        0084: $m_ambul_index = 5@ // integer values and handles 
+        gosub @M_AMBULAN_LOAD_PATIENT                       // recuperando datos del paciente previamente cargado
+        0151: remove_status_text $m_dummy 
+        0209: $m_dummy = random_int 60 90
+        03C4: set_status_text_to $m_dummy 1 'M_AMB02' // Vida:
+        0164: disable_marker $m_ambul_checkpoint 
+        if 4@>1
+        then 01E4: text_1number_lowpriority 'M_AMB33' 4@ 5000 ms 1 // ~r~Haz perdido ~1~ pacientes.
+        else 00BB: text_lowpriority 'M_AMB10' 5000 ms 1 // ~r~Haz perdido al paciente.
+        end
+    else $m_ambul_life=0
+    end
+end
+
+if $m_ambul_life == 0
+then 00BA: text_styled 'M_WF' 5000 ms 5  // Trabajo Finalizado
+     01E3: text_1number_styled 'TSCORE' 0 6000 ms 6  // EARNINGS: $~1~
+     03D5: remove_text 'M_AMB15' 
+     03D5: remove_text 'M_AMB20' 
+     03D5: remove_text 'M_AMB21' 
+     00BB: text_lowpriority 'M_AMB35' 5000 ms 1 // ~r~°Haz perdido todos los pacientes!
+     jump @M_AMBULAN_FAIL
+end
+
+if or
+10@==30
+10@==41
+10@==42
+10@==43
+10@==44
+10@==45
+then
+    if 0118:   actor 11@ dead
+    then
+        10@=50
+        00BB: text_lowpriority 'M_AMB10' 5000 ms 1 // ~r~Haz perdido al paciente.
+        0164: disable_marker 12@ 
+        01C2: remove_references_to_actor 11@ // Like turning an actor into a random pedestrian 
+        Inc($m_ambul_lost)
+    end
+end
+
+if 001C:   16@ > $m_ambulan_wound_time // integer values
+then 000C: $m_dummy -= 1 // integer values 
+     0209: $m_ambulan_wound_time = random_int 800 1500
+     16@=0
+end
+
+if 0119:   car 0@ wrecked
+then 00BA: text_styled 'M_WF' 5000 ms 5  // Trabajo Finalizado
+     01E3: text_1number_styled 'TSCORE' 0 6000 ms 6  // EARNINGS: $~1~
+     00BB: text_lowpriority 'M_AMB11' 5000 ms 1 // ~r~Haz perdido tu medio de trabajo.
+     jump @M_AMBULAN_FAIL
+end
+
+if 00DB:   actor $PLAYER_ACTOR in_car 0@
+then gosub @M_AMBULAN_CANCEL
+end
+if 10@==100
+then
+    00BA: text_styled 'M_WC' 5000 ms 5  // Trabajo cancelado
+    01E3: text_1number_styled 'TSCORE' 0 6000 ms 6  // EARNINGS: $~1~
+    jump @M_AMBULAN_FAIL
+end
+
+gosub @M_AMBULAN_INC_PATIENT_INDEX
+jump @M_AMBULAN_LOOP
+

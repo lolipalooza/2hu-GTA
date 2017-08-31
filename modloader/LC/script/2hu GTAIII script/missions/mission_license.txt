@@ -1,0 +1,1451 @@
+//-------------Mission 1---------------
+// License
+{
+Local Variables
+0@: woman actor - 1@: man actor
+2@: car
+3@, 4@: general purpose variable
+9@, 10@: state variables
+12@: marker above car when you are not in car
+13@: flag indicating if you completed test or not
+14@, 15@: racing checkpoints
+16@, 17@: Timers
+}
+:M_LICENSE
+thread 'LIC' 
+gosub @M_LICENSE_START
+if wasted_or_busted 
+then gosub @M_LICENSE_FAIL
+end
+gosub @M_LICENSE_CLEANUP
+end_thread 
+
+:M_LICENSE_START
+00BA: text_styled 'M01' 6000 ms 2  // 'License'
+016A: fade 0 1000 ms
+wait 1000 ms
+0110: clear_player $PLAYER_CHAR wanted_level 
+01B8: set_player $PLAYER_CHAR armed_weapon_to 0
+01B4: set_player $PLAYER_CHAR frozen_state 0 
+0055: put_player $PLAYER_CHAR at 1294.2474 -967.8536 14.8813
+0171: set_player $PLAYER_CHAR z_angle_to 135.0 
+
+0247: request_model #B_WOM1
+0247: request_model #DOCKER2
+0247: request_model #KURUMA
+038B: load_requested_models 
+repeat
+wait 0
+until 0248:   model #B_WOM1 available and 0248:   model #DOCKER2 available and 0248:   model #KURUMA available
+009A: 0@ = create_actor 21 #B_WOM1 at 1289.524 -962.5588 14.9095
+0173: set_actor 0@ z_angle_to 15.0
+009A: 1@ = create_actor 21 #DOCKER2 at 1287.9965 -959.934 14.9244
+0173: set_actor 1@ z_angle_to 140.0
+00A5: 2@ = create_car #KURUMA at 1285.9698 -971.1695 14.8785
+0175: set_car 2@ z_angle_to 135.0
+0249: release_model #B_WOM1 
+0249: release_model #DOCKER2 
+0249: release_model #KURUMA 
+00A1: put_actor 0@ at 1284.9127 -968.3223 14.8877
+0173: set_actor 0@ z_angle_to 215.0 
+00A1: put_actor 1@ at 1283.8337 -969.4037 14.8841
+0173: set_actor 1@ z_angle_to 218.0 
+wait 1000 ms
+016A: fade 1 1000 ms
+
+// Cutscene
+{00BC: text_highpriority 'M01_000' 5000 ms 1 // ~b~- Buen dia, tarde, noche, lolquesea... Vengo por mi maldita licencia, no me hagan perder el tiempo.
+00BC: text_highpriority 'M01_001' 5000 ms 1 // ~w~- ¿Pero quien se ha creido usted que es?
+00BC: text_highpriority 'M01_002' 5000 ms 1 // ~w~¡Tenga usted la amabilidad de esperar a su turno como las personas decentes!
+00BC: text_highpriority 'M01_003' 5000 ms 1 // ~w~Le toca venir los dias jueves de acuerdo a su identificacion...
+00BC: text_highpriority 'M01_004' 5000 ms 1 // ~b~- Oiga vieja bruja, apenas estoy dispuesta a esperar 5 malditos minutos, que le hace pensar que voy a dejarlo para otro dia?
+00BC: text_highpriority 'M01_005' 5000 ms 1 // ~b~Traigan de una vez al instructor de manejo y acabemos con esto de una maldita vez. Me lleva.
+00BC: text_highpriority 'M01_006' 5000 ms 1 // Yo soy el instructor de manejo, te llevare a la pista.
+00BC: text_highpriority 'M01_007' 5000 ms 1 // ~b~Si, si, si... Como sea, mueva esas nalgas!
+00BC: text_highpriority 'M01_008' 5000 ms 1 // ~w~- No nos venga con esas pendejadas, no me pagan lo suficiente como para andar lidiando con chiquillas malcriadas como tu.
+00BC: text_highpriority 'M01_009' 5000 ms 1 // ~b~- ¡Tengo mas de 500 años! ¡Mas respeto!}
+
+{015F: set_camera_position 1285.0859 -976.6939 16.0 0.0 0.0 0.0 
+0160: point_camera 1285.9698 -971.1695 14.8785 2 
+03E5: text_box 'M01_010' // ~w~Camina hacia el vehiculo para comenzar ~h~las pruebas~w~.
+wait 7000 ms
+015F: set_camera_position 1302.9303 -987.202 25.0 0.0 0.0 0.0 
+0160: point_camera 1317.5908 -1005.2134 14.8854 2 
+03E5: text_box 'M01_011' // ~w~Dirigete hacia las afueras del lugar si deseas abandonar ~h~las clases de manejo~w~. Tus avances seran registrados.
+wait 7000 ms}
+0373: set_camera_directly_behind_player
+02EB: restore_camera_with_jumpcut
+01B4: set_player $PLAYER_CHAR frozen_state 1
+
+{========================================================================================
+License - MAIN LOOP
+========================================================================================}
+:M_LICENSE_LOOP
+wait 0 ms
+
+if 00FE:   actor $PLAYER_ACTOR 1 1287.1555 -972.4611 14.8787 radius 1.0 1.0 2.0
+then
+    if $M_LIC == 0
+    then gosub @LESSON_ONE
+    else
+        if $M_LIC == 1
+        then gosub @LESSON_TWO
+        else
+            if $M_LIC == 2
+            then gosub @LESSON_THREE
+            else
+                if $M_LIC == 3
+                then gosub @LESSON_FOUR
+                else
+                    if $M_LIC == 4
+                    then gosub @LESSON_FIVE
+                    else
+                        if $M_LIC == 5
+                        then gosub @LESSON_SIX
+                        else
+                            if $M_LIC == 6
+                            then gosub @LESSON_SEVEN
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+end
+
+if 00FE:   actor $PLAYER_ACTOR 1 1317.5908 -1005.2134 14.8854 radius 12.0 12.0 2.0
+then
+    016A: fade 0 1000 ms
+    wait 1000 ms
+    01B4: set_player $PLAYER_CHAR frozen_state 0 
+    0055: put_player $PLAYER_CHAR at 902.6991 -281.6991 4.9724
+    0171: set_player $PLAYER_CHAR z_angle_to 315.0
+    wait 1000 ms
+    016A: fade 1 1000 ms
+    00BB: text_lowpriority 'M01_012' 5000 ms 1 // Haz abandonado las clases de manejo. Puedes regresar cuando quieras.
+    return
+end
+
+if $M_LIC>6
+then jump @M_LICENSE_PASSED
+end
+jump @M_LICENSE_LOOP
+
+
+{========================================================================================
+SUBLOOPS
+========================================================================================}
+:LESSON_ONE
+01B4: set_player $PLAYER_CHAR frozen_state 0
+01D5: actor $PLAYER_ACTOR go_to_and_drive_car 2@
+01D4: actor 0@ go_to_car 2@ and_enter_it_as_a_passenger
+01D4: actor 1@ go_to_car 2@ and_enter_it_as_a_passenger
+wait 2000 ms
+01E3: text_1number_styled 'M01_022' 1 5000 ms 2 // Clases de Manejo - Leccion 1
+fade 0 1000 ms
+wait 1000 ms
+00AB: put_car 2@ at 1289.0719 -969.7661 14.4668
+0175: set_car 2@ z_angle_to 135.0
+wait 1000 ms
+0373: set_camera_directly_behind_player
+fade 1 1000 ms
+wait 1000 ms
+01B4: set_player $PLAYER_CHAR frozen_state 1
+00BC: text_highpriority 'M01_014' 6000 ms 1 // ~w~Dirigete hacia el punto especificado. Acelera con ~h~W~w~.
+
+:LESSON_ONE_LOOP
+wait 0 ms
+    if 10@ == 0
+    then
+        if 80DC:   not player $PLAYER_CHAR driving 2@
+        then
+            0186: 12@ = create_marker_above_car 2@
+            00BB: text_lowpriority 'M01_016' 4000 ms 1 // ¡Regresa al ~b~vehiculo~h~!
+            10@=1
+        end
+        
+        if 00FE:   actor $PLAYER_ACTOR 1 1259.0532 -1000.5271 14.4631 radius 4.0 4.0 4.0
+        then
+            03D5: remove_text 'M01_014' 
+            00BB: text_lowpriority 'M01_013' 4000 ms 1 // ~w~Alcanzado el punto ~h~exitosamente~w~!
+            01B4: set_player $PLAYER_CHAR frozen_state 0
+            wait 3000 ms
+            Inc($M_LIC)
+            13@=1
+            jump @LESSON_END
+        end
+        
+    end
+    
+    if 10@ == 1
+    then
+        if 00DC:   player $PLAYER_CHAR driving 2@
+        then
+            03D5: remove_text 'M01_016'
+            0164: disable_marker 12@
+            10@=0
+        end
+    end
+    
+    if 00FE:   actor $PLAYER_ACTOR 0 1331.2656 -1008.3802 14.6664 radius 14.0 14.0 2.0
+    then
+        00BC: text_highpriority 'M01_018' 4000 ms 1 // Hey ¿que estas haciendo? Te haz salido del ~r~area de prueba~w~!
+        wait 4000 ms
+        jump @LESSON_END
+    end
+    
+    if 03C9:   car 2@ damaged
+    then
+        00BC: text_highpriority 'M01_019' 4000 ms 1 // Haz danado al ~b~Vehiculo~w~.
+        wait 4000 ms
+        jump @LESSON_END
+    end
+jump @LESSON_ONE_LOOP
+
+// ------------------------
+
+:LESSON_TWO
+01B4: set_player $PLAYER_CHAR frozen_state 0
+01D5: actor $PLAYER_ACTOR go_to_and_drive_car 2@
+01D4: actor 0@ go_to_car 2@ and_enter_it_as_a_passenger
+01D4: actor 1@ go_to_car 2@ and_enter_it_as_a_passenger
+wait 2000 ms
+01E3: text_1number_styled 'M01_022' 2 5000 ms 2 // Clases de Manejo - Leccion 2
+fade 0 1000 ms
+wait 1000 ms
+00AB: put_car 2@ at 1289.0719 -969.7661 14.4668
+0175: set_car 2@ z_angle_to 135.0
+wait 1000 ms
+0373: set_camera_directly_behind_player
+fade 1 1000 ms
+wait 1000 ms
+01B4: set_player $PLAYER_CHAR frozen_state 1
+00BC: text_highpriority 'M01_021' 6000 ms 1 // ~w~Conduce hasta el checkpoint y da vueltas en U presionando ~h~ESPACIO~w~ mientras realizas el giro.
+
+:LESSON_TWO_LOOP
+wait 0 ms
+    if 00FE:   actor $PLAYER_ACTOR 0 1331.2656 -1008.3802 14.6664 radius 14.0 14.0 2.0
+    then
+        00BC: text_highpriority 'M01_018' 4000 ms 1 // Hey ¿que estas haciendo? Te haz salido del ~r~area de prueba~w~!
+        wait 4000 ms
+        jump @LESSON_END
+    end
+    
+    if 03C9:   car 2@ damaged
+    then
+        00BC: text_highpriority 'M01_019' 4000 ms 1 // Haz chocado el ~b~Vehiculo~w~.
+        wait 4000 ms
+        jump @LESSON_END
+    end
+
+    if 9@ == 0
+    then
+        if 80DC:   not player $PLAYER_CHAR driving 2@
+        then
+            0186: 12@ = create_marker_above_car 2@
+            03D5: remove_text 'M01_021' 
+            00BB: text_lowpriority 'M01_016' 4000 ms 1 // ¡Regresa al ~b~vehiculo~h~!
+            9@=1
+        end
+            
+        if 10@ == 0
+        then
+            if 00FE:   actor $PLAYER_ACTOR 1 1259.0532 -1000.5271 14.4631 radius 4.0 4.0 4.0
+            then
+                16@ = 0 // Timer
+                10@ = 1
+                0174: $dummy = car 2@ z_angle
+                0086: $dummy2 = $dummy // floating-point values only 
+                0086: $dummy3 = $dummy // floating-point values only 
+                Inc($dummy2,60.0)
+                Dec($dummy3,60.0)
+            end
+        end
+        
+        if 10@ == 1
+        then
+            0174: $dummy = car 2@ z_angle
+            if 16@ > 500
+            then
+                03D5: remove_text 'M01_021' 
+                if or
+                0024:   $dummy > $dummy2 // floating-point values only 
+                0024:   $dummy3 > $dummy // floating-point values only 
+                then
+                    00BB: text_lowpriority 'M01_033' 5000 ms 1 // ~w~Muy bien, haz dado el ~h~giro~w~ estupendamente! Ahora regresa.
+                    10@=2
+                else
+                    00BB: text_lowpriority 'M01_034' 5000 ms 1 // ~w~Mal, no haz dado el ~h~giro~w~ como se esperaba.
+                    wait 5000 ms
+                    jump @LESSON_END
+                end
+            end
+        end
+
+        if 10@ == 2
+        then
+            if 00FE:   actor $PLAYER_ACTOR 1 1288.1528 -969.924 14.3496 radius 4.0 4.0 4.0
+            then
+                Inc($M_LIC)
+                13@=1
+                jump @LESSON_END
+            end
+        end
+    end
+
+    if 9@ == 1
+    then
+        if 00DC:   player $PLAYER_CHAR driving 2@
+        then
+            03D5: remove_text 'M01_016'
+            0164: disable_marker 12@
+            9@=0
+        end
+    end
+jump @LESSON_TWO_LOOP
+
+// ------------------------
+
+:LESSON_THREE
+01B4: set_player $PLAYER_CHAR frozen_state 0
+01D5: actor $PLAYER_ACTOR go_to_and_drive_car 2@
+01D4: actor 0@ go_to_car 2@ and_enter_it_as_a_passenger
+01D4: actor 1@ go_to_car 2@ and_enter_it_as_a_passenger
+wait 2000 ms
+01E3: text_1number_styled 'M01_022' 3 5000 ms 2 // Clases de Manejo - Leccion 3
+fade 0 1000 ms
+wait 1000 ms
+00AB: put_car 2@ at 813.7626 -439.9381 14.4002 // 0
+0175: set_car 2@ z_angle_to 175.0
+03DE: set_pedestrians_density_multiplier_to 0.0 
+01EB: set_car_density_to 0.0 
+wait 1000 ms
+0373: set_camera_directly_behind_player
+fade 1 1000 ms
+wait 1000 ms
+00BC: text_highpriority 'M01_023' 6000 ms 1 // ~w~Conduce a traves de toda la pista, siguiento ~h~los puntos~w~ indicados.
+wait 1000 ms
+
+// La bella secuencia "3...2...1...YA"
+03BF: set_player $PLAYER_CHAR ignored_by_everyone_to 1 
+03F4: 0 cars_can_be_damaged 
+00BA: text_styled 'YD1_3' 1100 ms 4  // ~r~3
+018C: play_sound 97 at 0.0 0.0 0.0 
+wait 1000 
+00BA: text_styled 'YD1_2' 1100 ms 4  // ~r~2
+018C: play_sound 98 at 0.0 0.0 0.0 
+wait 1000 
+00BA: text_styled 'YD1_1' 1100 ms 4  // ~r~1
+018C: play_sound 99 at 0.0 0.0 0.0 
+wait 1000 
+00BA: text_styled 'YD1GO' 800 ms 4  // ~g~GO!!
+018C: play_sound 100 at 0.0 0.0 0.0 
+01B4: set_player $PLAYER_CHAR frozen_state 1 
+03BF: set_player $PLAYER_CHAR ignored_by_everyone_to 0 
+03F4: 1 cars_can_be_damaged 
+
+:LESSON_THREE_LOOP
+wait 0 ms
+    if 0119:   car 2@ wrecked
+    then
+        0164: disable_marker 12@
+        0164: disable_marker 14@
+        0164: disable_marker 15@
+        00BC: text_highpriority 'M01_024' 4000 ms 1 // Genial, haz destruido el ~b~Vehiculo~h~!
+        wait 4000 ms
+        0247: request_model #B_WOM1
+        0247: request_model #DOCKER2
+        038B: load_requested_models 
+        repeat
+        wait 0
+        until 0248:   model #B_WOM1 available and 0248:   model #DOCKER2 available
+        009A: 0@ = create_actor 21 #B_WOM1 at 1284.9127 -968.3223 14.8877
+        009A: 1@ = create_actor 21 #DOCKER2 at 1283.8337 -969.4037 14.8841
+        0249: release_model #B_WOM1 
+        0249: release_model #DOCKER2 
+        jump @LESSON_END
+    end
+    if 9@ == 0
+    then
+        if 80DC:   not player $PLAYER_CHAR driving 2@
+        then
+            0186: 12@ = create_marker_above_car 2@
+            00BB: text_lowpriority 'M01_016' 4000 ms 1 // ¡Regresa al ~b~vehiculo~h~!
+            9@=1
+        end
+    end
+    if 9@ == 1
+    then
+        if 00DC:   player $PLAYER_CHAR driving 2@
+        then
+            03D5: remove_text 'M01_016'
+            0164: disable_marker 12@
+            9@=0
+        end
+    end
+    
+    // Running
+    if 9@ == 0
+    then
+        if 10@ == 0
+        then
+            018A: 14@ = create_checkpoint_at 815.915 -813.4576 14.4998 // 1
+            //018A: 15@ = create_checkpoint_at 888.0441 -837.7531 14.401 // 2
+            0167: 15@ = create_marker_at 888.0441 -837.7531 14.401 5 2 
+            0168: show_on_radar 15@ 2
+            0166: set_marker 15@ brightness_to 1
+            10@=1
+        end
+        if 10@ == 1
+        then
+            if 00FE:   actor $PLAYER_ACTOR 1 815.915 -813.4576 14.4998 radius 5.0 5.0 5.0
+            then
+                0164: disable_marker 14@
+                0164: disable_marker 15@
+                018A: 14@ = create_checkpoint_at 888.0441 -837.7531 14.401 // 2
+                //018A: 15@ = create_checkpoint_at 1063.3248 -838.8156 14.3993 // 3
+                0167: 15@ = create_marker_at 1063.3248 -838.8156 14.3993 5 2 
+                0168: show_on_radar 15@ 2
+                0166: set_marker 15@ brightness_to 1
+                10@ = 2
+            end
+        end
+        if 10@ == 2
+        then
+            if 00FE:   actor $PLAYER_ACTOR 1 888.0441 -837.7531 14.401 radius 5.0 5.0 5.0
+            then
+                0164: disable_marker 14@
+                0164: disable_marker 15@
+                018A: 14@ = create_checkpoint_at 1063.3248 -838.8156 14.3993 // 3
+                //018A: 15@ = create_checkpoint_at 1143.365 -498.8254 20.1552 // 4
+                0167: 15@ = create_marker_at 1143.365 -498.8254 20.1552 5 2 
+                0168: show_on_radar 15@ 2
+                0166: set_marker 15@ brightness_to 1
+                10@ = 3
+            end
+        end
+        if 10@ == 3
+        then
+            if 00FE:   actor $PLAYER_ACTOR 1 1063.3248 -838.8156 14.3993 radius 5.0 5.0 5.0
+            then
+                0164: disable_marker 14@
+                0164: disable_marker 15@
+                018A: 14@ = create_checkpoint_at 1143.365 -498.8254 20.1552 // 4
+                //018A: 15@ = create_checkpoint_at 1196.7488 -524.3294 23.3487 // 5
+                0167: 15@ = create_marker_at 1196.7488 -524.3294 23.3487 5 2 
+                0168: show_on_radar 15@ 2
+                0166: set_marker 15@ brightness_to 1
+                10@ = 4
+            end
+        end
+        if 10@ == 4
+        then
+            if 00FE:   actor $PLAYER_ACTOR 1 1143.365 -498.8254 20.1552 radius 5.0 5.0 5.0
+            then
+                0164: disable_marker 14@
+                0164: disable_marker 15@
+                018A: 14@ = create_checkpoint_at 1196.7488 -524.3294 23.3487 // 5
+                //018A: 15@ = create_checkpoint_at 1353.7828 -802.3707 14.4024 // 6
+                0167: 15@ = create_marker_at 1353.7828 -802.3707 14.4024 5 2 
+                0168: show_on_radar 15@ 2
+                0166: set_marker 15@ brightness_to 1
+                10@ = 5
+            end
+        end
+        if 10@ == 5
+        then
+            if 00FE:   actor $PLAYER_ACTOR 1 1196.7488 -524.3294 23.3487 radius 5.0 5.0 5.0
+            then
+                0164: disable_marker 14@
+                0164: disable_marker 15@
+                018A: 14@ = create_checkpoint_at 1353.7828 -802.3707 14.4024 // 6
+                //018A: 15@ = create_checkpoint_at 1331.6565 -1006.6919 14.2438 // 7
+                0167: 15@ = create_marker_at 1331.6565 -1006.6919 14.2438 5 2 
+                0168: show_on_radar 15@ 2
+                0166: set_marker 15@ brightness_to 1
+                10@ = 6
+            end
+        end
+        if 10@ == 6
+        then
+            if 00FE:   actor $PLAYER_ACTOR 1 1353.7828 -802.3707 14.4024 radius 5.0 5.0 5.0
+            then
+                0164: disable_marker 14@
+                0164: disable_marker 15@
+                018A: 14@ = create_checkpoint_at 1331.6565 -1006.6919 14.2438 // 7
+                //018A: 15@ = create_checkpoint_at 1259.413 -1077.0603 13.1852 // 8
+                0167: 15@ = create_marker_at 1259.413 -1077.0603 13.1852 5 2 
+                0168: show_on_radar 15@ 2
+                0166: set_marker 15@ brightness_to 1
+                10@ = 7
+            end
+        end
+        if 10@ == 7
+        then
+            if 00FE:   actor $PLAYER_ACTOR 1 1331.6565 -1006.6919 14.2438 radius 5.0 5.0 5.0
+            then
+                0164: disable_marker 14@
+                0164: disable_marker 15@
+                018A: 14@ = create_checkpoint_at 1259.413 -1077.0603 13.1852 // 8
+                //018A: 15@ = create_checkpoint_at 1096.4274 -1099.4294 11.2906 // 9
+                0167: 15@ = create_marker_at 1096.4274 -1099.4294 11.2906 5 2 
+                0168: show_on_radar 15@ 2
+                0166: set_marker 15@ brightness_to 1
+                10@ = 8
+            end
+        end
+        if 10@ == 8
+        then
+            if 00FE:   actor $PLAYER_ACTOR 1 1259.413 -1077.0603 13.1852 radius 5.0 5.0 5.0
+            then
+                0164: disable_marker 14@
+                0164: disable_marker 15@
+                018A: 14@ = create_checkpoint_at 1096.4274 -1099.4294 11.2906 // 9
+                //018A: 15@ = create_checkpoint_at 1054.807 -938.2854 14.4019 // 10
+                0167: 15@ = create_marker_at 1054.807 -938.2854 14.4019 5 2 
+                0168: show_on_radar 15@ 2
+                0166: set_marker 15@ brightness_to 1
+                10@ = 9
+            end
+        end
+        if 10@ == 9
+        then
+            if 00FE:   actor $PLAYER_ACTOR 1 1096.4274 -1099.4294 11.2906 radius 5.0 5.0 5.0
+            then
+                0164: disable_marker 14@
+                0164: disable_marker 15@
+                018A: 14@ = create_checkpoint_at 1054.807 -938.2854 14.4019 // 10
+                //018A: 15@ = create_checkpoint_at 1078.644 -628.733 14.4003 // 11
+                0167: 15@ = create_marker_at 1078.644 -628.733 14.4003 5 2 
+                0168: show_on_radar 15@ 2
+                0166: set_marker 15@ brightness_to 1
+                10@ = 10
+            end
+        end
+        if 10@ == 10
+        then
+            if 00FE:   actor $PLAYER_ACTOR 1 1054.807 -938.2854 14.4019 radius 5.0 5.0 5.0
+            then
+                0164: disable_marker 14@
+                0164: disable_marker 15@
+                018A: 14@ = create_checkpoint_at 1078.644 -628.733 14.4003 // 11
+                //018A: 15@ = create_checkpoint_at 1144.5458 -502.9723 20.2657 // 12
+                0167: 15@ = create_marker_at 1144.5458 -502.9723 20.2657 5 2 
+                0168: show_on_radar 15@ 2
+                0166: set_marker 15@ brightness_to 1
+                10@ = 11
+            end
+        end
+        if 10@ == 11
+        then
+            if 00FE:   actor $PLAYER_ACTOR 1 1078.644 -628.733 14.4003 radius 5.0 5.0 5.0
+            then
+                0164: disable_marker 14@
+                0164: disable_marker 15@
+                018A: 14@ = create_checkpoint_at 1144.5458 -502.9723 20.2657 // 12
+                //018A: 15@ = create_checkpoint_at 1346.3885 -488.5956 47.3612 // 13
+                0167: 15@ = create_marker_at 1346.3885 -488.5956 47.3612 5 2 
+                0168: show_on_radar 15@ 2
+                0166: set_marker 15@ brightness_to 1
+                10@ = 12
+            end
+        end
+        if 10@ == 12
+        then
+            if 00FE:   actor $PLAYER_ACTOR 1 1144.5458 -502.9723 20.2657 radius 5.0 5.0 5.0
+            then
+                0164: disable_marker 14@
+                0164: disable_marker 15@
+                018A: 14@ = create_checkpoint_at 1346.3885 -488.5956 47.3612 // 13
+                //018A: 15@ = create_checkpoint_at 1352.9596 -225.024 48.0769 // 14
+                0167: 15@ = create_marker_at 1352.9596 -225.024 48.0769 5 2 
+                0168: show_on_radar 15@ 2
+                0166: set_marker 15@ brightness_to 1
+                10@ = 13
+            end
+        end
+        if 10@ == 13
+        then
+            if 00FE:   actor $PLAYER_ACTOR 1 1346.3885 -488.5956 47.3612 radius 5.0 5.0 5.0
+            then
+                0164: disable_marker 14@
+                0164: disable_marker 15@
+                018A: 14@ = create_checkpoint_at 1352.9596 -225.024 48.0769 // 14
+                //018A: 15@ = create_checkpoint_at 1197.1802 -172.1968 20.1426 // 15
+                0167: 15@ = create_marker_at 1197.1802 -172.1968 20.1426 5 2 
+                0168: show_on_radar 15@ 2
+                0166: set_marker 15@ brightness_to 1
+                10@ = 14
+            end
+        end
+        if 10@ == 14
+        then
+            if 00FE:   actor $PLAYER_ACTOR 1 1352.9596 -225.024 48.0769 radius 5.0 5.0 5.0
+            then
+                0164: disable_marker 14@
+                0164: disable_marker 15@
+                018A: 14@ = create_checkpoint_at 1197.1802 -172.1968 20.1426 // 15
+                //018A: 15@ = create_checkpoint_at 1178.0833 -121.8899 14.3997 // 16
+                0167: 15@ = create_marker_at 1178.0833 -121.8899 14.3997 5 2 
+                0168: show_on_radar 15@ 2
+                0166: set_marker 15@ brightness_to 1
+                10@ = 15
+            end
+        end
+        if 10@ == 15
+        then
+            if 00FE:   actor $PLAYER_ACTOR 1 1197.1802 -172.1968 20.1426 radius 5.0 5.0 5.0
+            then
+                0164: disable_marker 14@
+                0164: disable_marker 15@
+                018A: 14@ = create_checkpoint_at 1178.0833 -121.8899 14.3997 // 16
+                //018A: 15@ = create_checkpoint_at 1016.9044 -92.221 5.1837 // 17
+                0167: 15@ = create_marker_at 1016.9044 -92.221 5.1837 5 2 
+                0168: show_on_radar 15@ 2
+                0166: set_marker 15@ brightness_to 1
+                10@ = 16
+            end
+        end
+        if 10@ == 16
+        then
+            if 00FE:   actor $PLAYER_ACTOR 1 1178.0833 -121.8899 14.3997 radius 5.0 5.0 5.0
+            then
+                0164: disable_marker 14@
+                0164: disable_marker 15@
+                018A: 14@ = create_checkpoint_at 1016.9044 -92.221 5.1837 // 17
+                //018A: 15@ = create_checkpoint_at 817.0615 -138.1774 -5.6004 // 18
+                0167: 15@ = create_marker_at 817.0615 -138.1774 -5.6004 5 2 
+                0168: show_on_radar 15@ 2
+                0166: set_marker 15@ brightness_to 1
+                10@ = 17
+            end
+        end
+        if 10@ == 17
+        then
+            if 00FE:   actor $PLAYER_ACTOR 1 1016.9044 -92.221 5.1837 radius 5.0 5.0 5.0
+            then
+                0164: disable_marker 14@
+                0164: disable_marker 15@
+                018A: 14@ = create_checkpoint_at 817.0615 -138.1774 -5.6004 // 18
+                //018A: 15@ = create_checkpoint_at 813.7626 -439.9381 14.4002 // 0
+                0167: 15@ = create_marker_at 813.7626 -439.9381 14.4002 5 2 
+                0168: show_on_radar 15@ 2
+                0166: set_marker 15@ brightness_to 1
+                10@ = 18
+            end
+        end
+        if 10@ == 18
+        then
+            if 00FE:   actor $PLAYER_ACTOR 1 817.0615 -138.1774 -5.6004 radius 5.0 5.0 5.0
+            then
+                0164: disable_marker 14@
+                0164: disable_marker 15@
+                018A: 14@ = create_checkpoint_at 813.7626 -439.9381 14.4002 // 0
+                10@ = 19
+            end
+        end
+        if 10@ == 19
+        then
+            if 00FE:   actor $PLAYER_ACTOR 1 813.7626 -439.9381 14.4002 radius 5.0 5.0 5.0
+            then
+                0164: disable_marker 14@
+                0164: disable_marker 15@
+                00BB: text_lowpriority 'M01_020' 4000 ms 1 // ~w~Pista recorrida ~h~satisfactoriamente~w~.
+                wait 3000 ms
+                10@ = 20
+                Inc($M_LIC)
+                13@=1
+                jump @LESSON_END
+            end
+        end
+    end
+jump @LESSON_THREE_LOOP
+
+// ------------------------
+
+:LESSON_FOUR
+01B4: set_player $PLAYER_CHAR frozen_state 0
+01D5: actor $PLAYER_ACTOR go_to_and_drive_car 2@
+01D4: actor 0@ go_to_car 2@ and_enter_it_as_a_passenger
+01D4: actor 1@ go_to_car 2@ and_enter_it_as_a_passenger
+wait 2000 ms
+01E3: text_1number_styled 'M01_022' 4 5000 ms 2 // Clases de Manejo - Leccion 4
+fade 0 1000 ms
+wait 1000 ms
+00AB: put_car 2@ at 878.4373 -1000.7059 4.6305
+0175: set_car 2@ z_angle_to 0.0
+wait 1000 ms
+03DE: set_pedestrians_density_multiplier_to 0.0 
+01EB: set_car_density_to 0.0 
+0373: set_camera_directly_behind_player
+fade 1 1000 ms
+wait 1000 ms
+01B4: set_player $PLAYER_CHAR frozen_state 1
+00BC: text_highpriority 'M01_025' 6000 ms 1 // ~w~Estacionate adecuadamente, con el vehiculo viendo hacia ~h~el frente~w~.
+
+:LESSON_FOUR_LOOP
+wait 0 ms
+    if 03C9:   car 2@ damaged
+    then
+        00BC: text_highpriority 'M01_019' 4000 ms 1 // Haz chocado el ~b~Vehiculo~w~.
+        wait 4000 ms
+        jump @LESSON_END
+    end
+
+    if 9@ == 0
+    then
+        if 80DC:   not player $PLAYER_CHAR driving 2@
+        then
+            0186: 12@ = create_marker_above_car 2@
+            00BB: text_lowpriority 'M01_016' 4000 ms 1 // ¡Regresa al ~b~vehiculo~h~!
+            9@=1
+        end
+        
+        if 00FE:   actor $PLAYER_ACTOR 1 874.2716 -984.171 4.6299 radius 4.0 4.0 4.0
+        then
+        end
+        if 00FA:   player $PLAYER_CHAR stopped 0 874.2716 -984.171 4.6299 radius 0.5 0.5 2.0
+        then
+            0174: 3@ = car 2@ z_angle
+            if and
+            3@ > 265.0
+            275.0 > 3@
+            then
+                01B4: set_player $PLAYER_CHAR frozen_state 0
+                015F: set_camera_position 880.5194 -994.6766 12.0 0.0 0.0 0.0
+                0160: point_camera 874.2716 -984.171 4.6299 2
+                03D5: remove_text 'M01_025'
+                03D5: remove_text 'M01_026'
+                00BB: text_lowpriority 'M01_035' 4000 ms 1 // ~w~Vehiculo estacionado ~h~satsfactoriamente~w~!
+                wait 3000 ms
+                Inc($M_LIC)
+                13@=1
+                jump @LESSON_END
+            else 00BC: text_highpriority 'M01_026' 1000 ms 1 // ~w~Mejora el angulo. Estaciona el ~h~vehiculo~w~ hacia el ~h~frente~w~.
+            end
+        end
+    end
+    
+    if 9@ == 1
+    then
+        if 00DC:   player $PLAYER_CHAR driving 2@
+        then
+            03D5: remove_text 'M01_016'
+            0164: disable_marker 12@
+            9@=0
+        end
+    end
+jump @LESSON_FOUR_LOOP
+
+// -----------------------------------
+
+:LESSON_FIVE
+01B4: set_player $PLAYER_CHAR frozen_state 0
+01D5: actor $PLAYER_ACTOR go_to_and_drive_car 2@
+01D4: actor 0@ go_to_car 2@ and_enter_it_as_a_passenger
+01D4: actor 1@ go_to_car 2@ and_enter_it_as_a_passenger
+wait 2000 ms
+01E3: text_1number_styled 'M01_022' 5 5000 ms 2 // Clases de Manejo - Leccion 5
+fade 0 1000 ms
+wait 1000 ms
+00AB: put_car 2@ at 1310.687 -992.0518 14.7344
+0175: set_car 2@ z_angle_to 221.0
+0224: set_car 2@ health_to 450
+wait 1000 ms
+03DE: set_pedestrians_density_multiplier_to 0.0 
+01EB: set_car_density_to 0.0 
+fade 1 1000 ms
+wait 1000 ms
+01B4: set_player $PLAYER_CHAR frozen_state 1
+00BC: text_highpriority 'M01_027' 6000 ms 1 // ~w~Tu ~h~vehiculo~w~ esta averiado, llevalo al centro de la ciudad a que lo ~h~reparen~w~.
+0219: $PORTLAND_PAYNSPRAY_GARAGE = create_garage 5 from 921.0 -367.5 9.75 928.6875 -355.0625 14.75
+0335: set_free_paynspray_to 1 
+02A8: 3@ = create_marker I_PAY_N_SPRAY at 925.8164 -346.7569 9.743
+//018A: 3@ = create_checkpoint_at 925.8164 -346.7569 9.743
+
+:LESSON_FIVE_LOOP
+wait 0 ms
+    if 0119:   car 2@ wrecked
+    then
+        0164: disable_marker 12@
+        0164: disable_marker 3@
+        01C2: remove_references_to_actor 0@ // Like turning an actor into a random pedestrian 
+        01C2: remove_references_to_actor 1@ // Like turning an actor into a random pedestrian 
+        00BC: text_highpriority 'M01_024' 4000 ms 1 // Genial, haz destruido el ~b~Vehiculo~h~!
+        0335: set_free_paynspray_to 0
+        wait 4000 ms
+        0247: request_model #B_WOM1
+        0247: request_model #DOCKER2
+        038B: load_requested_models 
+        repeat
+        wait 0
+        until 0248:   model #B_WOM1 available and 0248:   model #DOCKER2 available
+        009A: 0@ = create_actor 21 #B_WOM1 at 1284.9127 -968.3223 14.8877
+        009A: 1@ = create_actor 21 #DOCKER2 at 1283.8337 -969.4037 14.8841
+        0249: release_model #B_WOM1 
+        0249: release_model #DOCKER2 
+        jump @LESSON_END
+    end
+
+    if 9@ == 0
+    then
+        if 80DC:   not player $PLAYER_CHAR driving 2@
+        then
+            0164: disable_marker 3@
+            0186: 12@ = create_marker_above_car 2@
+            00BB: text_lowpriority 'M01_016' 4000 ms 1 // ¡Regresa al ~b~vehiculo~h~!
+            9@=1
+        end
+        
+        if 10@ == 0
+        then
+            if 00FE:   actor $PLAYER_ACTOR 1 925.8164 -346.7569 9.743 radius 4.0 4.0 4.0
+            then
+                0164: disable_marker 3@
+                00BC: text_highpriority 'M01_028' 4000 ms 1 // ~h~Conduce el vehiculo hasta el ~w~garage~h~ para que lo reparen.
+                10@=1
+            end
+        end
+        if 10@ == 1
+        then
+            if 0329:   garage $PORTLAND_PAYNSPRAY_GARAGE respray_done
+            then
+                00BB: text_lowpriority 'M01_029' 5000 ms 1 // Vehiculo exitosamente reparado!
+                0335: set_free_paynspray_to 0
+                wait 4000 ms
+                Inc($M_LIC)
+                13@=1
+                jump @LESSON_END
+            end
+        end
+    end
+    
+    if 9@ == 1
+    then
+        if 00DC:   player $PLAYER_CHAR driving 2@
+        then
+            03D5: remove_text 'M01_016'
+            0164: disable_marker 12@
+            02A8: 3@ = create_marker 18 at 925.8164 -346.7569 9.743
+            9@=0
+        end
+    end
+jump @LESSON_FIVE_LOOP
+
+// ------------------------
+
+:LESSON_SIX
+01B4: set_player $PLAYER_CHAR frozen_state 0
+01D5: actor $PLAYER_ACTOR go_to_and_drive_car 2@
+01D4: actor 0@ go_to_car 2@ and_enter_it_as_a_passenger
+01D4: actor 1@ go_to_car 2@ and_enter_it_as_a_passenger
+wait 2000 ms
+01E3: text_1number_styled 'M01_022' 6 5000 ms 2 // Clases de Manejo - Leccion 6
+fade 0 1000 ms
+wait 1000 ms
+00AB: put_car 2@ at 1286.6021 -972.8209 14.4708
+0175: set_car 2@ z_angle_to 135.0
+wait 1000 ms
+0373: set_camera_directly_behind_player
+fade 1 1000 ms
+wait 1000 ms
+00BC: text_highpriority 'M01_036' 5000 ms 1 // ~w~Completa ~h~8 vueltas~w~ antes de que finalice el ~h~tiempo~w~! Evita chocar el ~h~vehiculo~w~!
+wait 1000 
+$GLOBALTIMER=60000
+$dummy=0
+
+// La bella secuencia "3...2...1...YA"
+03BF: set_player $PLAYER_CHAR ignored_by_everyone_to 1 
+03F4: 0 cars_can_be_damaged 
+00BA: text_styled 'YD1_3' 1100 ms 4  // ~r~3
+018C: play_sound 97 at 0.0 0.0 0.0 
+wait 1000 
+00BA: text_styled 'YD1_2' 1100 ms 4  // ~r~2
+018C: play_sound 98 at 0.0 0.0 0.0 
+wait 1000 
+00BA: text_styled 'YD1_1' 1100 ms 4  // ~r~1
+018C: play_sound 99 at 0.0 0.0 0.0 
+wait 1000 
+00BA: text_styled 'YD1GO' 800 ms 4  // ~g~GO!!
+018C: play_sound 100 at 0.0 0.0 0.0 
+01B4: set_player $PLAYER_CHAR frozen_state 1 
+03BF: set_player $PLAYER_CHAR ignored_by_everyone_to 0 
+03F4: 1 cars_can_be_damaged 
+
+014E: set_timer_to $GLOBALTIMER
+03C4: set_status_text_to $dummy 0 'M01_037' // Vueltas:
+
+:LESSON_SIX_LOOP
+wait 0 ms
+    if 00FE:   actor $PLAYER_ACTOR 0 1331.2656 -1008.3802 14.6664 radius 14.0 14.0 2.0
+    then
+        00BC: text_highpriority 'M01_018' 4000 ms 1 // Hey ¿que estas haciendo? Te haz salido del ~r~area de prueba~w~!
+        014F: stop_timer $GLOBALTIMER
+        0151: remove_status_text $dummy
+        wait 4000 ms
+        jump @LESSON_END
+    end
+    if 03C9:   car 2@ damaged
+    then
+        00BC: text_highpriority 'M01_019' 4000 ms 1 // Haz chocado el ~b~Vehiculo~w~.
+        014F: stop_timer $GLOBALTIMER
+        0151: remove_status_text $dummy
+        wait 4000 ms
+        jump @LESSON_END
+    end
+    if $GLOBALTIMER == 0
+    then
+        00BC: text_highpriority 'M01_019' 4000 ms 1 // Muy lento! Se te agoto el ~b~tiempo~w~.
+        014F: stop_timer $GLOBALTIMER
+        0151: remove_status_text $dummy
+        wait 4000 ms
+        jump @LESSON_END
+    end
+
+    if 9@ == 0
+    then
+        if 80DC:   not player $PLAYER_CHAR driving 2@
+        then
+            0186: 12@ = create_marker_above_car 2@
+            00BB: text_lowpriority 'M01_016' 4000 ms 1 // ¡Regresa al ~b~vehiculo~h~!
+            9@=1
+        end
+        if 10@ == 0
+        then
+            if 00FE:   actor $PLAYER_ACTOR 1 1259.0532 -1000.5271 14.4631 radius 4.0 4.0 4.0
+            then 10@=1
+            end
+        end
+        if 10@ == 1
+        then
+            if 00FE:   actor $PLAYER_ACTOR 1 1288.1528 -969.924 14.3496 radius 4.0 4.0 4.0
+            then
+                10@=0
+                Inc($dummy)
+            end
+        end
+        if $dummy==8
+        then
+            00BB: text_lowpriority 'M01_032' 4000 ms 1 // ~w~Haz completado la ruta ~h~exitosamente~w~!
+            014F: stop_timer $GLOBALTIMER
+            0151: remove_status_text $dummy
+            wait 3000 ms
+            Inc($M_LIC)
+            13@=1
+            jump @LESSON_END
+        end
+    end
+    
+    if 9@ == 1
+    then
+        if 00DC:   player $PLAYER_CHAR driving 2@
+        then
+            03D5: remove_text 'M01_016'
+            0164: disable_marker 12@
+            9@=0
+        end
+    end
+jump @LESSON_SIX_LOOP
+
+// -----------------------------------
+
+:LESSON_SEVEN
+01B4: set_player $PLAYER_CHAR frozen_state 0
+01D5: actor $PLAYER_ACTOR go_to_and_drive_car 2@
+01D4: actor 0@ go_to_car 2@ and_enter_it_as_a_passenger
+01D4: actor 1@ go_to_car 2@ and_enter_it_as_a_passenger
+wait 2000 ms
+01E3: text_1number_styled 'M01_022' 7 5000 ms 2 // Clases de Manejo - Leccion 7
+fade 0 1000 ms
+wait 1000 ms
+00AB: put_car 2@ at 683.8229 172.8495 -20.5649 // 0
+0175: set_car 2@ z_angle_to 270.0
+03DE: set_pedestrians_density_multiplier_to 0.0 
+01EB: set_car_density_to 0.0 
+wait 1000 ms
+0373: set_camera_directly_behind_player
+fade 1 1000 ms
+wait 1000 ms
+00BC: text_highpriority 'M01_030' 6000 ms 1 // ~w~Completa la ruta antes de que finalice el ~h~tiempo~w~! No choques el ~h~vehiculo~w~!
+$GLOBALTIMER=70000
+wait 1000 ms
+
+// La bella secuencia "3...2...1...YA"
+03BF: set_player $PLAYER_CHAR ignored_by_everyone_to 1 
+03F4: 0 cars_can_be_damaged 
+00BA: text_styled 'YD1_3' 1100 ms 4  // ~r~3
+018C: play_sound 97 at 0.0 0.0 0.0 
+wait 1000 
+00BA: text_styled 'YD1_2' 1100 ms 4  // ~r~2
+018C: play_sound 98 at 0.0 0.0 0.0 
+wait 1000 
+00BA: text_styled 'YD1_1' 1100 ms 4  // ~r~1
+018C: play_sound 99 at 0.0 0.0 0.0 
+wait 1000 
+00BA: text_styled 'YD1GO' 800 ms 4  // ~g~GO!!
+018C: play_sound 100 at 0.0 0.0 0.0 
+01B4: set_player $PLAYER_CHAR frozen_state 1 
+03BF: set_player $PLAYER_CHAR ignored_by_everyone_to 0 
+03F4: 1 cars_can_be_damaged 
+
+:LESSON_SEVEN_LOOP
+wait 0 ms
+    if 03C9:   car 2@ damaged
+    then
+        00BC: text_highpriority 'M01_019' 4000 ms 1 // Haz chocado el ~b~Vehiculo~w~.
+        014F: stop_timer $GLOBALTIMER
+        0164: disable_marker 14@
+        0164: disable_marker 15@
+        wait 4000 ms
+        jump @LESSON_END
+    end
+    if $GLOBALTIMER == 0
+    then
+        00BC: text_highpriority 'M01_019' 4000 ms 1 // Muy lento! Se te agoto el ~b~tiempo~w~.
+        014F: stop_timer $GLOBALTIMER
+        0164: disable_marker 14@
+        0164: disable_marker 15@
+        wait 4000 ms
+        jump @LESSON_END
+    end
+    if 9@ == 0
+    then
+        if 80DC:   not player $PLAYER_CHAR driving 2@
+        then
+            0186: 12@ = create_marker_above_car 2@
+            00BB: text_lowpriority 'M01_016' 4000 ms 1 // ¡Regresa al ~b~vehiculo~h~!
+            9@=1
+        end
+    end
+    if 9@ == 1
+    then
+        if 00DC:   player $PLAYER_CHAR driving 2@
+        then
+            03D5: remove_text 'M01_016'
+            0164: disable_marker 12@
+            9@=0
+        end
+    end
+    
+    // Running
+    if 9@ == 0
+    then
+        if 10@ == 0
+        then
+            018A: 14@ = create_checkpoint_at 1046.0686 -72.8601 4.4242 // 1
+            //018A: 15@ = create_checkpoint_at 1046.276 -473.6508 14.2955 // 2
+            0167: 15@ = create_marker_at 1046.276 -473.6508 14.2955 5 2
+            0168: show_on_radar 15@ 2
+            0166: set_marker 15@ brightness_to 1
+            014E: set_timer_to $GLOBALTIMER
+            10@=1
+        end
+        if 10@ == 1
+        then
+            024F: create_corona 5.0 2 1 with_color 75 0 82 at_point 1046.0686 -72.8601 4.4242
+            if 00FE:   actor $PLAYER_ACTOR 0 1046.0686 -72.8601 4.4242 radius 5.0 5.0 5.0
+            then
+                0164: disable_marker 14@
+                0164: disable_marker 15@
+                018A: 14@ = create_checkpoint_at 1046.276 -473.6508 14.2955 // 2
+                //018A: 15@ = create_checkpoint_at 1365.4067 -468.7145 49.3923 // 3
+                0167: 15@ = create_marker_at 1365.4067 -468.7145 49.3923 5 2 
+                0168: show_on_radar 15@ 2
+                0166: set_marker 15@ brightness_to 1
+                Inc($GLOBALTIMER,6000)
+                10@ = 2
+            end
+        end
+        if 10@ == 2
+        then
+            024F: create_corona 5.0 2 1 with_color 75 0 82 at_point 1046.276 -473.6508 14.2955
+            if 00FE:   actor $PLAYER_ACTOR 0 1046.276 -473.6508 14.2955 radius 5.0 5.0 5.0
+            then
+                0164: disable_marker 14@
+                0164: disable_marker 15@
+                018A: 14@ = create_checkpoint_at 1365.4067 -468.7145 49.3923 // 3
+                //018A: 15@ = create_checkpoint_at 1361.0693 -233.9577 49.2174 // 4
+                0167: 15@ = create_marker_at 1361.0693 -233.9577 49.2174 5 2 
+                0168: show_on_radar 15@ 2
+                0166: set_marker 15@ brightness_to 1
+                Inc($GLOBALTIMER,6000)
+                10@ = 3
+            end
+        end
+        if 10@ == 3
+        then
+            024F: create_corona 5.0 2 1 with_color 75 0 82 at_point 1365.4067 -468.7145 49.3923
+            if 00FE:   actor $PLAYER_ACTOR 0 1365.4067 -468.7145 49.3923 radius 5.0 5.0 5.0
+            then
+                0164: disable_marker 14@
+                0164: disable_marker 15@
+                018A: 14@ = create_checkpoint_at 1361.0693 -233.9577 49.2174 // 4
+                //018A: 15@ = create_checkpoint_at 1056.1312 -176.1599 4.2934 // 5
+                0167: 15@ = create_marker_at 1056.1312 -176.1599 4.2934 5 2 
+                0168: show_on_radar 15@ 2
+                0166: set_marker 15@ brightness_to 1
+                Inc($GLOBALTIMER,6000)
+                10@ = 4
+            end
+        end
+        if 10@ == 4
+        then
+            024F: create_corona 5.0 2 1 with_color 75 0 82 at_point 1361.0693 -233.9577 49.2174
+            if 00FE:   actor $PLAYER_ACTOR 0 1361.0693 -233.9577 49.2174 radius 5.0 5.0 5.0
+            then
+                0164: disable_marker 14@
+                0164: disable_marker 15@
+                018A: 14@ = create_checkpoint_at 1056.1312 -176.1599 4.2934 // 5
+                //018A: 15@ = create_checkpoint_at 964.928 -189.7611 4.2924 // 6
+                0167: 15@ = create_marker_at 964.928 -189.7611 4.2924 5 2 
+                0168: show_on_radar 15@ 2
+                0166: set_marker 15@ brightness_to 1
+                Inc($GLOBALTIMER,6000)
+                10@ = 5
+            end
+        end
+        if 10@ == 5
+        then
+            024F: create_corona 5.0 2 1 with_color 75 0 82 at_point 1056.1312 -176.1599 4.2934
+            if 00FE:   actor $PLAYER_ACTOR 0 1056.1312 -176.1599 4.2934 radius 5.0 5.0 5.0
+            then
+                0164: disable_marker 14@
+                0164: disable_marker 15@
+                018A: 14@ = create_checkpoint_at 964.928 -189.7611 4.2924 // 6
+                //018A: 15@ = create_checkpoint_at 989.3724 -451.6235 14.2771 // 7
+                0167: 15@ = create_marker_at 989.3724 -451.6235 14.2771 5 2 
+                0168: show_on_radar 15@ 2
+                0166: set_marker 15@ brightness_to 1
+                Inc($GLOBALTIMER,6000)
+                10@ = 6
+            end
+        end
+        if 10@ == 6
+        then
+            024F: create_corona 5.0 2 1 with_color 75 0 82 at_point 964.928 -189.7611 4.2924
+            if 00FE:   actor $PLAYER_ACTOR 0 964.928 -189.7611 4.2924 radius 5.0 5.0 5.0
+            then
+                0164: disable_marker 14@
+                0164: disable_marker 15@
+                018A: 14@ = create_checkpoint_at 989.3724 -451.6235 14.2771 // 7
+                //018A: 15@ = create_checkpoint_at 837.7611 -440.6412 14.2912 // 8
+                0167: 15@ = create_marker_at 837.7611 -440.6412 14.2912 5 2 
+                0168: show_on_radar 15@ 2
+                0166: set_marker 15@ brightness_to 1
+                Inc($GLOBALTIMER,6000)
+                10@ = 7
+            end
+        end
+        if 10@ == 7
+        then
+            024F: create_corona 5.0 2 1 with_color 75 0 82 at_point 989.3724 -451.6235 14.2771
+            if 00FE:   actor $PLAYER_ACTOR 0 989.3724 -451.6235 14.2771 radius 5.0 5.0 5.0
+            then
+                0164: disable_marker 14@
+                0164: disable_marker 15@
+                018A: 14@ = create_checkpoint_at 837.7611 -440.6412 14.2912 // 8
+                //018A: 15@ = create_checkpoint_at 856.8552 -149.2646 4.3238 // 9
+                0167: 15@ = create_marker_at 856.8552 -149.2646 4.3238 5 2 
+                0168: show_on_radar 15@ 2
+                0166: set_marker 15@ brightness_to 1
+                Inc($GLOBALTIMER,6000)
+                10@ = 8
+            end
+        end
+        if 10@ == 8
+        then
+            024F: create_corona 5.0 2 1 with_color 75 0 82 at_point 837.7611 -440.6412 14.2912
+            if 00FE:   actor $PLAYER_ACTOR 0 837.7611 -440.6412 14.2912 radius 5.0 5.0 5.0
+            then
+                0164: disable_marker 14@
+                0164: disable_marker 15@
+                018A: 14@ = create_checkpoint_at 856.8552 -149.2646 4.3238 // 9
+                //018A: 15@ = create_checkpoint_at 957.7203 -31.0815 6.6605 // 10
+                0167: 15@ = create_marker_at 957.7203 -31.0815 6.6605 5 2 
+                0168: show_on_radar 15@ 2
+                0166: set_marker 15@ brightness_to 1
+                Inc($GLOBALTIMER,6000)
+                10@ = 9
+            end
+        end
+        if 10@ == 9
+        then
+            024F: create_corona 5.0 2 1 with_color 75 0 82 at_point 856.8552 -149.2646 4.3238
+            if 00FE:   actor $PLAYER_ACTOR 0 856.8552 -149.2646 4.3238 radius 5.0 5.0 5.0
+            then
+                0164: disable_marker 14@
+                0164: disable_marker 15@
+                018A: 14@ = create_checkpoint_at 957.7203 -31.0815 6.6605 // 10
+                //018A: 15@ = create_checkpoint_at 1123.6599 -111.3885 9.2927 // 11
+                0167: 15@ = create_marker_at 1123.6599 -111.3885 9.2927 5 2 
+                0168: show_on_radar 15@ 2
+                0166: set_marker 15@ brightness_to 1
+                Inc($GLOBALTIMER,6000)
+                10@ = 10
+            end
+        end
+        if 10@ == 10
+        then
+            024F: create_corona 5.0 2 1 with_color 75 0 82 at_point 957.7203 -31.0815 6.6605
+            if 00FE:   actor $PLAYER_ACTOR 0 957.7203 -31.0815 6.6605 radius 5.0 5.0 5.0
+            then
+                0164: disable_marker 14@
+                0164: disable_marker 15@
+                018A: 14@ = create_checkpoint_at 1123.6599 -111.3885 9.2927 // 11
+                //018A: 15@ = create_checkpoint_at 1038.8928 -100.4835 4.2928 // 12
+                0167: 15@ = create_marker_at 1038.8928 -100.4835 4.2928 5 2 
+                0168: show_on_radar 15@ 2
+                0166: set_marker 15@ brightness_to 1
+                Inc($GLOBALTIMER,6000)
+                10@ = 11
+            end
+        end
+        if 10@ == 11
+        then
+            024F: create_corona 5.0 2 1 with_color 75 0 82 at_point 1123.6599 -111.3885 9.2927
+            if 00FE:   actor $PLAYER_ACTOR 0 1123.6599 -111.3885 9.2927 radius 5.0 5.0 5.0
+            then
+                0164: disable_marker 14@
+                0164: disable_marker 15@
+                018A: 14@ = create_checkpoint_at 1038.8928 -100.4835 4.2928 // 12
+                //018A: 15@ = create_checkpoint_at 815.8499 -154.2212 -5.7099 // 13
+                0167: 15@ = create_marker_at 815.8499 -154.2212 -5.7099 5 2 
+                0168: show_on_radar 15@ 2
+                0166: set_marker 15@ brightness_to 1
+                Inc($GLOBALTIMER,6000)
+                10@ = 12
+            end
+        end
+        if 10@ == 12
+        then
+            024F: create_corona 5.0 2 1 with_color 75 0 82 at_point 1038.8928 -100.4835 4.2928
+            if 00FE:   actor $PLAYER_ACTOR 0 1038.8928 -100.4835 4.2928 radius 5.0 5.0 5.0
+            then
+                0164: disable_marker 14@
+                0164: disable_marker 15@
+                018A: 14@ = create_checkpoint_at 815.8499 -154.2212 -5.7099 // 13
+                //018A: 15@ = create_checkpoint_at 822.8615 -986.163 4.2437 // 14
+                0167: 15@ = create_marker_at 822.8615 -986.163 4.2437 5 2 
+                0168: show_on_radar 15@ 2
+                0166: set_marker 15@ brightness_to 1
+                Inc($GLOBALTIMER,6000)
+                10@ = 13
+            end
+        end
+        if 10@ == 13
+        then
+            024F: create_corona 5.0 2 1 with_color 75 0 82 at_point 815.8499 -154.2212 -5.7099
+            if 00FE:   actor $PLAYER_ACTOR 0 815.8499 -154.2212 -5.7099 radius 5.0 5.0 5.0
+            then
+                0164: disable_marker 14@
+                0164: disable_marker 15@
+                018A: 14@ = create_checkpoint_at 822.8615 -986.163 4.2437 // 14
+                //018A: 15@ = create_checkpoint_at 1106.9062 -1060.7809 14.1364 // 15
+                0167: 15@ = create_marker_at 1106.9062 -1060.7809 14.1364 5 2 
+                0168: show_on_radar 15@ 2
+                0166: set_marker 15@ brightness_to 1
+                Inc($GLOBALTIMER,6000)
+                10@ = 14
+            end
+        end
+        if 10@ == 14
+        then
+            024F: create_corona 5.0 2 1 with_color 75 0 82 at_point 822.8615 -986.163 4.2437
+            if 00FE:   actor $PLAYER_ACTOR 0 822.8615 -986.163 4.2437 radius 5.0 5.0 5.0
+            then
+                0164: disable_marker 14@
+                0164: disable_marker 15@
+                018A: 14@ = create_checkpoint_at 1106.9062 -1060.7809 14.1364 // 15
+                //018A: 15@ = create_checkpoint_at 1335.2002 -998.4146 14.1368 // 16
+                0167: 15@ = create_marker_at 1335.2002 -998.4146 14.1368 5 2 
+                0168: show_on_radar 15@ 2
+                0166: set_marker 15@ brightness_to 1
+                Inc($GLOBALTIMER,6000)
+                10@ = 15
+            end
+        end
+        if 10@ == 15
+        then
+            024F: create_corona 5.0 2 1 with_color 75 0 82 at_point 1106.9062 -1060.7809 14.1364
+            if 00FE:   actor $PLAYER_ACTOR 0 1106.9062 -1060.7809 14.1364 radius 5.0 5.0 5.0
+            then
+                0164: disable_marker 14@
+                0164: disable_marker 15@
+                018A: 14@ = create_checkpoint_at 1335.2002 -998.4146 14.1368 // 16
+                //018A: 15@ = create_checkpoint_at 1354.8818 -836.0294 14.293 // 17
+                0167: 15@ = create_marker_at 1354.8818 -836.0294 14.293 5 2 
+                0168: show_on_radar 15@ 2
+                0166: set_marker 15@ brightness_to 1
+                Inc($GLOBALTIMER,6000)
+                10@ = 16
+            end
+        end
+        if 10@ == 16
+        then
+            024F: create_corona 5.0 2 1 with_color 75 0 82 at_point 1335.2002 -998.4146 14.1368
+            if 00FE:   actor $PLAYER_ACTOR 0 1335.2002 -998.4146 14.1368 radius 5.0 5.0 5.0
+            then
+                0164: disable_marker 14@
+                0164: disable_marker 15@
+                018A: 14@ = create_checkpoint_at 1354.8818 -836.0294 14.293 // 17
+                //018A: 15@ = create_checkpoint_at 1399.1289 -816.5402 11.2972 // 18
+                0167: 15@ = create_marker_at 1399.1289 -816.5402 11.2972 5 2 
+                0168: show_on_radar 15@ 2
+                0166: set_marker 15@ brightness_to 1
+                Inc($GLOBALTIMER,6000)
+                10@ = 17
+            end
+        end
+        if 10@ == 17
+        then
+            024F: create_corona 5.0 2 1 with_color 75 0 82 at_point 1354.8818 -836.0294 14.293
+            if 00FE:   actor $PLAYER_ACTOR 0 1354.8818 -836.0294 14.293 radius 5.0 5.0 5.0
+            then
+                0164: disable_marker 14@
+                0164: disable_marker 15@
+                018A: 14@ = create_checkpoint_at 1399.1289 -816.5402 11.2972 // 18
+                //018A: 15@ = create_checkpoint_at 1519.2756 -806.9372 11.2944 // 19
+                0167: 15@ = create_marker_at 1519.2756 -806.9372 11.2944 5 2 
+                0168: show_on_radar 15@ 2
+                0166: set_marker 15@ brightness_to 1
+                Inc($GLOBALTIMER,6000)
+                10@ = 18
+            end
+        end
+        if 10@ == 18
+        then
+            024F: create_corona 5.0 2 1 with_color 75 0 82 at_point 1399.1289 -816.5402 11.2972
+            if 00FE:   actor $PLAYER_ACTOR 0 1399.1289 -816.5402 11.2972 radius 5.0 5.0 5.0
+            then
+                0164: disable_marker 14@
+                0164: disable_marker 15@
+                018A: 14@ = create_checkpoint_at 1519.2756 -806.9372 11.2944 // 19
+                //018A: 15@ = create_checkpoint_at 1529.7891 -678.7615 11.2965 // 20
+                0167: 15@ = create_marker_at 1529.7891 -678.7615 11.2965 5 2 
+                0168: show_on_radar 15@ 2
+                0166: set_marker 15@ brightness_to 1
+                Inc($GLOBALTIMER,6000)
+                10@ = 19
+            end
+        end
+        if 10@ == 19
+        then
+            024F: create_corona 5.0 2 1 with_color 75 0 82 at_point 1519.2756 -806.9372 11.2944
+            if 00FE:   actor $PLAYER_ACTOR 0 1519.2756 -806.9372 11.2944 radius 5.0 5.0 5.0
+            then
+                0164: disable_marker 14@
+                0164: disable_marker 15@
+                018A: 14@ = create_checkpoint_at 1529.7891 -678.7615 11.2965 // 20
+                //018A: 15@ = create_checkpoint_at 1589.1561 -626.3978 11.2958 // 21
+                0167: 15@ = create_marker_at 1589.1561 -626.3978 11.2958 5 2 
+                0168: show_on_radar 15@ 2
+                0166: set_marker 15@ brightness_to 1
+                Inc($GLOBALTIMER,6000)
+                10@ = 20
+            end
+        end
+        if 10@ == 20
+        then
+            024F: create_corona 5.0 2 1 with_color 75 0 82 at_point 1529.7891 -678.7615 11.2965
+            if 00FE:   actor $PLAYER_ACTOR 0 1529.7891 -678.7615 11.2965 radius 5.0 5.0 5.0
+            then
+                0164: disable_marker 14@
+                0164: disable_marker 15@
+                018A: 14@ = create_checkpoint_at 1589.1561 -626.3978 11.2958 // 21
+                Inc($GLOBALTIMER,6000)
+                10@ = 21
+            end
+        end
+        if 10@ == 21
+        then
+            024F: create_corona 5.0 6 1 with_color 165 0 10 at_point 1589.1561 -626.3978 11.2958
+            if 00FE:   actor $PLAYER_ACTOR 0 1589.1561 -626.3978 11.2958 radius 5.0 5.0 5.0
+            then
+                0164: disable_marker 14@
+                0164: disable_marker 15@
+                014F: stop_timer $GLOBALTIMER
+                00BB: text_lowpriority 'M01_032' 5000 ms 1 // ~w~Haz completado la ruta ~h~exitosamente~w~!
+                wait 5000 ms 
+                10@ = 22
+                Inc($M_LIC)
+                13@=1
+                jump @LESSON_END
+            end
+        end
+    end
+jump @LESSON_SEVEN_LOOP
+
+// -----------------------------------
+
+:LESSON_END
+fade 0 1000 ms
+wait 1000 ms
+01B4: set_player $PLAYER_CHAR frozen_state 0
+if $M_LIC > 6
+then
+    0362: remove_actor $PLAYER_ACTOR from_car_and_place_at 902.6991 -281.6991 4.9724
+    0171: set_player $PLAYER_CHAR z_angle_to 315.0
+    0373: set_camera_directly_behind_player
+    wait 1000 ms
+    016A: fade 1 1000 ms
+    01B4: set_player $PLAYER_CHAR frozen_state 1
+    03DE: set_pedestrians_density_multiplier_to 1.0 
+    01EB: set_car_density_to 1.0 
+    return
+else
+    0362: remove_actor $PLAYER_ACTOR from_car_and_place_at 1294.2474 -967.8536 14.8813
+    0362: remove_actor 0@ from_car_and_place_at 1284.9127 -968.3223 14.8877
+    0362: remove_actor 1@ from_car_and_place_at 1283.8337 -969.4037 14.8841
+    0173: set_actor 0@ z_angle_to 215.0 
+    0173: set_actor 1@ z_angle_to 218.0
+    00A6: destroy_car 2@
+    0247: request_model #KURUMA
+    038B: load_requested_models 
+    repeat
+    wait 0
+    until 0248:   model #KURUMA available
+    00A5: 2@ = create_car #KURUMA at 1285.9698 -971.1695 14.8785
+    0175: set_car 2@ z_angle_to 135.0
+    0249: release_model #KURUMA 
+    03DE: set_pedestrians_density_multiplier_to 1.0 
+    01EB: set_car_density_to 1.0 
+    wait 1000 ms
+    fade 1 1000 ms
+    if 13@ == 1
+    then 00BA: text_styled 'M01_015' 5000 ms 1  // Prueba Superada!
+    else 00BC: text_highpriority 'M01_017' 5000 ms 1 // Prueba fallida. Intentalo de nuevo.
+    end
+    9@=0
+    10@=0
+    13@=0
+    0171: set_player $PLAYER_CHAR z_angle_to 135.0 
+    0373: set_camera_directly_behind_player
+    02EB: restore_camera_with_jumpcut
+    01B4: set_player $PLAYER_CHAR frozen_state 1
+end
+return
+
+{========================================================================================
+END
+========================================================================================}
+:M_LICENSE_PASSED
+0394: play_music 1
+00BA: text_styled 'M_PASS1' 5000 ms 1 // Mision Completa! Licencia Adquirida!
+0318: set_latest_mission_passed 'M01'  // 'Licencia'
+0164: disable_marker $M_LIC_ICON
+$M_LICENSE=1 
+return
+
+:M_LICENSE_FAIL
+return
+
+:M_LICENSE_CLEANUP
+$ONMISSION = 0 // integer values
+01C2: remove_references_to_actor 0@ // Like turning an actor into a random pedestrian 
+01C2: remove_references_to_actor 1@ // Like turning an actor into a random pedestrian 
+01C3: remove_references_to_car 2@ // Like turning a car into any random car 
+00D8: mission_cleanup 
+return
+
+

@@ -1,0 +1,138 @@
+//-------------Mission x---------------
+// Paramedic
+{
+0@: main car (ambulan)
+1@, 2@, 3@: dummy position
+4@: dummy
+5@: key pressed
+6@: good pressed counter
+7@, 8@, 9@: damage of vehicle, damage of patient
+10@: state variable
+11@: actor
+12@: marker
+13@: disease of actor
+14@: value of pressed button
+15@: sex(gender) of patient (0: male, 1: female)
+}
+
+:M_AMBULAN
+thread 'M_AMBUL' 
+gosub @M_AMBULAN_START
+if wasted_or_busted 
+then gosub @M_AMBULAN_FAIL
+end
+gosub @M_AMBULAN_CLEANUP
+end_thread 
+
+:M_AMBULAN_START
+$ONMISSION=1
+
+if $m_ambulan_mission_flag == 0 // default
+then
+    00D9: 0@ = actor $PLAYER_ACTOR car
+    03C7: unknown_maby_cops_density 0.0 
+    $m_ambul_index=0
+    0209: $m_ambulan_disease_level = random_int 0 3
+    0209: $m_ambulan_wound_time = random_int 800 1500
+    $m_ambul_life=1
+    $m_ambul_rescued=0
+    $m_ambul_lost=0
+    gosub @M_AMBULAN_GET_LEVEL // Initializes "$m_ambul_level" (depends on $m_ambulan_exp)
+    $m_ambul_level=4
+    
+    $m_ambul_profit=0
+    00BB: text_lowpriority 'M_AMB01' 5000 ms 1 // Ve a socorrer a los ~p~peatones señalados~h~.
+    $m_dummy=100
+    03C4: set_status_text_to $m_dummy 1 'M_AMB02' // Vida:
+    
+    jump @M_AMBULAN_LOOP
+else // Paramedic Training
+    00BA: text_styled 'M_ATR' 15000 ms 2  // Paramždico: Entrenamiento
+    016A: fade 0 1000 ms
+    wait 1000 ms
+    0110: clear_player $PLAYER_CHAR wanted_level 
+    01B8: set_player $PLAYER_CHAR armed_weapon_to 0
+    01B4: set_player $PLAYER_CHAR frozen_state 0 
+    0055: put_player $PLAYER_CHAR at 1145.2612 -543.5807 21.5988
+    0171: set_player $PLAYER_CHAR z_angle_to 305.0
+    016A: fade 1 1000 ms
+    01B4: set_player $PLAYER_CHAR frozen_state 1 
+    00BB: text_lowpriority 'M_ATR01' 5000 ms 1 // Avanza hacia el ~p~marcador~h~ para continuar.
+    jump @M_AMBULAN_TRAINING_LOOP
+end
+
+{===================================================
+END OF THE MISSION
+===================================================}
+:M_AMBULAN_PASSED
+0084: 4@ = $m_ambul_rescued // integer values and handles 
+0058: 4@ += $m_ambul_lost // integer values 
+if 803A:   not 4@ == $m_ambul_level // integer values and handles
+then 00BB: text_lowpriority 'M_AMB34' 5000 ms 1 // ~r~ERROR - bug en la misi¦n - rescued + lost no concuerda con m_ambul_level.
+end
+if 803A:   not $m_ambul_lost == $m_ambul_level // integer values and handles
+then
+    0209: 4@ = random_int 12 43                                 // bono aleatorio
+    0058: $m_ambul_profit += 4@ // integer values
+    0084: 4@ = $m_ambulan_exp // integer values and handles     // bono por experiencia
+    0058: $m_ambul_profit += 4@ // integer values
+end
+00BA: text_styled 'M_WO' 5000 ms 5  // Jornada finalizada
+01E3: text_1number_styled 'TSCORE' $m_ambul_profit 6000 ms 6  // EARNINGS: $~1~
+0109: player $PLAYER_CHAR money += $m_ambul_profit 
+02FD: text_2numbers_lowpriority 'M_AMB32' $m_ambul_rescued $m_ambul_lost 6000 ms 1 // Pacientes salvados: ~y~~1~~h~, pacientes perdidos: ~r~~1~~h~.
+gosub @M_AMBULAN_EXPERIENCE
+return
+
+:M_AMBULAN_FAIL
+return
+
+:M_AMBULAN_CLEANUP
+$ONMISSION = 0 // integer values
+034F: destroy_actor_with_fade 11@ // The actor fades away like a ghost 
+034F: destroy_actor_with_fade $m_ambul_patient1 // The actor fades away like a ghost 
+034F: destroy_actor_with_fade $m_ambul_patient2 // The actor fades away like a ghost 
+034F: destroy_actor_with_fade $m_ambul_patient3 // The actor fades away like a ghost 
+034F: destroy_actor_with_fade $m_ambul_patient4 // The actor fades away like a ghost 
+034F: destroy_actor_with_fade $m_ambul_patient5 // The actor fades away like a ghost 
+034F: destroy_actor_with_fade $m_ambul_patient6 // The actor fades away like a ghost 
+034F: destroy_actor_with_fade $m_ambul_patient7 // The actor fades away like a ghost 
+034F: destroy_actor_with_fade $m_ambul_patient8 // The actor fades away like a ghost 
+034F: destroy_actor_with_fade $m_ambul_patient9 // The actor fades away like a ghost 
+034F: destroy_actor_with_fade $m_ambul_patient10 // The actor fades away like a ghost 
+034F: destroy_actor_with_fade $m_ambul_patient11 // The actor fades away like a ghost 
+034F: destroy_actor_with_fade $m_ambul_patient12 // The actor fades away like a ghost 
+0164: disable_marker 12@ 
+0164: disable_marker $m_ambul_checkpoint
+0164: disable_marker $m_ambul_marker
+0164: disable_marker $m_ambul_patient1_marker 
+0164: disable_marker $m_ambul_patient2_marker 
+0164: disable_marker $m_ambul_patient3_marker 
+0164: disable_marker $m_ambul_patient4_marker 
+0164: disable_marker $m_ambul_patient5_marker 
+0164: disable_marker $m_ambul_patient6_marker 
+0164: disable_marker $m_ambul_patient7_marker 
+0164: disable_marker $m_ambul_patient8_marker 
+0164: disable_marker $m_ambul_patient9_marker 
+0164: disable_marker $m_ambul_patient10_marker 
+0164: disable_marker $m_ambul_patient11_marker 
+0164: disable_marker $m_ambul_patient12_marker 
+$m_ambul_p1_state=0
+$m_ambul_p2_state=0
+$m_ambul_p3_state=0
+$m_ambul_p4_state=0
+$m_ambul_p5_state=0
+$m_ambul_p6_state=0
+$m_ambul_p7_state=0
+$m_ambul_p8_state=0
+$m_ambul_p9_state=0
+$m_ambul_p10_state=0
+$m_ambul_p11_state=0
+$m_ambul_p12_state=0
+0151: remove_status_text $m_dummy 
+0151: remove_status_text $m_ambul_health
+03C7: unknown_maby_cops_density 1.0
+$m_ambulan_mission_flag=0 // training or work flag - 0 must be default (work)
+00D8: mission_cleanup 
+return
+

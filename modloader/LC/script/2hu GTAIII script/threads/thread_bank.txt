@@ -1,0 +1,601 @@
+:BANK
+thread 'BANK'
+{
+0@, 1@, 2@, 3@: dummies
+4@: option level
+5@: first level selected option index
+6@: second level selected option index (in this case: the account selected)
+7@: third level selected option index
+10@: state variable
+11@: state variable (for subprocesses)
+12@: highlighted option from current level
+13@, 14@, 15@: dummy
+16@, 17@: timers
+}
+{==================================================
+MAIN LOOP
+==================================================}
+:BANK_LOOP
+wait 0 ms
+gosub @GET_INTEREST // aumenta en 1% el dinero en todas las cuentas bancarias usadas, 1 vez al dia (o cada 1440 minutos del juego / 1440 segundos de tiempo real)
+
+// Estado inicial
+if 10@ == 0
+then
+    if 00FE:   actor $PLAYER_ACTOR 0 1028.6976 -688.2504 14.9482 radius 60.0 60.0 2.0
+    then
+        if and
+        00FF:   actor $PLAYER_ACTOR 1 1028.6976 -688.2504 14.9482 radius 2.0 2.0 2.0
+        02A0:   actor $PLAYER_ACTOR stopped 
+        then
+            03E5: text_box 'T_BNK02' // Pulsa el ~h~boton ~k~~VEHICLE_ENTER_EXIT~~w~ para entrar al cajero.
+            10@=1
+        end
+    end
+end
+
+if 10@ == 1
+then
+    if 00E1:   pad 0 key_pressed K_ENTER 
+    then 10@=2
+        01B4: set_player $PLAYER_CHAR frozen_state 0
+    end
+    if 80FF:   not actor $PLAYER_ACTOR 0 1028.6976 -688.2504 14.9482 radius 2.0 2.0 2.0
+    then 03E6: remove_text_box
+         10@=0
+    end
+end
+
+if 10@ == 2
+then
+    if 80E1:   not pad 0 key_pressed K_ENTER
+    then
+        gosub @SHOW_BANK_MENU
+        10@=99
+    end
+end
+
+if 10@ == 3
+then
+    if 80FF:   not actor $PLAYER_ACTOR 0 1028.6976 -688.2504 14.9482 radius 2.0 2.0 2.0
+    then 10@=0
+    end
+end
+
+// Estado de finalizacion de maquina
+if 10@ == 98
+then
+    01B4: set_player $PLAYER_CHAR frozen_state 1
+    10@=3
+    4@=0
+    5@=0
+    6@=0 
+    12@=0
+end
+
+if 10@ == 99
+then
+    03E5: text_box 'T_PH99' // ~h~< / >:~w~ Explorar opciones ~h~~k~~PED_JUMPING~:~w~ Elegir ~h~~k~~VEHICLE_ENTER_EXIT~~h~ Cancelar.
+    10@=100
+end
+
+// Estado de reconocimiento de botones (reaccionar apropiadamente al boton pulsado)
+if 10@ == 100
+then
+    if 00E1:   pad 0 key_pressed K_LEFT
+    then 10@=200
+    end
+    if 00E1:   pad 0 key_pressed K_RIGHT
+    then 10@=300
+    end
+    if 00E1:   pad 0 key_pressed K_JUMP
+    then 10@=400
+    end
+    if 00E1:   pad 0 key_pressed K_ENTER
+    then 10@=500
+    end
+end
+
+// Estados 200, 300, 400 y 500: esperar a que el boton que ha sido pulsado sea liberado
+if 10@ == 200
+then if 80E1:   not pad 0 key_pressed K_LEFT
+    then 10@=210
+    end
+end
+if 10@ == 300
+then if 80E1:   not pad 0 key_pressed K_RIGHT
+    then 10@=310
+    end
+end
+if 10@ == 400
+then if 80E1:   not pad 0 key_pressed K_JUMP
+    then 10@=410
+    end
+end
+if 10@ == 500
+then if 80E1:   not pad 0 key_pressed K_ENTER
+    then 10@=510
+    end
+end
+
+if 10@ == 210 // ha sido presionado LEFT                                                                                                                                           
+then
+    10@=99 // volver al estado de reconocimiento de pulsaciones de botones                                                                                                            
+    if 4@ == 0 // estoy en el primer nivel de opciones desplegadas
+    then gosub @DEC_BANK_MENU
+    end
+    if 4@ == 1 // estoy en el segundo nivel de opciones desplegadas
+    then
+        if 5@ == 0 // Fue elegida la opcion 0 (consultar cuentas)
+        then gosub @DEC_CHECK_ACCOUNTS
+        end
+        {if 5@ == 1 // Fue elegida la opcion 1 (crear nueva cuenta)
+        then gosub @DEC_CREATE_NEW_ACCOUNT
+        end}
+    end
+    if 4@ == 2 // estoy en el tercer nivel de opciones desplegadas
+    then
+        if 5@ == 0 // Fue elegida la opcion 0 (consultar cuentas)
+        then gosub @DEC_ACCOUNT_OPTIONS
+            {if 6@ == 0 // Fue elegida la cuenta 1
+            then gosub @DEC_COUNT_OPTIONS
+            end
+            if 6@ == 1 // Fue elegida la cuenta 2
+            then gosub @DEC_COUNT_OPTIONS
+            end
+            if 6@ == 2 // Fue elegida la cuenta 3
+            then gosub @DEC_COUNT_OPTIONS
+            end
+            if 6@ == 3 // Fue elegida la cuenta 4
+            then gosub @DEC_COUNT_OPTIONS
+            end}
+        end
+    end
+end
+
+if 10@ == 310 // ha sido presionado RIGHT                                                                                                                                           
+then
+    10@=99 // volver al estado de reconocimiento de pulsaciones de botones                                                                                                            
+    if 4@ == 0 // estoy en el primer nivel de opciones desplegadas
+    then gosub @INC_BANK_MENU
+    end
+    if 4@ == 1 // estoy en el segundo nivel de opciones desplegadas
+    then
+        if 5@ == 0 // Fue elegida la opcion 0 (consultar cuentas)
+        then
+            gosub @INC_CHECK_ACCOUNTS
+        end
+        {if 5@ == 1 // Fue elegida la opcion 1 (crear nueva cuenta)
+        then gosub @DEC_CREATE_NEW_ACCOUNT
+        end}
+    end
+    if 4@ == 2 // estoy en el tercer nivel de opciones desplegadas
+    then
+        if 5@ == 0 // Fue elegida la opcion 0 (consultar cuentas)
+        then gosub @INC_ACCOUNT_OPTIONS
+            //00BB: text_lowpriority '' 5000 ms 1 // No tienes ninguna ~r~cuenta~h~ en el banco.
+            {if 6@ == 0 // Fue elegida la cuenta 1
+            then gosub @DEC_COUNT_OPTIONS
+            end
+            if 6@ == 1 // Fue elegida la cuenta 2
+            then gosub @DEC_COUNT_OPTIONS
+            end
+            if 6@ == 2 // Fue elegida la cuenta 3
+            then gosub @DEC_COUNT_OPTIONS
+            end
+            if 6@ == 3 // Fue elegida la cuenta 4
+            then gosub @DEC_COUNT_OPTIONS
+            end}
+        end
+    end
+end
+
+if 10@ == 410 // ha sido presionado JUMP
+then
+    10@=99 // volver al estado de reconocimiento de pulsaciones de botones
+    if 4@ == 0 // estoy en el primer nivel de opciones desplegadas
+    then
+        gosub @CLEAR_LEVEL1_TEXT
+        if 12@ == 0 // consultar cuentas
+        then
+            if and
+            $bank_count_1_created==0
+            $bank_count_2_created==0
+            $bank_count_3_created==0
+            $bank_count_4_created==0
+            then 00BB: text_lowpriority 'T_BNK22' 5000 ms 1 // No tienes ninguna cuenta en el banco, primero debes ~r~crear una~h~.
+            else gosub @SHOW_CHECK_ACCOUNTS
+                4@=1
+                5@=0
+            end
+        else
+            if 12@ == 1 // crear nueva cuenta
+            then gosub @CREATE_NEW_ACCOUNT
+            end
+        end
+    else
+        gosub @CLEAR_LEVEL2_TEXT
+        if 4@ == 1 // estoy en el segundo nivel de opciones desplegadas
+        then
+            4@=2
+            //if 5@ == 0 // consultar cuentas
+            //then
+                //if 12@ == 0 // cuenta x
+                //then
+                    0084: 6@ = 12@
+                    gosub @SHOW_ACCOUNT_OPTIONS
+                //end
+            //end
+        else
+            if 4@ == 2 // estoy en el tercer nivel de opciones desplegadas
+            then
+                //if 5@ == 0 // consultar cuentas
+                //then
+                    //if 6@ == 0 // cuenta x
+                    //then
+                        if 12@ == 0 // estado de la cuenta
+                        then gosub @READ_BANK_ACCOUNT
+                            01E4: text_1number_lowpriority 'T_BNK13' $dummy 5000 ms 1 // Tienes un total de: ~b~$~1~~h~.
+                        end
+                        if 12@ == 1 // depositar dinero
+                        then $dummy2=1
+                            gosub @BANK_ACCOUNT_DEPOSIT
+                        end
+                        if 12@ == 2 // retirar dinero
+                        then $dummy2=-1
+                            gosub @BANK_ACCOUNT_DEPOSIT
+                        end
+                        if 12@ == 3 // historico de operaciones
+                        then gosub @BANK_ACCOUNT_RECORD
+                        end
+                        if 12@ == 4 // eliminar cuenta
+                        then gosub @BANK_ACCOUNT_DELETE
+                        end
+                    //end
+                //end
+            end
+        end
+    end
+end
+
+if 10@ == 510 // ha sido presionado ENTER
+then
+    10@=99 // volver al estado de reconocimiento de pulsaciones de botones
+    if 4@ == 0 // estoy en el primer nivel de opciones desplegadas
+    then
+        03E6: remove_text_box
+        00BE: text_clear_all 
+        10@=98 // Finalizar maquina
+    end
+    if 4@ == 1 // estoy en el segundo nivel de opciones desplegadas
+    then 4@=0
+        gosub @SHOW_BANK_MENU
+    end
+    if 4@ == 2 // estoy en el tercer nivel de opciones desplegadas
+    then 4@=1
+        12@=0
+        gosub @SHOW_CHECK_ACCOUNTS
+    end
+end
+jump @BANK_LOOP
+end_thread
+
+{==================================================
+SUB ROUTINES
+==================================================}
+:CLEAR_LEVEL1_TEXT
+03D5: remove_text 'T_BNK06' 
+03D5: remove_text 'T_BNK07' 
+03D5: remove_text 'T_BNK22' 
+return
+
+:CLEAR_LEVEL2_TEXT
+03D5: remove_text 'T_BNK13' 
+03D5: remove_text 'T_BNK14' 
+03D5: remove_text 'T_BNK15' 
+03D5: remove_text 'T_BNK16' 
+gosub @CLEAR_AMOUNT_TEXT
+03D5: remove_text 'T_BNK17' 
+03D5: remove_text 'T_BNK18' 
+03D5: remove_text 'T_BNK20' 
+03D5: remove_text 'T_BNK21' 
+return
+
+//-----------------------------------------
+// Level 1 - Bank Menu
+//-----------------------------------------
+:DEC_BANK_MENU
+:INC_BANK_MENU
+if 12@==0
+then 12@=1
+else 12@=0
+end
+:SHOW_BANK_MENU
+if 12@ == 0
+then 00BA: text_styled 'T_BNK03' 6000 ms 4 // mostrar texto 'Consultar cuentas'
+end
+if 12@ == 1
+then 00BA: text_styled 'T_BNK04' 6000 ms 4 // mostrar texto 'Crear nueva cuenta'
+end
+return
+
+//-----------------------------------------
+// Level 2 - Check Accounts
+//-----------------------------------------
+:DEC_CHECK_ACCOUNTS
+$dummy=-1
+jump @CHECK_ACCOUNTS
+
+:INC_CHECK_ACCOUNTS
+$dummy=1
+jump @CHECK_ACCOUNTS
+
+:CHECK_ACCOUNTS
+wait 0
+0058: 12@ += $dummy // integer values
+if 12@>3
+then 12@=0
+end
+if 0>12@
+then 12@=3
+end
+:SHOW_CHECK_ACCOUNTS
+if and
+not $dummy==1
+not $dummy==-1
+then $dummy=1
+end
+if and
+ 12@==0
+ not $bank_count_1_created == 1
+then jump @CHECK_ACCOUNTS
+end
+if and
+ 12@==1
+ not $bank_count_2_created == 1
+then jump @CHECK_ACCOUNTS
+end
+if and
+ 12@==2
+ not $bank_count_3_created == 1
+then jump @CHECK_ACCOUNTS
+end
+if and
+ 12@==3
+ not $bank_count_4_created == 1
+then jump @CHECK_ACCOUNTS
+end
+0084: $dummy = 12@ // integer values and handles 
+Inc($dummy)
+01E3: text_1number_styled 'T_BNK05' $dummy 3000 ms 6 // mostrar texto 'Cuenta ~1~'
+return
+
+//-----------------------------------------
+// Level 2 - Create new account
+//-----------------------------------------
+:CREATE_NEW_ACCOUNT
+if and
+$bank_count_1_created==1
+$bank_count_2_created==1
+$bank_count_3_created==1
+$bank_count_4_created==1
+then 00BB: text_lowpriority 'T_BNK06' 5000 ms 1 // Ya no puedes crear mas cuentas en el banco.
+else
+    if $bank_count_1_created == 0
+    then $bank_count_1_created=1
+        $bank_count_1=0
+        6@=0
+        gosub @GIFT_ACCOUNT
+        Inc(6@)
+        01E4: text_1number_lowpriority 'T_BNK07' 6@ 8000 ms 1 // Haz registrado una ~y~nueva cuenta~h~ exitosamente en el espacio: ~r~~1~~h~.
+        return
+    end
+    if $bank_count_2_created == 0
+    then $bank_count_2_created=1
+        $bank_count_2=0
+        6@=1
+        gosub @GIFT_ACCOUNT
+        Inc(6@)
+        01E4: text_1number_lowpriority 'T_BNK07' 6@ 8000 ms 1 // Haz registrado una ~y~nueva cuenta~h~ exitosamente en el espacio: ~r~~1~~h~.
+        return
+    end
+    if $bank_count_3_created == 0
+    then $bank_count_3_created=1
+        $bank_count_3=0
+        6@=2
+        gosub @GIFT_ACCOUNT
+        Inc(6@)
+        01E4: text_1number_lowpriority 'T_BNK07' 6@ 8000 ms 1 // Haz registrado una ~y~nueva cuenta~h~ exitosamente en el espacio: ~r~~1~~h~.
+        return
+    end
+    if $bank_count_4_created == 0
+    then $bank_count_4_created=1
+        $bank_count_4=0
+        6@=3
+        gosub @GIFT_ACCOUNT
+        Inc(6@)
+        01E4: text_1number_lowpriority 'T_BNK07' 6@ 8000 ms 1 // Haz registrado una ~y~nueva cuenta~h~ exitosamente en el espacio: ~r~~1~~h~.
+        return
+    end
+end
+return
+
+//-----------------------------------------
+// Level 3 - Account options
+//-----------------------------------------
+:DEC_ACCOUNT_OPTIONS
+12@-=1
+if 0>12@
+then 12@=4
+end
+jump @SHOW_ACCOUNT_OPTIONS
+
+:INC_ACCOUNT_OPTIONS
+12@+=1
+if 12@>4
+then 12@=0
+end
+jump @SHOW_ACCOUNT_OPTIONS
+
+:SHOW_ACCOUNT_OPTIONS
+if 12@ == 0
+then 00BA: text_styled 'T_BNK08' 3000 ms 6 // mostrar texto 'Estado de la cuenta'
+end
+if 12@ == 1
+then 00BA: text_styled 'T_BNK09' 3000 ms 6 // mostrar texto 'Depositar dinero'
+end
+if 12@ == 2
+then 00BA: text_styled 'T_BNK10' 3000 ms 6 // mostrar texto 'Retirar dinero'
+end
+if 12@ == 3
+then 00BA: text_styled 'T_BNK11' 3000 ms 6 // mostrar texto 'Historico de operaciones'
+end
+if 12@ == 4
+then 00BA: text_styled 'T_BNK12' 3000 ms 6 // mostrar texto 'Eliminar cuenta'
+end
+return
+
+//-----------------------------------------
+// Level 4 - Account balance (estado de la cuenta)
+//-----------------------------------------
+:READ_BANK_ACCOUNT
+if 6@ == 0
+then 0084: $dummy = $bank_count_1 // integer values and handles 
+end
+if 6@ == 1
+then 0084: $dummy = $bank_count_2 // integer values and handles 
+end
+if 6@ == 2
+then 0084: $dummy = $bank_count_3 // integer values and handles 
+end
+if 6@ == 3
+then 0084: $dummy = $bank_count_4 // integer values and handles 
+end
+return
+
+//-----------------------------------------
+// Level 4 - Delete Account
+//-----------------------------------------
+:BANK_ACCOUNT_DELETE
+11@=0
+15@=0
+
+:AC_DEL_LOOP
+wait 0 ms
+gosub @GET_INTEREST
+
+if 11@ == 0
+then
+    11@=1
+    00BB: text_lowpriority 'T_BNK17' 5000 ms 1 // Estas a punto de borrar esta ~r~cuenta~h~ junto con el ~r~dinero~h~ que pueda haber en ella. Estas seguro? ~r~ESPACIO~h~: confirmar - ~r~F/ENTER~h~: cancelar.
+end
+
+// Esperar a que jugador presione un boton
+if 11@ == 1
+then
+    if 00E1:   pad 0 key_pressed K_JUMP
+    then 15@+=1
+        11@=2
+    end
+    if 00E1:   pad 0 key_pressed K_ENTER
+    then 11@=3
+    end
+end
+
+// Jugador presionó 'CONFIRMAR'
+if 11@ == 2
+then
+    if 80E1:   not pad 0 key_pressed K_JUMP
+    then
+        if 15@==2
+        then 11@=4
+        else
+            11@=1
+            03D5: remove_text 'T_BNK17'
+            00BB: text_lowpriority 'T_BNK18' 5000 ms 1 // Si borras la cuenta, ya no podras recuperarla. Para confirmar, presiona ~r~ESPACIO/SALTAR~h~, o si deseas cancelar presiona ~r~F/ENTER~h~.
+        end
+    end
+end
+
+// Jugador presionó CANCELAR
+if 11@ == 3
+then
+    if 80E1:   not pad 0 key_pressed K_ENTER
+    then return
+    end
+end
+
+// El usuario confirmó que quería borrar la cuenta
+if 11@ == 4
+then
+    if 6@==0
+    then $bank_count_1_created=0
+    end
+    if 6@==1
+    then $bank_count_2_created=0
+    end
+    if 6@==2
+    then $bank_count_3_created=0
+    end
+    if 6@==3
+    then $bank_count_4_created=0
+    end
+    03D5: remove_text 'T_BNK18'
+    00BB: text_lowpriority 'T_BNK20' 5000 ms 1 // La cuenta ha sido borrada...
+    4@=0
+    gosub @SHOW_BANK_MENU
+    return
+end
+jump @AC_DEL_LOOP
+return
+
+//-----------------------------------------
+// Get interest
+//-----------------------------------------
+:GET_INTEREST
+if 16@>=1440000
+then
+    16@=0
+    if $bank_count_1_created==1
+    then 0084: $r_entry_amount = $bank_count_1 // integer values and handles 
+         $r_entry_amount/=100 // 1% of $bank_count_1
+         if $r_entry_amount>0
+         then $bc_pointer=0
+              $r_entry_reason=1 // Razon: interes (1%)
+              gosub @PUSH_RECORD_IN_ACCOUNT // entradas: $bc_pointer: indice cuenta bancaria x, $r_entry_amount: cantidad o monto, $r_entry_reason: razon
+              0058: $bank_count_1 += $r_entry_amount // integer values 
+         end
+    end
+    if $bank_count_2_created==1
+    then 0084: $r_entry_amount = $bank_count_2 // integer values and handles 
+         $r_entry_amount/=100
+         if $r_entry_amount>0
+         then $bc_pointer=0
+              $r_entry_reason=1 // Razon: interes (1%)
+              gosub @PUSH_RECORD_IN_ACCOUNT // entradas: $bc_pointer: indice cuenta bancaria x, $r_entry_amount: cantidad o monto, $r_entry_reason: razon
+              0058: $bank_count_2 += $r_entry_amount // integer values 
+         end
+    end
+    if $bank_count_3_created==1
+    then 0084: $r_entry_amount = $bank_count_3 // integer values and handles 
+         $r_entry_amount/=100
+         if $r_entry_amount>0
+         then $bc_pointer=0
+              $r_entry_reason=1 // Razon: interes (1%)
+              gosub @PUSH_RECORD_IN_ACCOUNT // entradas: $bc_pointer: indice cuenta bancaria x, $r_entry_amount: cantidad o monto, $r_entry_reason: razon
+              0058: $bank_count_3 += $r_entry_amount // integer values 
+         end
+    end
+    if $bank_count_4_created==1
+    then 0084: $r_entry_amount = $bank_count_4 // integer values and handles 
+         $r_entry_amount/=100
+         if $r_entry_amount>0
+         then $bc_pointer=0
+              $r_entry_reason=1 // Razon: interes (1%)
+              gosub @PUSH_RECORD_IN_ACCOUNT // entradas: $bc_pointer: indice cuenta bancaria x, $r_entry_amount: cantidad o monto, $r_entry_reason: razon
+              0058: $bank_count_4 += $r_entry_amount // integer values 
+         end
+    end
+end
+return
+

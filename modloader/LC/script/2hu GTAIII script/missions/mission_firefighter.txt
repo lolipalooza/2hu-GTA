@@ -1,0 +1,777 @@
+//-------------Mission 12---------------
+// Originally: Firefighter
+
+:M_FIRETRU
+gosub @FIRETRU_16 
+gosub @FIRETRU_4340 
+end_thread 
+
+:FIRETRU_16
+$ONMISSION = 1 // integer values 
+$373 = 1 // integer values 
+thread 'M_FIRE' 
+wait 0 
+$FIRE_MISSION_TIMER = 0 // integer values 
+$1367 = 0 // integer values 
+$FIRE_MISSION_MARKER = 0 // integer values 
+$FIRE_MISSION_CAR = 0 // integer values 
+$FIRE_MISSION_CAR_TYPE = 0 // integer values 
+$1372 = 0 // integer values 
+$1373 = 0 // integer values 
+$1374 = 0 // integer values 
+$FIRE_MISSION_REWARD = 250 // integer values 
+$1377 = 0 // integer values 
+$NUMBER_FIRES_EXTINGUISHED = 0 // integer values 
+$1379 = 0 // integer values 
+$1378 = 0 // integer values 
+$1380 = 0 // integer values 
+$1381 = 0 // integer values 
+$1382 = 0 // integer values 
+$1390 = 2.0 // floating-point values 
+
+:FIRETRU_165
+wait 0 
+03C7: unknown_maby_cops_density 0.5 
+0054: store_player $PLAYER_CHAR position_to $1391 $1392 $1393 
+if 
+80DE:   not player $PLAYER_CHAR driving_vehicle_type #FIRETRUK 
+else_jump @FIRETRU_228 
+00BC: text_highpriority 'F_CANC' 3000 ms 1  // ~r~Fire Fighter mission cancelled!
+jump @FIRETRU_4340 
+
+:FIRETRU_228
+0293: $CURRENT_CONTROLS = current_controls 
+if 
+   not $CURRENT_CONTROLS == 3 // integer values 
+else_jump @FIRETRU_282 
+if 
+00E1:   pad 0 key_pressed 19 
+else_jump @FIRETRU_275 
+$1381 = 1 // integer values 
+
+:FIRETRU_275
+jump @FIRETRU_306 
+
+:FIRETRU_282
+if 
+00E1:   pad 0 key_pressed 14 
+else_jump @FIRETRU_306 
+$1381 = 1 // integer values 
+
+:FIRETRU_306
+if 
+  $1381 == 1 // integer values 
+else_jump @FIRETRU_427 
+if 
+   not $CURRENT_CONTROLS == 3 // integer values 
+else_jump @FIRETRU_388 
+if 
+80E1:   not pad 0 key_pressed 19 
+else_jump @FIRETRU_381 
+00BC: text_highpriority 'F_CANC' 3000 ms 1  // ~r~Fire Fighter mission cancelled!
+jump @FIRETRU_4340 
+
+:FIRETRU_381
+jump @FIRETRU_427 
+
+:FIRETRU_388
+if 
+80E1:   not pad 0 key_pressed 14 
+else_jump @FIRETRU_427 
+00BC: text_highpriority 'F_CANC' 3000 ms 1  // ~r~Fire Fighter mission cancelled!
+jump @FIRETRU_4340 
+
+:FIRETRU_427
+if 
+03C6:   current_island == 1 
+else_jump @FIRETRU_493 
+0208: $1387 = random_float 778.0 1540.0 
+0208: $1388 = random_float -1110.0 190.0 
+$1374 = 0 // integer values 
+$1373 = 1 // integer values 
+$1382 = 1 // integer values 
+$1389 = 13.0 // floating-point values 
+
+:FIRETRU_493
+if 
+03C6:   current_island == 2 
+else_jump @FIRETRU_559 
+0208: $1387 = random_float -192.0 545.0 
+0208: $1388 = random_float -1626.0 98.0 
+$1374 = 0 // integer values 
+$1373 = 1 // integer values 
+$1382 = 2 // integer values 
+$1389 = 14.0 // floating-point values 
+
+:FIRETRU_559
+if 
+03C6:   current_island == 3 
+else_jump @FIRETRU_625 
+0208: $1387 = random_float -1300.0 -414.0 
+0208: $1388 = random_float -608.75 380.0 
+$1374 = 0 // integer values 
+$1373 = 1 // integer values 
+$1382 = 3 // integer values 
+$1389 = 11.0 // floating-point values 
+
+:FIRETRU_625
+if and
+  $1373 == 0 // integer values 
+  $1374 == 0 // integer values 
+else_jump @FIRETRU_697 
+if 
+  $1374 == 0 // integer values 
+else_jump @FIRETRU_690 
+00BC: text_highpriority 'F_RANGE' 5000 ms 1  // ~g~The fire truck radio is out of range, get closer to a fire station!
+$1374 = 1 // integer values 
+
+:FIRETRU_690
+jump @FIRETRU_4340 
+
+:FIRETRU_697
+02C1: set $1394 $1395 $1396 to_car_path_coords_closest_to $1387 $1388 $1393 
+if and
+  $1394 > 670.0 // floating-point values 
+  1035.0 > $1394 // floating-point values 
+  $1395 > -953.0 // floating-point values 
+  -912.0 > $1395 // floating-point values 
+else_jump @FIRETRU_767 
+jump @FIRETRU_165 
+
+:FIRETRU_767
+if and
+  $1394 > 649.0 // floating-point values 
+  1066.0 > $1394 // floating-point values 
+  $1395 > 25.0 // floating-point values 
+  217.0 > $1395 // floating-point values 
+else_jump @FIRETRU_817 
+jump @FIRETRU_165 
+
+:FIRETRU_817
+if and
+  $1394 > -1611.5 // floating-point values 
+  -745.25 > $1394 // floating-point values 
+  $1395 > -1001.875 // floating-point values 
+  -371.1875 > $1395 // floating-point values 
+else_jump @FIRETRU_867 
+jump @FIRETRU_165 
+
+:FIRETRU_867
+if and
+  $1394 > -1255.375 // floating-point values 
+  -1187.875 > $1394 // floating-point values 
+  $1395 > 80.5625 // floating-point values 
+  123.375 > $1395 // floating-point values 
+else_jump @FIRETRU_917 
+jump @FIRETRU_165 
+
+:FIRETRU_917
+if and
+  $1394 > 1386.375 // floating-point values 
+  1475.75 > $1394 // floating-point values 
+  $1395 > -292.0625 // floating-point values 
+  -168.0 > $1395 // floating-point values 
+else_jump @FIRETRU_967 
+jump @FIRETRU_165 
+
+:FIRETRU_967
+if 
+  $1382 == 1 // integer values 
+else_jump @FIRETRU_1035 
+if or
+   not $1394 > 778.0 // floating-point values 
+   not 1540.0 > $1394 // floating-point values 
+   not $1395 > -1110.0 // floating-point values 
+   not 190.0 > $1395 // floating-point values 
+else_jump @FIRETRU_1035 
+jump @FIRETRU_165 
+
+:FIRETRU_1035
+if 
+  $1382 == 2 // integer values 
+else_jump @FIRETRU_1103 
+if or
+   not $1394 > -192.0 // floating-point values 
+   not 545.0 > $1394 // floating-point values 
+   not $1395 > -1626.0 // floating-point values 
+   not 98.0 > $1395 // floating-point values 
+else_jump @FIRETRU_1103 
+jump @FIRETRU_165 
+
+:FIRETRU_1103
+if 
+  $1382 == 3 // integer values 
+else_jump @FIRETRU_1171 
+if or
+   not $1394 > -1300.0 // floating-point values 
+   not -414.0 > $1394 // floating-point values 
+   not $1395 > -608.75 // floating-point values 
+   not 380.0 > $1395 // floating-point values 
+else_jump @FIRETRU_1171 
+jump @FIRETRU_165 
+
+:FIRETRU_1171
+if 
+  -1.0 > $1396 // floating-point values 
+else_jump @FIRETRU_1197 
+jump @FIRETRU_165 
+
+:FIRETRU_1197
+0086: $1397 = $1391 // floating-point values only 
+0061: $1397 -= $1394 // floating-point values 
+0086: $1398 = $1392 // floating-point values only 
+0061: $1398 -= $1395 // floating-point values 
+0069: $1397 *= $1397 // floating-point values 
+0069: $1398 *= $1398 // floating-point values 
+0086: $1399 = $1397 // floating-point values only 
+0059: $1399 += $1398 // floating-point values 
+01FB: $1400 = square_root $1399 
+if 
+  200.0 > $1400 // floating-point values 
+else_jump @FIRETRU_1295 
+jump @FIRETRU_165 
+
+:FIRETRU_1295
+0086: $1401 = $1400 // floating-point values only 
+0071: $1401 /= $1389 // floating-point values 
+0059: $1389 += $1390 // floating-point values 
+$1390 += 2.0 // floating-point values 
+$1401 *= 1000.0 // floating-point values 
+008C: $1375 = float_to_integer $1401 
+0058: $FIRE_MISSION_TIMER += $1375 // integer values 
+if 
+  $NUMBER_FIRES_EXTINGUISHED == 0 // integer values 
+else_jump @FIRETRU_1400 
+if 
+  50000 > $FIRE_MISSION_TIMER // integer values 
+else_jump @FIRETRU_1400 
+$FIRE_MISSION_TIMER = 50000 // integer values 
+
+:FIRETRU_1400
+0209: $FIRE_MISSION_CAR_TYPE = random_int 90 140 
+if and
+  $FIRE_MISSION_CAR_TYPE > 113 // integer values 
+  128 > $FIRE_MISSION_CAR_TYPE // integer values 
+else_jump @FIRETRU_1443 
+jump @FIRETRU_1400 
+
+:FIRETRU_1443
+if or
+  $FIRE_MISSION_CAR_TYPE == 92 // integer values 
+  $FIRE_MISSION_CAR_TYPE == 97 // integer values 
+  $FIRE_MISSION_CAR_TYPE == 101 // integer values 
+  $FIRE_MISSION_CAR_TYPE == 105 // integer values 
+else_jump @FIRETRU_1489 
+jump @FIRETRU_1400 
+
+:FIRETRU_1489
+if or
+  $FIRE_MISSION_CAR_TYPE == 106 // integer values 
+  $FIRE_MISSION_CAR_TYPE == 107 // integer values 
+  $FIRE_MISSION_CAR_TYPE == 131 // integer values 
+  $FIRE_MISSION_CAR_TYPE == 140 // integer values 
+else_jump @FIRETRU_1537 
+jump @FIRETRU_1400 
+
+:FIRETRU_1537
+0247: request_model $FIRE_MISSION_CAR_TYPE 
+if 
+  $1380 == 1 // integer values 
+else_jump @FIRETRU_1574 
+16@ = 0 // integer values 
+jump @FIRETRU_1589 
+
+:FIRETRU_1574
+16@ = 3001 // integer values 
+$1380 = 1 // integer values 
+
+:FIRETRU_1589
+if or
+8248:   not model $FIRE_MISSION_CAR_TYPE available 
+   not 16@ > 3000 // integer values 
+else_jump @FIRETRU_1903 
+wait 0 
+if 
+  1 > $FIRE_MISSION_TIMER // integer values 
+else_jump @FIRETRU_1657 
+00BC: text_highpriority 'F_FAIL2' 5000 ms 1  // ~r~You're too late!
+jump @FIRETRU_4340 
+
+:FIRETRU_1657
+if 
+80DE:   not player $PLAYER_CHAR driving_vehicle_type #FIRETRUK 
+else_jump @FIRETRU_1697 
+00BC: text_highpriority 'F_CANC' 3000 ms 1  // ~r~Fire Fighter mission cancelled!
+jump @FIRETRU_4340 
+
+:FIRETRU_1697
+0293: $CURRENT_CONTROLS = current_controls 
+if 
+   not $CURRENT_CONTROLS == 3 // integer values 
+else_jump @FIRETRU_1751 
+if 
+00E1:   pad 0 key_pressed 19 
+else_jump @FIRETRU_1744 
+$1381 = 1 // integer values 
+
+:FIRETRU_1744
+jump @FIRETRU_1775 
+
+:FIRETRU_1751
+if 
+00E1:   pad 0 key_pressed 14 
+else_jump @FIRETRU_1775 
+$1381 = 1 // integer values 
+
+:FIRETRU_1775
+if 
+  $1381 == 1 // integer values 
+else_jump @FIRETRU_1896 
+if 
+   not $CURRENT_CONTROLS == 3 // integer values 
+else_jump @FIRETRU_1857 
+if 
+80E1:   not pad 0 key_pressed 19 
+else_jump @FIRETRU_1850 
+00BC: text_highpriority 'F_CANC' 3000 ms 1  // ~r~Fire Fighter mission cancelled!
+jump @FIRETRU_4340 
+
+:FIRETRU_1850
+jump @FIRETRU_1896 
+
+:FIRETRU_1857
+if 
+80E1:   not pad 0 key_pressed 14 
+else_jump @FIRETRU_1896 
+00BC: text_highpriority 'F_CANC' 3000 ms 1  // ~r~Fire Fighter mission cancelled!
+jump @FIRETRU_4340 
+
+:FIRETRU_1896
+jump @FIRETRU_1589 
+
+:FIRETRU_1903
+0208: $1402 = random_float 0.0 359.875 
+if 
+  $1372 == 0 // integer values 
+else_jump @FIRETRU_1956 
+00A5: $FIRE_MISSION_CAR = create_car $FIRE_MISSION_CAR_TYPE at $1394 $1395 $1396 
+$1372 = 1 // integer values 
+
+:FIRETRU_1956
+0129: $FIRE_MISSION_DRIVER = create_actor 4 #MALE01 in_car $FIRE_MISSION_CAR driverseat 
+0249: release_model $FIRE_MISSION_CAR_TYPE 
+0175: set_car $FIRE_MISSION_CAR z_angle_to $1402 
+0325: $1367 = create_car $FIRE_MISSION_CAR fire 
+0186: $FIRE_MISSION_MARKER = create_marker_above_car $FIRE_MISSION_CAR 
+00A9: set_car $FIRE_MISSION_CAR to_normal_driver 
+009F: set_actor $FIRE_MISSION_DRIVER objective_to-1 
+00AD: set_car $FIRE_MISSION_CAR max_speed_to 0.0 
+02AA: set_car $FIRE_MISSION_CAR immune_to_nonplayer 1 
+if 
+0154:   actor $FIRE_MISSION_DRIVER in_zone 'PORT_W'  // Callahan Point
+else_jump @FIRETRU_2069 
+0384: text_1string 'F_START' 'PORT_W' 5000 ms 1  // ~g~Burning vehicle reported in the ~a~ area. Go and extinguish the fire. // Callahan Point
+
+:FIRETRU_2069
+if 
+0154:   actor $FIRE_MISSION_DRIVER in_zone 'PORT_S'  // Atlantic Quays
+else_jump @FIRETRU_2116 
+0384: text_1string 'F_START' 'PORT_S' 5000 ms 1  // ~g~Burning vehicle reported in the ~a~ area. Go and extinguish the fire. // Atlantic Quays
+
+:FIRETRU_2116
+if 
+0154:   actor $FIRE_MISSION_DRIVER in_zone 'PORT_E'  // Portland Harbor
+else_jump @FIRETRU_2163 
+0384: text_1string 'F_START' 'PORT_E' 5000 ms 1  // ~g~Burning vehicle reported in the ~a~ area. Go and extinguish the fire. // Portland Harbor
+
+:FIRETRU_2163
+if 
+0154:   actor $FIRE_MISSION_DRIVER in_zone 'PORT_I'  // Trenton
+else_jump @FIRETRU_2210 
+0384: text_1string 'F_START' 'PORT_I' 5000 ms 1  // ~g~Burning vehicle reported in the ~a~ area. Go and extinguish the fire. // Trenton
+
+:FIRETRU_2210
+if 
+0154:   actor $FIRE_MISSION_DRIVER in_zone 'S_VIEW'  // Portland View
+else_jump @FIRETRU_2257 
+0384: text_1string 'F_START' 'S_VIEW' 5000 ms 1  // ~g~Burning vehicle reported in the ~a~ area. Go and extinguish the fire. // Portland View
+
+:FIRETRU_2257
+if 
+0154:   actor $FIRE_MISSION_DRIVER in_zone 'CHINA'  // Chinatown
+else_jump @FIRETRU_2304 
+0384: text_1string 'F_START' 'CHINA' 5000 ms 1  // ~g~Burning vehicle reported in the ~a~ area. Go and extinguish the fire. // Chinatown
+
+:FIRETRU_2304
+if 
+0154:   actor $FIRE_MISSION_DRIVER in_zone 'EASTBAY'  // Portland Beach
+else_jump @FIRETRU_2351 
+0384: text_1string 'F_START' 'EASTBAY' 5000 ms 1  // ~g~Burning vehicle reported in the ~a~ area. Go and extinguish the fire. // Portland Beach
+
+:FIRETRU_2351
+if 
+0154:   actor $FIRE_MISSION_DRIVER in_zone 'LITTLEI'  // Saint Mark's
+else_jump @FIRETRU_2398 
+0384: text_1string 'F_START' 'LITTLEI' 5000 ms 1  // ~g~Burning vehicle reported in the ~a~ area. Go and extinguish the fire. // Saint Mark's
+
+:FIRETRU_2398
+if 
+0154:   actor $FIRE_MISSION_DRIVER in_zone 'REDLIGH'  // Red Light District
+else_jump @FIRETRU_2445 
+0384: text_1string 'F_START' 'REDLIGH' 5000 ms 1  // ~g~Burning vehicle reported in the ~a~ area. Go and extinguish the fire. // Red Light District
+
+:FIRETRU_2445
+if 
+0154:   actor $FIRE_MISSION_DRIVER in_zone 'TOWERS'  // Hepburn Heights
+else_jump @FIRETRU_2492 
+0384: text_1string 'F_START' 'TOWERS' 5000 ms 1  // ~g~Burning vehicle reported in the ~a~ area. Go and extinguish the fire. // Hepburn Heights
+
+:FIRETRU_2492
+if 
+0154:   actor $FIRE_MISSION_DRIVER in_zone 'HARWOOD'  // Harwood
+else_jump @FIRETRU_2539 
+0384: text_1string 'F_START' 'HARWOOD' 5000 ms 1  // ~g~Burning vehicle reported in the ~a~ area. Go and extinguish the fire. // Harwood
+
+:FIRETRU_2539
+if 
+0154:   actor $FIRE_MISSION_DRIVER in_zone 'ROADBR1'  // Callahan Bridge
+else_jump @FIRETRU_2586 
+0384: text_1string 'F_START' 'ROADBR1' 5000 ms 1  // ~g~Burning vehicle reported in the ~a~ area. Go and extinguish the fire. // Callahan Bridge
+
+:FIRETRU_2586
+if 
+0154:   actor $FIRE_MISSION_DRIVER in_zone 'ROADBR2'  // Callahan Bridge
+else_jump @FIRETRU_2633 
+0384: text_1string 'F_START' 'ROADBR2' 5000 ms 1  // ~g~Burning vehicle reported in the ~a~ area. Go and extinguish the fire. // Callahan Bridge
+
+:FIRETRU_2633
+if 
+0154:   actor $FIRE_MISSION_DRIVER in_zone 'STADIUM'  // Aspatria
+else_jump @FIRETRU_2680 
+0384: text_1string 'F_START' 'STADIUM' 5000 ms 1  // ~g~Burning vehicle reported in the ~a~ area. Go and extinguish the fire. // Aspatria
+
+:FIRETRU_2680
+if 
+0154:   actor $FIRE_MISSION_DRIVER in_zone 'HOSPI_2'  // Rockford
+else_jump @FIRETRU_2727 
+0384: text_1string 'F_START' 'HOSPI_2' 5000 ms 1  // ~g~Burning vehicle reported in the ~a~ area. Go and extinguish the fire. // Rockford
+
+:FIRETRU_2727
+if 
+0154:   actor $FIRE_MISSION_DRIVER in_zone 'UNIVERS'  // Liberty Campus
+else_jump @FIRETRU_2774 
+0384: text_1string 'F_START' 'UNIVERS' 5000 ms 1  // ~g~Burning vehicle reported in the ~a~ area. Go and extinguish the fire. // Liberty Campus
+
+:FIRETRU_2774
+if 
+0154:   actor $FIRE_MISSION_DRIVER in_zone 'CONSTRU'  // Fort Staunton
+else_jump @FIRETRU_2821 
+0384: text_1string 'F_START' 'CONSTRU' 5000 ms 1  // ~g~Burning vehicle reported in the ~a~ area. Go and extinguish the fire. // Fort Staunton
+
+:FIRETRU_2821
+if 
+0154:   actor $FIRE_MISSION_DRIVER in_zone 'PARK'  // Belleville Park
+else_jump @FIRETRU_2868 
+0384: text_1string 'F_START' 'PARK' 5000 ms 1  // ~g~Burning vehicle reported in the ~a~ area. Go and extinguish the fire. // Belleville Park
+
+:FIRETRU_2868
+if 
+0154:   actor $FIRE_MISSION_DRIVER in_zone 'COM_EAS'  // Newport
+else_jump @FIRETRU_2915 
+0384: text_1string 'F_START' 'COM_EAS' 5000 ms 1  // ~g~Burning vehicle reported in the ~a~ area. Go and extinguish the fire. // Newport
+
+:FIRETRU_2915
+if 
+0154:   actor $FIRE_MISSION_DRIVER in_zone 'SHOPING'  // Bedford Point
+else_jump @FIRETRU_2962 
+0384: text_1string 'F_START' 'SHOPING' 5000 ms 1  // ~g~Burning vehicle reported in the ~a~ area. Go and extinguish the fire. // Bedford Point
+
+:FIRETRU_2962
+if 
+0154:   actor $FIRE_MISSION_DRIVER in_zone 'YAKUSA'  // Torrington
+else_jump @FIRETRU_3009 
+0384: text_1string 'F_START' 'YAKUSA' 5000 ms 1  // ~g~Burning vehicle reported in the ~a~ area. Go and extinguish the fire. // Torrington
+
+:FIRETRU_3009
+if 
+0154:   actor $FIRE_MISSION_DRIVER in_zone 'AIRPORT'  // Francis Intl. Airport
+else_jump @FIRETRU_3056 
+0384: text_1string 'F_START' 'AIRPORT' 5000 ms 1  // ~g~Burning vehicle reported in the ~a~ area. Go and extinguish the fire. // Francis Intl. Airport
+
+:FIRETRU_3056
+if 
+0154:   actor $FIRE_MISSION_DRIVER in_zone 'PROJECT'  // Wichita Gardens
+else_jump @FIRETRU_3103 
+0384: text_1string 'F_START' 'PROJECT' 5000 ms 1  // ~g~Burning vehicle reported in the ~a~ area. Go and extinguish the fire. // Wichita Gardens
+
+:FIRETRU_3103
+if 
+0154:   actor $FIRE_MISSION_DRIVER in_zone 'SUB_IND'  // Pike Creek
+else_jump @FIRETRU_3150 
+0384: text_1string 'F_START' 'SUB_IND' 5000 ms 1  // ~g~Burning vehicle reported in the ~a~ area. Go and extinguish the fire. // Pike Creek
+
+:FIRETRU_3150
+if 
+0154:   actor $FIRE_MISSION_DRIVER in_zone 'SWANKS'  // Cedar Grove
+else_jump @FIRETRU_3197 
+0384: text_1string 'F_START' 'SWANKS' 5000 ms 1  // ~g~Burning vehicle reported in the ~a~ area. Go and extinguish the fire. // Cedar Grove
+
+:FIRETRU_3197
+if 
+0154:   actor $FIRE_MISSION_DRIVER in_zone 'BIG_DAM'  // Cochrane Dam
+else_jump @FIRETRU_3244 
+0384: text_1string 'F_START' 'BIG_DAM' 5000 ms 1  // ~g~Burning vehicle reported in the ~a~ area. Go and extinguish the fire. // Cochrane Dam
+
+:FIRETRU_3244
+009B: destroy_actor_instantly $FIRE_MISSION_DRIVER 
+if 
+  $1377 == 0 // integer values 
+else_jump @FIRETRU_3279 
+014E: set_timer_to $FIRE_MISSION_TIMER 
+$1377 = 1 // integer values 
+
+:FIRETRU_3279
+03E6: remove_text_box 
+if 
+  $DISPLAYED_AMBULANCE_HELP == 1 // integer values 
+else_jump @FIRETRU_3423 
+0293: $CURRENT_CONTROLS = current_controls 
+if 
+  $CURRENT_CONTROLS == 0 // integer values 
+else_jump @FIRETRU_3332 
+03E5: text_box 'SIREN_1'  // To turn on this vehicle's sirens tap the ~h~~k~~VEHICLE_HORN~ button~w~.
+
+:FIRETRU_3332
+if 
+  $CURRENT_CONTROLS == 1 // integer values 
+else_jump @FIRETRU_3360 
+03E5: text_box 'SIREN_2'  // To turn on this vehicle's sirens tap the ~h~~k~~VEHICLE_HORN~ button~w~.
+
+:FIRETRU_3360
+if 
+  $CURRENT_CONTROLS == 2 // integer values 
+else_jump @FIRETRU_3388 
+03E5: text_box 'SIREN_3'  // To turn on this vehicle's sirens tap the ~h~~k~~VEHICLE_HORN~ button~w~.
+
+:FIRETRU_3388
+if 
+  $CURRENT_CONTROLS == 3 // integer values 
+else_jump @FIRETRU_3416 
+03E5: text_box 'SIREN_4'  // To turn on this vehicle's sirens tap the ~h~~k~~VEHICLE_HORN~ button~w~.
+
+:FIRETRU_3416
+$DISPLAYED_AMBULANCE_HELP = 2 // integer values 
+
+:FIRETRU_3423
+if 
+  $DISPLAYED_AMBULANCE_HELP == 0 // integer values 
+else_jump @FIRETRU_3565 
+0293: $CURRENT_CONTROLS = current_controls 
+if 
+  $CURRENT_CONTROLS == 0 // integer values 
+else_jump @FIRETRU_3474 
+03E5: text_box 'SPRAY_1'  // Use the ~h~~k~~PED_FIREWEAPON~ button ~w~to fire the water cannon.
+
+:FIRETRU_3474
+if 
+  $CURRENT_CONTROLS == 1 // integer values 
+else_jump @FIRETRU_3502 
+03E5: text_box 'SPRAY_1'  // Use the ~h~~k~~PED_FIREWEAPON~ button ~w~to fire the water cannon.
+
+:FIRETRU_3502
+if 
+  $CURRENT_CONTROLS == 2 // integer values 
+else_jump @FIRETRU_3530 
+03E5: text_box 'SPRAY_1'  // Use the ~h~~k~~PED_FIREWEAPON~ button ~w~to fire the water cannon.
+
+:FIRETRU_3530
+if 
+  $CURRENT_CONTROLS == 3 // integer values 
+else_jump @FIRETRU_3558 
+03E5: text_box 'SPRAY_4'  // Use the ~h~~k~~PED_FIREWEAPON~ button ~w~to fire the water cannon.
+
+:FIRETRU_3558
+$DISPLAYED_AMBULANCE_HELP = 1 // integer values 
+
+:FIRETRU_3565
+if 
+82D0:   not fire $1367 extinguished 
+else_jump @FIRETRU_3941 
+wait 0 
+if 
+0119:   car $FIRE_MISSION_CAR wrecked 
+else_jump @FIRETRU_3623 
+00BC: text_highpriority 'F_FAIL2' 5000 ms 1  // ~r~You're too late!
+jump @FIRETRU_4340 
+
+:FIRETRU_3623
+if 
+  1 > $FIRE_MISSION_TIMER // integer values 
+else_jump @FIRETRU_3663 
+00BC: text_highpriority 'F_FAIL2' 5000 ms 1  // ~r~You're too late!
+jump @FIRETRU_4340 
+
+:FIRETRU_3663
+if 
+80DE:   not player $PLAYER_CHAR driving_vehicle_type #FIRETRUK 
+else_jump @FIRETRU_3703 
+00BC: text_highpriority 'F_CANC' 3000 ms 1  // ~r~Fire Fighter mission cancelled!
+jump @FIRETRU_4340 
+
+:FIRETRU_3703
+0227: $1386 = car $FIRE_MISSION_CAR health 
+if 
+  900 > $1386 // integer values 
+else_jump @FIRETRU_3735 
+020B: explode_car $FIRE_MISSION_CAR 
+
+:FIRETRU_3735
+0293: $CURRENT_CONTROLS = current_controls 
+if 
+   not $CURRENT_CONTROLS == 3 // integer values 
+else_jump @FIRETRU_3789 
+if 
+00E1:   pad 0 key_pressed 19 
+else_jump @FIRETRU_3782 
+$1381 = 1 // integer values 
+
+:FIRETRU_3782
+jump @FIRETRU_3813 
+
+:FIRETRU_3789
+if 
+00E1:   pad 0 key_pressed 14 
+else_jump @FIRETRU_3813 
+$1381 = 1 // integer values 
+
+:FIRETRU_3813
+if 
+  $1381 == 1 // integer values 
+else_jump @FIRETRU_3934 
+if 
+   not $CURRENT_CONTROLS == 3 // integer values 
+else_jump @FIRETRU_3895 
+if 
+80E1:   not pad 0 key_pressed 19 
+else_jump @FIRETRU_3888 
+00BC: text_highpriority 'F_CANC' 3000 ms 1  // ~r~Fire Fighter mission cancelled!
+jump @FIRETRU_4340 
+
+:FIRETRU_3888
+jump @FIRETRU_3934 
+
+:FIRETRU_3895
+if 
+80E1:   not pad 0 key_pressed 14 
+else_jump @FIRETRU_3934 
+00BC: text_highpriority 'F_CANC' 3000 ms 1  // ~r~Fire Fighter mission cancelled!
+jump @FIRETRU_4340 
+
+:FIRETRU_3934
+jump @FIRETRU_3565 
+
+:FIRETRU_3941
+jump @FIRETRU_3948 
+
+:FIRETRU_3948
+$NUMBER_FIRES_EXTINGUISHED += 1 // integer values 
+00BA: text_styled 'F_PASS1' 5000 ms 5  // Fire extinguished!
+01E3: text_1number_styled 'REWARD' $FIRE_MISSION_REWARD 6000 ms 6  // REWARD $~1~
+0404: increment_fires_extinguished 
+if 
+  $1382 == 1 // integer values 
+else_jump @FIRETRU_4015 
+$PORTLAND_FIRE_MISSIONS += 1 // integer values 
+
+:FIRETRU_4015
+if 
+  $1382 == 2 // integer values 
+else_jump @FIRETRU_4040 
+$STAUNTON_FIRE_MISSIONS += 1 // integer values 
+
+:FIRETRU_4040
+if 
+  $1382 == 3 // integer values 
+else_jump @FIRETRU_4065 
+$SHORESIDE_FIRE_MISSIONS += 1 // integer values 
+
+:FIRETRU_4065
+if 
+  $ALL_FIRE_MISSIONS_DONE == 0 // integer values 
+else_jump @FIRETRU_4143 
+if and
+  $PORTLAND_FIRE_MISSIONS > 19 // integer values 
+  $STAUNTON_FIRE_MISSIONS > 19 // integer values 
+  $SHORESIDE_FIRE_MISSIONS > 19 // integer values 
+else_jump @FIRETRU_4143 
+014D: text_pager 'PAGEB11' 140 100 1  // Flamethrower delivered to hideout
+030C: set_mission_points += 1 
+$ALL_FIRE_MISSIONS_DONE = 1 // integer values 
+
+:FIRETRU_4143
+0109: player $PLAYER_CHAR money += $FIRE_MISSION_REWARD 
+0058: $1378 += $FIRE_MISSION_REWARD // integer values 
+$FIRE_MISSION_REWARD += 250 // integer values 
+031A: remove_all_fires 
+0164: disable_marker $FIRE_MISSION_MARKER 
+018C: play_sound 94 at 0.0 0.0 0.0 
+if 
+00E0:   player $PLAYER_CHAR driving 
+else_jump @FIRETRU_4235 
+00DA: $1384 = player $PLAYER_CHAR car 
+0227: $1385 = car $1384 health 
+$1385 += 150 // integer values 
+0224: set_car $1384 health_to $1385 
+
+:FIRETRU_4235
+if 
+  $1379 == 0 // integer values 
+else_jump @FIRETRU_4275 
+03C4: set_status_text_to $NUMBER_FIRES_EXTINGUISHED 0 'F_EXTIN'  // FIRES:
+$1379 = 1 // integer values 
+
+:FIRETRU_4275
+if 
+  $1372 == 1 // integer values 
+else_jump @FIRETRU_4328 
+01C3: remove_references_to_car $FIRE_MISSION_CAR // Like turning a car into any random car 
+if 
+8119:   not car $FIRE_MISSION_CAR wrecked 
+else_jump @FIRETRU_4321 
+02AA: set_car $FIRE_MISSION_CAR immune_to_nonplayer 0 
+
+:FIRETRU_4321
+$1372 = 0 // integer values 
+
+:FIRETRU_4328
+0249: release_model $FIRE_MISSION_CAR_TYPE 
+jump @FIRETRU_165 
+
+:FIRETRU_4340
+014F: stop_timer $FIRE_MISSION_TIMER 
+0151: remove_status_text $NUMBER_FIRES_EXTINGUISHED 
+00BA: text_styled 'F_FAIL1' 5000 ms 5  // Fire Truck mission ended.
+01E3: text_1number_styled 'TSCORE' $1378 6000 ms 6  // EARNINGS: $~1~
+031A: remove_all_fires 
+0164: disable_marker $FIRE_MISSION_MARKER 
+03E6: remove_text_box 
+03C7: unknown_maby_cops_density 1.0 
+if 
+  $1372 == 1 // integer values 
+else_jump @FIRETRU_4455 
+if 
+8119:   not car $FIRE_MISSION_CAR wrecked 
+else_jump @FIRETRU_4443 
+02AA: set_car $FIRE_MISSION_CAR immune_to_nonplayer 0 
+020B: explode_car $FIRE_MISSION_CAR 
+
+:FIRETRU_4443
+01C3: remove_references_to_car $FIRE_MISSION_CAR // Like turning a car into any random car 
+$1372 = 0 // integer values 
+
+:FIRETRU_4455
+0249: release_model $FIRE_MISSION_CAR_TYPE 
+$ONMISSION = 0 // integer values 
+$373 = 0 // integer values 
+mission_cleanup 
+return 

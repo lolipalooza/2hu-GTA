@@ -1,0 +1,800 @@
+{===================================================
+LOCAL SUBROUTINES
+===================================================}
+//--------------------------------------------
+// Cancelar misión
+//--------------------------------------------
+:M_AMBULAN_CANCEL
+if 00E1:   pad 0 key_pressed K_SUBMISSIONS 
+then 10@=99
+end
+if 10@==99
+then
+    if 80E1:   not pad 0 key_pressed K_SUBMISSIONS 
+    then 10@=100
+    end
+end
+return
+
+//--------------------------------------------
+// 
+//--------------------------------------------
+:M_AMBUL_DISEASE
+if 13@==0
+then
+    gosub @M_AMBUL_DISEASE_TEXT
+    if 5@ == K_JUMP
+    then 14@=1
+    end
+    if 5@ == K_PUNCH
+    then 14@=-1
+    end
+    if 5@ == K_ENTER
+    then 14@=-1
+    end
+    if 5@ == K_SPRINT
+    then 14@=-1
+    end
+end
+if 13@==1
+then
+    gosub @M_AMBUL_DISEASE_TEXT
+    if 5@ == K_JUMP
+    then 14@=-1
+    end
+    if 5@ == K_PUNCH
+    then 14@=1
+    end
+    if 5@ == K_ENTER
+    then 14@=-1
+    end
+    if 5@ == K_SPRINT
+    then 14@=-1
+    end
+end
+if 13@==2
+then
+    gosub @M_AMBUL_DISEASE_TEXT
+    if 5@ == K_JUMP
+    then 14@=-1
+    end
+    if 5@ == K_PUNCH
+    then 14@=-1
+    end
+    if 5@ == K_ENTER
+    then 14@=1
+    end
+    if 5@ == K_SPRINT
+    then 14@=-1
+    end
+end
+if 13@==3
+then
+    gosub @M_AMBUL_DISEASE_TEXT
+    if 5@ == K_JUMP
+    then 14@=-1
+    end
+    if 5@ == K_PUNCH
+    then 14@=-1
+    end
+    if 5@ == K_ENTER
+    then 14@=-1
+    end
+    if 5@ == K_SPRINT
+    then 14@=1
+    end
+end
+if 14@>0
+then
+    Inc(6@)
+    if 6@>=3
+    then 6@=0
+        // cada 3 veces que el jugador presiona el boton correcto, éste cambiará de lugar
+        // obligar a que el nuevo boton correcto sea distinto al anterior boton correcto
+        :M_AMBUL_DISEASE_CHANGE_BTN
+        wait 0
+        0209: 13@ = random_int 0 4 
+        if and
+        13@ == 0
+        5@ == K_JUMP
+        then jump @M_AMBUL_DISEASE_CHANGE_BTN
+        end
+        if and
+        13@ == 1
+        5@ == K_PUNCH
+        then jump @M_AMBUL_DISEASE_CHANGE_BTN
+        end
+        if and
+        13@ == 2
+        5@ == K_ENTER
+        then jump @M_AMBUL_DISEASE_CHANGE_BTN
+        end
+        if and
+        13@ == 3
+        5@ == K_SPRINT
+        then jump @M_AMBUL_DISEASE_CHANGE_BTN
+        end
+    end
+end
+return
+
+//--------------------------------------------
+// Disease Text
+//--------------------------------------------
+:M_AMBUL_DISEASE_TEXT
+03D5: remove_text 'M_AMB15' 
+if 5@ == K_JUMP
+then 00BB: text_lowpriority 'M_AMB04' 2400 ms 1 // Aplicando respiracion boca a boca....
+end
+if 5@ == K_PUNCH
+then 00BB: text_lowpriority 'M_AMB05' 2400 ms 1 // Aplicando reanimacion cardio-pulmonar....
+end
+if 5@ == K_ENTER
+then 00BB: text_lowpriority 'M_AMB06' 2400 ms 1 // Aplicando dosis de insulina....
+end
+if 5@ == K_SPRINT
+then 00BB: text_lowpriority 'M_AMB07' 2400 ms 1 // Aplicando detencion de sangrado....
+end
+return
+
+//--------------------------------------------
+// Load Patient
+//--------------------------------------------
+:M_AMBULAN_LOAD_PATIENT
+if $m_ambul_index==0
+then 0084: 10@ = $m_ambul_p1_state // integer values and handles 
+     0084: 11@ = $m_ambul_patient1 // integer values and handles 
+     0084: 12@ = $m_ambul_patient1_marker // integer values and handles 
+     0084: $PARAMEDIC_CREATE_PATIENT_X = $m_ambul_p1_x // integer values and handles 
+     0084: $PARAMEDIC_CREATE_PATIENT_Y = $m_ambul_p1_y // integer values and handles 
+     0084: $PARAMEDIC_CREATE_PATIENT_Z = $m_ambul_p1_z // integer values and handles 
+     0084: $m_ambulan_mode = $m_ambul_p1_mode // integer values and handles 
+end
+if $m_ambul_index==1
+then 0084: 10@ = $m_ambul_p2_state // integer values and handles 
+     0084: 11@ = $m_ambul_patient2 // integer values and handles 
+     0084: 12@ = $m_ambul_patient2_marker // integer values and handles 
+     0084: $PARAMEDIC_CREATE_PATIENT_X = $m_ambul_p2_x // integer values and handles 
+     0084: $PARAMEDIC_CREATE_PATIENT_Y = $m_ambul_p2_y // integer values and handles 
+     0084: $PARAMEDIC_CREATE_PATIENT_Z = $m_ambul_p2_z // integer values and handles 
+     0084: $m_ambulan_mode = $m_ambul_p2_mode // integer values and handles 
+end
+if $m_ambul_index==2
+then 0084: 10@ = $m_ambul_p3_state // integer values and handles 
+     0084: 11@ = $m_ambul_patient3 // integer values and handles 
+     0084: 12@ = $m_ambul_patient3_marker // integer values and handles 
+     0084: $PARAMEDIC_CREATE_PATIENT_X = $m_ambul_p3_x // integer values and handles 
+     0084: $PARAMEDIC_CREATE_PATIENT_Y = $m_ambul_p3_y // integer values and handles 
+     0084: $PARAMEDIC_CREATE_PATIENT_Z = $m_ambul_p3_z // integer values and handles 
+     0084: $m_ambulan_mode = $m_ambul_p3_mode // integer values and handles 
+end
+if $m_ambul_index==3
+then 0084: 10@ = $m_ambul_p4_state // integer values and handles 
+     0084: 11@ = $m_ambul_patient4 // integer values and handles 
+     0084: 12@ = $m_ambul_patient4_marker // integer values and handles 
+     0084: $PARAMEDIC_CREATE_PATIENT_X = $m_ambul_p4_x // integer values and handles 
+     0084: $PARAMEDIC_CREATE_PATIENT_Y = $m_ambul_p4_y // integer values and handles 
+     0084: $PARAMEDIC_CREATE_PATIENT_Z = $m_ambul_p4_z // integer values and handles 
+     0084: $m_ambulan_mode = $m_ambul_p4_mode // integer values and handles 
+end
+if $m_ambul_index==4
+then 0084: 10@ = $m_ambul_p5_state // integer values and handles 
+     0084: 11@ = $m_ambul_patient5 // integer values and handles 
+     0084: 12@ = $m_ambul_patient5_marker // integer values and handles 
+     0084: $PARAMEDIC_CREATE_PATIENT_X = $m_ambul_p5_x // integer values and handles 
+     0084: $PARAMEDIC_CREATE_PATIENT_Y = $m_ambul_p5_y // integer values and handles 
+     0084: $PARAMEDIC_CREATE_PATIENT_Z = $m_ambul_p5_z // integer values and handles 
+     0084: $m_ambulan_mode = $m_ambul_p5_mode // integer values and handles 
+end
+if $m_ambul_index==5
+then 0084: 10@ = $m_ambul_p6_state // integer values and handles 
+     0084: 11@ = $m_ambul_patient6 // integer values and handles 
+     0084: 12@ = $m_ambul_patient6_marker // integer values and handles 
+     0084: $PARAMEDIC_CREATE_PATIENT_X = $m_ambul_p6_x // integer values and handles 
+     0084: $PARAMEDIC_CREATE_PATIENT_Y = $m_ambul_p6_y // integer values and handles 
+     0084: $PARAMEDIC_CREATE_PATIENT_Z = $m_ambul_p6_z // integer values and handles 
+     0084: $m_ambulan_mode = $m_ambul_p6_mode // integer values and handles 
+end
+if $m_ambul_index==6
+then 0084: 10@ = $m_ambul_p7_state // integer values and handles 
+     0084: 11@ = $m_ambul_patient7 // integer values and handles 
+     0084: 12@ = $m_ambul_patient7_marker // integer values and handles 
+     0084: $PARAMEDIC_CREATE_PATIENT_X = $m_ambul_p7_x // integer values and handles 
+     0084: $PARAMEDIC_CREATE_PATIENT_Y = $m_ambul_p7_y // integer values and handles 
+     0084: $PARAMEDIC_CREATE_PATIENT_Z = $m_ambul_p7_z // integer values and handles 
+     0084: $m_ambulan_mode = $m_ambul_p7_mode // integer values and handles 
+end
+if $m_ambul_index==7
+then 0084: 10@ = $m_ambul_p8_state // integer values and handles 
+     0084: 11@ = $m_ambul_patient8 // integer values and handles 
+     0084: 12@ = $m_ambul_patient8_marker // integer values and handles 
+     0084: $PARAMEDIC_CREATE_PATIENT_X = $m_ambul_p8_x // integer values and handles 
+     0084: $PARAMEDIC_CREATE_PATIENT_Y = $m_ambul_p8_y // integer values and handles 
+     0084: $PARAMEDIC_CREATE_PATIENT_Z = $m_ambul_p8_z // integer values and handles 
+     0084: $m_ambulan_mode = $m_ambul_p8_mode // integer values and handles 
+end
+if $m_ambul_index==8
+then 0084: 10@ = $m_ambul_p9_state // integer values and handles 
+     0084: 11@ = $m_ambul_patient9 // integer values and handles 
+     0084: 12@ = $m_ambul_patient9_marker // integer values and handles 
+     0084: $PARAMEDIC_CREATE_PATIENT_X = $m_ambul_p9_x // integer values and handles 
+     0084: $PARAMEDIC_CREATE_PATIENT_Y = $m_ambul_p9_y // integer values and handles 
+     0084: $PARAMEDIC_CREATE_PATIENT_Z = $m_ambul_p9_z // integer values and handles 
+     0084: $m_ambulan_mode = $m_ambul_p9_mode // integer values and handles 
+end
+if $m_ambul_index==9
+then 0084: 10@ = $m_ambul_p10_state // integer values and handles 
+     0084: 11@ = $m_ambul_patient10 // integer values and handles 
+     0084: 12@ = $m_ambul_patient10_marker // integer values and handles 
+     0084: $PARAMEDIC_CREATE_PATIENT_X = $m_ambul_p10_x // integer values and handles 
+     0084: $PARAMEDIC_CREATE_PATIENT_Y = $m_ambul_p10_y // integer values and handles 
+     0084: $PARAMEDIC_CREATE_PATIENT_Z = $m_ambul_p10_z // integer values and handles 
+     0084: $m_ambulan_mode = $m_ambul_p10_mode // integer values and handles 
+end
+if $m_ambul_index==10
+then 0084: 10@ = $m_ambul_p11_state // integer values and handles 
+     0084: 11@ = $m_ambul_patient11 // integer values and handles 
+     0084: 12@ = $m_ambul_patient11_marker // integer values and handles 
+     0084: $PARAMEDIC_CREATE_PATIENT_X = $m_ambul_p11_x // integer values and handles 
+     0084: $PARAMEDIC_CREATE_PATIENT_Y = $m_ambul_p11_y // integer values and handles 
+     0084: $PARAMEDIC_CREATE_PATIENT_Z = $m_ambul_p11_z // integer values and handles 
+     0084: $m_ambulan_mode = $m_ambul_p11_mode // integer values and handles 
+end
+if $m_ambul_index==11
+then 0084: 10@ = $m_ambul_p12_state // integer values and handles 
+     0084: 11@ = $m_ambul_patient12 // integer values and handles 
+     0084: 12@ = $m_ambul_patient12_marker // integer values and handles 
+     0084: $PARAMEDIC_CREATE_PATIENT_X = $m_ambul_p12_x // integer values and handles 
+     0084: $PARAMEDIC_CREATE_PATIENT_Y = $m_ambul_p12_y // integer values and handles 
+     0084: $PARAMEDIC_CREATE_PATIENT_Z = $m_ambul_p12_z // integer values and handles 
+     0084: $m_ambulan_mode = $m_ambul_p12_mode // integer values and handles 
+end
+return
+
+//--------------------------------------------
+// Unload Patient
+//--------------------------------------------
+:M_AMBULAN_UNLOAD_PATIENT
+if $m_ambul_index==0
+then 0084: $m_ambul_p1_state = 10@ // integer values and handles 
+     0084: $m_ambul_patient1 = 11@ // integer values and handles 
+     0084: $m_ambul_patient1_marker = 12@ // integer values and handles 
+     0084: $m_ambul_p1_x = $PARAMEDIC_CREATE_PATIENT_X // integer values and handles 
+     0084: $m_ambul_p1_y = $PARAMEDIC_CREATE_PATIENT_Y // integer values and handles 
+     0084: $m_ambul_p1_z = $PARAMEDIC_CREATE_PATIENT_Z // integer values and handles 
+     0084: $m_ambul_p1_mode = $m_ambulan_mode // integer values and handles 
+end
+if $m_ambul_index==1
+then 0084: $m_ambul_p2_state = 10@ // integer values and handles 
+     0084: $m_ambul_patient2 = 11@ // integer values and handles 
+     0084: $m_ambul_patient2_marker = 12@ // integer values and handles 
+     0084: $m_ambul_p2_x = $PARAMEDIC_CREATE_PATIENT_X // integer values and handles 
+     0084: $m_ambul_p2_y = $PARAMEDIC_CREATE_PATIENT_Y // integer values and handles 
+     0084: $m_ambul_p2_z = $PARAMEDIC_CREATE_PATIENT_Z // integer values and handles 
+     0084: $m_ambul_p2_mode = $m_ambulan_mode // integer values and handles 
+end
+if $m_ambul_index==2
+then 0084: $m_ambul_p3_state = 10@ // integer values and handles 
+     0084: $m_ambul_patient3 = 11@ // integer values and handles 
+     0084: $m_ambul_patient3_marker = 12@ // integer values and handles 
+     0084: $m_ambul_p3_x = $PARAMEDIC_CREATE_PATIENT_X // integer values and handles 
+     0084: $m_ambul_p3_y = $PARAMEDIC_CREATE_PATIENT_Y // integer values and handles 
+     0084: $m_ambul_p3_z = $PARAMEDIC_CREATE_PATIENT_Z // integer values and handles 
+     0084: $m_ambul_p3_mode = $m_ambulan_mode // integer values and handles 
+end
+if $m_ambul_index==3
+then 0084: $m_ambul_p4_state = 10@ // integer values and handles 
+     0084: $m_ambul_patient4 = 11@ // integer values and handles 
+     0084: $m_ambul_patient4_marker = 12@ // integer values and handles 
+     0084: $m_ambul_p4_x = $PARAMEDIC_CREATE_PATIENT_X // integer values and handles 
+     0084: $m_ambul_p4_y = $PARAMEDIC_CREATE_PATIENT_Y // integer values and handles 
+     0084: $m_ambul_p4_z = $PARAMEDIC_CREATE_PATIENT_Z // integer values and handles 
+     0084: $m_ambul_p4_mode = $m_ambulan_mode // integer values and handles 
+end
+if $m_ambul_index==4
+then 0084: $m_ambul_p5_state = 10@ // integer values and handles 
+     0084: $m_ambul_patient5 = 11@ // integer values and handles 
+     0084: $m_ambul_patient5_marker = 12@ // integer values and handles 
+     0084: $m_ambul_p5_x = $PARAMEDIC_CREATE_PATIENT_X // integer values and handles 
+     0084: $m_ambul_p5_y = $PARAMEDIC_CREATE_PATIENT_Y // integer values and handles 
+     0084: $m_ambul_p5_z = $PARAMEDIC_CREATE_PATIENT_Z // integer values and handles 
+     0084: $m_ambul_p5_mode = $m_ambulan_mode // integer values and handles 
+end
+if $m_ambul_index==5
+then 0084: $m_ambul_p6_state = 10@ // integer values and handles 
+     0084: $m_ambul_patient6 = 11@ // integer values and handles 
+     0084: $m_ambul_patient6_marker = 12@ // integer values and handles 
+     0084: $m_ambul_p6_x = $PARAMEDIC_CREATE_PATIENT_X // integer values and handles 
+     0084: $m_ambul_p6_y = $PARAMEDIC_CREATE_PATIENT_Y // integer values and handles 
+     0084: $m_ambul_p6_z = $PARAMEDIC_CREATE_PATIENT_Z // integer values and handles 
+     0084: $m_ambul_p6_mode = $m_ambulan_mode // integer values and handles 
+end
+if $m_ambul_index==6
+then 0084: $m_ambul_p7_state = 10@ // integer values and handles 
+     0084: $m_ambul_patient7 = 11@ // integer values and handles 
+     0084: $m_ambul_patient7_marker = 12@ // integer values and handles 
+     0084: $m_ambul_p7_x = $PARAMEDIC_CREATE_PATIENT_X // integer values and handles 
+     0084: $m_ambul_p7_y = $PARAMEDIC_CREATE_PATIENT_Y // integer values and handles 
+     0084: $m_ambul_p7_z = $PARAMEDIC_CREATE_PATIENT_Z // integer values and handles 
+     0084: $m_ambul_p7_mode = $m_ambulan_mode // integer values and handles 
+end
+if $m_ambul_index==7
+then 0084: $m_ambul_p8_state = 10@ // integer values and handles 
+     0084: $m_ambul_patient8 = 11@ // integer values and handles 
+     0084: $m_ambul_patient8_marker = 12@ // integer values and handles 
+     0084: $m_ambul_p8_x = $PARAMEDIC_CREATE_PATIENT_X // integer values and handles 
+     0084: $m_ambul_p8_y = $PARAMEDIC_CREATE_PATIENT_Y // integer values and handles 
+     0084: $m_ambul_p8_z = $PARAMEDIC_CREATE_PATIENT_Z // integer values and handles 
+     0084: $m_ambul_p8_mode = $m_ambulan_mode // integer values and handles 
+end
+if $m_ambul_index==8
+then 0084: $m_ambul_p9_state = 10@ // integer values and handles 
+     0084: $m_ambul_patient9 = 11@ // integer values and handles 
+     0084: $m_ambul_patient9_marker = 12@ // integer values and handles 
+     0084: $m_ambul_p9_x = $PARAMEDIC_CREATE_PATIENT_X // integer values and handles 
+     0084: $m_ambul_p9_y = $PARAMEDIC_CREATE_PATIENT_Y // integer values and handles 
+     0084: $m_ambul_p9_z = $PARAMEDIC_CREATE_PATIENT_Z // integer values and handles 
+     0084: $m_ambul_p9_mode = $m_ambulan_mode // integer values and handles 
+end
+if $m_ambul_index==9
+then 0084: $m_ambul_p10_state = 10@ // integer values and handles 
+     0084: $m_ambul_patient10 = 11@ // integer values and handles 
+     0084: $m_ambul_patient10_marker = 12@ // integer values and handles 
+     0084: $m_ambul_p10_x = $PARAMEDIC_CREATE_PATIENT_X // integer values and handles 
+     0084: $m_ambul_p10_y = $PARAMEDIC_CREATE_PATIENT_Y // integer values and handles 
+     0084: $m_ambul_p10_z = $PARAMEDIC_CREATE_PATIENT_Z // integer values and handles 
+     0084: $m_ambul_p10_mode = $m_ambulan_mode // integer values and handles 
+end
+if $m_ambul_index==10
+then 0084: $m_ambul_p11_state = 10@ // integer values and handles 
+     0084: $m_ambul_patient11 = 11@ // integer values and handles 
+     0084: $m_ambul_patient11_marker = 12@ // integer values and handles 
+     0084: $m_ambul_p11_x = $PARAMEDIC_CREATE_PATIENT_X // integer values and handles 
+     0084: $m_ambul_p11_y = $PARAMEDIC_CREATE_PATIENT_Y // integer values and handles 
+     0084: $m_ambul_p11_z = $PARAMEDIC_CREATE_PATIENT_Z // integer values and handles 
+     0084: $m_ambul_p11_mode = $m_ambulan_mode // integer values and handles 
+end
+if $m_ambul_index==11
+then 0084: $m_ambul_p12_state = 10@ // integer values and handles 
+     0084: $m_ambul_patient12 = 11@ // integer values and handles 
+     0084: $m_ambul_patient12_marker = 12@ // integer values and handles 
+     0084: $m_ambul_p12_x = $PARAMEDIC_CREATE_PATIENT_X // integer values and handles 
+     0084: $m_ambul_p12_y = $PARAMEDIC_CREATE_PATIENT_Y // integer values and handles 
+     0084: $m_ambul_p12_z = $PARAMEDIC_CREATE_PATIENT_Z // integer values and handles 
+     0084: $m_ambul_p12_mode = $m_ambulan_mode // integer values and handles 
+end
+return
+
+//--------------------------------------------
+// Change Patient (Unload last and load current)
+//--------------------------------------------
+:M_AMBULAN_CHANGE_PATIENT
+gosub @M_AMBULAN_DEC_PATIENT_INDEX
+gosub @M_AMBULAN_UNLOAD_PATIENT
+gosub @M_AMBULAN_INC_PATIENT_INDEX
+gosub @M_AMBULAN_LOAD_PATIENT
+return
+
+:M_AMBULAN_DEC_PATIENT_INDEX
+if $m_ambul_index==0
+then $m_ambul_index=11
+else Dec($m_ambul_index)
+end
+return
+
+:M_AMBULAN_INC_PATIENT_INDEX
+if $m_ambul_index==11
+then $m_ambul_index=0
+else Inc($m_ambul_index)
+end
+return
+
+//--------------------------------------------
+// Get Patient Coords
+//--------------------------------------------
+:M_AMBULAN_GET_PATIENT_COORDS
+wait 0 ms
+0054: store_player $PLAYER_CHAR position_to 1@ 2@ 3@
+if 03C6:   current_island == 1 
+then
+    0208: $PARAMEDIC_PATIENT_RANDOM_X = random_float 778.0 1540.0 
+    0208: $PARAMEDIC_PATIENT_RANDOM_Y = random_float -1110.0 0.0 
+    $PARAMEDIC_CHECKPOINT_X = 1141.5 // floating-point values 
+    $PARAMEDIC_CHECKPOINT_Y = -595.1875 // floating-point values 
+    $PARAMEDIC_CHECKPOINT_Z = 13.875 // floating-point values 
+{   $PARAMEDIC_INSIDE_HOSPITAL_X = 1149.125 // floating-point values 
+    $PARAMEDIC_INSIDE_HOSPITAL_Y = -597.3125 // floating-point values 
+    $PARAMEDIC_DISPLAYED_RADIO_OUT_OF_RANGE_MESSAGE = 0 // integer values 
+    $PARAMEDIC_CLOSE_ENOUGH_TO_HOSPITAL = 1 // integer values}
+    $PARAMEDIC_ISLAND_PATIENT_IS_ON = 1 // integer values 
+end
+if 03C6:   current_island == 2 
+then
+    0208: $PARAMEDIC_PATIENT_RANDOM_X = random_float -192.0 545.0 
+    0208: $PARAMEDIC_PATIENT_RANDOM_Y = random_float -1626.0 98.0 
+    $PARAMEDIC_CHECKPOINT_X = 178.5 // floating-point values 
+    $PARAMEDIC_CHECKPOINT_Y = -23.5625 // floating-point values 
+    $PARAMEDIC_CHECKPOINT_Z = 15.1875 // floating-point values 
+{    $PARAMEDIC_INSIDE_HOSPITAL_X = 182.75 // floating-point values 
+    $PARAMEDIC_INSIDE_HOSPITAL_Y = -15.75 // floating-point values 
+    $PARAMEDIC_DISPLAYED_RADIO_OUT_OF_RANGE_MESSAGE = 0 // integer values 
+    $PARAMEDIC_CLOSE_ENOUGH_TO_HOSPITAL = 1 // integer values} 
+    $PARAMEDIC_ISLAND_PATIENT_IS_ON = 2 // integer values 
+end
+if 03C6:   current_island == 3 
+then
+    0208: $PARAMEDIC_PATIENT_RANDOM_X = random_float -1300.0 -414.0 
+    0208: $PARAMEDIC_PATIENT_RANDOM_Y = random_float -608.75 380.0 
+    $PARAMEDIC_CHECKPOINT_X = -1255.5 // floating-point values 
+    $PARAMEDIC_CHECKPOINT_Y = -144.375 // floating-point values 
+    $PARAMEDIC_CHECKPOINT_Z = 57.75 // floating-point values 
+{    $PARAMEDIC_INSIDE_HOSPITAL_X = -1246.75 // floating-point values 
+    $PARAMEDIC_INSIDE_HOSPITAL_Y = -139.0625 // floating-point values 
+    $PARAMEDIC_DISPLAYED_RADIO_OUT_OF_RANGE_MESSAGE = 0 // integer values 
+    $PARAMEDIC_CLOSE_ENOUGH_TO_HOSPITAL = 1 // integer values} 
+    $PARAMEDIC_ISLAND_PATIENT_IS_ON = 3 // integer values 
+end
+02C0: set $PARAMEDIC_CREATE_PATIENT_X $PARAMEDIC_CREATE_PATIENT_Y $PARAMEDIC_CREATE_PATIENT_Z to_ped_path_coords_closest_to $PARAMEDIC_PATIENT_RANDOM_X $PARAMEDIC_PATIENT_RANDOM_Y 3@ 
+if and
+  $PARAMEDIC_CREATE_PATIENT_X > 1398.0 // floating-point values 
+  1615.0 > $PARAMEDIC_CREATE_PATIENT_X // floating-point values 
+  $PARAMEDIC_CREATE_PATIENT_Y > -965.0 // floating-point values 
+  -902.0 > $PARAMEDIC_CREATE_PATIENT_Y // floating-point values 
+then jump @M_AMBULAN_GET_PATIENT_COORDS
+end
+if and
+  $PARAMEDIC_CREATE_PATIENT_X > 879.0 // floating-point values 
+  892.0 > $PARAMEDIC_CREATE_PATIENT_X // floating-point values 
+  $PARAMEDIC_CREATE_PATIENT_Y > -427.0 // floating-point values 
+  -407.0 > $PARAMEDIC_CREATE_PATIENT_Y // floating-point values 
+then jump @M_AMBULAN_GET_PATIENT_COORDS
+end
+if and
+  $PARAMEDIC_CREATE_PATIENT_X > 944.75 // floating-point values 
+  1017.063 > $PARAMEDIC_CREATE_PATIENT_X // floating-point values 
+  $PARAMEDIC_CREATE_PATIENT_Y > -1148.75 // floating-point values 
+  -1076.563 > $PARAMEDIC_CREATE_PATIENT_Y // floating-point values 
+then jump @M_AMBULAN_GET_PATIENT_COORDS
+end
+if and
+  $PARAMEDIC_CREATE_PATIENT_X > 920.75 // floating-point values 
+  1004.0 > $PARAMEDIC_CREATE_PATIENT_X // floating-point values 
+  $PARAMEDIC_CREATE_PATIENT_Y > -754.1875 // floating-point values 
+  -670.0 > $PARAMEDIC_CREATE_PATIENT_Y // floating-point values 
+then jump @M_AMBULAN_GET_PATIENT_COORDS
+end
+if and
+  $PARAMEDIC_CREATE_PATIENT_X > 670.0 // floating-point values 
+  1035.0 > $PARAMEDIC_CREATE_PATIENT_X // floating-point values 
+  $PARAMEDIC_CREATE_PATIENT_Y > -953.0 // floating-point values 
+  -912.0 > $PARAMEDIC_CREATE_PATIENT_Y // floating-point values 
+then jump @M_AMBULAN_GET_PATIENT_COORDS
+end
+if and
+  $PARAMEDIC_CREATE_PATIENT_X > 1364.0 // floating-point values 
+  1641.0 > $PARAMEDIC_CREATE_PATIENT_X // floating-point values 
+  $PARAMEDIC_CREATE_PATIENT_Y > -1165.0 // floating-point values 
+  -617.0 > $PARAMEDIC_CREATE_PATIENT_Y // floating-point values 
+then jump @M_AMBULAN_GET_PATIENT_COORDS
+end
+if and
+  $PARAMEDIC_CREATE_PATIENT_X > 649.0 // floating-point values 
+  1066.0 > $PARAMEDIC_CREATE_PATIENT_X // floating-point values 
+  $PARAMEDIC_CREATE_PATIENT_Y > 25.0 // floating-point values 
+  217.0 > $PARAMEDIC_CREATE_PATIENT_Y // floating-point values 
+then jump @M_AMBULAN_GET_PATIENT_COORDS
+end
+if and
+  $PARAMEDIC_CREATE_PATIENT_X > -1611.5 // floating-point values 
+  -745.25 > $PARAMEDIC_CREATE_PATIENT_X // floating-point values 
+  $PARAMEDIC_CREATE_PATIENT_Y > -1001.875 // floating-point values 
+  -371.1875 > $PARAMEDIC_CREATE_PATIENT_Y // floating-point values 
+then jump @M_AMBULAN_GET_PATIENT_COORDS
+end
+if and
+  $PARAMEDIC_CREATE_PATIENT_X > 939.75 // floating-point values 
+  1035.563 > $PARAMEDIC_CREATE_PATIENT_X // floating-point values 
+  $PARAMEDIC_CREATE_PATIENT_Y > -901.25 // floating-point values 
+  -828.1875 > $PARAMEDIC_CREATE_PATIENT_Y // floating-point values 
+then jump @M_AMBULAN_GET_PATIENT_COORDS
+end
+if and
+  $PARAMEDIC_CREATE_PATIENT_X > 1215.25 // floating-point values 
+  1223.688 > $PARAMEDIC_CREATE_PATIENT_X // floating-point values 
+  $PARAMEDIC_CREATE_PATIENT_Y > -839.375 // floating-point values 
+  -763.5625 > $PARAMEDIC_CREATE_PATIENT_Y // floating-point values 
+then jump @M_AMBULAN_GET_PATIENT_COORDS
+end
+if and
+  $PARAMEDIC_CREATE_PATIENT_X > 845.25 // floating-point values 
+  899.5625 > $PARAMEDIC_CREATE_PATIENT_X // floating-point values 
+  $PARAMEDIC_CREATE_PATIENT_Y > -312.5625 // floating-point values 
+  -295.6875 > $PARAMEDIC_CREATE_PATIENT_Y // floating-point values 
+then jump @M_AMBULAN_GET_PATIENT_COORDS
+end
+if and
+  $PARAMEDIC_CREATE_PATIENT_X > 113.25 // floating-point values 
+  99.6875 > $PARAMEDIC_CREATE_PATIENT_X // floating-point values 
+  $PARAMEDIC_CREATE_PATIENT_Y > -1284.75 // floating-point values 
+  -1273.0 > $PARAMEDIC_CREATE_PATIENT_Y // floating-point values 
+then jump @M_AMBULAN_GET_PATIENT_COORDS
+end
+if and
+  $PARAMEDIC_CREATE_PATIENT_X > 18.3125 // floating-point values 
+  92.0 > $PARAMEDIC_CREATE_PATIENT_X // floating-point values 
+  $PARAMEDIC_CREATE_PATIENT_Y > -388.6875 // floating-point values 
+  -312.375 > $PARAMEDIC_CREATE_PATIENT_Y // floating-point values 
+then jump @M_AMBULAN_GET_PATIENT_COORDS
+end
+if and
+  $PARAMEDIC_CREATE_PATIENT_X > -1255.375 // floating-point values 
+  -1187.875 > $PARAMEDIC_CREATE_PATIENT_X // floating-point values 
+  $PARAMEDIC_CREATE_PATIENT_Y > 80.5625 // floating-point values 
+  123.375 > $PARAMEDIC_CREATE_PATIENT_Y // floating-point values 
+then jump @M_AMBULAN_GET_PATIENT_COORDS
+end
+if and
+  $PARAMEDIC_CREATE_PATIENT_X > 1386.375 // floating-point values 
+  1475.75 > $PARAMEDIC_CREATE_PATIENT_X // floating-point values 
+  $PARAMEDIC_CREATE_PATIENT_Y > -292.0625 // floating-point values 
+  -168.0 > $PARAMEDIC_CREATE_PATIENT_Y // floating-point values 
+then jump @M_AMBULAN_GET_PATIENT_COORDS
+end
+if and
+  $PARAMEDIC_CREATE_PATIENT_X > 766.6875 // floating-point values 
+  851.75 > $PARAMEDIC_CREATE_PATIENT_X // floating-point values 
+  $PARAMEDIC_CREATE_PATIENT_Y > -604.0625 // floating-point values 
+  -558.1875 > $PARAMEDIC_CREATE_PATIENT_Y // floating-point values 
+then jump @M_AMBULAN_GET_PATIENT_COORDS
+end
+if $PARAMEDIC_ISLAND_PATIENT_IS_ON == 1 // integer values 
+then
+    if or
+       not $PARAMEDIC_CREATE_PATIENT_X > 778.0 // floating-point values 
+       not 1540.0 > $PARAMEDIC_CREATE_PATIENT_X // floating-point values 
+       not $PARAMEDIC_CREATE_PATIENT_Y > -1110.0 // floating-point values 
+       not 190.0 > $PARAMEDIC_CREATE_PATIENT_Y // floating-point values 
+    then jump @M_AMBULAN_GET_PATIENT_COORDS
+    end
+end
+if $PARAMEDIC_ISLAND_PATIENT_IS_ON == 2 // integer values 
+then
+    if or
+       not $PARAMEDIC_CREATE_PATIENT_X > -192.0 // floating-point values 
+       not 545.0 > $PARAMEDIC_CREATE_PATIENT_X // floating-point values 
+       not $PARAMEDIC_CREATE_PATIENT_Y > -1626.0 // floating-point values 
+       not 98.0 > $PARAMEDIC_CREATE_PATIENT_Y // floating-point values 
+    then jump @M_AMBULAN_GET_PATIENT_COORDS
+    end
+end
+if $PARAMEDIC_ISLAND_PATIENT_IS_ON == 3 // integer values 
+then
+    if or
+       not $PARAMEDIC_CREATE_PATIENT_X > -1300.0 // floating-point values 
+       not -414.0 > $PARAMEDIC_CREATE_PATIENT_X // floating-point values 
+       not $PARAMEDIC_CREATE_PATIENT_Y > -608.75 // floating-point values 
+       not 380.0 > $PARAMEDIC_CREATE_PATIENT_Y // floating-point values 
+    then jump @M_AMBULAN_GET_PATIENT_COORDS
+    end
+end
+if -1.0 > $PARAMEDIC_CREATE_PATIENT_Z // floating-point values 
+then jump @M_AMBULAN_GET_PATIENT_COORDS
+end
+// Distancia entre ped y player
+0061: 1@ -= $PARAMEDIC_CREATE_PATIENT_X // floating-point values 
+0086: 2@ = 2@ // floating-point values only 
+0061: 2@ -= $PARAMEDIC_CREATE_PATIENT_Y // floating-point values 
+0069: 1@ *= 1@ // floating-point values 
+0069: 2@ *= 2@ // floating-point values 
+0059: 1@ += 2@ // floating-point values 
+01FB: 1@ = square_root 1@ 
+if 120.0 > 1@ // floating-point values 
+then jump @M_AMBULAN_GET_PATIENT_COORDS
+end
+// Distancia entre ped y hospital
+0086: 1@ = $PARAMEDIC_CHECKPOINT_X // floating-point values only 
+0061: 1@ -= $PARAMEDIC_CREATE_PATIENT_X // floating-point values 
+0086: 2@ = $PARAMEDIC_CHECKPOINT_Y // floating-point values only 
+0061: 2@ -= $PARAMEDIC_CREATE_PATIENT_Y // floating-point values 
+0069: 1@ *= 1@ // floating-point values 
+0069: 2@ *= 2@ // floating-point values 
+0059: 1@ += 2@ // floating-point values 
+01FB: $m_ambul_dist = square_root 1@ 
+if 100.0 > $m_ambul_dist // floating-point values 
+then jump @M_AMBULAN_GET_PATIENT_COORDS
+end
+return
+
+//--------------------------------------------
+// Create Patient
+// In: $m_ambul_model
+//--------------------------------------------
+:M_AMBULAN_CREATE_PATIENT
+//0376: 11@ = create_random_actor $PARAMEDIC_CREATE_PATIENT_X $PARAMEDIC_CREATE_PATIENT_Y $PARAMEDIC_CREATE_PATIENT_Z
+gosub @M_AMBULAN_LOAD_RANDOM_SPECIAL_ACTOR
+//0247: request_model #FEMALE03
+repeat
+wait 0 ms
+until 0248:   model $m_ambul_model available
+009A: 11@ = create_actor 21 $m_ambul_model at $PARAMEDIC_CREATE_PATIENT_X $PARAMEDIC_CREATE_PATIENT_Y $PARAMEDIC_CREATE_PATIENT_Z
+//0296: unload_special_actor 1 
+0249: release_model $m_ambul_model 
+return
+
+:M_AMBULAN_LOAD_RANDOM_SPECIAL_ACTOR
+$m_ambul_model=#SPECIAL01
+if $m_ambul_2hu==0
+then
+    if $TOUHOU == C_REMI
+    then 023C: load_special_actor 1 'FLAN'
+    else 023C: load_special_actor 1 'REMILIA'
+    end
+end
+if $m_ambul_2hu==1
+then 023C: load_special_actor 1 'NITORI'
+end
+if $m_ambul_2hu==2
+then 023C: load_special_actor 1 'HINA'
+end
+if $m_ambul_2hu==3
+then 023C: load_special_actor 1 'KAGUYA'
+end
+if $m_ambul_2hu==4
+then 023C: load_special_actor 1 'PACHE'
+end
+if $m_ambul_2hu==5
+then 023C: load_special_actor 1 'YOSHIKA'
+end
+if $m_ambul_2hu==6
+then 023C: load_special_actor 1 'FUTO'
+end
+if $m_ambul_2hu==7
+then 023C: load_special_actor 1 'RINNO'
+end
+if $m_ambul_2hu==8
+then 023C: load_special_actor 1 'LILY'
+end
+if $m_ambul_2hu==9
+then 023C: load_special_actor 1 'CIRNO'
+end
+if $m_ambul_2hu==10
+then 023C: load_special_actor 1 'RUMIA'
+end
+
+// Unlockable characters for paramedic mission
+if $m_ambul_2hu==11
+then 023C: load_special_actor 1 'YUYUKO'
+end
+if $m_ambul_2hu==12
+then 023C: load_special_actor 1 'KOGASA'
+end
+if $m_ambul_2hu==13
+then 023C: load_special_actor 1 'KOMACHI'
+end
+if $m_ambul_2hu==14
+then 023C: load_special_actor 1 'YUKARI'
+end
+if $m_ambul_2hu==15
+then 023C: load_special_actor 1 'BYAKU'
+end
+if $m_ambul_2hu==16
+then 023C: load_special_actor 1 'SHIKI'
+end
+return
+
+//--------------------------------------------
+// Car Damage
+//--------------------------------------------
+:M_AMBULAN_CAR_DAMAGE
+00A0: store_actor 11@ position_to 1@ 2@ 3@
+0227: 7@ = car 0@ health
+if 001C:   8@ > 7@ // integer values
+then
+    0084: 9@ = 8@ // integer values and handles 
+    0060: 9@ -= 7@ // integer values 
+    9@ *= 1 // integer values 
+    0060: $m_dummy -= 9@ // integer values 
+    0209: 4@ = random_int 0 2 
+    if 15@ == 0 // integer values 
+    then
+        if 4@ == 0 // integer values 
+        then 018C: play_sound 78 at 1@ 2@ 3@
+        else 018C: play_sound 79 at 1@ 2@ 3@
+        end
+    else
+        if 4@ == 0 // integer values 
+        then 018C: play_sound 80 at 1@ 2@ 3@
+        else 018C: play_sound 81 at 1@ 2@ 3@
+        end
+    end
+end
+0227: 8@ = car 0@ health
+return
+
+//--------------------------------------------
+// Experience
+//--------------------------------------------
+:M_AMBULAN_EXPERIENCE
+0008: $l_exp += 1 // integer values 
+create_thread @DRAW_STATS ID_LABORAL_EXP
+//0209: 4@ = random_int 1 3 
+//0058: $m_ambulan_exp += 4@ // integer values 
+return
+
+//--------------------------------------------
+// Money
+//--------------------------------------------
+:M_AMBULAN_MONEY
+// Ganancias
+0084: 4@ = $m_dummy // integer values and handles           // bono por salud
+0010: 4@ *= 32 // integer values 
+0014: 4@ /= 100 // integer values 
+0058: $m_ambul_profit += 4@ // integer values
+008C: 4@ = float_to_integer $m_ambul_dist                   // bono por distancia
+0010: 4@ *= 45 // integer values 
+0014: 4@ /= 100 // integer values 
+0058: $m_ambul_profit += 4@ // integer values
+return
+
+//--------------------------------------------
+// Get level
+//--------------------------------------------
+:M_AMBULAN_GET_LEVEL
+if $m_ambulan_exp<=12   
+then $m_ambul_level=1 // Cantidad de pacientes (va del 1 al 12)
+end
+if and
+$m_ambulan_exp>12
+$m_ambulan_exp<=60   
+then 0209: $m_ambul_level = random_int 1 3 // max: 2
+end
+if and
+$m_ambulan_exp>60
+$m_ambulan_exp<=102   
+then 0209: $m_ambul_level = random_int 1 4 // max: 3
+end
+if and
+$m_ambulan_exp>102
+$m_ambulan_exp<=176   
+then 0209: $m_ambul_level = random_int 1 5 // max: 4
+end
+if and
+$m_ambulan_exp>176
+$m_ambulan_exp<=243   
+then 0209: $m_ambul_level = random_int 2 6 // max: 5
+end
+if and
+$m_ambulan_exp>243
+$m_ambulan_exp<=321   
+then 0209: $m_ambul_level = random_int 2 7 // max: 6
+end
+if and
+$m_ambulan_exp>321
+$m_ambulan_exp<=457   
+then 0209: $m_ambul_level = random_int 2 8 // max: 7
+end
+if and
+$m_ambulan_exp>457
+$m_ambulan_exp<=580   
+then 0209: $m_ambul_level = random_int 2 9 // max: 8
+end
+if and
+$m_ambulan_exp>580
+$m_ambulan_exp<=700   
+then 0209: $m_ambul_level = random_int 3 10 // max: 9
+end
+if and
+$m_ambulan_exp>700
+$m_ambulan_exp<=810   
+then 0209: $m_ambul_level = random_int 3 11 // max: 10
+end
+if and
+$m_ambulan_exp>810
+$m_ambulan_exp<=923   
+then 0209: $m_ambul_level = random_int 3 12 // max: 11
+end
+if $m_ambulan_exp>923
+then 0209: $m_ambul_level = random_int 4 13 // max: 12
+end
+return
+

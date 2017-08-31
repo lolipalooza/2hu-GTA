@@ -1,0 +1,890 @@
+{==================================================
+Level 4 - Account Record (histórico de operaciones)
+==================================================}
+//-----------------------------------------
+// MAIN
+//-----------------------------------------
+:BANK_ACCOUNT_RECORD
+11@=0
+12@=0
+gosub @SHOW_ACCOUNT_RECORD
+{
+0@: dummy
+11@: state variable
+12@: record shown
+$bank_count_x_record_x_flag
+$bank_count_x_record_x_amount
+$bank_count_x_record_x_reason
+$bank_count_x_record_x_ms
+}
+
+:AC_RECORD_LOOP
+wait 0 ms
+gosub @GET_INTEREST
+
+if 11@ == 0
+then 11@=1
+     03E5: text_box 'T_BNK21' // ~h~< / >:~w~ Explorar ~h~~k~~VEHICLE_ENTER_EXIT~~w~ Salir.
+end
+
+// Esperar a que jugador presione un boton
+if 11@ == 1
+then
+    if 00E1:   pad 0 key_pressed K_LEFT
+    then 11@=10
+    end
+    if 00E1:   pad 0 key_pressed K_RIGHT
+    then 11@=20
+    end
+    if 00E1:   pad 0 key_pressed K_ENTER
+    then 11@=30
+    end
+end
+
+// Jugador presionó LEFT
+if 11@ == 10
+then
+    if 80E1:   not pad 0 key_pressed K_LEFT
+    then gosub @DEC_ACCOUNT_RECORD
+        11@=1
+    end
+end
+
+// Jugador presionó RIGHT
+if 11@ == 20
+then
+    if 80E1:   not pad 0 key_pressed K_RIGHT
+    then gosub @INC_ACCOUNT_RECORD
+        11@=1
+    end
+end
+
+// Jugador presionó ENTER('CANCELAR')
+if 11@ == 30
+then
+    if 80E1:   not pad 0 key_pressed K_ENTER
+    then
+        12@=3 // mostrar 'histórico de operaciones'
+        gosub @CLEAR_RECORD_TEXT
+        gosub @SHOW_ACCOUNT_OPTIONS
+        return
+    end
+end
+jump @AC_RECORD_LOOP
+return
+
+//-----------------------------------------
+// Clear record text
+//-----------------------------------------
+:CLEAR_RECORD_TEXT
+03D5: remove_text 'T_BRCD1' 
+03D5: remove_text 'T_BRCD2' 
+03D5: remove_text 'T_BRCD3' 
+03D5: remove_text 'T_BRCD4' 
+03D5: remove_text 'T_BRCD5' 
+03D5: remove_text 'T_BRCD6' 
+03D5: remove_text 'T_BRCD7' 
+03D5: remove_text 'T_BRCD8' 
+03D5: remove_text 'T_BNK35' 
+03D5: remove_text 'T_BRCD8' 
+03D5: remove_text 'T_BRCD8' 
+03D5: remove_text 'T_BRCD8' 
+return
+
+//-----------------------------------------
+// DEC/INC ACCOUNT RECORD
+//-----------------------------------------
+:DEC_ACCOUNT_RECORD
+$dummy=-1
+jump @ACCOUNT_RECORD
+
+:INC_ACCOUNT_RECORD
+$dummy=1
+jump @ACCOUNT_RECORD
+
+:ACCOUNT_RECORD
+wait 0 ms
+if and
+ not $dummy==1
+ not $dummy==-1
+then $dummy=1
+end
+0058: 12@ += $dummy // integer values 
+
+:SHOW_ACCOUNT_RECORD
+if 0>12@
+then 12@=9
+end
+if 12@>9
+then 12@=0
+end
+
+gosub @CHECK_BLANK_RECORD // WARNING: this modifies 0@!!!!
+if 0@==1
+then return
+end
+
+0084: $record_index = 12@ // integer values and handles 
+gosub @READ_ACCOUNT_RECORD // requires: $record_index, output: $amount, $reason, $r_flag & $msecs, to be read in @SHOW_RECORD
+if $r_flag == 0
+then jump @ACCOUNT_RECORD
+end
+
+00BE: text_clear_all
+03E5: text_box 'T_BNK21' // ~h~< / >:~w~ Explorar ~h~~k~~VEHICLE_ENTER_EXIT~~w~ Salir.
+00BA: text_styled 'T_BNK11' 8000 ms 4 // Historico de operaciones
+gosub @SHOW_REASON // receives $reason, originated in @READ_ACCOUNT_RECORD
+gosub @SHOW_RECORD // receives $amount & $msecs, originated in @READ_ACCOUNT_RECORD
+return
+
+//-----------------------------------------
+// Show reason
+//-----------------------------------------
+:SHOW_REASON
+if $reason==0
+then 00BA: text_styled 'T_BNK23' 4000 ms 6 // Razon: regalo por apertura de cuenta
+end
+if $reason==1
+then 00BA: text_styled 'T_BNK24' 4000 ms 6 // Razon: interes (1%)
+end
+if $reason==2
+then 00BA: text_styled 'T_BNK25' 4000 ms 6 // Razon: retiro de dinero
+end
+if $reason==3
+then 00BA: text_styled 'T_BNK26' 4000 ms 6 // Razon: deposito de dinero
+end
+if $reason==4
+then 00BA: text_styled 'T_BNK27' 4000 ms 6 // Razon: alguien te deposito a tu cuenta
+end
+return
+
+//-----------------------------------------
+// Show operation
+//-----------------------------------------
+:SHOW_RECORD
+0084: 0@ = $amount // integer values and handles   // amount
+
+// convirtiendo ms transcurridos desde new game (15@) a dias transcurridos desde new game (1@)
+0084: 1@ = $msecs // integer values and handles   // days
+0014: 1@ /= 1440000 // integer values          // 1440000 ms/day = 24 min/day * 60 secs/min * 1000 ms/sec
+
+// convirtiendo ms transcurridos desde new game (15@) a dias transcurridos desde new game (1@)
+0084: 2@ = $msecs // integer values and handles
+0084: 9@ = 1@ // integer values and handles    // days
+0010: 9@ *= 1440000 // integer values          // 24*60000
+0060: 2@ -= 9@ // integer values
+0014: 2@ /= 60000 // integer values            // hours (in-game) = (ms - days*24*60000)/60000 
+
+// convirtiendo ms transcurridos desde new game (15@) a dias transcurridos desde new game (1@)
+0084: 3@ = $msecs // integer values and handles
+0084: 9@ = 1@ // integer values and handles    // days
+0010: 9@ *= 1440000 // integer values
+0060: 3@ -= 9@ // integer values
+0084: 9@ = 2@ // integer values and handles    // hours
+0010: 9@ *= 60000 // integer values
+0060: 3@ -= 9@ // integer values
+0014: 3@ /= 1000 // integer values             // minutes (in-game) = (ms - days*24*60000 - hours*60000)/1000 
+
+if and
+  not 0@>0
+  not 2@>9
+  not 3@>9
+then 0302: text_4numbers 'T_BRCD1' 0@ 1@ 2@ 3@ 5000 ms 5 // Operacion: ~r~-$~1~~h~ - Dia: ~g~~1~~h~, Hora: ~g~~0~1~:0~1~~h~.   //000
+end
+if and
+  not 0@>0
+  not 2@>9
+      3@>9
+then 0302: text_4numbers 'T_BRCD2' 0@ 1@ 2@ 3@ 5000 ms 5 // Operacion: ~r~-$~1~~h~ - Dia: ~g~~1~~h~, Hora: ~g~~0~1~:~1~~h~.   //001
+end
+if and
+  not 0@>0
+      2@>9
+  not 3@>9
+then 0302: text_4numbers 'T_BRCD3' 0@ 1@ 2@ 3@ 5000 ms 5 // Operacion: ~r~-$~1~~h~ - Dia: ~g~~1~~h~, Hora: ~g~~~1~:0~1~~h~.   //010
+end
+if and
+  not 0@>0
+      2@>9
+      3@>9
+then 0302: text_4numbers 'T_BRCD4' 0@ 1@ 2@ 3@ 5000 ms 5 // Operacion: ~r~-$~1~~h~ - Dia: ~g~~1~~h~, Hora: ~g~~~1~:~1~~h~.   //011
+end
+if and
+      0@>0
+  not 2@>9
+  not 3@>9
+then 0302: text_4numbers 'T_BRCD5' 0@ 1@ 2@ 3@ 5000 ms 5 // Operacion: ~b~+$~1~~h~ - Dia: ~g~~1~~h~, Hora: ~g~~0~1~:0~1~~h~.   //100
+end
+if and
+      0@>0
+  not 2@>9
+      3@>9
+then 0302: text_4numbers 'T_BRCD6' 0@ 1@ 2@ 3@ 5000 ms 5 // Operacion: ~b~+$~1~~h~ - Dia: ~g~~1~~h~, Hora: ~g~~0~1~:~1~~h~.   //101
+end
+if and
+      0@>0
+      2@>9
+  not 3@>9
+then 0302: text_4numbers 'T_BRCD7' 0@ 1@ 2@ 3@ 5000 ms 5 // Operacion: ~b~+$~1~~h~ - Dia: ~g~~1~~h~, Hora: ~g~~~1~:0~1~~h~.   //110
+end
+if and
+      0@>0
+      2@>9
+      3@>9
+then 0302: text_4numbers 'T_BRCD8' 0@ 1@ 2@ 3@ 5000 ms 5 // Operacion: ~b~+$~1~~h~ - Dia: ~g~~1~~h~, Hora: ~g~~~1~:~1~~h~.   //111
+end
+return
+
+//-----------------------------------------
+// Read account record - Entradas: 6@: indice para la cuenta x, 12@: indice para el histórico x de dicha cuenta
+//                     - Salidas: 13@:razon, 14@:monto, 15@:ms, 8@:flag
+//-----------------------------------------
+:READ_ACCOUNT_RECORD
+if $bc_pointer==0
+then
+    if $record_index==0
+    then 0084: $reason = $bank_count_1_record_0_reason // integer values and handles 
+         0084: $amount = $bank_count_1_record_0_amount // integer values and handles 
+         0084: $msecs = $bank_count_1_record_0_ms // integer values and handles 
+         0084: $r_flag = $bank_count_1_record_0_flag // integer values and handles 
+    end
+    if $record_index==1
+    then 0084: $reason = $bank_count_1_record_1_reason // integer values and handles 
+         0084: $amount = $bank_count_1_record_1_amount // integer values and handles 
+         0084: $msecs = $bank_count_1_record_1_ms // integer values and handles 
+         0084: $r_flag = $bank_count_1_record_1_flag // integer values and handles 
+    end
+    if $record_index==2
+    then 0084: $reason = $bank_count_1_record_2_reason // integer values and handles 
+         0084: $amount = $bank_count_1_record_2_amount // integer values and handles 
+         0084: $msecs = $bank_count_1_record_2_ms // integer values and handles 
+         0084: $r_flag = $bank_count_1_record_2_flag // integer values and handles 
+    end
+    if $record_index==3
+    then 0084: $reason = $bank_count_1_record_3_reason // integer values and handles 
+         0084: $amount = $bank_count_1_record_3_amount // integer values and handles 
+         0084: $msecs = $bank_count_1_record_3_ms // integer values and handles 
+         0084: $r_flag = $bank_count_1_record_3_flag // integer values and handles 
+    end
+    if $record_index==4
+    then 0084: $reason = $bank_count_1_record_4_reason // integer values and handles 
+         0084: $amount = $bank_count_1_record_4_amount // integer values and handles 
+         0084: $msecs = $bank_count_1_record_4_ms // integer values and handles 
+         0084: $r_flag = $bank_count_1_record_4_flag // integer values and handles 
+    end
+    if $record_index==5
+    then 0084: $reason = $bank_count_1_record_5_reason // integer values and handles 
+         0084: $amount = $bank_count_1_record_5_amount // integer values and handles 
+         0084: $msecs = $bank_count_1_record_5_ms // integer values and handles 
+         0084: $r_flag = $bank_count_1_record_5_flag // integer values and handles 
+    end
+    if $record_index==6
+    then 0084: $reason = $bank_count_1_record_6_reason // integer values and handles 
+         0084: $amount = $bank_count_1_record_6_amount // integer values and handles 
+         0084: $msecs = $bank_count_1_record_6_ms // integer values and handles 
+         0084: $r_flag = $bank_count_1_record_6_flag // integer values and handles 
+    end
+    if $record_index==7
+    then 0084: $reason = $bank_count_1_record_7_reason // integer values and handles 
+         0084: $amount = $bank_count_1_record_7_amount // integer values and handles 
+         0084: $msecs = $bank_count_1_record_7_ms // integer values and handles 
+         0084: $r_flag = $bank_count_1_record_7_flag // integer values and handles 
+    end
+    if $record_index==8
+    then 0084: $reason = $bank_count_1_record_8_reason // integer values and handles 
+         0084: $amount = $bank_count_1_record_8_amount // integer values and handles 
+         0084: $msecs = $bank_count_1_record_8_ms // integer values and handles 
+         0084: $r_flag = $bank_count_1_record_8_flag // integer values and handles 
+    end
+    if $record_index==9
+    then 0084: $reason = $bank_count_1_record_9_reason // integer values and handles 
+         0084: $amount = $bank_count_1_record_9_amount // integer values and handles 
+         0084: $msecs = $bank_count_1_record_9_ms // integer values and handles 
+         0084: $r_flag = $bank_count_1_record_9_flag // integer values and handles 
+    end
+end
+if $bc_pointer==1
+then
+    if $record_index==0
+    then 0084: $reason = $bank_count_2_record_0_reason // integer values and handles 
+         0084: $amount = $bank_count_2_record_0_amount // integer values and handles 
+         0084: $msecs = $bank_count_2_record_0_ms // integer values and handles 
+         0084: $r_flag = $bank_count_2_record_0_flag // integer values and handles 
+    end
+    if $record_index==1
+    then 0084: $reason = $bank_count_2_record_1_reason // integer values and handles 
+         0084: $amount = $bank_count_2_record_1_amount // integer values and handles 
+         0084: $msecs = $bank_count_2_record_1_ms // integer values and handles 
+         0084: $r_flag = $bank_count_2_record_1_flag // integer values and handles 
+    end
+    if $record_index==2
+    then 0084: $reason = $bank_count_2_record_2_reason // integer values and handles 
+         0084: $amount = $bank_count_2_record_2_amount // integer values and handles 
+         0084: $msecs = $bank_count_2_record_2_ms // integer values and handles 
+         0084: $r_flag = $bank_count_2_record_2_flag // integer values and handles 
+    end
+    if $record_index==3
+    then 0084: $reason = $bank_count_2_record_3_reason // integer values and handles 
+         0084: $amount = $bank_count_2_record_3_amount // integer values and handles 
+         0084: $msecs = $bank_count_2_record_3_ms // integer values and handles 
+         0084: $r_flag = $bank_count_2_record_3_flag // integer values and handles 
+    end
+    if $record_index==4
+    then 0084: $reason = $bank_count_2_record_4_reason // integer values and handles 
+         0084: $amount = $bank_count_2_record_4_amount // integer values and handles 
+         0084: $msecs = $bank_count_2_record_4_ms // integer values and handles 
+         0084: $r_flag = $bank_count_2_record_4_flag // integer values and handles 
+    end
+    if $record_index==5
+    then 0084: $reason = $bank_count_2_record_5_reason // integer values and handles 
+         0084: $amount = $bank_count_2_record_5_amount // integer values and handles 
+         0084: $msecs = $bank_count_2_record_5_ms // integer values and handles 
+         0084: $r_flag = $bank_count_2_record_5_flag // integer values and handles 
+    end
+    if $record_index==6
+    then 0084: $reason = $bank_count_2_record_6_reason // integer values and handles 
+         0084: $amount = $bank_count_2_record_6_amount // integer values and handles 
+         0084: $msecs = $bank_count_2_record_6_ms // integer values and handles 
+         0084: $r_flag = $bank_count_2_record_6_flag // integer values and handles 
+    end
+    if $record_index==7
+    then 0084: $reason = $bank_count_2_record_7_reason // integer values and handles 
+         0084: $amount = $bank_count_2_record_7_amount // integer values and handles 
+         0084: $msecs = $bank_count_2_record_7_ms // integer values and handles 
+         0084: $r_flag = $bank_count_2_record_7_flag // integer values and handles 
+    end
+    if $record_index==8
+    then 0084: $reason = $bank_count_2_record_8_reason // integer values and handles 
+         0084: $amount = $bank_count_2_record_8_amount // integer values and handles 
+         0084: $msecs = $bank_count_2_record_8_ms // integer values and handles 
+         0084: $r_flag = $bank_count_2_record_8_flag // integer values and handles 
+    end
+    if $record_index==9
+    then 0084: $reason = $bank_count_2_record_9_reason // integer values and handles 
+         0084: $amount = $bank_count_2_record_9_amount // integer values and handles 
+         0084: $msecs = $bank_count_2_record_9_ms // integer values and handles 
+         0084: $r_flag = $bank_count_2_record_9_flag // integer values and handles 
+    end
+end
+if $bc_pointer==2
+then
+    if $record_index==0
+    then 0084: $reason = $bank_count_3_record_0_reason // integer values and handles 
+         0084: $amount = $bank_count_3_record_0_amount // integer values and handles 
+         0084: $msecs = $bank_count_3_record_0_ms // integer values and handles 
+         0084: $r_flag = $bank_count_3_record_0_flag // integer values and handles 
+    end
+    if $record_index==1
+    then 0084: $reason = $bank_count_3_record_1_reason // integer values and handles 
+         0084: $amount = $bank_count_3_record_1_amount // integer values and handles 
+         0084: $msecs = $bank_count_3_record_1_ms // integer values and handles 
+         0084: $r_flag = $bank_count_3_record_1_flag // integer values and handles 
+    end
+    if $record_index==2
+    then 0084: $reason = $bank_count_3_record_2_reason // integer values and handles 
+         0084: $amount = $bank_count_3_record_2_amount // integer values and handles 
+         0084: $msecs = $bank_count_3_record_2_ms // integer values and handles 
+         0084: $r_flag = $bank_count_3_record_2_flag // integer values and handles 
+    end
+    if $record_index==3
+    then 0084: $reason = $bank_count_3_record_3_reason // integer values and handles 
+         0084: $amount = $bank_count_3_record_3_amount // integer values and handles 
+         0084: $msecs = $bank_count_3_record_3_ms // integer values and handles 
+         0084: $r_flag = $bank_count_3_record_3_flag // integer values and handles 
+    end
+    if $record_index==4
+    then 0084: $reason = $bank_count_3_record_4_reason // integer values and handles 
+         0084: $amount = $bank_count_3_record_4_amount // integer values and handles 
+         0084: $msecs = $bank_count_3_record_4_ms // integer values and handles 
+         0084: $r_flag = $bank_count_3_record_4_flag // integer values and handles 
+    end
+    if $record_index==5
+    then 0084: $reason = $bank_count_3_record_5_reason // integer values and handles 
+         0084: $amount = $bank_count_3_record_5_amount // integer values and handles 
+         0084: $msecs = $bank_count_3_record_5_ms // integer values and handles 
+         0084: $r_flag = $bank_count_3_record_5_flag // integer values and handles 
+    end
+    if $record_index==6
+    then 0084: $reason = $bank_count_3_record_6_reason // integer values and handles 
+         0084: $amount = $bank_count_3_record_6_amount // integer values and handles 
+         0084: $msecs = $bank_count_3_record_6_ms // integer values and handles 
+         0084: $r_flag = $bank_count_3_record_6_flag // integer values and handles 
+    end
+    if $record_index==7
+    then 0084: $reason = $bank_count_3_record_7_reason // integer values and handles 
+         0084: $amount = $bank_count_3_record_7_amount // integer values and handles 
+         0084: $msecs = $bank_count_3_record_7_ms // integer values and handles 
+         0084: $r_flag = $bank_count_3_record_7_flag // integer values and handles 
+    end
+    if $record_index==8
+    then 0084: $reason = $bank_count_3_record_8_reason // integer values and handles 
+         0084: $amount = $bank_count_3_record_8_amount // integer values and handles 
+         0084: $msecs = $bank_count_3_record_8_ms // integer values and handles 
+         0084: $r_flag = $bank_count_3_record_8_flag // integer values and handles 
+    end
+    if $record_index==9
+    then 0084: $reason = $bank_count_3_record_9_reason // integer values and handles 
+         0084: $amount = $bank_count_3_record_9_amount // integer values and handles 
+         0084: $msecs = $bank_count_3_record_9_ms // integer values and handles 
+         0084: $r_flag = $bank_count_3_record_9_flag // integer values and handles 
+    end
+end
+if $bc_pointer==3
+then
+    if $record_index==0
+    then 0084: $reason = $bank_count_4_record_0_reason // integer values and handles 
+         0084: $amount = $bank_count_4_record_0_amount // integer values and handles 
+         0084: $msecs = $bank_count_4_record_0_ms // integer values and handles 
+         0084: $r_flag = $bank_count_4_record_0_flag // integer values and handles 
+    end
+    if $record_index==1
+    then 0084: $reason = $bank_count_4_record_1_reason // integer values and handles 
+         0084: $amount = $bank_count_4_record_1_amount // integer values and handles 
+         0084: $msecs = $bank_count_4_record_1_ms // integer values and handles 
+         0084: $r_flag = $bank_count_4_record_1_flag // integer values and handles 
+    end
+    if $record_index==2
+    then 0084: $reason = $bank_count_4_record_2_reason // integer values and handles 
+         0084: $amount = $bank_count_4_record_2_amount // integer values and handles 
+         0084: $msecs = $bank_count_4_record_2_ms // integer values and handles 
+         0084: $r_flag = $bank_count_4_record_2_flag // integer values and handles 
+    end
+    if $record_index==3
+    then 0084: $reason = $bank_count_4_record_3_reason // integer values and handles 
+         0084: $amount = $bank_count_4_record_3_amount // integer values and handles 
+         0084: $msecs = $bank_count_4_record_3_ms // integer values and handles 
+         0084: $r_flag = $bank_count_4_record_3_flag // integer values and handles 
+    end
+    if $record_index==4
+    then 0084: $reason = $bank_count_4_record_4_reason // integer values and handles 
+         0084: $amount = $bank_count_4_record_4_amount // integer values and handles 
+         0084: $msecs = $bank_count_4_record_4_ms // integer values and handles 
+         0084: $r_flag = $bank_count_4_record_4_flag // integer values and handles 
+    end
+    if $record_index==5
+    then 0084: $reason = $bank_count_4_record_5_reason // integer values and handles 
+         0084: $amount = $bank_count_4_record_5_amount // integer values and handles 
+         0084: $msecs = $bank_count_4_record_5_ms // integer values and handles 
+         0084: $r_flag = $bank_count_4_record_5_flag // integer values and handles 
+    end
+    if $record_index==6
+    then 0084: $reason = $bank_count_4_record_6_reason // integer values and handles 
+         0084: $amount = $bank_count_4_record_6_amount // integer values and handles 
+         0084: $msecs = $bank_count_4_record_6_ms // integer values and handles 
+         0084: $r_flag = $bank_count_4_record_6_flag // integer values and handles 
+    end
+    if $record_index==7
+    then 0084: $reason = $bank_count_4_record_7_reason // integer values and handles 
+         0084: $amount = $bank_count_4_record_7_amount // integer values and handles 
+         0084: $msecs = $bank_count_4_record_7_ms // integer values and handles 
+         0084: $r_flag = $bank_count_4_record_7_flag // integer values and handles 
+    end
+    if $record_index==8
+    then 0084: $reason = $bank_count_4_record_8_reason // integer values and handles 
+         0084: $amount = $bank_count_4_record_8_amount // integer values and handles 
+         0084: $msecs = $bank_count_4_record_8_ms // integer values and handles 
+         0084: $r_flag = $bank_count_4_record_8_flag // integer values and handles 
+    end
+    if $record_index==9
+    then 0084: $reason = $bank_count_4_record_9_reason // integer values and handles 
+         0084: $amount = $bank_count_4_record_9_amount // integer values and handles 
+         0084: $msecs = $bank_count_4_record_9_ms // integer values and handles 
+         0084: $r_flag = $bank_count_4_record_9_flag // integer values and handles 
+    end
+end
+return
+
+//-----------------------------------------
+// Read account record  - Entradas: 6@: indice para la cuenta x, 12@: indice para el histórico x de dicha cuenta
+//                                  13@:razon, 14@:monto, 15@:ms, 8@:flag
+//-----------------------------------------
+:STORE_ACCOUNT_RECORD
+if $bc_pointer==0
+then
+    if $record_index==0
+    then 0084: $bank_count_1_record_0_reason = $reason // integer values and handles 
+         0084: $bank_count_1_record_0_amount = $amount // integer values and handles 
+         0084: $bank_count_1_record_0_ms = $msecs // integer values and handles 
+         0084: $bank_count_1_record_0_flag = $r_flag // integer values and handles 
+    end
+    if $record_index==1
+    then 0084: $bank_count_1_record_1_reason = $reason // integer values and handles 
+         0084: $bank_count_1_record_1_amount = $amount // integer values and handles 
+         0084: $bank_count_1_record_1_ms = $msecs // integer values and handles 
+         0084: $bank_count_1_record_1_flag = $r_flag // integer values and handles 
+    end
+    if $record_index==2
+    then 0084: $bank_count_1_record_2_reason = $reason // integer values and handles 
+         0084: $bank_count_1_record_2_amount = $amount // integer values and handles 
+         0084: $bank_count_1_record_2_ms = $msecs // integer values and handles 
+         0084: $bank_count_1_record_2_flag = $r_flag // integer values and handles 
+    end
+    if $record_index==3
+    then 0084: $bank_count_1_record_3_reason = $reason // integer values and handles 
+         0084: $bank_count_1_record_3_amount = $amount // integer values and handles 
+         0084: $bank_count_1_record_3_ms = $msecs // integer values and handles 
+         0084: $bank_count_1_record_3_flag = $r_flag // integer values and handles 
+    end
+    if $record_index==4
+    then 0084: $bank_count_1_record_4_reason = $reason // integer values and handles 
+         0084: $bank_count_1_record_4_amount = $amount // integer values and handles 
+         0084: $bank_count_1_record_4_ms = $msecs // integer values and handles 
+         0084: $bank_count_1_record_4_flag = $r_flag // integer values and handles 
+    end
+    if $record_index==5
+    then 0084: $bank_count_1_record_5_reason = $reason // integer values and handles 
+         0084: $bank_count_1_record_5_amount = $amount // integer values and handles 
+         0084: $bank_count_1_record_5_ms = $msecs // integer values and handles 
+         0084: $bank_count_1_record_5_flag = $r_flag // integer values and handles 
+    end
+    if $record_index==6
+    then 0084: $bank_count_1_record_6_reason = $reason // integer values and handles 
+         0084: $bank_count_1_record_6_amount = $amount // integer values and handles 
+         0084: $bank_count_1_record_6_ms = $msecs // integer values and handles 
+         0084: $bank_count_1_record_6_flag = $r_flag // integer values and handles 
+    end
+    if $record_index==7
+    then 0084: $bank_count_1_record_7_reason = $reason // integer values and handles 
+         0084: $bank_count_1_record_7_amount = $amount // integer values and handles 
+         0084: $bank_count_1_record_7_ms = $msecs // integer values and handles 
+         0084: $bank_count_1_record_7_flag = $r_flag // integer values and handles 
+    end
+    if $record_index==8
+    then 0084: $bank_count_1_record_8_reason = $reason // integer values and handles 
+         0084: $bank_count_1_record_8_amount = $amount // integer values and handles 
+         0084: $bank_count_1_record_8_ms = $msecs // integer values and handles 
+         0084: $bank_count_1_record_8_flag = $r_flag // integer values and handles 
+    end
+    if $record_index==9
+    then 0084: $bank_count_1_record_9_reason = $reason // integer values and handles 
+         0084: $bank_count_1_record_9_amount = $amount // integer values and handles 
+         0084: $bank_count_1_record_9_ms = $msecs // integer values and handles 
+         0084: $bank_count_1_record_9_flag = $r_flag // integer values and handles 
+    end
+end
+if $bc_pointer==1
+then
+    if $record_index==0
+    then 0084: $bank_count_2_record_0_reason = $reason // integer values and handles 
+         0084: $bank_count_2_record_0_amount = $amount // integer values and handles 
+         0084: $bank_count_2_record_0_ms = $msecs // integer values and handles 
+         0084: $bank_count_2_record_0_flag = $r_flag // integer values and handles 
+    end
+    if $record_index==1
+    then 0084: $bank_count_2_record_1_reason = $reason // integer values and handles 
+         0084: $bank_count_2_record_1_amount = $amount // integer values and handles 
+         0084: $bank_count_2_record_1_ms = $msecs // integer values and handles 
+         0084: $bank_count_2_record_1_flag = $r_flag // integer values and handles 
+    end
+    if $record_index==2
+    then 0084: $bank_count_2_record_2_reason = $reason // integer values and handles 
+         0084: $bank_count_2_record_2_amount = $amount // integer values and handles 
+         0084: $bank_count_2_record_2_ms = $msecs // integer values and handles 
+         0084: $bank_count_2_record_2_flag = $r_flag // integer values and handles 
+    end
+    if $record_index==3
+    then 0084: $bank_count_2_record_3_reason = $reason // integer values and handles 
+         0084: $bank_count_2_record_3_amount = $amount // integer values and handles 
+         0084: $bank_count_2_record_3_ms = $msecs // integer values and handles 
+         0084: $bank_count_2_record_3_flag = $r_flag // integer values and handles 
+    end
+    if $record_index==4
+    then 0084: $bank_count_2_record_4_reason = $reason // integer values and handles 
+         0084: $bank_count_2_record_4_amount = $amount // integer values and handles 
+         0084: $bank_count_2_record_4_ms = $msecs // integer values and handles 
+         0084: $bank_count_2_record_4_flag = $r_flag // integer values and handles 
+    end
+    if $record_index==5
+    then 0084: $bank_count_2_record_5_reason = $reason // integer values and handles 
+         0084: $bank_count_2_record_5_amount = $amount // integer values and handles 
+         0084: $bank_count_2_record_5_ms = $msecs // integer values and handles 
+         0084: $bank_count_2_record_5_flag = $r_flag // integer values and handles 
+    end
+    if $record_index==6
+    then 0084: $bank_count_2_record_6_reason = $reason // integer values and handles 
+         0084: $bank_count_2_record_6_amount = $amount // integer values and handles 
+         0084: $bank_count_2_record_6_ms = $msecs // integer values and handles 
+         0084: $bank_count_2_record_6_flag = $r_flag // integer values and handles 
+    end
+    if $record_index==7
+    then 0084: $bank_count_2_record_7_reason = $reason // integer values and handles 
+         0084: $bank_count_2_record_7_amount = $amount // integer values and handles 
+         0084: $bank_count_2_record_7_ms = $msecs // integer values and handles 
+         0084: $bank_count_2_record_7_flag = $r_flag // integer values and handles 
+    end
+    if $record_index==8
+    then 0084: $bank_count_2_record_8_reason = $reason // integer values and handles 
+         0084: $bank_count_2_record_8_amount = $amount // integer values and handles 
+         0084: $bank_count_2_record_8_ms = $msecs // integer values and handles 
+         0084: $bank_count_2_record_8_flag = $r_flag // integer values and handles 
+    end
+    if $record_index==9
+    then 0084: $bank_count_2_record_9_reason = $reason // integer values and handles 
+         0084: $bank_count_2_record_9_amount = $amount // integer values and handles 
+         0084: $bank_count_2_record_9_ms = $msecs // integer values and handles 
+         0084: $bank_count_2_record_9_flag = $r_flag // integer values and handles 
+    end
+end
+if $bc_pointer==2
+then
+    if $record_index==0
+    then 0084: $bank_count_3_record_0_reason = $reason // integer values and handles 
+         0084: $bank_count_3_record_0_amount = $amount // integer values and handles 
+         0084: $bank_count_3_record_0_ms = $msecs // integer values and handles 
+         0084: $bank_count_3_record_0_flag = $r_flag // integer values and handles 
+    end
+    if $record_index==1
+    then 0084: $bank_count_3_record_1_reason = $reason // integer values and handles 
+         0084: $bank_count_3_record_1_amount = $amount // integer values and handles 
+         0084: $bank_count_3_record_1_ms = $msecs // integer values and handles 
+         0084: $bank_count_3_record_1_flag = $r_flag // integer values and handles 
+    end
+    if $record_index==2
+    then 0084: $bank_count_3_record_2_reason = $reason // integer values and handles 
+         0084: $bank_count_3_record_2_amount = $amount // integer values and handles 
+         0084: $bank_count_3_record_2_ms = $msecs // integer values and handles 
+         0084: $bank_count_3_record_2_flag = $r_flag // integer values and handles 
+    end
+    if $record_index==3
+    then 0084: $bank_count_3_record_3_reason = $reason // integer values and handles 
+         0084: $bank_count_3_record_3_amount = $amount // integer values and handles 
+         0084: $bank_count_3_record_3_ms = $msecs // integer values and handles 
+         0084: $bank_count_3_record_3_flag = $r_flag // integer values and handles 
+    end
+    if $record_index==4
+    then 0084: $bank_count_3_record_4_reason = $reason // integer values and handles 
+         0084: $bank_count_3_record_4_amount = $amount // integer values and handles 
+         0084: $bank_count_3_record_4_ms = $msecs // integer values and handles 
+         0084: $bank_count_3_record_4_flag = $r_flag // integer values and handles 
+    end
+    if $record_index==5
+    then 0084: $bank_count_3_record_5_reason = $reason // integer values and handles 
+         0084: $bank_count_3_record_5_amount = $amount // integer values and handles 
+         0084: $bank_count_3_record_5_ms = $msecs // integer values and handles 
+         0084: $bank_count_3_record_5_flag = $r_flag // integer values and handles 
+    end
+    if $record_index==6
+    then 0084: $bank_count_3_record_6_reason = $reason // integer values and handles 
+         0084: $bank_count_3_record_6_amount = $amount // integer values and handles 
+         0084: $bank_count_3_record_6_ms = $msecs // integer values and handles 
+         0084: $bank_count_3_record_6_flag = $r_flag // integer values and handles 
+    end
+    if $record_index==7
+    then 0084: $bank_count_3_record_7_reason = $reason // integer values and handles 
+         0084: $bank_count_3_record_7_amount = $amount // integer values and handles 
+         0084: $bank_count_3_record_7_ms = $msecs // integer values and handles 
+         0084: $bank_count_3_record_7_flag = $r_flag // integer values and handles 
+    end
+    if $record_index==8
+    then 0084: $bank_count_3_record_8_reason = $reason // integer values and handles 
+         0084: $bank_count_3_record_8_amount = $amount // integer values and handles 
+         0084: $bank_count_3_record_8_ms = $msecs // integer values and handles 
+         0084: $bank_count_3_record_8_flag = $r_flag // integer values and handles 
+    end
+    if $record_index==9
+    then 0084: $bank_count_3_record_9_reason = $reason // integer values and handles 
+         0084: $bank_count_3_record_9_amount = $amount // integer values and handles 
+         0084: $bank_count_3_record_9_ms = $msecs // integer values and handles 
+         0084: $bank_count_3_record_9_flag = $r_flag // integer values and handles 
+    end
+end
+if $bc_pointer==3
+then
+    if $record_index==0
+    then 0084: $bank_count_4_record_0_reason = $reason // integer values and handles 
+         0084: $bank_count_4_record_0_amount = $amount // integer values and handles 
+         0084: $bank_count_4_record_0_ms = $msecs // integer values and handles 
+         0084: $bank_count_4_record_0_flag = $r_flag // integer values and handles 
+    end
+    if $record_index==1
+    then 0084: $bank_count_4_record_1_reason = $reason // integer values and handles 
+         0084: $bank_count_4_record_1_amount = $amount // integer values and handles 
+         0084: $bank_count_4_record_1_ms = $msecs // integer values and handles 
+         0084: $bank_count_4_record_1_flag = $r_flag // integer values and handles 
+    end
+    if $record_index==2
+    then 0084: $bank_count_4_record_2_reason = $reason // integer values and handles 
+         0084: $bank_count_4_record_2_amount = $amount // integer values and handles 
+         0084: $bank_count_4_record_2_ms = $msecs // integer values and handles 
+         0084: $bank_count_4_record_2_flag = $r_flag // integer values and handles 
+    end
+    if $record_index==3
+    then 0084: $bank_count_4_record_3_reason = $reason // integer values and handles 
+         0084: $bank_count_4_record_3_amount = $amount // integer values and handles 
+         0084: $bank_count_4_record_3_ms = $msecs // integer values and handles 
+         0084: $bank_count_4_record_3_flag = $r_flag // integer values and handles 
+    end
+    if $record_index==4
+    then 0084: $bank_count_4_record_4_reason = $reason // integer values and handles 
+         0084: $bank_count_4_record_4_amount = $amount // integer values and handles 
+         0084: $bank_count_4_record_4_ms = $msecs // integer values and handles 
+         0084: $bank_count_4_record_4_flag = $r_flag // integer values and handles 
+    end
+    if $record_index==5
+    then 0084: $bank_count_4_record_5_reason = $reason // integer values and handles 
+         0084: $bank_count_4_record_5_amount = $amount // integer values and handles 
+         0084: $bank_count_4_record_5_ms = $msecs // integer values and handles 
+         0084: $bank_count_4_record_5_flag = $r_flag // integer values and handles 
+    end
+    if $record_index==6
+    then 0084: $bank_count_4_record_6_reason = $reason // integer values and handles 
+         0084: $bank_count_4_record_6_amount = $amount // integer values and handles 
+         0084: $bank_count_4_record_6_ms = $msecs // integer values and handles 
+         0084: $bank_count_4_record_6_flag = $r_flag // integer values and handles 
+    end
+    if $record_index==7
+    then 0084: $bank_count_4_record_7_reason = $reason // integer values and handles 
+         0084: $bank_count_4_record_7_amount = $amount // integer values and handles 
+         0084: $bank_count_4_record_7_ms = $msecs // integer values and handles 
+         0084: $bank_count_4_record_7_flag = $r_flag // integer values and handles 
+    end
+    if $record_index==8
+    then 0084: $bank_count_4_record_8_reason = $reason // integer values and handles 
+         0084: $bank_count_4_record_8_amount = $amount // integer values and handles 
+         0084: $bank_count_4_record_8_ms = $msecs // integer values and handles 
+         0084: $bank_count_4_record_8_flag = $r_flag // integer values and handles 
+    end
+    if $record_index==9
+    then 0084: $bank_count_4_record_9_reason = $reason // integer values and handles 
+         0084: $bank_count_4_record_9_amount = $amount // integer values and handles 
+         0084: $bank_count_4_record_9_ms = $msecs // integer values and handles 
+         0084: $bank_count_4_record_9_flag = $r_flag // integer values and handles 
+    end
+end
+return
+
+//-----------------------------------------
+// Check blank record
+//-----------------------------------------
+:CHECK_BLANK_RECORD
+0@=0
+if 6@==0
+then
+    if and
+    $bank_count_1_record_0_flag == 0
+    $bank_count_1_record_1_flag == 0
+    $bank_count_1_record_2_flag == 0
+    $bank_count_1_record_3_flag == 0
+    $bank_count_1_record_4_flag == 0
+    then
+        if and
+        $bank_count_1_record_5_flag == 0
+        $bank_count_1_record_6_flag == 0
+        $bank_count_1_record_7_flag == 0
+        $bank_count_1_record_8_flag == 0
+        $bank_count_1_record_9_flag == 0
+        then 00BB: text_lowpriority 'T_BNK35' 5000 ms 1 // No haz realizado ninguna operacion en esta cuenta.
+             0@=1
+        end
+    end
+end
+if 6@==1
+then
+    if and
+    $bank_count_2_record_0_flag == 0
+    $bank_count_2_record_1_flag == 0
+    $bank_count_2_record_2_flag == 0
+    $bank_count_2_record_3_flag == 0
+    $bank_count_2_record_4_flag == 0
+    then
+        if and
+        $bank_count_2_record_5_flag == 0
+        $bank_count_2_record_6_flag == 0
+        $bank_count_2_record_7_flag == 0
+        $bank_count_2_record_8_flag == 0
+        $bank_count_2_record_9_flag == 0
+        then 00BB: text_lowpriority 'T_BNK35' 5000 ms 1 // No haz realizado ninguna operacion en esta cuenta.
+             0@=1
+        end
+    end
+end
+if 6@==2
+then
+    if and
+    $bank_count_3_record_0_flag == 0
+    $bank_count_3_record_1_flag == 0
+    $bank_count_3_record_2_flag == 0
+    $bank_count_3_record_3_flag == 0
+    $bank_count_3_record_4_flag == 0
+    then
+        if and
+        $bank_count_3_record_5_flag == 0
+        $bank_count_3_record_6_flag == 0
+        $bank_count_3_record_7_flag == 0
+        $bank_count_3_record_8_flag == 0
+        $bank_count_3_record_9_flag == 0
+        then 00BB: text_lowpriority 'T_BNK35' 5000 ms 1 // No haz realizado ninguna operacion en esta cuenta.
+             0@=1
+        end
+    end
+end
+if 6@==3
+then
+    if and
+    $bank_count_4_record_0_flag == 0
+    $bank_count_4_record_1_flag == 0
+    $bank_count_4_record_2_flag == 0
+    $bank_count_4_record_3_flag == 0
+    $bank_count_4_record_4_flag == 0
+    then
+        if and
+        $bank_count_4_record_5_flag == 0
+        $bank_count_4_record_6_flag == 0
+        $bank_count_4_record_7_flag == 0
+        $bank_count_4_record_8_flag == 0
+        $bank_count_4_record_9_flag == 0
+        then 00BB: text_lowpriority 'T_BNK35' 5000 ms 1 // No haz realizado ninguna operacion en esta cuenta.
+             0@=1
+        end
+    end
+end
+return
+
+//-----------------------------------------
+// Push record in account  - Entradas: 6@: indice cuenta bancaria x
+//-----------------------------------------
+:GIFT_ACCOUNT
+if $bank_initial_gift_given == 0
+then
+    if 6@==0
+    then $bank_count_1+=100
+    end
+    if 6@==1
+    then $bank_count_2+=100
+    end
+    if 6@==2
+    then $bank_count_3+=100
+    end
+    if 6@==3
+    then $bank_count_4+=100
+    end
+    $r_entry_amount=100
+    $r_entry_reason=0 // Razon: regalo por apertura de cuenta
+    0084: $bc_pointer = 6@ // integer values and handles 
+    gosub @PUSH_RECORD_IN_ACCOUNT // entradas: $bc_pointer: indice cuenta bancaria x, $r_entry_amount: cantidad o monto, $r_entry_reason: razon
+    $bank_initial_gift_given=1
+end
+return
+
+//-----------------------------------------
+// Push record in account  - Entradas: 6@: indice cuenta bancaria x, 0@: cantidad o monto, 1@: razon
+//-----------------------------------------
+:PUSH_RECORD_IN_ACCOUNT
+$record_index=9
+repeat
+wait 0 ms
+    Dec($record_index) // 1er ciclo: leo en 8         2do ciclo: leo en 7            3er ciclo: leo en 6             4to ciclo: leo en 5
+    gosub @READ_ACCOUNT_RECORD // recibe: $bc_pointer y $record_index, retorna las siguientes variables: $reason, $amount, $msecs, $r_flag
+    Inc($record_index) // 1er ciclo: escribo en 9     2do ciclo: escribo en 8        3er ciclo: escribo en 7         4to ciclo: escribo en 6
+    gosub @STORE_ACCOUNT_RECORD // recibe: $bc_pointer y $record_index, recibe las siguientes variables: $reason, $amount, $msecs, $r_flag
+    Dec($record_index) // 1er ciclo: me quedo en 8    2do ciclo: me quedo en 7       3er ciclo: me quedo en 6        4to ciclo: me quedo en 5
+until $record_index == 0
+0004: $r_flag = 1 // integer values 
+0084: $reason = $r_entry_reason // integer values and handles 
+0084: $amount = $r_entry_amount // integer values and handles 
+01BD: $msecs = current_time_in_ms 
+$record_index=0
+gosub @STORE_ACCOUNT_RECORD // recibe las siguientes variables: 13@:reason, 14@:amount, 15@:ms, 8@:flag
+6@=0 // resetear variable
+return
+

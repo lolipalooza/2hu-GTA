@@ -1,0 +1,331 @@
+:ACTIVITIES
+thread 'ACTIVS'
+{
+0@: sin uso
+1@, 2@, 3@: dummy position
+4@: dummy variable
+10@: physical activity state variable
+11@: study activity state variable
+12@: drinking activity state variable
+13@: energy drink activity state variable
+16@, 17@: timers
+}
+{==================================================
+MAIN LOOP
+==================================================}
+:ACTIVITIES_LOOP
+wait 0 ms
+gosub @STUDY_ACT
+gosub @PHYSICAL_ACT
+gosub @DRINK_ACT
+gosub @ENERGY_DRINK_ACT
+jump @ACTIVITIES_LOOP
+
+end_thread
+
+{==================================================
+SUBROUTINES
+==================================================}
+// ----------------------------
+// PHYSICAL ACTIVITY
+// ----------------------------
+:PHYSICAL_ACT
+if 10@ == 0
+then
+    if $ONMISSION == 0
+    then
+        if 00FE:   actor $PLAYER_ACTOR 0 914.6472 -897.1135 14.9728 radius 40.0 40.0 2.0
+        then
+            if and
+            00FF:   actor $PLAYER_ACTOR 1 914.6472 -897.1135 14.9728 radius 2.0 2.0 2.0
+            02A0:   actor $PLAYER_ACTOR stopped 
+            then
+                if not $energy >= 20
+                then 10@=4
+                    03E5: text_box 'T_EN_A' // No tienes suficiente energia para hacer esta actividad.
+                else 10@=1
+                     03E5: text_box 'T_STR1' // Pulsa el ~h~boton ~k~~VEHICLE_ENTER_EXIT~~w~ para realizar actividad fisica (~h~+ Fuerza~w~).
+                end
+            end
+        end
+    end
+end
+
+if 10@ == 1
+then
+    if 00E1:   pad 0 key_pressed K_ENTER 
+    then 10@=2
+        01B4: set_player $PLAYER_CHAR frozen_state 0
+    end
+    if 80FF:   not actor $PLAYER_ACTOR 0 914.6472 -897.1135 14.9728 radius 2.0 2.0 2.0
+    then 03E6: remove_text_box
+         10@=0
+    end
+end
+
+if 10@ == 2
+then
+    if 80E1:   not pad 0 key_pressed K_ENTER 
+    then 10@=3
+        01B4: set_player $PLAYER_CHAR frozen_state 1
+    end
+end
+
+if 10@ == 3
+then
+    03E6: remove_text_box
+    01B4: set_player $PLAYER_CHAR frozen_state 0
+    0169: set_fade_color 0 0 0
+    fade 0 1000
+    wait 1000
+    0055: put_player $PLAYER_CHAR at 914.8153 -904.7344 14.9728
+    0171: set_player $PLAYER_CHAR z_angle_to 180.0
+    0373: set_camera_directly_behind_player
+    02EB: restore_camera_with_jumpcut 
+    wait 2000
+    fade 1 2000
+    01B4: set_player $PLAYER_CHAR frozen_state 1
+    $energy-=20
+    0209: 4@ = random_int 6 13
+    0058: $strengh += 4@ // integer values
+    02FD: text_2numbers_lowpriority 'T_STR3' 4@ $strengh 8000 ms 1 // Haz ganado ~b~+~1~~h~ fuerza. Tu fuerza total es de: ~b~~1~~h~.
+    10@=0
+end
+
+if 10@ == 4
+then
+    if 80FF:   not actor $PLAYER_ACTOR 0 914.6472 -897.1135 14.9728 radius 2.0 2.0 2.0
+    then 03E6: remove_text_box
+         10@=0
+    end
+end
+return
+
+// ----------------------------
+// STUDY ACTIVITY
+// ----------------------------
+:STUDY_ACT
+if 11@ == 0
+then
+    if $ONMISSION == 0
+    then
+        if 00FE:   actor $PLAYER_ACTOR 0 1087.1913 -30.8212 7.4925 radius 40.0 40.0 2.0
+        then
+            if and
+            00FF:   actor $PLAYER_ACTOR 1 1087.1913 -30.8212 7.4925 radius 2.0 2.0 2.0
+            02A0:   actor $PLAYER_ACTOR stopped 
+            then
+                if not $energy >= 50
+                then 11@=4
+                    03E5: text_box 'T_EN_A' // No tienes suficiente energia para hacer esta actividad.
+                else 11@=1
+                     03E5: text_box 'T_KNW1' // Pulsa el ~h~boton ~k~~VEHICLE_ENTER_EXIT~~w~ para ingresar a la escuela de bomberos (~h~+ Conocimiento~w~).
+                end
+            end
+        end
+    end
+end
+
+if 11@ == 1
+then
+    if 00E1:   pad 0 key_pressed K_ENTER 
+    then 11@=2
+        01B4: set_player $PLAYER_CHAR frozen_state 0
+    end
+    if 80FF:   not actor $PLAYER_ACTOR 0 1087.1913 -30.8212 7.4925 radius 2.0 2.0 2.0
+    then 03E6: remove_text_box
+         11@=0
+    end
+end
+
+if 11@ == 2
+then
+    if 80E1:   not pad 0 key_pressed K_ENTER 
+    then 11@=3
+        01B4: set_player $PLAYER_CHAR frozen_state 1
+    end
+end
+
+if 11@ == 3
+then
+    03E6: remove_text_box
+    01B4: set_player $PLAYER_CHAR frozen_state 0
+    0169: set_fade_color 0 0 0
+    fade 0 1000
+    wait 1000
+    0055: put_player $PLAYER_CHAR at 1090.7928 -27.0856 7.4925
+    0171: set_player $PLAYER_CHAR z_angle_to 270.0
+    0373: set_camera_directly_behind_player
+    02EB: restore_camera_with_jumpcut 
+    wait 2000
+    fade 1 2000
+    01B4: set_player $PLAYER_CHAR frozen_state 1
+    $energy-=20
+    0209: 4@ = random_int 10 19
+    0058: $knowledge += 4@ // integer values 
+    02FD: text_2numbers_lowpriority 'T_KNW3' 4@ $knowledge 8000 ms 1 // Haz ganado ~b~+~1~~h~ de conocimiento. Tu nivel de conocimientos total es de: ~b~~1~~h~.
+    11@=0
+end
+
+if 11@ == 4
+then
+    if 80FF:   not actor $PLAYER_ACTOR 0 1087.1913 -30.8212 7.4925 radius 2.0 2.0 2.0
+    then 03E6: remove_text_box
+         11@=0
+    end
+end
+return
+
+// ----------------------------
+// DRINK ACTIVITY
+// ----------------------------
+:DRINK_ACT
+if 12@ == 0
+then
+    if $ONMISSION == 0
+    then
+        if 00FE:   actor $PLAYER_ACTOR 0 902.0015 -416.7 14.9727 radius 40.0 40.0 2.0
+        then
+            if and
+            00FF:   actor $PLAYER_ACTOR 1 902.0015 -416.7 14.9727 radius 2.0 2.0 2.0
+            02A0:   actor $PLAYER_ACTOR stopped 
+            then
+                if not $energy >= 10
+                then 12@=4
+                    03E5: text_box 'T_EN_A' // No tienes suficiente energia para hacer esta actividad.
+                else
+                    if 010A:   player $PLAYER_CHAR money > 9
+                    then 12@=1
+                        03E5: text_box 'T_DRK1' // Pulsa el ~h~boton ~k~~VEHICLE_ENTER_EXIT~~w~ para tomarte unos tragos (~h~Costo: $10 / +Carisma~w~).
+                    else 12@=4
+                        03E5: text_box 'T_DRK4' // No tienes suficiente dinero.
+                    end
+                end
+            end
+        end
+    end
+end
+
+if 12@ == 1
+then
+    if 00E1:   pad 0 key_pressed K_ENTER 
+    then 12@=2
+        01B4: set_player $PLAYER_CHAR frozen_state 0
+    end
+    if 80FF:   not actor $PLAYER_ACTOR 0 902.0015 -416.7 14.9727 radius 2.0 2.0 2.0
+    then 03E6: remove_text_box
+         12@=0
+    end
+end
+
+if 12@ == 2
+then
+    if 80E1:   not pad 0 key_pressed K_ENTER 
+    then 12@=3
+        01B4: set_player $PLAYER_CHAR frozen_state 1
+    end
+end
+
+if 12@ == 3
+then
+    03E6: remove_text_box
+    01B4: set_player $PLAYER_CHAR frozen_state 0
+    0169: set_fade_color 0 0 0
+    fade 0 1000
+    wait 1000
+    0055: put_player $PLAYER_CHAR at 905.0803 -416.3319 14.9727
+    0171: set_player $PLAYER_CHAR z_angle_to 270.0
+    0373: set_camera_directly_behind_player
+    02EB: restore_camera_with_jumpcut 
+    wait 2000
+    fade 1 2000
+    01B4: set_player $PLAYER_CHAR frozen_state 1
+    4@=-10
+    0109: player $PLAYER_CHAR money += 4@ 
+    $energy-=10
+    0209: 4@ = random_int 6 11
+    0058: $charm += 4@ // integer values 
+    02FD: text_2numbers_lowpriority 'T_DRK3' 4@ $charm 8000 ms 1 // Haz ganado ~b~+~1~~h~ de carisma. Tu nivel de carisma total es de: ~b~~1~~h~.
+    12@=0
+end
+
+if 12@ == 4
+then
+    if 80FF:   not actor $PLAYER_ACTOR 0 902.0015 -416.7 14.9727 radius 2.0 2.0 2.0
+    then 03E6: remove_text_box
+         12@=0
+    end
+end
+return
+
+// ----------------------------
+// ENERGY DRINK ACTIVITY
+// ----------------------------
+:ENERGY_DRINK_ACT
+if 13@ == 0
+then
+    if $ONMISSION == 0
+    then
+        if 00FE:   actor $PLAYER_ACTOR 0 974.5283 -679.6965 14.9727 radius 50.0 50.0 2.0
+        then
+            if and
+            00FF:   actor $PLAYER_ACTOR 1 974.5283 -679.6965 14.9727 radius 2.0 2.0 2.0
+            02A0:   actor $PLAYER_ACTOR stopped
+            then
+                if $day_energy_drink == 0
+                then
+                    03E5: text_box 'T_EDK1' // Pulsa el ~h~boton ~k~~VEHICLE_ENTER_EXIT~~w~ para comprar bebida energizante (~h~Costo: $8~w~).
+                    13@=1
+                else
+                    03E5: text_box 'T_EDK2' // No puedes beber mas de estas bebidas energizantes por hoy.
+                    13@=4
+                end
+            end
+        end
+    end
+end
+
+if 13@ == 1
+then
+    if 00E1:   pad 0 key_pressed K_ENTER 
+    then 13@=2
+    end
+    if 80FF:   not actor $PLAYER_ACTOR 0 974.5283 -679.6965 14.9727 radius 2.0 2.0 2.0
+    then 03E6: remove_text_box
+         13@=0
+    end
+end
+
+if 13@ == 2
+then
+    if 80E1:   not pad 0 key_pressed K_ENTER 
+    then 13@=3
+    end
+end
+
+if 13@ == 3
+then
+    03D5: remove_text 'T_EDK3'
+    03D5: remove_text 'T_DRK4'
+    if 010A:   player $PLAYER_CHAR money > 7
+    then
+        03E6: remove_text_box
+        0209: 4@ = random_int 8 17
+        0058: $max_energy += 4@ // integer values 
+        02FD: text_2numbers_lowpriority 'T_EDK3' 4@ $max_energy 8000 ms 1 // Tu energia maxima ha aumentado en: ~g~+~1~~h~, Total: ~g~~1~~h~.
+        0109: player $PLAYER_CHAR money += -8
+        $day_energy_drink=1
+    else 00BB: text_lowpriority 'T_DRK4' 5000 ms 1 // No tienes suficiente dinero.
+    end
+    13@=4
+end
+
+if 13@ == 4
+then
+    if 80FF:   not actor $PLAYER_ACTOR 0 974.5283 -679.6965 14.9727 radius 2.0 2.0 2.0
+    then 03E6: remove_text_box
+         13@=0
+    end
+end
+return
+

@@ -1,0 +1,131 @@
+// complete by Demarest
+DEFINE OBJECTS 3
+DEFINE OBJECT (noname)                
+DEFINE OBJECT INDHELIX_BARRIER         // Object number -1
+DEFINE OBJECT LOD_LAND014              // Object number -2
+
+DEFINE MISSIONS 11
+DEFINE MISSION 0 AT @INITIALIZE
+DEFINE MISSION 1 AT @INTRO
+DEFINE MISSION 2 AT @M_LICENSE
+DEFINE MISSION 3 AT @M_TAXI
+DEFINE MISSION 4 AT @M_AMBULAN
+DEFINE MISSION 5 AT @M_FIRETRU
+DEFINE MISSION 6 AT @M_COPCAR
+DEFINE MISSION 7 AT @M_TRASH
+DEFINE MISSION 8 AT @M_MWHOOP
+DEFINE MISSION 9 AT @M_DELIV
+DEFINE MISSION 10 AT @M_BUS
+
+//{$VERSION 1.1.0000}
+
+//-------------MAIN---------------
+{$INCLUDE utility/constants.txt}
+
+03A4: name_thread 'MAIN'
+01F0: set_max_wanted_level_to 6
+0111: set_wasted_busted_check_to 0
+00C0: set_current_time 12 0
+03F7: load_island_data 0
+0053: $PLAYER_CHAR = create_player #NULL at 878.1245 -948.9417 29.5868
+0171: set_player $PLAYER_CHAR z_angle_to 270.0
+01F5: $PLAYER_ACTOR = create_emulated_actor_from_player $PLAYER_CHAR
+0373: set_camera_directly_behind_player
+0363: toggle_model_render_at 1027.25 -933.7499 15.0 radius 50.0 object #INDHELIX_BARRIER 0
+03B6: replace_model_at 1027.25 -933.7499 15.0 radius 50.0 from #INDHELIX_BARRIER to #LOD_LAND014
+01B6: set_weather 0
+034B: staunton_complete
+0352: set_actor $PLAYER_ACTOR skin_to 'PLAYER'
+0353: refresh_actor $PLAYER_ACTOR
+0169: set_fade_color 0 0 0
+016A: fade 0 0 ms
+01B4: set_player $PLAYER_CHAR frozen_state 1
+01B7: release_weather
+0109: player $PLAYER_CHAR money += $PLAYER_CHAR
+0054: store_player $PLAYER_CHAR position_to $var1 $var2 $var3
+0180: set_on_mission_flag_to $ONMISSION 
+
+0352: set_actor $PLAYER_ACTOR skin_to 'REMILIA' 
+while 8248:   not model #NULL available 
+wait 0 
+end
+0353: refresh_actor $PLAYER_ACTOR
+
+start_mission M_INIT
+
+create_thread @JOB_TRIGGER
+create_thread @ACTIVITIES
+create_thread @HOUSES
+create_thread @ENERGY_MACHINA
+create_thread @TELEPHONES
+create_thread @OFFICE_JOBS
+create_thread @BANK
+create_thread @REMILIA_STORYLINE
+create_thread @FLAN_STORYLINE
+create_thread @TEST
+
+0318: set_latest_mission_passed 'M00' // '2hu GTAIII'
+0055: put_player $PLAYER_CHAR at 1420.7253 -807.2204 11.8263//900.3951 -267.932 4.9709
+0171: set_player $PLAYER_CHAR z_angle_to 90.0//180.0 
+0373: set_camera_directly_behind_player
+fade 1 1000
+02A8: $SAVE0 = create_marker I_SAFE_HOUSE at 1119.9563 28.0568 2.2052
+02A8: $PUBLIC_PHONE_0 = create_marker I_BLUE_PHONE at 939.5073 -230.3825 4.9411
+0213: $HOUSE_HEALTH_0 = create_pickup #HEALTH type 14 at 1117.947 36.3235 2.1568
+0213: $HOUSE_INFO_0 = create_pickup #INFO type 3 at 1120.4391 32.8434 2.2819
+//02A8: $M_LIC_ICON = create_marker I_LUIGI at 898.9843 -285.6138 5.1458
+$M_LICENSE=1
+$M_AMBUL_LICENSE=1
+0247: request_model #AMBULAN
+038B: load_requested_models
+repeat
+wait 0
+until 0248:   model #AMBULAN available 
+00A5: $TESTCAR = create_car #AMBULAN at 1409.704 -803.6498 11.8262//884.5931 -279.3565 4.5633
+0175: set_car $TESTCAR z_angle_to 90.0//270.0
+0249: release_model #AMBULAN
+
+:MAIN_138
+0001: wait 250 ms
+0002: jump @MAIN_138
+
+{$INCLUDE utility/thread_draw_stats.txt}
+
+{=========================================================================
+Threads
+=========================================================================}
+
+{$INCLUDE threads/thread_job_trigger.txt}
+{$INCLUDE threads/thread_houses.txt}
+{$INCLUDE threads/thread_energy_machina.txt}
+{$INCLUDE threads/thread_activities.txt}
+{$INCLUDE threads/thread_telephones.txt}
+{$INCLUDE threads/thread_office_jobs.txt}
+{$INCLUDE threads/thread_bank.txt}
+    {$INCLUDE threads/thread_bank_lv4_account_record.txt}
+    {$INCLUDE threads/thread_bank_lv4_deposit.txt}
+{$INCLUDE threads/thread_remi_storyline.txt}
+{$INCLUDE threads/thread_flan_storyline.txt}
+
+{$INCLUDE utility/test.txt}
+
+
+{=========================================================================
+MISSIONS
+=========================================================================}
+
+{$INCLUDE missions/mission_initial.txt}      // Mission 0: Initialize
+{$INCLUDE missions/mission_intro.txt}        // Mission 1: Intro
+{$INCLUDE missions/mission_license.txt}      // Mission 2: License
+{$INCLUDE missions/mission_taxi.txt}         // Mission x: Taxi Driver
+{$INCLUDE missions/mission_paramedic.txt}    // Mission x: Paramedic
+    {$INCLUDE missions/mission_paramedic_main_loop.txt}
+    {$INCLUDE missions/mission_paramedic_subroutines.txt}
+    {$INCLUDE missions/mission_paramedic_training_main_loop.txt}
+{$INCLUDE missions/mission_firefighter.txt}  // Mission x: Fire Fighter
+{$INCLUDE missions/mission_vigilante.txt}    // Mission x: Vigilante
+{$INCLUDE missions/mission_trashmaster.txt}  // Mission x: Trashmaster
+{$INCLUDE missions/mission_mrwhooper.txt}    // Mission x: Mr. Whooper
+{$INCLUDE missions/mission_deliverer.txt}    // Mission x: Deliverer
+{$INCLUDE missions/mission_bus.txt}          // Mission x: Bus
+ 

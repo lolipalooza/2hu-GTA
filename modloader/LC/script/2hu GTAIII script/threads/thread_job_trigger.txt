@@ -1,0 +1,449 @@
+:JOB_TRIGGER
+thread 'JOB_T'
+
+{===================================================
+=   MAIN LOOP
+====================================================}
+:JOB_TRIGGER_LOOP
+wait 0
+
+if $M_LICENSE == 1
+then
+    if $ONMISSION==0
+    then
+        gosub @TAXI_TRIGGER
+        gosub @PARAM_TRIGGER
+        gosub @PARAM_TRAINING_TRIGGER
+        gosub @FIREF_TRIGGER
+        gosub @VIG_TRIGGER
+        gosub @TRASHM_TRIGGER
+        gosub @MWHOOP_TRIGGER
+        gosub @DELIV_TRIGGER
+        gosub @BUS_TRIGGER
+    end
+end
+
+jump @JOB_TRIGGER_LOOP
+end_thread
+
+
+{===================================================
+=   Taxi Trigger
+====================================================}
+:TAXI_TRIGGER
+if $TAXI_STAT == 0
+then
+    if 02DE:   player $PLAYER_CHAR driving_taxi_vehicle
+    then
+        03E5: text_box 'TTUTOR'  // Press the ~h~~k~~TOGGLE_SUBMISSIONS~ button~w~ to toggle taxi missions on or off.
+        $TAXI_STAT=1
+    end
+end
+if $TAXI_STAT == 1
+then
+    if and
+    00E1:   pad 0 key_pressed K_SUBMISSIONS 
+      $ONMISSION == 0 // integer values 
+    then $TAXI_STAT=2
+    end
+    if 80E0:   not player $PLAYER_CHAR driving
+    then $TAXI_STAT=0
+    end
+end
+if $TAXI_STAT == 2
+then
+    if and
+    80E1:   not pad 0 key_pressed K_SUBMISSIONS 
+      $ONMISSION == 0 // integer values 
+    then $TAXI_STAT=3
+    end
+end
+if $TAXI_STAT == 3
+then
+    $TAXI_STAT=1
+    if $energy > 0
+    then
+        00BA: text_styled 'TAXI_M' 4000 ms 5  // 'TAXI DRIVER'
+        start_mission M_TAXI
+    else 00BB: text_lowpriority 'T_EN_W' 4000 ms 1 // No tienes suficiente energia para hacer este trabajo.
+    end
+end
+return
+
+{===================================================
+=   Paramedic Trigger
+====================================================}
+:PARAM_TRIGGER
+if $AMBUL_STAT == 0
+then
+    if 00DE:   player $PLAYER_CHAR driving_vehicle_type #AMBULAN
+    then
+        if $M_AMBUL_LICENSE == 1
+        then 03E5: text_box 'ATUTOR'  // Press the ~h~~k~~TOGGLE_SUBMISSIONS~ button~w~ to toggle Paramedic missions on or off.
+        else 03E5: text_box 'M_AMB_R'  // Necesitas convertirte en ~h~paramždico~w~ para poder realizar tales trabajos con esta ambulancia.
+        end
+        $AMBUL_STAT=1
+    end
+end
+if $AMBUL_STAT == 1
+then
+    if and
+    00E1:   pad 0 key_pressed K_SUBMISSIONS 
+      $ONMISSION == 0 // integer values
+      $M_AMBUL_LICENSE == 1
+    then $AMBUL_STAT=2
+    end
+    if 80E0:   not player $PLAYER_CHAR driving
+    then $AMBUL_STAT=0
+    end
+end
+if $AMBUL_STAT == 2
+then
+    if and
+    80E1:   not pad 0 key_pressed K_SUBMISSIONS 
+      $ONMISSION == 0 // integer values 
+    then $AMBUL_STAT=3
+    end
+end
+if $AMBUL_STAT == 3
+then
+    $AMBUL_STAT=1
+    if $energy > 0
+    then
+        00BA: text_styled 'AMBUL_M' 4000 ms 5  // 'PARAMEDIC'
+        start_mission M_AMBUL
+    else 00BB: text_lowpriority 'T_EN_W' 4000 ms 1 // No tienes suficiente energia para hacer este trabajo.
+    end
+end
+return
+
+{===================================================
+=   Paramedic Training Trigger
+====================================================}
+:PARAM_TRAINING_TRIGGER
+if $AMBUL_STAT == 0
+then
+    if $M_AMBUL_LICENSE == 0
+    then
+        if $ONMISSION == 0
+        then
+            if 00FE:   actor $PLAYER_ACTOR 0 PORTLAND_AMBUL_X PORTLAND_AMBUL_Y PORTLAND_AMBUL_Z radius 40.0 40.0 2.0
+            then
+                if and
+                00FF:   actor $PLAYER_ACTOR 1 PORTLAND_AMBUL_X PORTLAND_AMBUL_Y PORTLAND_AMBUL_Z radius 2.0 2.0 2.0
+                02A0:   actor $PLAYER_ACTOR stopped 
+                then
+                    $AMBUL_STAT=4
+                    if $knowledge >= 200
+                    then
+                        if not $energy >= 20
+                        then 03E5: text_box 'T_EN_M' // No tienes suficiente energia para entrar a esta mision.
+                        else
+                            $m_ambulan_mission_flag=1
+                            03E6: remove_text_box
+                            start_mission M_AMBUL
+                        end
+                    else 03E5: text_box 'M_ATR_R' // Necesitas m˜s ~h~conocimientos~w~ si quieres ser paramždico.
+                    end
+                end
+            end
+        end
+    end
+end
+
+if $AMBUL_STAT == 4
+then
+    if 80FF:   not actor $PLAYER_ACTOR 0 PORTLAND_AMBUL_X PORTLAND_AMBUL_Y PORTLAND_AMBUL_Z radius 2.0 2.0 2.0
+    then 03E6: remove_text_box
+         $AMBUL_STAT=0
+    end
+end
+return
+
+{===================================================
+=   Firefighter Trigger
+====================================================}
+:FIREF_TRIGGER
+if $FIRETRU_STAT == 0
+then
+    if 00DE:   player $PLAYER_CHAR driving_vehicle_type #FIRETRUK
+    then
+        03E5: text_box 'FTUTOR'  // Press the ~h~~k~~TOGGLE_SUBMISSIONS~ button~w~ to toggle fire truck missions on or off.
+        $FIRETRU_STAT=1
+    end
+end
+if $FIRETRU_STAT == 1
+then
+    if and
+    00E1:   pad 0 key_pressed K_SUBMISSIONS 
+      $ONMISSION == 0 // integer values 
+    then $FIRETRU_STAT=2
+    end
+    if 80E0:   not player $PLAYER_CHAR driving
+    then $FIRETRU_STAT=0
+    end
+end
+if $FIRETRU_STAT == 2
+then
+    if and
+    80E1:   not pad 0 key_pressed K_SUBMISSIONS 
+      $ONMISSION == 0 // integer values 
+    then $FIRETRU_STAT=3
+    end
+end
+if $FIRETRU_STAT == 3
+then
+    $FIRETRU_STAT=1
+    if $energy > 0
+    then
+        00BA: text_styled 'FIRE_M' 4000 ms 5  // 'FIREFIGHTER'
+        start_mission M_FIRE
+    else 00BB: text_lowpriority 'T_EN_W' 4000 ms 1 // No tienes suficiente energia para hacer este trabajo.
+    end
+end
+return
+
+{===================================================
+=   Vigilante Trigger
+====================================================}
+:VIG_TRIGGER
+if $COP_STAT == 0
+then
+    if or
+    00DE:   player $PLAYER_CHAR driving_vehicle_type #POLICE 
+    00DE:   player $PLAYER_CHAR driving_vehicle_type #ENFORCER 
+    00DE:   player $PLAYER_CHAR driving_vehicle_type #RHINO 
+    00DE:   player $PLAYER_CHAR driving_vehicle_type #FBICAR 
+    then
+        03E5: text_box 'CTUTOR'  // Press the ~h~~k~~TOGGLE_SUBMISSIONS~ button~w~ to toggle Vigilante missions on or off.
+        $COP_STAT=1
+    end
+end
+if $COP_STAT == 1
+then
+    if and
+    00E1:   pad 0 key_pressed K_SUBMISSIONS 
+      $ONMISSION == 0 // integer values 
+    then $COP_STAT=2
+    end
+    if 80E0:   not player $PLAYER_CHAR driving
+    then $COP_STAT=0
+    end
+end
+if $COP_STAT == 2
+then
+    if and
+    80E1:   not pad 0 key_pressed K_SUBMISSIONS 
+      $ONMISSION == 0 // integer values 
+    then $COP_STAT=3
+    end
+end
+if $COP_STAT == 3
+then
+    $COP_STAT=1
+    if $energy > 0
+    then
+        00BA: text_styled 'COP_M' 4000 ms 5  // 'VIGILANTE'
+        start_mission M_POLI
+    else 00BB: text_lowpriority 'T_EN_W' 4000 ms 1 // No tienes suficiente energia para hacer este trabajo.
+    end
+end
+return
+
+{===================================================
+=   Trashmaster Trigger
+====================================================}
+:TRASHM_TRIGGER
+if $TRASH_STAT == 0
+then
+    if 00DE:   player $PLAYER_CHAR driving_vehicle_type #TRASH 
+    then
+        03E5: text_box 'M_WTR'  // Pulsa el ~h~boton ~k~~TOGGLE_SUBMISSIONS~~w~ para activar/desactivar misiones 'Recoger Basura'.
+        $TRASH_STAT=1
+    end
+end
+if $TRASH_STAT == 1
+then
+    if and
+    00E1:   pad 0 key_pressed K_SUBMISSIONS 
+      $ONMISSION == 0 // integer values 
+    then $TRASH_STAT=2
+    end
+    if 80E0:   not player $PLAYER_CHAR driving
+    then $TRASH_STAT=0
+    end
+end
+if $TRASH_STAT == 2
+then
+    if and
+    80E1:   not pad 0 key_pressed K_SUBMISSIONS 
+      $ONMISSION == 0 // integer values 
+    then $TRASH_STAT=3
+    end
+end
+if $TRASH_STAT == 3
+then
+    $TRASH_STAT=1
+    if $energy > 0
+    then
+        00BA: text_styled 'M_WTR1' 4000 ms 5  // 'Recogedor de Basura'
+        start_mission M_TRASH
+    else 00BB: text_lowpriority 'T_EN_W' 4000 ms 1 // No tienes suficiente energia para hacer este trabajo.
+    end
+end
+return
+
+{===================================================
+=   Mr Whooper Trigger
+====================================================}
+:MWHOOP_TRIGGER
+if $MRWHOOP_STAT == 0
+then
+    if 00DE:   player $PLAYER_CHAR driving_vehicle_type #MRWHOOP 
+    then
+        03E5: text_box 'M_WMW'  // Pulsa el ~h~boton ~k~~TOGGLE_SUBMISSIONS~~w~ para activar/desactivar misiones 'Heladero'.
+        $MRWHOOP_STAT=1
+    end
+end
+if $MRWHOOP_STAT == 1
+then
+    if and
+    00E1:   pad 0 key_pressed K_SUBMISSIONS 
+      $ONMISSION == 0 // integer values 
+    then $MRWHOOP_STAT=2
+    end
+    if 80E0:   not player $PLAYER_CHAR driving
+    then $MRWHOOP_STAT=0
+    end
+end
+if $MRWHOOP_STAT == 2
+then
+    if and
+    80E1:   not pad 0 key_pressed K_SUBMISSIONS 
+      $ONMISSION == 0 // integer values 
+    then $MRWHOOP_STAT=3
+    end
+end
+if $MRWHOOP_STAT == 3
+then
+    $MRWHOOP_STAT=1
+    if $energy > 0
+    then
+        00BA: text_styled 'M_WMW1' 4000 ms 5  // 'Heladero'
+        start_mission M_MWHOOP
+    else 00BB: text_lowpriority 'T_EN_W' 4000 ms 1 // No tienes suficiente energia para hacer este trabajo.
+    end
+end
+return
+
+{===================================================
+=   Deliverer Trigger
+====================================================}
+:DELIV_TRIGGER
+if $DELIV_STAT == 0
+then
+    if 00DE:   player $PLAYER_CHAR driving_vehicle_type #MRWONGS 
+    then
+        03E5: text_box 'M_WDA'  // Pulsa el ~h~boton ~k~~TOGGLE_SUBMISSIONS~~w~ para activar/desactivar misiones 'Distribuidor'.
+        $DELIV_STAT=1
+    end
+    if or
+    00DE:   player $PLAYER_CHAR driving_vehicle_type #SPEEDER 
+    00DE:   player $PLAYER_CHAR driving_vehicle_type #REEFER 
+    then
+        03E5: text_box 'M_WDB'  // Pulsa el ~h~boton ~k~~TOGGLE_SUBMISSIONS~~w~ para activar/desactivar misiones 'Distribuidor Maritimo'.
+        $DELIV_STAT=1
+    end
+    if 00DE:   player $PLAYER_CHAR driving_vehicle_type #RUMPO 
+    then
+        03E5: text_box 'M_WDC'  // Pulsa el ~h~boton ~k~~TOGGLE_SUBMISSIONS~~w~ para activar/desactivar misiones 'Entrega de paquetes'.
+        $DELIV_STAT=1
+    end
+end
+if $DELIV_STAT == 1
+then
+    if and
+    00E1:   pad 0 key_pressed K_SUBMISSIONS 
+      $ONMISSION == 0 // integer values 
+    then $DELIV_STAT=2
+    end
+    if 80E0:   not player $PLAYER_CHAR driving
+    then $DELIV_STAT=0
+    end
+end
+if $DELIV_STAT == 2
+then
+    if and
+    80E1:   not pad 0 key_pressed K_SUBMISSIONS 
+      $ONMISSION == 0 // integer values 
+    then $DELIV_STAT=3
+    end
+end
+if $DELIV_STAT == 3
+then
+    $DELIV_STAT=1
+    if $energy > 0
+    then
+        if 00DE:   player $PLAYER_CHAR driving_vehicle_type #MRWONGS 
+        then 00BA: text_styled 'M_WDAT' 4000 ms 5  // 'Distribuidor'
+        end
+        if or
+        00DE:   player $PLAYER_CHAR driving_vehicle_type #SPEEDER 
+        00DE:   player $PLAYER_CHAR driving_vehicle_type #REEFER 
+        then 00BA: text_styled 'M_WDBT' 4000 ms 5  // 'Distribuidor Maritimo'
+        end
+        if 00DE:   player $PLAYER_CHAR driving_vehicle_type #RUMPO 
+        then 00BA: text_styled 'M_WDCT' 4000 ms 5  // 'Entrega de paquetes'
+        end
+        start_mission M_DELIV
+    else 00BB: text_lowpriority 'T_EN_W' 4000 ms 1 // No tienes suficiente energia para hacer este trabajo.
+    end
+end
+return
+
+{===================================================
+=   Bus Trigger
+====================================================}
+:BUS_TRIGGER
+if $BUS_STAT == 0
+then
+    if or
+    00DE:   player $PLAYER_CHAR driving_vehicle_type #BUS 
+    00DE:   player $PLAYER_CHAR driving_vehicle_type #COACH 
+    then
+        03E5: text_box 'M_WBS'  // Pulsa el ~h~boton ~k~~TOGGLE_SUBMISSIONS~~w~ para activar/desactivar misiones 'Transporte Publico'.
+        $BUS_STAT=1
+    end
+end
+if $BUS_STAT == 1
+then
+    if and
+    00E1:   pad 0 key_pressed K_SUBMISSIONS 
+      $ONMISSION == 0 // integer values 
+    then $BUS_STAT=2
+    end
+    if 80E0:   not player $PLAYER_CHAR driving
+    then $BUS_STAT=0
+    end
+end
+if $BUS_STAT == 2
+then
+    if and
+    80E1:   not pad 0 key_pressed K_SUBMISSIONS 
+      $ONMISSION == 0 // integer values 
+    then $BUS_STAT=3
+    end
+end
+if $BUS_STAT == 3
+then
+    $BUS_STAT=1
+    if $energy > 0
+    then
+        00BA: text_styled 'M_WBST' 4000 ms 5  // 'Transporte Publico'
+        start_mission M_BUS
+    else 00BB: text_lowpriority 'T_EN_W' 4000 ms 1 // No tienes suficiente energia para hacer este trabajo.
+    end
+end
+
+return
+

@@ -1,0 +1,455 @@
+{==================================================
+Level 4 - Deposit / Withdraw
+==================================================}
+//-----------------------------------------
+// MAIN
+//-----------------------------------------
+:BANK_ACCOUNT_DEPOSIT
+{
+0@, 1@, 2@, 3@: deposit/withdraw amount helpers
+13@, 14@: dummy
+15@: cursor for amount digit
+}
+0@=0
+1@=0
+2@=0
+3@=0
+11@=0
+15@=0
+gosub @SHOW_AMOUNT
+
+:DEPOSIT_LOOP
+wait 0 ms
+gosub @GET_INTEREST
+
+if 11@ == 0
+then
+    if 00E1:   pad 0 key_pressed K_LEFT
+    then 11@=10
+    end
+    if 00E1:   pad 0 key_pressed K_RIGHT
+    then 11@=20
+    end
+    if 00E1:   pad 0 key_pressed K_JUMP
+    then 11@=30
+    end
+    if 00E1:   pad 0 key_pressed K_ENTER
+    then 11@=40
+    end
+    if 00E1:   pad 0 key_pressed K_UP
+    then 11@=50
+    end
+    if 00E1:   pad 0 key_pressed K_DOWN
+    then 11@=60
+    end
+end
+
+if 11@ == 10
+then if 80E1:   not pad 0 key_pressed K_LEFT
+     then 11@=11
+     end
+end
+if 11@ == 20
+then if 80E1:   not pad 0 key_pressed K_RIGHT
+     then 11@=21
+     end
+end
+if 11@ == 30
+then if 80E1:   not pad 0 key_pressed K_JUMP
+     then 11@=31
+     end
+end
+if 11@ == 40
+then if 80E1:   not pad 0 key_pressed K_ENTER
+     then 11@=41
+     end
+end
+if 11@ == 50
+then if 80E1:   not pad 0 key_pressed K_UP
+     then 11@=51
+     end
+end
+if 11@ == 60
+then if 80E1:   not pad 0 key_pressed K_DOWN
+     then 11@=61
+     end
+end
+
+if 11@ == 11 // Pressed & released LEFT
+then 11@=0
+     15@+=1
+     if 15@>7
+     then 15@=7
+     end
+end
+
+if 11@ == 21 // Pressed & released RIGHT
+then 11@=0
+     15@-=1
+     if 15@<0
+     then 15@=0
+     end
+end
+
+if 11@ == 31 // Pressed & released ACCEPT
+then
+    gosub @CLEAR_AMOUNT_TEXT
+    11@=0
+    
+    1@*=100
+    2@*=10000
+    3@*=1000000
+    0084: $dummy = 0@ // integer values and handles 
+    0058: $dummy += 1@ // integer values 
+    0058: $dummy += 2@ // integer values 
+    0058: $dummy += 3@ // integer values 
+
+    
+    // Deposit Operation
+    if $dummy2 == 1 // deposit
+    then
+        Dec($dummy)
+        if 010A:   player $PLAYER_CHAR money > $dummy
+        then
+            Inc($dummy)
+            gosub @WRITE_BANK_ACCOUNT
+            0084: $r_entry_amount = $dummy // integer values and handles 
+            0004: $r_entry_reason = 3 // integer values                   // Razon: deposito de dinero
+            0084: $bc_pointer = 6@ // integer values and handles 
+            gosub @PUSH_RECORD_IN_ACCOUNT // entradas: $bc_pointer: indice cuenta bancaria x, $r_entry_amount: cantidad o monto, $r_entry_reason: razon
+            $dummy*=-1
+            0109: player $PLAYER_CHAR money += $dummy
+            00BB: text_lowpriority 'T_BNK16' 5000 ms 1 // Operacion realizada con exito.
+        else 00BB: text_lowpriority 'T_BNK14' 5000 ms 1 // Error: no se pudo concretar la operacion, no tienes esa cantidad de dinero en efectivo.
+        end
+        return
+    end
+
+    // Withdraw Operation
+    if $dummy2 == -1 // withdraw
+    then                                     // $dummy representa la cantidad que tengo en el banco, y 0@ representa la cantidad que quiero extraer, 
+        0084: 0@ = $dummy // integer values and handles
+        gosub @READ_BANK_ACCOUNT // into $dummy
+        0060: $dummy -= 0@ // integer values
+        if $dummy >= 0                       // por lo tanto, si la diferencia entre $dummy y 0@ es negativa, significa que le estoy pidiendo al banco
+        then                                 // mas de lo que me puede dar
+            0084: $dummy = 0@ // integer values and handles
+            0109: player $PLAYER_CHAR money += $dummy
+            $dummy*=-1
+            gosub @WRITE_BANK_ACCOUNT
+            00BB: text_lowpriority 'T_BNK16' 5000 ms 1 // Operacion realizada con exito.
+            0084: $r_entry_amount = $dummy // integer values and handles 
+            0004: $r_entry_reason = 2 // integer values                   // Razon: retiro de dinero
+            0084: $bc_pointer = 6@ // integer values and handles 
+            gosub @PUSH_RECORD_IN_ACCOUNT // entradas: $bc_pointer: indice cuenta bancaria x, $r_entry_amount: cantidad o monto, $r_entry_reason: razon
+        else 00BB: text_lowpriority 'T_BNK15' 5000 ms 1 // Error: no se pudo concretar la operacion, no tienes esa cantidad de dinero en el banco.
+        end
+        {4@=0
+        12@=0
+        gosub @SHOW_BANK_MENU}
+        return
+    end
+end
+
+if 11@ == 41 // Pressed & released CANCEL
+then gosub @SHOW_ACCOUNT_OPTIONS
+    return
+end
+
+if 11@ == 51 // Pressed & released UP
+then 11@=0
+     gosub @INC_AMOUNT
+     gosub @SHOW_AMOUNT
+end
+
+if 11@ == 61 // Pressed & released DOWN
+then 11@=0
+     gosub @DEC_AMOUNT
+     gosub @SHOW_AMOUNT
+end
+jump @DEPOSIT_LOOP
+return
+
+//-----------------------------------------
+// Show amount
+//-----------------------------------------
+:SHOW_AMOUNT
+gosub @CLEAR_AMOUNT_TEXT
+if and
+ not 3@>9
+ not 2@>9
+ not 1@>9
+ not 0@>9
+then 0302: text_4numbers 'T_BMNT0' 3@ 2@ 1@ 0@ 6000 ms 5 //Ingrese el monto: ~r~$0~1~0~1~0~1~0~1~     // 0000
+end
+if and
+ not 3@>9
+ not 2@>9
+ not 1@>9
+ 0@>9
+then 0302: text_4numbers 'T_BMNT1' 3@ 2@ 1@ 0@ 6000 ms 5 //Ingrese el monto: ~r~$0~1~0~1~0~1~~1~     // 0001
+end
+if and
+ not 3@>9
+ not 2@>9
+ 1@>9
+ not 0@>9
+then 0302: text_4numbers 'T_BMNT2' 3@ 2@ 1@ 0@ 6000 ms 5 //Ingrese el monto: ~r~$0~1~0~1~~1~0~1~     // 0010
+end
+if and
+ not 3@>9
+ not 2@>9
+ 1@>9
+ 0@>9
+then 0302: text_4numbers 'T_BMNT3' 3@ 2@ 1@ 0@ 6000 ms 5 //Ingrese el monto: ~r~$0~1~0~1~~1~~1~     // 0011
+end
+if and
+ not 3@>9
+ 2@>9
+ not 1@>9
+ not 0@>9
+then 0302: text_4numbers 'T_BMNT4' 3@ 2@ 1@ 0@ 6000 ms 5 //Ingrese el monto: ~r~$0~1~~1~0~1~0~1~     // 0100
+end
+if and
+ not 3@>9
+ 2@>9
+ not 1@>9
+ 0@>9
+then 0302: text_4numbers 'T_BMNT5' 3@ 2@ 1@ 0@ 6000 ms 5 //Ingrese el monto: ~r~$0~1~~1~0~1~~1~     // 0101
+end
+if and
+ not 3@>9
+ 2@>9
+ 1@>9
+ not 0@>9
+then 0302: text_4numbers 'T_BMNT6' 3@ 2@ 1@ 0@ 6000 ms 5 //Ingrese el monto: ~r~$0~1~~1~~1~0~1~     // 0110
+end
+if and
+ not 3@>9
+ 2@>9
+ 1@>9
+ 0@>9
+then 0302: text_4numbers 'T_BMNT7' 3@ 2@ 1@ 0@ 6000 ms 5 //Ingrese el monto: ~r~$0~1~~1~~1~~1~     // 0111
+end
+if and
+ 3@>9
+ not 2@>9
+ not 1@>9
+ not 0@>9
+then 0302: text_4numbers 'T_BMNT8' 3@ 2@ 1@ 0@ 6000 ms 5 //Ingrese el monto: ~r~$~1~0~1~0~1~0~1~     // 1000
+end
+if and
+ 3@>9
+ not 2@>9
+ not 1@>9
+ 0@>9
+then 0302: text_4numbers 'T_BMNT9' 3@ 2@ 1@ 0@ 6000 ms 5 //Ingrese el monto: ~r~$~1~0~1~0~1~~1~     // 1001
+end
+if and
+ 3@>9
+ not 2@>9
+ 1@>9
+ not 0@>9
+then 0302: text_4numbers 'T_BMNTA' 3@ 2@ 1@ 0@ 6000 ms 5 //Ingrese el monto: ~r~$~1~0~1~~1~0~1~     // 1010
+end
+if and
+ 3@>9
+ not 2@>9
+ 1@>9
+ 0@>9
+then 0302: text_4numbers 'T_BMNTB' 3@ 2@ 1@ 0@ 6000 ms 5 //Ingrese el monto: ~r~$~1~0~1~~1~~1~     // 1011
+end
+if and
+ 3@>9
+ 2@>9
+ not 1@>9
+ not 0@>9
+then 0302: text_4numbers 'T_BMNTC' 3@ 2@ 1@ 0@ 6000 ms 5 //Ingrese el monto: ~r~$~1~~1~0~1~0~1~     // 1100
+end
+if and
+ 3@>9
+ 2@>9
+ not 1@>9
+ 0@>9
+then 0302: text_4numbers 'T_BMNTD' 3@ 2@ 1@ 0@ 6000 ms 5 //Ingrese el monto: ~r~$~1~~1~0~1~~1~     // 1101
+end
+if and
+ 3@>9
+ 2@>9
+ 1@>9
+ not 0@>9
+then 0302: text_4numbers 'T_BMNTE' 3@ 2@ 1@ 0@ 6000 ms 5 //Ingrese el monto: ~r~$~1~~1~~1~0~1~     // 1110
+end
+if and
+ 3@>9
+ 2@>9
+ 1@>9
+ 0@>9
+then 0302: text_4numbers 'T_BMNTF' 3@ 2@ 1@ 0@ 6000 ms 5 //Ingrese el monto: ~r~$~1~~1~~1~~1~     // 1111
+end
+return
+
+//-----------------------------------------
+// Clear amount text
+//-----------------------------------------
+:CLEAR_AMOUNT_TEXT
+03D5: remove_text 'T_BMNT0' 
+03D5: remove_text 'T_BMNT1' 
+03D5: remove_text 'T_BMNT2' 
+03D5: remove_text 'T_BMNT3' 
+03D5: remove_text 'T_BMNT4' 
+03D5: remove_text 'T_BMNT5' 
+03D5: remove_text 'T_BMNT6' 
+03D5: remove_text 'T_BMNT7' 
+03D5: remove_text 'T_BMNT8' 
+03D5: remove_text 'T_BMNT9' 
+03D5: remove_text 'T_BMNTA' 
+03D5: remove_text 'T_BMNTB' 
+03D5: remove_text 'T_BMNTC' 
+03D5: remove_text 'T_BMNTD' 
+03D5: remove_text 'T_BMNTE' 
+03D5: remove_text 'T_BMNTF' 
+return
+
+//-----------------------------------------
+// Write bank acount
+//-----------------------------------------
+:WRITE_BANK_ACCOUNT
+if 6@ == 0
+then 0058: $bank_count_1 += $dummy // integer values 
+end
+if 6@ == 1
+then 0058: $bank_count_2 += $dummy // integer values 
+end
+if 6@ == 2
+then 0058: $bank_count_3 += $dummy // integer values 
+end
+if 6@ == 3
+then 0058: $bank_count_4 += $dummy // integer values 
+end
+return
+
+//-----------------------------------------
+// Increase amount
+//-----------------------------------------
+:INC_AMOUNT
+if 15@==0
+then 0084: 9@ = 0@ // integer values and handles
+     gosub @INC_N
+     0084: 0@ = 9@ // integer values and handles
+end
+if 15@==1
+then if 0@>=90
+     then 0@-=90
+     else 0@+=10
+     end
+end
+if 15@==2
+then 0084: 9@ = 1@ // integer values and handles
+     gosub @INC_N
+     0084: 1@ = 9@ // integer values and handles
+end
+if 15@==3
+then if 1@>=90
+     then 1@-=90
+     else 1@+=10
+     end
+end
+if 15@==4
+then 0084: 9@ = 2@ // integer values and handles
+     gosub @INC_N
+     0084: 2@ = 9@ // integer values and handles
+end
+if 15@==5
+then if 2@>=90
+     then 2@-=90
+     else 2@+=10
+     end
+end
+if 15@==6
+then 0084: 9@ = 3@ // integer values and handles
+     gosub @INC_N
+     0084: 3@ = 9@ // integer values and handles
+end
+if 15@==7
+then if 3@>=90
+     then 3@-=90
+     else 3@+=10
+     end
+end
+return
+
+:INC_N
+0084: 13@ = 9@ // integer values and handles
+0084: 14@ = 9@ // integer values and handles
+13@/=10
+13@*=10
+0060: 14@ -= 13@ // integer values 
+if 14@==9
+then 9@-=9
+else 9@+=1
+end
+return
+
+//-----------------------------------------
+// Decrease amount
+//-----------------------------------------
+:DEC_AMOUNT
+if 15@==0
+then 0084: 9@ = 0@ // integer values and handles
+     gosub @DEC_N
+     0084: 0@ = 9@ // integer values and handles
+end
+if 15@==1
+then if 10>0@
+     then 0@+=90
+     else 0@-=10
+     end
+end
+if 15@==2
+then 0084: 9@ = 1@ // integer values and handles
+     gosub @DEC_N
+     0084: 1@ = 9@ // integer values and handles
+end
+if 15@==3
+then if 10>1@
+     then 1@+=90
+     else 1@-=10
+     end
+end
+if 15@==4
+then 0084: 9@ = 2@ // integer values and handles
+     gosub @DEC_N
+     0084: 2@ = 9@ // integer values and handles
+end
+if 15@==5
+then if 10>2@
+     then 2@+=90
+     else 2@-=10
+     end
+end
+if 15@==6
+then 0084: 9@ = 3@ // integer values and handles
+     gosub @DEC_N
+     0084: 3@ = 9@ // integer values and handles
+end
+if 15@==7
+then if 10>3@
+     then 3@+=90
+     else 3@-=10
+     end
+end
+return
+
+:DEC_N
+0084: 13@ = 9@ // integer values and handles
+0084: 14@ = 9@ // integer values and handles
+13@/=10
+13@*=10
+0060: 14@ -= 13@ // integer values 
+if 14@==0
+then 9@+=9
+else 9@-=1
+end
+return
+

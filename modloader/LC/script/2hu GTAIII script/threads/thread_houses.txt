@@ -1,0 +1,401 @@
+:HOUSES
+thread 'HOUSES'
+{
+10@: save machina state variable
+11@: info machina state variable
+4@: (info) menu level currently displayed
+5@: (info) option selected from menu first level
+6@: (info) option selected from menu second level
+12@: (info) shown text
+}
+{==================================================
+MAIN LOOP
+==================================================}
+:HOUSES_LOOP
+wait 0 ms
+gosub @SAVE_MACHINA
+gosub @INFO_MACHINA
+jump @HOUSES_LOOP
+
+end_thread
+
+{==================================================
+SUB MACHINAS
+==================================================}
+//-----------------------------------------
+// Saving and resting
+//-----------------------------------------
+:SAVE_MACHINA
+if 10@==0
+then
+    if 00FE:   actor $PLAYER_ACTOR 0 1119.9563 28.0568 2.2052 radius 60.0 60.0 2.0
+    then
+        if and
+        00FF:   actor $PLAYER_ACTOR 1 1119.9563 28.0568 2.2052 radius 2.0 2.0 2.0
+        02A0:   actor $PLAYER_ACTOR stopped 
+        then
+            if $ONMISSION == 0
+            then 10@=1
+                 03E5: text_box 'T_SV1' // Pulsa el ~h~boton ~k~~VEHICLE_ENTER_EXIT~~w~ para realizar actividad 'reposo' (~h~Salvar partida/restaurar energia~w~).
+            else 10@=4
+                 03E5: text_box 'T_SV2' // Aqui puedes descanzar para guardar avances/restaurar energía, pero ahora estas ocupada. Regresa cuando no estes en ninguna mision.
+            end
+        end
+    end
+end
+
+if 10@ == 1
+then
+    if 00E1:   pad 0 key_pressed K_ENTER 
+    then 10@=2
+        01B4: set_player $PLAYER_CHAR frozen_state 0
+    end
+    if 80FF:   not actor $PLAYER_ACTOR 0 1119.9563 28.0568 2.2052 radius 2.0 2.0 2.0
+    then 03E6: remove_text_box
+         10@=0
+    end
+end
+
+if 10@ == 2
+then
+    if 80E1:   not pad 0 key_pressed K_ENTER 
+    then 10@=3
+    end
+end
+
+if 10@ == 3
+then
+    03E6: remove_text_box
+    03D8: show_save_screen
+    repeat
+    wait 0 ms
+    until 03D9:   save_done
+    0169: set_fade_color 0 0 0
+    fade 0 1000
+    wait 1000
+    0055: put_player $PLAYER_CHAR at 1125.0614 31.0794 2.0723
+    0171: set_player $PLAYER_CHAR z_angle_to 270.0
+    0373: set_camera_directly_behind_player
+    02EB: restore_camera_with_jumpcut
+    wait 500
+    fade 1 2000
+    01B4: set_player $PLAYER_CHAR frozen_state 1
+    0084: $energy = $max_energy // integer values and handles 
+    if $save_flag == 0
+    then 00BB: text_lowpriority 'T_EN1' 5000 ms 1 // ~h~Tu ~w~energia~h~ ha sido recobrada.
+    $save_flag=1
+    end
+    $day_energy_drink=0
+    0164: disable_marker $G_MARKER
+    $G_MARKER_ENABLED=0
+    10@=0
+end
+
+if 10@ == 4
+then
+    if 80FF:   not actor $PLAYER_ACTOR 0 1119.9563 28.0568 2.2052 radius 2.0 2.0 2.0
+    then 03E6: remove_text_box
+         10@=0
+    end
+end
+return
+
+//-----------------------------------------
+// Information
+//-----------------------------------------
+:INFO_MACHINA
+if 11@ == 0
+then
+    if 0214:   pickup $HOUSE_INFO_0 picked_up
+    then
+        if $ONMISSION == 0
+        then
+            01B4: set_player $PLAYER_CHAR frozen_state 0
+            gosub @SHOW_INFO_MENU
+            11@=99
+        else
+            11@=3
+            03E5: text_box 'T_IF03' // Ahora estas muy ocupada. Regresa cuando no estes en ninguna mision.
+        end
+    end
+end
+
+if 11@ == 3
+then
+    if 80FF:   not actor $PLAYER_ACTOR 0 1120.4391 32.8434 2.2819 radius 2.0 2.0 2.0
+    then 11@=0
+        0213: $HOUSE_INFO_0 = create_pickup #INFO type 3 at 1120.4391 32.8434 2.2819
+    end
+end
+
+// Estado de finalizacion de maquina
+if 11@ == 98
+then
+    01B4: set_player $PLAYER_CHAR frozen_state 1
+    4@=0 
+    5@=0 
+    12@=0 
+    11@=3
+end
+
+if 11@ == 99
+then
+    03E5: text_box 'T_IF02' // ~h~< / >:~w~ Explorar opciones ~h~~k~~PED_JUMPING~:~w~ Elegir ~h~~k~~VEHICLE_ENTER_EXIT~:~w~ Cancelar.
+    11@=100
+end
+
+// Estado de reconocimiento de botones (reaccionar apropiadamente al boton pulsado)
+if 11@ == 100
+then
+    if 00E1:   pad 0 key_pressed K_LEFT
+    then 11@=200
+    end
+    
+    if 00E1:   pad 0 key_pressed K_RIGHT
+    then 11@=300
+    end
+    
+    if 00E1:   pad 0 key_pressed K_JUMP
+    then 11@=400
+    end
+    
+    if 00E1:   pad 0 key_pressed K_ENTER
+    then 11@=500
+    end
+end
+
+// Estados 200, 300, 400 y 500: esperar a que el boton que ha sido pulsado sea liberado
+if 11@ == 200
+then
+    if 80E1:   not pad 0 key_pressed K_LEFT
+    then 11@=210
+    end
+end
+if 11@ == 300
+then
+    if 80E1:   not pad 0 key_pressed K_RIGHT
+    then 11@=310
+    end
+end
+if 11@ == 400
+then
+    if 80E1:   not pad 0 key_pressed K_JUMP
+    then 11@=410
+    end
+end
+if 11@ == 500
+then
+    if 80E1:   not pad 0 key_pressed K_ENTER
+    then 11@=510
+    end
+end
+
+if 11@ == 210 // ha sido presionado LEFT
+then
+    11@=99 // volver al estado de reconocimiento de pulsaciones de botones
+    if 4@ == 0 // estoy en el primer nivel de opciones desplegadas
+    then gosub @DEC_INFO_MENU
+    end
+    if 4@ == 1 // estoy en el segundo nivel de opciones desplegadas
+    then
+        if 5@ == 0 // Fue elegida la opcion 0 (stats)
+        then gosub @DEC_STATS
+        end
+        if 5@ == 1 // Fue elegida la opcion 1 (ayuda)
+        then gosub @DEC_HELP
+        end
+    end
+end
+
+if 11@ == 310 // ha sido presionado RIGHT
+then
+    11@=99 // volver al estado de reconocimiento de pulsaciones de botones
+    if 4@ == 0 // estoy en el primer nivel de opciones desplegadas
+    then gosub @INC_INFO_MENU
+    end
+    if 4@ == 1 // estoy en el segundo nivel de opciones desplegadas
+    then
+        if 5@ == 0 // Fue elegida la opcion 0 (stats)
+        then gosub @INC_STATS
+        end
+        if 5@ == 1 // Fue elegida la opcion 1 (ayuda)
+        then gosub @INC_HELP
+        end
+    end
+end
+
+if 11@ == 410 // ha sido presionado JUMP
+then
+    11@=99 // volver al estado de reconocimiento de pulsaciones de botones
+    if 4@ == 0 // estoy en el primer nivel de opciones desplegadas
+    then
+        4@=1
+        if 12@ == 0 // stats
+        then
+            gosub @SHOW_STATS
+            5@=0
+        end
+        if 12@ == 1 // ayuda
+        then
+            gosub @SHOW_HELP
+            5@=1
+        end
+    else
+        if 4@ == 1 // estoy en el segundo nivel de opciones desplegadas
+        then
+            4@=2
+            if 5@ == 1 // help
+            then
+                if 12@ == 0 // Acerca de los Empleos
+                then
+                end
+                if 12@ == 1 // Acerca de los Status
+                then
+                end
+                if 12@ == 2 // Como desplazarse por Liberty
+                then
+                end
+                if 12@ == 3 // Como ubicar actividades
+                then
+                end
+            end
+        end
+    end
+end
+
+if 11@ == 510 // ha sido presionado ENTER
+then
+    11@=99 // volver al estado de reconocimiento de pulsaciones de botones
+    if 4@ == 0 // estoy en el primer nivel de opciones desplegadas
+    then
+        03E6: remove_text_box
+        00BE: text_clear_all 
+        11@=98 // Finalizar maquina
+    end
+    if 4@ == 1 // estoy en el segundo nivel de opciones desplegadas
+    then 4@=0
+        gosub @REMOVE_LOWTEXTS
+    end
+    if 4@ == 2 // estoy en el tercer nivel de opciones desplegadas
+    then 4@=1
+        gosub @REMOVE_LOWTEXTS
+    end
+end
+return
+
+//-----------------------------------------
+// Information - Subrutinas
+//-----------------------------------------
+:DEC_INFO_MENU
+:INC_INFO_MENU
+if 12@==0
+then 12@=1
+else 12@=0
+end
+:SHOW_INFO_MENU
+if 12@ == 0
+then 00BA: text_styled 'T_IF10' 6000 ms 4 // mostrar texto 'Ver Stats'
+end
+if 12@ == 1
+then 00BA: text_styled 'T_IF11' 6000 ms 4 // mostrar texto 'Ayuda'
+end
+return
+
+// -------------------------
+:DEC_STATS
+12@-=1
+if 0>12@
+then 12@=5
+end
+jump @SHOW_STATS
+
+:INC_STATS
+12@+=1
+if 12@>5
+then 12@=0
+end
+jump @SHOW_STATS
+
+:SHOW_STATS
+gosub @REMOVE_LOWTEXTS
+if 12@ == 0
+then
+    //00BA: text_styled 'T_IF24' 3000 ms 6 // mostrar texto 'Energia'
+    00BA: text_styled 'T_IF22' 3000 ms 6 // mostrar texto 'Stats basicos'
+    02FD: text_2numbers_lowpriority 'T_IF25' $energy $max_energy 8000 ms 1 // Energia: ~p~~1~~h~, Energia maxima: ~p~~1~~h~.
+    //02FD: text_2numbers_lowpriority 'T_IF26' $energy $max_energy 8000 ms 1 // Energia: ~p~~1~/~1~~h~
+end
+if 12@ == 1
+then
+    00BA: text_styled 'T_IF22' 3000 ms 6 // mostrar texto 'Stats basicos'
+    0302: text_4numbers 'T_IF23' $strengh $charm $knowledge $reputation 8000 ms 5 // Fuerza: ~g~~1~~h~, Carisma: ~g~~1~~h~, Conocimiento: ~g~~1~~h~, Reputacion ~g~~1~~h~.
+end
+if 12@ == 2
+then
+    00BA: text_styled 'T_IF27' 3000 ms 6 // mostrar texto 'Talentos'
+    0302: text_4numbers 'T_IF28' $driving_skill $selling_skill $weapon_skill 0 8000 ms 5 // Habilidad de manejo: ~r~~1~~h~, Habilidad de venta: ~r~~1~~h~, Habilidad con armas: ~r~~1~~h~, Otra?: ~r~~1~~h~.
+end
+if 12@ == 3
+then
+    00BA: text_styled 'T_IF29' 3000 ms 6 // mostrar texto 'Experiencia Laboral'
+    0302: text_4numbers 'T_IF30' $l_exp $m_taxi_exp $m_choffeur_exp $m_deliv1_exp 8000 ms 5 // Exp. Laboral: ~y~~1~~h~, Exp. Taxista: ~y~~1~~h~, Exp. Choffer: ~y~~1~~h~, Exp. Distribuidor: ~y~~1~~h~.
+end
+if 12@ == 4
+then
+    00BA: text_styled 'T_IF29' 3000 ms 6 // mostrar texto 'Experiencia Laboral'
+    0302: text_4numbers 'T_IF31' $m_office_exp $m_ambulan_exp $m_firefighter_exp $m_deliv2_exp 8000 ms 5 // Exp. Oficinas: ~y~~1~~h~, Exp. Paramedico: ~y~~1~~h~, Exp. Bombero: ~y~~1~~h~, Exp. Distribuidor maritimo: ~y~~1~~h~.
+end
+if 12@ == 5
+then
+    00BA: text_styled 'T_IF29' 3000 ms 6 // mostrar texto 'Experiencia Laboral'
+    02FD: text_2numbers_lowpriority 'T_IF32' $cop_exp 0 8000 ms 1 // Exp. Policia: ~y~~1~~h~, Exp. Otro?: ~y~~1~~h~.
+end
+return
+
+// -------------------------
+:DEC_HELP
+12@-=1
+if 0>12@
+then 12@=3
+end
+jump @SHOW_HELP
+
+:INC_HELP
+12@+=1
+if 12@>3
+then 12@=0
+end
+jump @SHOW_HELP
+
+:SHOW_HELP
+gosub @REMOVE_LOWTEXTS
+if 12@ == 0
+then 00BB: text_lowpriority 'T_IF60' 8000 ms 1 // Acerca de los ~b~Empleos~w~.
+end
+if 12@ == 1
+then 00BB: text_lowpriority 'T_IF61' 8000 ms 1 // Acerca de los ~b~Stats~w~.
+end
+if 12@ == 2
+then 00BB: text_lowpriority 'T_IF62' 8000 ms 1 // Como ~b~desplazarse~w~ por Liberty City.
+end
+if 12@ == 3
+then 00BB: text_lowpriority 'T_IF63' 8000 ms 1 // Como ubicar actividades.
+end
+return
+
+// -------------------------
+:REMOVE_LOWTEXTS
+03D5: remove_text 'T_IF21' 
+03D5: remove_text 'T_IF23' 
+03D5: remove_text 'T_IF25' 
+03D5: remove_text 'T_IF26' 
+03D5: remove_text 'T_IF28' 
+03D5: remove_text 'T_IF30' 
+03D5: remove_text 'T_IF31' 
+03D5: remove_text 'T_IF32' 
+03D5: remove_text 'T_IF60' 
+03D5: remove_text 'T_IF61' 
+03D5: remove_text 'T_IF62' 
+03D5: remove_text 'T_IF63' 
+return
+

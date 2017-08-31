@@ -1,0 +1,53 @@
+:ENERGY_MACHINA
+thread 'EN_MACH'
+
+{==================================================
+MAIN LOOP
+==================================================}
+:ENERGY_MACHINA_LOOP
+wait 0 ms
+
+if 10@ == 0
+then
+    if 2>$energy
+    then
+        if $ONMISSION==0
+        then 03E5: text_box 'T_EN3' // ~h~Te estas quedando sin ~w~energia~h~. Dirigete a un punto de ~w~'salvar partida'~h~ para recuperarte.
+        end
+        10@=1
+    end
+end
+
+if 10@ == 1
+then
+    if $energy>10
+    then 10@=0
+    end
+end
+
+gosub @ENERGY_COMSUMPTION
+jump @ENERGY_MACHINA_LOOP
+
+
+{==================================================
+SUBROUTINES
+==================================================}
+:ENERGY_COMSUMPTION
+if $energy>0
+then
+    if $ONMISSION == 1
+    then 0@=3000 // 6*60*1000 miliseconds / 100 Energy points = 3600 ms/ep
+    else 0@=12000 // (20h)*60*1000 / 100 = 12000
+    end
+    0060: 0@ -= 16@ // integer values
+    if 0>0@
+    then
+        16@=0
+        $energy-=1
+    end
+else
+    if not $energy==0
+    then $energy=0
+    end
+end
+return

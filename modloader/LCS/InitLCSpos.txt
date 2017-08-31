@@ -1,0 +1,37 @@
+{$CLEO .cs}
+thread 'InitLCSpos'
+
+const
+    ICON_AIRPORT = 5
+    ICON_AMMU = 6
+    ICON_CJ = 15
+    ICON_CRASH = 16
+    ICON_SAVE = 35
+    ICON_UNKNOWN = 37
+    ICON_P_SPRAY = 63
+end
+
+:Main
+04CE: 0@ = create_icon_marker_without_sphere ICON_SAVE at 815.8452 -262.6576 23.259
+04CE: 1@ = create_icon_marker_without_sphere ICON_SAVE at -42.7571 -432.9879 31.9796
+04CE: 2@ = create_icon_marker_without_sphere ICON_SAVE at -1165.9435 296.8209 47.2251
+
+04CE: 4@ = create_icon_marker_without_sphere ICON_P_SPRAY at 590.1664 -353.5648 16.8117
+04CE: 5@ = create_icon_marker_without_sphere ICON_P_SPRAY at 40.2945 -493.4092 32.1342
+04CE: 3@ = create_icon_marker_without_sphere ICON_P_SPRAY at -1476.39 34.9131 64.7875
+
+04CE: 6@ = create_icon_marker_without_sphere ICON_AMMU at 732.6213 -398.8792 21.2051
+04CE: 7@ = create_icon_marker_without_sphere ICON_AMMU at 14.2221 -714.7487 32.4057
+04CE: 8@ = create_icon_marker_without_sphere ICON_AMMU at -164.2915 -1257.7159 32.1046
+
+04CE: 9@ = create_icon_marker_without_sphere ICON_AIRPORT at -1098.7217 -599.7034 17.2962
+
+02A8: 10@ = create_marker ICON_CJ at 554.263 -416.9243 21.6328
+02A8: 11@ = create_marker ICON_UNKNOWN at 2488.5601 -1666.84 13.3437
+
+00A1: put_actor $PLAYER_ACTOR at 1085.1281 -193.3761 56.2417
+0173: set_actor $PLAYER_ACTOR Z_angle_to 103.0
+0373: set_camera_directly_behind_player
+02EB: restore_camera_with_jumpcut
+//0960: enable_player $PLAYER_CHAR stats_box 0
+0A93: end_custom_thread

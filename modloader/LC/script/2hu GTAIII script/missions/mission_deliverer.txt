@@ -1,0 +1,1244 @@
+//-------------Mission x---------------
+// Deliverer
+{
+0@: mission car
+1@, 2@, 3@: dummy position
+4@, 5@: dummy variables
+9@: earning calculations
+10@: state variable
+11@: dummy marker
+12@, 13@, 14@: dummy position 2
+}
+
+:M_DELIV
+thread 'DELIV' 
+gosub @M_DELIV_START
+if wasted_or_busted 
+then gosub @M_DELIV_FAIL
+end
+gosub @M_DELIV_CLEANUP
+end_thread 
+
+:M_DELIV_START
+$ONMISSION=1
+00D9: 0@ = actor $PLAYER_ACTOR car 
+
+if 00DE:   player $PLAYER_CHAR driving_vehicle_type #MRWONGS 
+then
+    00BB: text_lowpriority 'M_WDA1' 5000 ms 1 // La mercancia esta en el almacen lista esperando a ser despachada.
+    gosub @M_DELIV_GET_START_LOCATION
+    018A: 11@ = create_checkpoint_at 1@ 2@ 3@
+    jump @M_DELIV_LOOP
+end
+if or
+00DE:   player $PLAYER_CHAR driving_vehicle_type #SPEEDER 
+00DE:   player $PLAYER_CHAR driving_vehicle_type #REEFER 
+then
+    00BB: text_lowpriority 'M_WDB01' 5000 ms 1 // La mercancia esta lista en el muelle para ser despachada.
+    gosub @M_DELIV2_GET_LOCATION
+    018A: 11@ = create_checkpoint_at 1@ 2@ 3@
+    jump @M_DELIV2_LOOP
+end
+if 00DE:   player $PLAYER_CHAR driving_vehicle_type #RUMPO 
+then
+    00BB: text_lowpriority 'M_WDC01' 5000 ms 1 // Los paquetes estan preparados en almacen para ser despachados.
+    //gosub @M_DELIV_GET_START_LOCATION
+    1@=902.4141
+    2@=-583.9598
+    3@=14.9727
+    018A: 11@ = create_checkpoint_at 1@ 2@ 3@
+    $m_deliv_pflag1=0
+    $m_deliv_pflag2=0
+    $m_deliv_pflag3=0
+    $m_deliv_pflag4=0
+    $m_deliv_pflag5=0
+    0213: $m_deliv_package1 = create_pickup #package1 type 3 at 900.2841 -592.4069 15.7395
+    0213: $m_deliv_package2 = create_pickup #package1 type 3 at 907.616 -594.8512 16.7435
+    0213: $m_deliv_package3 = create_pickup #package1 type 3 at 903.2709 -599.4506 17.3389
+    0213: $m_deliv_package4 = create_pickup #package1 type 3 at 900.1134 -601.603 16.9006
+    0213: $m_deliv_package5 = create_pickup #package1 type 3 at 904.5573 -602.6436 16.5067
+    jump @M_DELIV3_LOOP
+end
+jump @M_DELIV3_LOOP
+{===================================================
+Deliverer type A - LOOP
+===================================================}
+{
+Las actividades de distribuidor consisten en:
+-detienes el vehiculo en una sphere
+-aparece otra sphere donde te tienes que posicionar a pié
+-aparece una barra de "cargando" cuyo tiempo de carga será mas rápido segun el stat 'fuerza' que poseas
+-te diriges a la parte trasera del vehículo donde hay otra sphere a pie
+-nueva barra "cargando", tiempo de llenado dependerá de tu fuerza
+-luego deberás volver al vehículo
+-deberás viajar a otro lugar
+-una ves llegado, posicionas el auto en otra sphere
+-aparecerá nueva sphere a pie detras del vehiculo, que al posicionarte mostrará barra "descargando" (tiempo de llenado dependerá de tu fuerza)
+-una vez descargado, finaliza la misión y se te muestran tus ganancias
+
+Condiciones de pérdida:
+-Si tu vehículo es destruido, pierdes
+-Si estás en vehículo y pulsas la tecla con la que iniciaste misión, ésta es cancelada
+}
+:M_DELIV_LOOP
+wait 0 ms
+
+if 10@==0
+then
+    if and
+    00DB:   actor $PLAYER_ACTOR in_car 0@
+    0103:   actor $PLAYER_ACTOR stopped_near_point_in_car 1@ 2@ 3@ radius 4.0 4.0 6.0 sphere 1
+    then
+        0164: disable_marker 11@
+        018A: 11@ = create_checkpoint_at 12@ 13@ 14@
+        10@=1
+    end
+end
+
+if 10@==1
+then
+    if 00FF:   actor $PLAYER_ACTOR 1 12@ 13@ 14@ radius 2.0 2.0 2.0
+    then 10@=2
+        $dummy=0
+        03C4: set_status_text_to $dummy 1 'M_WDA3'  // Cargando:
+        0164: disable_marker 11@
+    end
+end
+
+if 10@==2
+then
+    if 80FF:   not actor $PLAYER_ACTOR 1 12@ 13@ 14@ radius 2.0 2.0 2.0
+    then
+        00BB: text_lowpriority 'M_WDA2' 5000 ms 1 // No haz terminado de recoger la mercancia.
+        018A: 11@ = create_checkpoint_at 12@ 13@ 14@
+        0151: remove_status_text $dummy 
+        10@=1
+    end
+    gosub @M_DELIV_INC_DUMMY
+    if $dummy>=100
+    then
+        0151: remove_status_text $dummy 
+        00BB: text_lowpriority 'M_WDA4' 4000 ms 1 // Lleva la mercancia al camion.
+        10@=3
+    end
+end
+
+if 10@==3
+then
+    if 80DB:   not actor $PLAYER_ACTOR in_car 0@
+    then
+        00AA: store_car 0@ position_to 1@ 2@ 3@
+        02F9: unknown_car 0@ unknown_sinus 4@ 
+        02F8: unknown_car 0@ unknown_cosine 5@
+        4@*=-4.0
+        5@*=-4.0
+        0059: 1@ += 5@ // floating-point values 
+        0059: 2@ += 4@ // floating-point values 
+        018A: 11@ = create_checkpoint_at 1@ 2@ 3@
+        10@=4
+    end
+end
+
+if 10@==4
+then
+    if 00FF:   actor $PLAYER_ACTOR 1 1@ 2@ 3@ radius 2.0 2.0 2.0
+    then
+        $dummy=0
+        03C4: set_status_text_to $dummy 1 'M_WDA3'  // Cargando:
+        0164: disable_marker 11@
+        10@=5
+    end
+    if 00DB:   actor $PLAYER_ACTOR in_car 0@
+    then
+        0164: disable_marker 11@
+        00BB: text_lowpriority 'M_WDA5' 5000 ms 1 // No haz terminado de subir la mercancia.
+        10@=3
+    end
+end
+
+if 10@==5
+then
+    if 80FF:   not actor $PLAYER_ACTOR 1 1@ 2@ 3@ radius 2.0 2.0 2.0
+    then
+        00BB: text_lowpriority 'M_WDA5' 5000 ms 1 // No haz terminado de subir la mercancia.
+        0151: remove_status_text $dummy 
+        10@=4
+    end
+    gosub @M_DELIV_INC_DUMMY
+    if $dummy>=100
+    then
+        0164: disable_marker 11@
+        0151: remove_status_text $dummy 
+        0186: 11@ = create_marker_above_car 0@ 
+        00BB: text_lowpriority 'M_WDA6' 4000 ms 1 // Sube al camion.
+        10@=6
+    end
+end
+
+if 10@==6
+then
+    if 00DB:   actor $PLAYER_ACTOR in_car 0@
+    then
+        0164: disable_marker 11@
+        gosub @M_DELIV_GET_DEST_LOCATION
+        018A: 11@ = create_checkpoint_at 1@ 2@ 3@
+        10@=7
+    end
+end
+
+if 10@==7
+then
+    if 0103:   actor $PLAYER_ACTOR stopped_near_point_in_car 1@ 2@ 3@ radius 4.0 4.0 6.0 sphere 1
+    then
+        00BB: text_lowpriority 'M_WDA8' 4000 ms 1 // Descarga y despacha la mercancia.
+        0164: disable_marker 11@
+        10@=8
+    end
+    if 80DB:   not actor $PLAYER_ACTOR in_car 0@
+    then
+        0164: disable_marker 11@
+        0186: 11@ = create_marker_above_car 0@ 
+        00BB: text_lowpriority 'M_WDA7' 4000 ms 1 // Regresa al camion.
+        10@=6
+    end
+end
+
+if 10@==8
+then
+    if 80DB:   not actor $PLAYER_ACTOR in_car 0@
+    then
+        00AA: store_car 0@ position_to 1@ 2@ 3@
+        02F9: unknown_car 0@ unknown_sinus 4@ 
+        02F8: unknown_car 0@ unknown_cosine 5@
+        4@*=-4.0
+        5@*=-4.0
+        0059: 1@ += 5@ // floating-point values 
+        0059: 2@ += 4@ // floating-point values 
+        018A: 11@ = create_checkpoint_at 1@ 2@ 3@
+        10@=9
+    end
+end
+
+if 10@==9
+then
+    if 00FF:   actor $PLAYER_ACTOR 1 1@ 2@ 3@ radius 2.0 2.0 2.0
+    then
+        $dummy=0
+        03C4: set_status_text_to $dummy 1 'M_WDA9'  // Descargando:
+        0164: disable_marker 11@
+        10@=10
+    end
+    if 00DB:   actor $PLAYER_ACTOR in_car 0@
+    then
+        0164: disable_marker 11@
+        00BB: text_lowpriority 'M_WDA10' 5000 ms 1 // No haz terminado de descargar la mercancia.
+        10@=8
+    end
+end
+
+if 10@==10
+then
+    if 80FF:   not actor $PLAYER_ACTOR 1 1@ 2@ 3@ radius 2.0 2.0 2.0
+    then
+        00BB: text_lowpriority 'M_WDA10' 5000 ms 1 // No haz terminado de descargar la mercancia.
+        0151: remove_status_text $dummy 
+        10@=9
+    end
+    gosub @M_DELIV_INC_DUMMY
+    if $dummy>=100
+    then
+        0164: disable_marker 11@
+        0151: remove_status_text $dummy 
+        018A: 11@ = create_checkpoint_at 12@ 13@ 14@
+        10@=11
+    end
+end
+
+if 10@==11
+then
+    if 00FF:   actor $PLAYER_ACTOR 1 12@ 13@ 14@ radius 2.0 2.0 2.0
+    then
+        $dummy=0
+        03C4: set_status_text_to $dummy 1 'M_WDA9'  // Descargando:
+        0164: disable_marker 11@
+        10@=12
+    end
+end
+
+if 10@==12
+then
+    if 80FF:   not actor $PLAYER_ACTOR 1 12@ 13@ 14@ radius 2.0 2.0 2.0
+    then
+        00BB: text_lowpriority 'M_WDA11' 5000 ms 1 // No haz terminado de despachar la mercancia.
+        0151: remove_status_text $dummy 
+        10@=11
+    end
+    gosub @M_DELIV_INC_DUMMY
+    if $dummy>=100
+    then
+        0151: remove_status_text $dummy
+        jump @M_DELIV_PASSED
+    end
+end
+
+if 0119:   car 0@ wrecked
+then
+    00BA: text_styled 'M_WF' 5000 ms 5  // Trabajo Finalizado
+    01E3: text_1number_styled 'TSCORE' 0 6000 ms 6  // EARNINGS: $~1~
+    00BB: text_lowpriority 'M_WDA12' 5000 ms 1 // ~r~Tu vehiculo de trabajo esta dañado.
+    jump @M_DELIV_FAIL
+end
+
+if $energy == 0
+then 00BB: text_lowpriority 'T_EN2' 5000 ms 1 // ~r~Te haz quedado sin energia para seguir trabajando. Necesitas descanzar.
+     jump @M_DELIV_CANCEL
+end
+
+if 00DB:   actor $PLAYER_ACTOR in_car 0@
+then gosub @M_DELIV_CANCEL
+end
+if 10@==100
+then
+    00BA: text_styled 'M_WC' 5000 ms 5  // Trabajo cancelado
+    01E3: text_1number_styled 'TSCORE' 0 6000 ms 6  // EARNINGS: $~1~
+    jump @M_DELIV_FAIL
+end
+jump @M_DELIV_LOOP
+
+{===================================================
+Deliverer type B - LOOP
+===================================================}
+{
+Las actividades de distribuidor tipo B (en lancha) son aún más simples:
+-detienes el vehiculo en una sphere
+-aparece una barra de "cargando" cuyo tiempo de carga será mas rápido segun el stat 'fuerza' que poseas
+-deberás viajar a otro lugar
+-una ves llegado, posicionas el barco en otra sphere
+-mostrará barra "descargando" (tiempo de llenado dependerá de tu fuerza)
+-una vez descargado, finaliza la misión y se te muestran tus ganancias
+
+Condiciones de pérdida:
+-Si te alejas mucho de tu vehiculo (lo que se produciría si te bajas en tierra firme)
+-Si estás en vehículo y pulsas la tecla con la que iniciaste misión, ésta es cancelada
+}
+:M_DELIV2_LOOP
+wait 0 ms
+
+if 10@ == 0
+then
+    if 00FE:   actor $PLAYER_ACTOR 1 1@ 2@ 3@ radius 8.0 8.0 8.0 //00FF:   actor $PLAYER_ACTOR 1 1@ 2@ 3@ radius 8.0 8.0 8.0
+    then
+        $dummy=0
+        03C4: set_status_text_to $dummy 1 'M_WDA3'  // Cargando:
+        0164: disable_marker 11@
+        10@=1
+    end
+end
+
+if 10@ == 1
+then
+    if 80FE:   not actor $PLAYER_ACTOR 1 1@ 2@ 3@ radius 8.0 8.0 8.0 //80FF:   not actor $PLAYER_ACTOR 1 1@ 2@ 3@ radius 8.0 8.0 8.0
+    then
+        00BB: text_lowpriority 'M_WDA2' 5000 ms 1 // No haz terminado de recoger la mercancia.
+        018A: 11@ = create_checkpoint_at 1@ 2@ 3@
+        0151: remove_status_text $dummy 
+        10@=0
+    end
+    gosub @M_DELIV_INC_DUMMY
+    if $dummy>=100
+    then
+        0151: remove_status_text $dummy 
+        if 00DE:   player $PLAYER_CHAR driving_vehicle_type #SPEEDER 
+        then 0209: $dummy2 = random_int 200 301
+        end
+        if 00DE:   player $PLAYER_CHAR driving_vehicle_type #REEFER 
+        then 0209: $dummy2 = random_int 280 900
+        end
+        03C4: set_status_text_to $dummy2 0 'M_WDB04'  // Carga(Kg):
+        00BB: text_lowpriority 'M_WDB02' 4000 ms 1 // Despacha la mercancia.
+        gosub @M_DELIV2_GET_NEW_INDEX
+        gosub @M_DELIV2_GET_LOCATION
+        018A: 11@ = create_checkpoint_at 12@ 13@ 14@
+        10@=2
+    end
+end
+
+if 10@ == 2
+then
+    if 00FE:   actor $PLAYER_ACTOR 1 12@ 13@ 14@ radius 8.0 8.0 8.0 //00FF:   actor $PLAYER_ACTOR 1 12@ 13@ 14@ radius 8.0 8.0 8.0
+    then
+        0151: remove_status_text $dummy2 
+        $dummy=0
+        03C4: set_status_text_to $dummy 1 'M_WDA9'  // Descargando:
+        0164: disable_marker 11@
+        10@=3
+    end
+end
+
+if 10@ == 3
+then
+    if 80FE:   not actor $PLAYER_ACTOR 1 12@ 13@ 14@ radius 8.0 8.0 8.0 //80FF:   not actor $PLAYER_ACTOR 1 12@ 13@ 14@ radius 8.0 8.0 8.0
+    then
+        00BB: text_lowpriority 'M_WDA11' 5000 ms 1 // No haz terminado de despachar la mercancia.
+        018A: 11@ = create_checkpoint_at 12@ 13@ 14@
+        0151: remove_status_text $dummy 
+        03C4: set_status_text_to $dummy2 0 'M_WDB04'  // Carga(Kg):
+        10@=2
+    end
+    gosub @M_DELIV_INC_DUMMY
+    if $dummy>=100
+    then
+        0151: remove_status_text $dummy 
+        jump @M_DELIV_PASSED
+    end
+end
+
+if 8202:   not actor $PLAYER_ACTOR near_car 0@ radius 40.0 40.0 unknown 0
+then
+    00BB: text_lowpriority 'M_WDB03' 5000 ms 1 // ~r~Haz abandonado el barco que contiene la mercancia.
+    jump @M_DELIV_FAIL
+end
+
+if $energy == 0
+then 00BB: text_lowpriority 'T_EN2' 5000 ms 1 // ~r~Te haz quedado sin energia para seguir trabajando. Necesitas descanzar.
+     jump @M_DELIV_CANCEL
+end
+
+if 00DB:   actor $PLAYER_ACTOR in_car 0@
+then gosub @M_DELIV_CANCEL
+end
+if 10@==100
+then
+    00BA: text_styled 'M_WC' 5000 ms 5  // Trabajo cancelado
+    01E3: text_1number_styled 'TSCORE' 0 6000 ms 6  // EARNINGS: $~1~
+    jump @M_DELIV_FAIL
+end
+jump @M_DELIV2_LOOP
+
+
+
+{===================================================
+Deliverer type C - LOOP
+===================================================}
+{
+Las actividades de distribuidor tipo C son las siguientes:
+-son creados objetos o pickups tipo cajas (o paquetes) y el codigo genera un checkpoint y una sphere
+-detienes el vehiculo en la sphere
+-debes acercarte a varias cajas para que aparesca una barra que indique "cargando"
+-o debes recoger varios paquetes
+-la barra de "cargando" se llenará mas rápido segun el stat 'fuerza' que poseas
+-debes subir las cajas y/o paquetes al camion antes de recoger otra caja o paquete
+-te parecerá en status-text la cantidad de paquetes que debes entregar
+-deberás viajar a varios lugares a entregar los paquetes (dichos lugares pueden ser casas, condominios o galpones)
+-una ves llegado, te vas a la parte trasera del camion a bajar el paquete o caja (barra "descargando", tiempo de llenado depende de fuerza)
+-te diriges al sphere a entregar dicho paquete, y te vas al siguiente checkpoint
+-cuando hayas entregado todos los paquetes, finaliza la misión mostrándote cuanto dinero haz ganado
+
+Condiciones de pérdida:
+-si tu vehiculo está dañado
+-Si estás en vehículo y pulsas la tecla con la que iniciaste misión, ésta es cancelada
+}
+:M_DELIV3_LOOP
+wait 0 ms
+
+if 10@ == 0
+then
+    if and
+    00F7:   player $PLAYER_CHAR 1 1@ 2@ 3@ radius 4.0 4.0 4.0 // in car
+    00DB:   actor $PLAYER_ACTOR in_car 0@ 
+    01C1:   car 0@ stopped
+    then
+        10@=1
+        $m_deliv3_packages=0
+        03C4: set_status_text_to $m_deliv3_packages 0 'M_WDC02' // Paquetes:
+        03DC: $m_deliv_pmarker1 = create_marker_above_pickup $m_deliv_package1
+        03DC: $m_deliv_pmarker2 = create_marker_above_pickup $m_deliv_package2
+        03DC: $m_deliv_pmarker3 = create_marker_above_pickup $m_deliv_package3
+        03DC: $m_deliv_pmarker4 = create_marker_above_pickup $m_deliv_package4
+        03DC: $m_deliv_pmarker5 = create_marker_above_pickup $m_deliv_package5
+        0164: disable_marker 11@
+        00BB: text_lowpriority 'M_WDC03' 5000 ms 1 // Recoge los ~p~paquetes~h~.
+    end
+end
+
+if 10@ == 1
+then
+    for 4@ = 0 to 4
+        gosub @M_DELIV3_LOAD_PICKUP
+        if 5@ == 0
+        then
+            if 0214:   pickup 6@ picked_up
+            then
+                Inc($m_deliv3_packages)
+                0164: disable_marker 7@
+                5@=1
+            end
+        end
+        gosub @M_DELIV3_UNLOAD_PICKUP
+    end
+    if and
+    $m_deliv_pflag1==1
+    $m_deliv_pflag2==1
+    $m_deliv_pflag3==1
+    $m_deliv_pflag4==1
+    $m_deliv_pflag5==1
+    then 10@=3
+         00BB: text_lowpriority 'M_WDC04' 5000 ms 1 // Ve a entregar los paquetes a su ~p~destino~h~.
+         12@=869.5995
+         13@=-633.9909
+         14@=14.9727
+         018A: 11@ = create_checkpoint_at 12@ 13@ 14@
+    end
+end
+
+if 10@ == 3
+then
+    if and
+    00F7:   player $PLAYER_CHAR 1 12@ 13@ 14@ radius 4.0 4.0 4.0 // in car
+    00DB:   actor $PLAYER_ACTOR in_car 0@ 
+    01C1:   car 0@ stopped
+    then 10@=4
+         0164: disable_marker 11@ 
+         00BB: text_lowpriority 'M_WDC05' 5000 ms 1 // Toca el claxon para llamar al ~p~destinatario~h~.
+    end
+end
+
+if 10@ == 4
+then
+    if and
+    00F7:   player $PLAYER_CHAR 1 12@ 13@ 14@ radius 4.0 4.0 4.0 // in car
+    00DB:   actor $PLAYER_ACTOR in_car 0@ 
+    0122:   player $PLAYER_CHAR pressing_horn 
+    then 10@=5
+    end
+end
+
+if 10@ == 5
+then
+    if and
+    00F7:   player $PLAYER_CHAR 1 12@ 13@ 14@ radius 4.0 4.0 4.0 // in car
+    00DB:   actor $PLAYER_ACTOR in_car 0@ 
+    8122:   not player $PLAYER_CHAR pressing_horn 
+    then 10@=6
+        0376: $m_deliv_actor = create_random_actor 868.6785 -652.1368 14.9727
+        0211: actor $m_deliv_actor walk_to 12@ 13@ 14@
+        0187: 11@ = create_marker_above_actor $m_deliv_actor 
+    end
+end
+
+if 10@ == 6
+then
+    if 00FF:   actor $m_deliv_actor 0 12@ 13@ 14@ radius 3.0 3.0 3.0
+    then 16@=0
+         10@=7
+         011C: actor $m_deliv_actor clear_objective
+    end
+end
+
+if 10@ == 7
+then
+    if 16@>=4000
+    then
+        00BB: text_lowpriority 'M_WDC06' 5000 ms 1 // Paquete entregado!
+        0164: disable_marker 11@ 
+        01C2: remove_references_to_actor $m_deliv_actor // Like turning an actor into a random pedestrian 
+        Dec($m_deliv3_packages)
+        if $m_deliv3_packages==0
+        then 0151: remove_status_text $m_deliv3_packages 
+             jump @M_DELIV_PASSED
+        else 10@=3
+             018A: 11@ = create_checkpoint_at 12@ 13@ 14@
+        end
+    end
+end
+
+// El jugador se baja del vehiculo cuando no debe
+if or
+10@ == 0 // antes de recoger los paquetes
+10@ == 3 // antes de llegar al destinatario
+10@ == 4 // antes de sonar el claxon
+then
+    if 8442:   not player $PLAYER_CHAR in_car 0@
+    then 0084: $dummy = 10@ // integer values and handles 
+         10@=2
+         0164: disable_marker 11@ 
+         0186: 11@ = create_marker_above_car 0@
+    end
+end
+if 10@ == 2
+then
+    if 0442:   player $PLAYER_CHAR in_car 0@
+    then 0084: 10@ = $dummy // integer values and handles 
+         0164: disable_marker 11@
+         if 10@==0 // antes de recoger los paquetes
+         then 018A: 11@ = create_checkpoint_at 1@ 2@ 3@
+         end
+         if 10@==3 // antes de llegar al destinatario
+         then 018A: 11@ = create_checkpoint_at 12@ 13@ 14@
+         end
+         if 10@==4 // antes de sonar el claxon
+         then 00BB: text_lowpriority 'M_WDC05' 5000 ms 1 // Toca el claxon para llamar al ~p~destinatario~h~.
+         end
+    end
+end
+
+if 0119:   car 0@ wrecked
+then 00BA: text_styled 'M_WF' 5000 ms 5  // Trabajo Finalizado
+     01E3: text_1number_styled 'TSCORE' 0 6000 ms 6  // EARNINGS: $~1~
+     00BB: text_lowpriority 'M_WDC07' 5000 ms 1 // ~r~Haz perdido tu vehiculo de trabajo.
+     jump @M_DELIV_FAIL
+end
+
+if $energy == 0
+then 00BB: text_lowpriority 'T_EN2' 5000 ms 1 // ~r~Te haz quedado sin energia para seguir trabajando. Necesitas descanzar.
+     jump @M_DELIV_FAIL
+end
+
+if 00DB:   actor $PLAYER_ACTOR in_car 0@
+then gosub @M_DELIV_CANCEL
+end
+if 10@==100
+then
+    00BA: text_styled 'M_WC' 5000 ms 5  // Trabajo cancelado
+    01E3: text_1number_styled 'TSCORE' 0 6000 ms 6  // EARNINGS: $~1~
+    jump @M_DELIV_FAIL
+end
+jump @M_DELIV3_LOOP
+
+// --------------------------------------
+:M_DELIV3_LOAD_PICKUP
+if 4@ == 0
+then 0084: 5@ = $m_deliv_pflag1 // integer values and handles 
+     0084: 6@ = $m_deliv_package1 // integer values and handles 
+     0084: 7@ = $m_deliv_pmarker1 // integer values and handles 
+end
+if 4@ == 1
+then 0084: 5@ = $m_deliv_pflag2 // integer values and handles 
+     0084: 6@ = $m_deliv_package2 // integer values and handles 
+     0084: 7@ = $m_deliv_pmarker2 // integer values and handles 
+end
+if 4@ == 2
+then 0084: 5@ = $m_deliv_pflag3 // integer values and handles 
+     0084: 6@ = $m_deliv_package3 // integer values and handles 
+     0084: 7@ = $m_deliv_pmarker3 // integer values and handles 
+end
+if 4@ == 3
+then 0084: 5@ = $m_deliv_pflag4 // integer values and handles 
+     0084: 6@ = $m_deliv_package4 // integer values and handles 
+     0084: 7@ = $m_deliv_pmarker4 // integer values and handles 
+end
+if 4@ == 4
+then 0084: 5@ = $m_deliv_pflag5 // integer values and handles 
+     0084: 6@ = $m_deliv_package5 // integer values and handles 
+     0084: 7@ = $m_deliv_pmarker5 // integer values and handles 
+end
+return
+
+:M_DELIV3_UNLOAD_PICKUP
+if 4@ == 0
+then 0084: $m_deliv_pflag1 = 5@ // integer values and handles 
+     0084: $m_deliv_package1 = 6@ // integer values and handles 
+     0084: $m_deliv_pmarker1 = 7@ // integer values and handles 
+end
+if 4@ == 1
+then 0084: $m_deliv_pflag2 = 5@ // integer values and handles 
+     0084: $m_deliv_package2 = 6@ // integer values and handles 
+     0084: $m_deliv_pmarker2 = 7@ // integer values and handles 
+end
+if 4@ == 2
+then 0084: $m_deliv_pflag3 = 5@ // integer values and handles 
+     0084: $m_deliv_package3 = 6@ // integer values and handles 
+     0084: $m_deliv_pmarker3 = 7@ // integer values and handles 
+end
+if 4@ == 3
+then 0084: $m_deliv_pflag4 = 5@ // integer values and handles 
+     0084: $m_deliv_package4 = 6@ // integer values and handles 
+     0084: $m_deliv_pmarker4 = 7@ // integer values and handles 
+end
+if 4@ == 4
+then 0084: $m_deliv_pflag5 = 5@ // integer values and handles 
+     0084: $m_deliv_package5 = 6@ // integer values and handles 
+     0084: $m_deliv_pmarker5 = 7@ // integer values and handles 
+end
+return
+
+{===================================================
+LOCAL SUBROUTINES
+===================================================}
+:M_DELIV_CANCEL
+0293: $CURRENT_CONTROLS = current_controls 
+if not $CURRENT_CONTROLS == 3 // integer values 
+then
+    if and
+    00E1:   pad 0 key_pressed 19 
+    $ONMISSION == 1 // integer values 
+    then 10@=99
+    end
+else
+    if and
+    00E1:   pad 0 key_pressed 14 
+    $ONMISSION == 1 // integer values 
+    then 10@=99
+    end
+end
+
+if 10@==99
+then
+    0293: $CURRENT_CONTROLS = current_controls 
+    if not $CURRENT_CONTROLS == 3 // integer values 
+    then
+        if and
+        80E1:   not pad 0 key_pressed 19 
+        $ONMISSION == 1 // integer values 
+        then 10@=100
+        end
+    else
+        if and
+        80E1:   not pad 0 key_pressed 14 
+        $ONMISSION == 1 // integer values 
+        then 10@=100
+        end
+    end
+end
+return
+
+:M_DELIV_GET_START_LOCATION
+gosub @M_DELIV_INC_COUNT1
+if $M_DELIV_INDEX1==0
+then
+    1@=1212.2131
+    2@=-785.6823
+    3@=14.6598
+    12@=1211.9458
+    13@=-774.8378
+    14@=14.6283
+end
+if $M_DELIV_INDEX1==1
+then
+    1@=1517.2179
+    2@=-896.7772
+    3@=11.8262
+    12@=1527.5519
+    13@=-929.2263
+    14@=19.4099
+end
+if $M_DELIV_INDEX1==2
+then
+    1@=1539.447
+    2@=-842.7407
+    3@=11.8262
+    12@=1548.545
+    13@=-850.5217
+    14@=11.8262
+end
+if $M_DELIV_INDEX1==3
+then
+    1@=978.1663
+    2@=-1099.5483
+    3@=13.173
+    12@=987.0018
+    13@=-1103.2683
+    14@=14.6927
+end
+if $M_DELIV_INDEX1==4
+then
+    1@=1292.3752
+    2@=-991.0035
+    3@=14.8774
+    12@=1295.0531
+    13@=-1000.9507
+    14@=14.8802
+end
+if $M_DELIV_INDEX1==5
+then
+    1@=1043.9518
+    2@=-1017.1907
+    3@=14.9661
+    12@=1033.1198
+    13@=-1011.6786
+    14@=14.9727
+end
+if $M_DELIV_INDEX1==6
+then
+    1@=1414.4371
+    2@=-166.0956
+    3@=51.245
+    12@=1427.1079
+    13@=-170.7456
+    14@=50.7727
+end
+if $M_DELIV_INDEX1==7
+then
+    1@=882.8661
+    2@=-509.5771
+    3@=14.9727
+    12@=884.9943
+    13@=-525.0334
+    14@=16.5928
+end
+if $M_DELIV_INDEX1==8
+then
+    1@=1090.7872
+    2@=-578.8605
+    3@=14.7508
+    12@=1097.4672
+    13@=-588.2263
+    14@=14.851
+end
+if $M_DELIV_INDEX1==9
+then
+    1@=1099.7089
+    2@=-149.532
+    3@=9.9081
+    12@=1087.5673
+    13@=-154.5362
+    14@=9.8515
+end
+return
+
+:M_DELIV_GET_DEST_LOCATION
+gosub @M_DELIV_INC_COUNT2
+if $M_DELIV_INDEX2==0
+then
+    1@=915.881
+    2@=-677.5621
+    3@=14.9727
+    12@=958.475
+    13@=-674.5183
+    14@=14.9727
+end
+if $M_DELIV_INDEX2==1
+then
+    1@=1144.3732
+    2@=-93.3667
+    3@=7.4726
+    12@=1157.0482
+    13@=-96.6855
+    14@=7.6461
+end
+if $M_DELIV_INDEX2==2
+then
+    1@=1069.5994
+    2@=-408.905
+    3@=15.0163
+    12@=1064.5956
+    13@=-415.833
+    14@=14.9727
+end
+if $M_DELIV_INDEX2==3
+then
+    1@=1140.6774
+    2@=-448.0839
+    3@=20.1192
+    12@=1134.3514
+    13@=-457.2534
+    14@=19.9728
+end
+if $M_DELIV_INDEX2==4
+then
+    1@=1217.8524
+    2@=-328.6252
+    3@=26.074
+    12@=1219.2803
+    13@=-312.9019
+    14@=29.9508
+end
+if $M_DELIV_INDEX2==5
+then
+    1@=1284.191
+    2@=-621.0168
+    3@=12.2073
+    12@=1272.4387
+    13@=-610.6138
+    14@=12.4573
+end
+if $M_DELIV_INDEX2==6
+then
+    1@=1299.5864
+    2@=-796.9967
+    3@=15.0258
+    12@=1305.1819
+    13@=-809.0173
+    14@=15.0258
+end
+if $M_DELIV_INDEX2==7
+then
+    1@=1576.0071
+    2@=-688.7857
+    3@=11.8261
+    12@=1574.1559
+    13@=-676.72
+    14@=11.8261
+end
+if $M_DELIV_INDEX2==8
+then
+    1@=1532.2882
+    2@=-900.0372
+    3@=11.8262
+    12@=1477.6279
+    13@=-923.6794
+    14@=19.4087
+end
+if $M_DELIV_INDEX2==9
+then
+    1@=1421.1154
+    2@=-179.6127
+    3@=50.6021
+    12@=1462.9259
+    13@=-188.9854
+    14@=55.4006
+end
+if $M_DELIV_INDEX2==10
+then
+    1@=1025.0175
+    2@=-464.2631
+    3@=14.9727
+    12@=1017.3037
+    13@=-444.3647
+    14@=14.9727
+end
+if $M_DELIV_INDEX2==11
+then
+    1@=1031.554
+    2@=-635.6276
+    3@=14.9727
+    12@=1024.4391
+    13@=-652.7698
+    14@=14.9727
+end
+if $M_DELIV_INDEX2==12
+then
+    1@=1140.2646
+    2@=-618.3439
+    3@=14.7715
+    12@=1147.4233
+    13@=-596.9571
+    14@=14.9806
+end
+return
+
+:M_DELIV_INC_COUNT1
+if $M_DELIV_COUNT1>9
+then $M_DELIV_COUNT1=0
+end
+if $M_DELIV_COUNT1==0
+then $M_DELIV_INDEX1=9
+end
+if $M_DELIV_COUNT1==1
+then $M_DELIV_INDEX1=5
+end
+if $M_DELIV_COUNT1==2
+then $M_DELIV_INDEX1=2
+end
+if $M_DELIV_COUNT1==3
+then $M_DELIV_INDEX1=6
+end
+if $M_DELIV_COUNT1==4
+then $M_DELIV_INDEX1=1
+end
+if $M_DELIV_COUNT1==5
+then $M_DELIV_INDEX1=4
+end
+if $M_DELIV_COUNT1==6
+then $M_DELIV_INDEX1=8
+end
+if $M_DELIV_COUNT1==7
+then $M_DELIV_INDEX1=3
+end
+if $M_DELIV_COUNT1==8
+then $M_DELIV_INDEX1=0
+end
+if $M_DELIV_COUNT1==9
+then $M_DELIV_INDEX1=7
+end
+Inc($M_DELIV_COUNT1)
+return
+
+:M_DELIV_INC_COUNT2
+if $M_DELIV_COUNT2>12
+then $M_DELIV_COUNT2=0
+end
+if $M_DELIV_COUNT2==0
+then $M_DELIV_INDEX2=5
+end
+if $M_DELIV_COUNT2==1
+then $M_DELIV_INDEX2=11
+end
+if $M_DELIV_COUNT2==2
+then $M_DELIV_INDEX2=1
+end
+if $M_DELIV_COUNT2==3
+then $M_DELIV_INDEX2=12
+end
+if $M_DELIV_COUNT2==4
+then $M_DELIV_INDEX2=8
+end
+if $M_DELIV_COUNT2==5
+then $M_DELIV_INDEX2=2
+end
+if $M_DELIV_COUNT2==6
+then $M_DELIV_INDEX2=10
+end
+if $M_DELIV_COUNT2==7
+then $M_DELIV_INDEX2=6
+end
+if $M_DELIV_COUNT2==8
+then $M_DELIV_INDEX2=0
+end
+if $M_DELIV_COUNT2==9
+then $M_DELIV_INDEX2=3
+end
+if $M_DELIV_COUNT2==10
+then $M_DELIV_INDEX2=9
+end
+if $M_DELIV_COUNT2==11
+then $M_DELIV_INDEX2=4
+end
+if $M_DELIV_COUNT2==12
+then $M_DELIV_INDEX2=7
+end
+Inc($M_DELIV_COUNT2)
+return
+
+:M_DELIV2_GET_NEW_INDEX
+0084: $dummy = $M_DELIV2_INDEX // integer values and handles 
+repeat
+wait 0 ms
+    0209: $M_DELIV2_INDEX = random_int 0 16
+until 803A:   not $M_DELIV2_INDEX == $dummy // integer values and handles
+return
+
+:M_DELIV2_GET_LOCATION
+if $M_DELIV2_INDEX==0
+then
+    1@=810.2796
+    2@=-1123.5924
+    3@=-0.1722
+    12@=814.0466
+    13@=-1101.4022
+    14@=-0.1076
+end
+if $M_DELIV2_INDEX==1
+then
+    1@=1240.0889
+    2@=-1258.8219
+    3@=0.558
+    12@=1264.4131
+    13@=-1178.4747
+    14@=0.4812
+end
+if $M_DELIV2_INDEX==2
+then
+    1@=1510.0099
+    2@=-1157.6265
+    3@=0.0246
+    12@=1371.1954
+    13@=-1138.1395
+    14@=0.3416
+end
+if $M_DELIV2_INDEX==3
+then
+    1@=1611.7582
+    2@=-943.7305
+    3@=-0.1135
+    12@=1676.9017
+    13@=-667.6556
+    14@=0.3887
+end
+if $M_DELIV2_INDEX==4
+then
+    1@=1691.0652
+    2@=-367.9948
+    3@=0.1229
+    12@=1647.3728
+    13@=-344.7178
+    14@=0.3258
+end
+if $M_DELIV2_INDEX==5
+then
+    1@=751.3613
+    2@=146.6857
+    3@=0.4914
+    12@=747.1983
+    13@=71.1077
+    14@=0.0136
+end
+if $M_DELIV2_INDEX==6
+then
+    1@=555.0974
+    2@=-1050.7748
+    3@=0.226
+    12@=469.0202
+    13@=-1034.3318
+    14@=0.4115
+end
+if $M_DELIV2_INDEX==7
+then
+    1@=528.0396
+    2@=-787.2488
+    3@=-0.2323
+    12@=553.7927
+    13@=-685.3983
+    14@=-0.1409
+end
+if $M_DELIV2_INDEX==8
+then
+    1@=90.9694
+    2@=209.1625
+    3@=0.0677
+    12@=135.8771
+    13@=278.5211
+    14@=-0.1
+end
+if $M_DELIV2_INDEX==9
+then
+    1@=-278.5588
+    2@=-151.0527
+    3@=0.3575
+    12@=-309.2369
+    13@=-118.07
+    14@=-0.093
+end
+if $M_DELIV2_INDEX==10
+then
+    1@=-225.9911
+    2@=-321.1048
+    3@=-0.1603
+    12@=-201.0656
+    13@=-322.1665
+    14@=-0.1394
+end
+if $M_DELIV2_INDEX==11
+then
+    1@=-341.1453
+    2@=-1476.1658
+    3@=0.2712
+    12@=-265.21
+    13@=-1421.5593
+    14@=0.3874
+end
+if $M_DELIV2_INDEX==12
+then
+    1@=-953.0749
+    2@=-1192.6345
+    3@=0.7973
+    12@=-956.9578
+    13@=-1310.8682
+    14@=-0.644
+end
+if $M_DELIV2_INDEX==13
+then
+    1@=-548.2391
+    2@=-912.4686
+    3@=0.2988
+    12@=-485.9927
+    13@=-1050.9147
+    14@=0.8569
+end
+if $M_DELIV2_INDEX==14
+then
+    1@=-1025.3669
+    2@=440.1673
+    3@=0.4298
+    12@=-1136.6725
+    13@=330.3675
+    14@=0.1549
+end
+if $M_DELIV2_INDEX==15
+then
+    1@=-182.0484
+    2@=215.5542
+    3@=0.6802
+    12@=-183.926
+    13@=313.8735
+    14@=-0.601
+end
+return
+
+:M_DELIV_INC_DUMMY
+{
+4@ = -0.25*$strengh + 250.25
+where 4@ is timer count
+and: max desired timer count is 250 for max strengh of 1000
+}
+0084: 4@ = $strengh // integer values and handles 
+008D: 4@ = integer_to_float 4@
+4@*=-0.25
+4@+=250.25
+008C: 4@ = float_to_integer 4@ 
+0060: 4@ -= 16@ // integer values 
+if 0>4@ //16@>=250
+then
+    Inc($dummy,2)
+    16@=0
+end
+return
+
+:M_DELIV_EXPERIENCE
+0008: $l_exp += 1 // integer values 
+create_thread @DRAW_STATS ID_LABORAL_EXP
+0209: 4@ = random_int 1 3 
+if 00DE:   player $PLAYER_CHAR driving_vehicle_type #MRWONGS 
+then 0058: $m_deliv1_exp += 4@ // integer values
+    create_thread @DRAW_STATS ID_DELIV1
+end
+if or
+00DE:   player $PLAYER_CHAR driving_vehicle_type #SPEEDER 
+00DE:   player $PLAYER_CHAR driving_vehicle_type #REEFER 
+then 0058: $m_deliv2_exp += 4@ // integer values 
+    create_thread @DRAW_STATS ID_DELIV2
+end
+if 00DE:   player $PLAYER_CHAR driving_vehicle_type #RUMPO 
+then 0058: $m_deliv1_exp += 4@ // integer values
+    create_thread @DRAW_STATS ID_DELIV1
+end
+return
+
+{===================================================
+END OF THE MISSION
+===================================================}
+:M_DELIV_PASSED
+if 00DE:   player $PLAYER_CHAR driving_vehicle_type #MRWONGS 
+then 0209: 9@ = random_int 12 31
+end
+if or
+00DE:   player $PLAYER_CHAR driving_vehicle_type #SPEEDER 
+00DE:   player $PLAYER_CHAR driving_vehicle_type #REEFER 
+then
+    0209: 9@ = random_int 100 301
+    $dummy2*=24
+    $dummy2/=100
+    0058: 9@ += $dummy2 // integer values 
+end
+if 00DE:   player $PLAYER_CHAR driving_vehicle_type #RUMPO 
+then 0209: 9@ = random_int 12 31
+end
+00BA: text_styled 'M_WO' 5000 ms 5  // Jornada finalizada
+01E3: text_1number_styled 'TSCORE' 9@ 6000 ms 6  // EARNINGS: $~1~
+0109: player $PLAYER_CHAR money += 9@ 
+gosub @M_DELIV_EXPERIENCE
+return
+
+:M_DELIV_FAIL
+return
+
+:M_DELIV_CLEANUP
+$ONMISSION = 0 // integer values
+0151: remove_status_text $dummy
+0151: remove_status_text $dummy2
+0164: disable_marker 11@
+0215: destroy_pickup $m_deliv_package1 
+0215: destroy_pickup $m_deliv_package2 
+0215: destroy_pickup $m_deliv_package3 
+0215: destroy_pickup $m_deliv_package4 
+0215: destroy_pickup $m_deliv_package5 
+0164: disable_marker $m_deliv_pmarker1
+0164: disable_marker $m_deliv_pmarker2
+0164: disable_marker $m_deliv_pmarker3
+0164: disable_marker $m_deliv_pmarker4
+0164: disable_marker $m_deliv_pmarker5
+01C2: remove_references_to_actor $m_deliv_actor // Like turning an actor into a random pedestrian 
+00D8: mission_cleanup 
+return
+
+

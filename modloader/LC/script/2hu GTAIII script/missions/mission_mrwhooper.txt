@@ -1,0 +1,428 @@
+//-------------Mission x---------------
+// Name of Mission
+{
+0@: player car
+1@: customer
+2@, 3@, 4@, 5@, 6@, 7@, 8@, 9@: dummies
+10@: state variable
+11@: dummy marker
+13@, 14@: tiempo de la mision
+15@: car horn flag
+16@ y 17@ son timers
+}
+:M_MWHOOP
+thread 'MWHOOP' 
+gosub @M_MWHOOP_START
+if wasted_or_busted 
+then gosub @M_MWHOOP_FAIL
+end
+gosub @M_MWHOOP_CLEANUP
+end_thread 
+
+:M_MWHOOP_START
+$ONMISSION=1
+$dummy2=0
+//$charm=1000
+//$selling_skill=1000
+16@=0
+00DA: 0@ = player $PLAYER_CHAR car
+
+if 0383:   player 0@ car_horn_activated == true
+then 15@=1
+end
+01BD: 13@ = current_time_in_ms 
+
+{===================================================
+Name - MAIN LOOP
+===================================================}
+:M_MWHOOP_LOOP
+wait 0 ms
+{
+¿Qué hay que hacer para la rutina del mr whooper?
+-hay que generar al actor
+-una vez generado, hay que esperar a que el jugador se acerque al actor lo suficiente, mientras tanto, el actor debe ejecutar animacion, mientras mantiene su ángulo hacia el jugador
+-cuando el jugador esté lo suficientemente cerca del actor, el actor caminará hacia el jugador (opcional) ó, el actor se quedará quieto, y una barra aparecerá indicando que el actor está comprando
+-si el actor muere, la misión finalizará (opcional), indicándole al jugador cuánto ha ganado
+-una vez el actor haya comprado, se le aumentará en 1 (o más) la cantidad de ventas al jugador
+-se repite el ciclo
+-si el nivel de búsquedas es mayor a cero, finalizará la misión (opcional)
+-si la cantidad de horas en la misión es 6, entonces finalizará la misión, indicándole al jugador cuantas ventas ha logrado hacer, y cual es el record de ventas
+-si el jugador se baja del carro, finaliza la misión
+-el jugador deberá hacer sonar la musiquita del vehículo para que comience la misión, si el jugador apaga la musiquita del vehículo, se interrumpe y reinicializa el ciclo de ventas
+-si el carro se destruuye, finaliza la misión
+}
+gosub @M_MWHOOP_CHANGE_CLIENT
+if 8383:   not player 0@ car_horn_activated == true
+then
+    if 15@==0
+    then
+        0164: disable_marker $M_WHP_MARKER1
+        0164: disable_marker $M_WHP_MARKER2
+        0164: disable_marker $M_WHP_MARKER3
+        0164: disable_marker $M_WHP_MARKER4
+        01C2: remove_references_to_actor $M_WHP_CLIENT1 // Like turning an actor into a random pedestrian 
+        01C2: remove_references_to_actor $M_WHP_CLIENT2 // Like turning an actor into a random pedestrian 
+        01C2: remove_references_to_actor $M_WHP_CLIENT3 // Like turning an actor into a random pedestrian 
+        01C2: remove_references_to_actor $M_WHP_CLIENT4 // Like turning an actor into a random pedestrian 
+        $M_WHP_STAT1=0
+        $M_WHP_STAT2=0
+        $M_WHP_STAT3=0
+        $M_WHP_STAT4=0
+        0151: remove_status_text $dummy2 
+        00BB: text_lowpriority 'M_WMW5' 4000 ms 1 // Presiona el claxon para iniciar la venta de helados.
+        10@=0
+        15@=1
+    end
+end
+
+if 10@==0
+then
+    if 0383:   player 0@ car_horn_activated == true
+    then
+        if 15@==1
+        then
+            00BB: text_lowpriority 'M_WMW2' 3000 ms 1 // Consigue clientes.
+            03C4: set_status_text_to $dummy2 0 'M_WMW3' // Vendidos:
+            15@=0
+        end
+        if 17@>=1000
+        then
+            0209: $m_dummy = random_int 0 100
+            0084: 4@ = $charm // integer values and handles
+            4@/=10
+            4@+=1
+            if 001C:   4@ > $m_dummy // integer values     //$m_dummy<=10 (10%)     // si 4@ es 10 hablamos de la probabilidad del 10%, si 4@ da 1 (mínimo) hablamos de la probabilidad del 1%
+            then 10@=1
+            else 17@=0
+            end
+        end
+    end
+end
+
+if 10@==1
+then
+    if 03C6:   current_island == 1 
+    then 02DD: set_actor 1@ creation_zone 'IND_ZON'
+    end
+    if 03C6:   current_island == 2 
+    then 02DD: set_actor 1@ creation_zone 'COM_ZON'
+    end
+    if 03C6:   current_island == 3 
+    then 02DD: set_actor 1@ creation_zone 'SUB_ZON'
+    end
+    if not 1@ == -1 // integer values 
+    then 10@=2
+    else 10@=0
+    end
+end
+
+if 10@==2
+then 10@=3
+    0187: 11@ = create_marker_above_actor 1@
+    02A9: set_actor 1@ immune_to_nonplayer 1 
+    0365: set_actor 1@ objective_to-29 //actor ejecuta movimiento de llamar al taxi
+end
+
+if 10@==3
+then
+    if and
+    00FD:   player $PLAYER_CHAR 0 1@ in_car radius 25.0 25.0 5.0
+    01C1:   car 0@ stopped
+    then
+        gosub @M_MWHOOP_CREATE_CAR_SELLING_SPHERES
+        0209: 2@ = random_int 0 2
+        if 2@==0
+        then 0239: actor 1@ run_to 6@ 7@
+        else 0239: actor 1@ run_to 8@ 9@
+        end
+        10@=4
+    else 020F: actor 1@ look_at_player $PLAYER_CHAR
+    end
+end
+
+if or
+if 10@==4
+if 10@==5
+then
+    if 81C1:   not car 0@ stopped
+    then 10@=3
+        011C: actor 1@ clear_objective
+    end
+end
+
+if 10@==4
+then
+    if and
+    00FD:   player $PLAYER_CHAR 0 1@ in_car radius 5.0 5.0 5.0
+    01C1:   car 0@ stopped
+    then 10@=5
+        if 2@==0
+        then 0211: actor 1@ walk_to 6@ 7@
+        else 0211: actor 1@ walk_to 8@ 9@
+        end
+    end
+end
+
+if 10@==5
+then
+    if or
+    00FF:   actor 1@ 0 6@ 7@ $m_dummy3 radius 1.5 1.5 2.0
+    00FF:   actor 1@ 0 8@ 9@ $m_dummy3 radius 1.5 1.5 2.0
+    then
+        009F: set_actor 1@ objective_to-1 // poner al actor en estado de idle
+        020F: actor 1@ look_at_player $PLAYER_CHAR
+        16@=0
+        10@=6
+    end
+end
+
+if 10@==6
+then
+    if 81C1:   not car 0@ stopped
+    then 10@=3
+    end
+    if 16@>=4000
+    then
+        0164: disable_marker 11@
+        0193: set_actor 1@ objective_to_act_like_ped 
+        0209: $m_dummy = random_int 1 3
+        0084: 4@ = $selling_skill // integer values and handles
+        4@/=100
+        4@+=1
+        0068: $m_dummy *= 4@ // integer values    // helados vendidos = random(entre 1 y 2) * (1 + 1% de selling_skill)
+        01E5: text_1number_highpriority 'M_WMW4' $m_dummy 4000 ms 1 // Helados vendidos: +~1~.
+        0058: $dummy2 += $m_dummy // integer values
+        16@=0
+        10@=7
+    end
+end
+
+if and
+10@>=2
+6>=10@
+then if 80FB:   not player $PLAYER_CHAR 0 1@ radius 60.0 60.0 60.0
+     then 10@=0
+          01C2: remove_references_to_actor 1@ // Like turning an actor into a random pedestrian 
+     end
+end
+
+if 10@==7
+then if 80FB:   not player $PLAYER_CHAR 0 1@ radius 30.0 30.0 30.0
+     then 10@=0
+          034F: destroy_actor_with_fade 1@ // The actor fades away like a ghost 
+     end
+end
+
+if and
+10@>=2
+7>=10@
+then
+    if 0118:   actor 1@ dead
+    then
+        00BB: text_lowpriority 'M_WMW6' 3000 ms 1 // ~r~Mal, muy mal... Haz matado a un cliente.
+        jump @M_MWHOOP_PASSED
+    end
+end
+
+if 010F:   player $PLAYER_CHAR wanted_level > 0 
+then
+    00BB: text_lowpriority 'M_WMW7' 4000 ms 1 // ~r~Bajo persecucion policial no podras vender helados.
+    jump @M_MWHOOP_PASSED
+end
+
+if 80DB:   not actor $PLAYER_ACTOR in_car 0@
+then
+    00BB: text_lowpriority 'M_WMW8' 3000 ms 1 // ~r~Haz abandonado el vehiculo.
+    jump @M_MWHOOP_PASSED
+end
+
+if $energy == 0
+then 00BB: text_lowpriority 'T_EN2' 5000 ms 1 // ~r~Te haz quedado sin energia para seguir trabajando. Necesitas descanzar.
+     jump @M_MWHOOP_PASSED
+end
+
+01BD: 14@ = current_time_in_ms 
+0060: 14@ -= 13@ // integer values 
+if 14@>360000 // 6 min * 60 sec * 1000 ms --> 6 horas en el juego
+then jump @M_MWHOOP_PASSED
+end
+
+if 00DB:   actor $PLAYER_ACTOR in_car 0@
+then gosub @M_MWHOOP_CANCEL
+end
+if 10@==100
+then jump @M_MWHOOP_PASSED
+end
+jump @M_MWHOOP_LOOP
+
+{===================================================
+LOCAL SUBROUTINES
+===================================================}
+:M_MWHOOP_CANCEL
+0293: $CURRENT_CONTROLS = current_controls 
+if not $CURRENT_CONTROLS == 3 // integer values 
+then
+    if and
+    00E1:   pad 0 key_pressed 19 
+    $ONMISSION == 1 // integer values 
+    then 10@=99
+    end
+else
+    if and
+    00E1:   pad 0 key_pressed 14 
+    $ONMISSION == 1 // integer values 
+    then 10@=99
+    end
+end
+
+if 10@==99
+then
+    0293: $CURRENT_CONTROLS = current_controls 
+    if not $CURRENT_CONTROLS == 3 // integer values 
+    then
+        if and
+        80E1:   not pad 0 key_pressed 19 
+        $ONMISSION == 1 // integer values 
+        then 10@=100
+        end
+    else
+        if and
+        80E1:   not pad 0 key_pressed 14 
+        $ONMISSION == 1 // integer values 
+        then 10@=100
+        end
+    end
+end
+return
+
+:M_MWHOOP_CHANGE_CLIENT
+if $M_WHOOP_INDEX>3
+then $M_WHOOP_INDEX=0
+end
+if $M_WHOOP_INDEX == 0
+then
+    0084: $M_WHP_STAT4 = 10@ // integer values and handles
+    0084: $M_WHP_CLIENT4 = 1@ // integer values and handles    
+    0084: $M_WHP_MARKER4 = 11@ // integer values and handles    
+    0084: 10@ = $M_WHP_STAT1 // integer values and handles
+    0084: 1@ = $M_WHP_CLIENT1 // integer values and handles    
+    0084: 11@ = $M_WHP_MARKER1 // integer values and handles    
+end
+if $M_WHOOP_INDEX == 1
+then
+    0084: $M_WHP_STAT1 = 10@ // integer values and handles
+    0084: $M_WHP_CLIENT1 = 1@ // integer values and handles    
+    0084: $M_WHP_MARKER1 = 11@ // integer values and handles    
+    0084: 10@ = $M_WHP_STAT2 // integer values and handles
+    0084: 1@ = $M_WHP_CLIENT2 // integer values and handles    
+    0084: 11@ = $M_WHP_MARKER2 // integer values and handles    
+end
+if $M_WHOOP_INDEX == 2
+then
+    0084: $M_WHP_STAT2 = 10@ // integer values and handles
+    0084: $M_WHP_CLIENT2 = 1@ // integer values and handles    
+    0084: $M_WHP_MARKER2 = 11@ // integer values and handles    
+    0084: 10@ = $M_WHP_STAT3 // integer values and handles
+    0084: 1@ = $M_WHP_CLIENT3 // integer values and handles    
+    0084: 11@ = $M_WHP_MARKER3 // integer values and handles    
+end
+if $M_WHOOP_INDEX == 3
+then
+    0084: $M_WHP_STAT3 = 10@ // integer values and handles
+    0084: $M_WHP_CLIENT3 = 1@ // integer values and handles    
+    0084: $M_WHP_MARKER3 = 11@ // integer values and handles    
+    0084: 10@ = $M_WHP_STAT4 // integer values and handles
+    0084: 1@ = $M_WHP_CLIENT4 // integer values and handles    
+    0084: 11@ = $M_WHP_MARKER4 // integer values and handles    
+end
+Inc($M_WHOOP_INDEX)
+return
+
+:M_MWHOOP_CREATE_CAR_SELLING_SPHERES
+00AA: store_car 0@ position_to 2@ 3@ $m_dummy3
+00AA: store_car 0@ position_to 6@ 7@ $m_dummy3
+00AA: store_car 0@ position_to 8@ 9@ $m_dummy3
+02F9: unknown_car 0@ unknown_sinus 4@ 
+02F8: unknown_car 0@ unknown_cosine 5@
+4@*=-2.0
+5@*=2.0
+0059: 6@ += 4@ // floating-point values 
+0059: 7@ += 5@ // floating-point values 
+4@*=-1.0
+5@*=-1.0
+0059: 8@ += 4@ // floating-point values 
+0059: 9@ += 5@ // floating-point values 
+return
+
+:M_MWHOOP_EXPERIENCE
+0008: $l_exp += 1 // integer values
+create_thread @DRAW_STATS ID_LABORAL_EXP
+if not $selling_skill == 1000
+then
+    0209: 6@ = random_int 1 3 
+    0058: $selling_skill += 6@ // integer values
+    if $selling_skill>1000
+    then $selling_skill=1000
+    end
+    create_thread @DRAW_STATS ID_SELLING_SKILL
+end
+return
+
+{===================================================
+END OF THE MISSION
+===================================================}
+:M_MWHOOP_PASSED
+0084: 3@ = $dummy2 // integer values and handles 
+0010: 3@ *= 2 // integer values
+if 001F:   $dummy2 > $M_MWHOOP_MAX_SELLS // integer values 
+then 0084: $M_MWHOOP_MAX_SELLS = $dummy2 // integer values and handles 
+end
+00BA: text_styled 'M_WO' 5000 ms 5  // Jornada finalizada
+01E3: text_1number_styled 'TSCORE' 3@ 6000 ms 6  // EARNINGS: $~1~
+0109: player $PLAYER_CHAR money += 3@
+{
+Convirtiendo el dato 14@ que corresponde a la cantidad de milisegundos transcurridos durante la mision
+en su equivalente en minutos:segundos
+Nota: en GTAIII hay que tener en cuenta una limitante muy importante a la hora de lidiar con datos tipo float o coma flotante:
+los numeros coma flotante en gta3 llegan hasta 2047 en su parte entera, cuando le pasas un valor de 2048 a un float, el valor que
+realmente adquiere es -2047. Por ello, hay que trabajar a los números un poco antes de convertirlos a flotante para evitar errores feos y malucos.
+Por otra parte, del lado decimal del numero existe una limitacion aún no determinada, al parecer despues del primer decimal la información puede perderse.
+} 
+0014: 14@ /= 100 // integer values 
+0084: 4@ = 14@ // integer values and handles 
+0014: 4@ /= 600 // integer values
+008D: 6@ = integer_to_float 14@ 
+0015: 6@ /= 600.0 // floating-point values 
+008D: 5@ = integer_to_float 4@ 
+0061: 6@ -= 5@ // floating-point values 
+0011: 6@ *= 60.0 // floating-point values 
+008C: 6@ = float_to_integer 6@
+if 6@>9 
+then 0302: text_4numbers 'M_WMW9' $dummy2 4@ 6@ $M_MWHOOP_MAX_SELLS 10000 ms 5 //Helados vendidos: ~1~, Tiempo de venta: ~1~:~1~, Tu record de helados vendidos es: ~1~
+else 0302: text_4numbers 'M_WMW10' $dummy2 4@ 6@ $M_MWHOOP_MAX_SELLS 10000 ms 5 //Helados vendidos: ~1~, Tiempo de venta: ~1~:0~1~, Tu record de helados vendidos es: ~1~
+end
+gosub @M_MWHOOP_EXPERIENCE
+return
+
+:M_MWHOOP_FAIL
+return
+
+:M_MWHOOP_CLEANUP
+$ONMISSION = 0 // integer values
+0151: remove_status_text $dummy2 
+0164: disable_marker $M_WHP_MARKER1
+0164: disable_marker $M_WHP_MARKER2
+0164: disable_marker $M_WHP_MARKER3
+0164: disable_marker $M_WHP_MARKER4
+01C2: remove_references_to_actor $M_WHP_CLIENT1 // Like turning an actor into a random pedestrian 
+01C2: remove_references_to_actor $M_WHP_CLIENT2 // Like turning an actor into a random pedestrian 
+01C2: remove_references_to_actor $M_WHP_CLIENT3 // Like turning an actor into a random pedestrian 
+01C2: remove_references_to_actor $M_WHP_CLIENT4 // Like turning an actor into a random pedestrian 
+$M_WHP_STAT1=0
+$M_WHP_STAT2=0
+$M_WHP_STAT3=0
+$M_WHP_STAT4=0
+00D8: mission_cleanup 
+return
+
+
