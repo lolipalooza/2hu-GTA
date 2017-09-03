@@ -33,6 +33,7 @@ modloader/LC/models/
 modloader/LC/radio/
 modloader/LC/script/2hu GTAIII script/
 !modloader/LCS/
+modloader/LCS/data/test/
 modloader/LCS/models/
 modloader/LCS/radio/
 !modloader/scripts/
