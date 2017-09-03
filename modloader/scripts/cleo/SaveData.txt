@@ -1,0 +1,816 @@
+{$CLEO .s}
+thread 'SaveData'
+
+const
+    ACTION_INITIALIZE = 0
+    ACTION_SAVE = 1
+    ACTION_LOAD = 2
+    ACTION_UPDATE = 3
+    
+    SAVEFILE_PATH = "cleo\2hugta.sav"
+    TEMPFILE_PATH = "cleo\TEMP"
+    TEMPDATAFILE_PATH = "cleo\__temp_data__"
+    LOGFILE_PATH = "cleo\2hugta_debug.log"
+end
+
+{// TODO: avoid thread running if same thread was running at the same time
+if 0AAB:   file_exists "CLEO\__savdata_in_process"
+then 0A93: end_custom_thread
+end}
+
+
+
+if 0@ == ACTION_INITIALIZE
+then 0AB1: @InitializeData 0
+end
+if 0@ == ACTION_SAVE
+then
+    0AB1: @MarkStatsForSave 0
+    0AB1: @UpdateTempSector 0
+    0B00: delete_file TEMPDATAFILE_PATH  // IF and SET
+    0AB1: @SaveData 0
+end
+if 0@ == ACTION_LOAD
+then
+    0AB1: @LoadData 0
+    0AB1: @UpdateStats 0
+end
+if 0@ == ACTION_UPDATE
+then
+    if 0AAB:   file_exists TEMPDATAFILE_PATH
+    then
+        0AB1: @UpdateTempSector 0
+        0B00: delete_file TEMPDATAFILE_PATH  // IF and SET
+    end
+end
+
+0A93: end_custom_thread
+
+{======================================================================
+======================================================================}
+{$I common/SearchIntoTemp.txt}
+
+{======================================================================
+======================================================================}
+:SetPlayerMoneyToZero
+010B: 0@ = player $PLAYER_CHAR money
+0@ *= -1
+0109: player $PLAYER_CHAR money += 0@
+0AB2: ret 0
+
+{======================================================================
+======================================================================}
+:InitializeData
+const
+    It_DatFile = 0@
+    It_RdState = 1@
+    It_LogFile = 2@
+    It_SavFile = 3@
+    It_TempFile = 4@
+    It_NumOfData = 5@
+    It_Index = 6@
+    It_Data = 7@
+    It_DummyShStr = 8@s
+    It_Dummy1 = 8@
+    It_Dummy2 = 9@
+    // 10@ 11@ 12@ ... dummy inputs
+end
+0A9A: It_DatFile = openfile "modloader/2hu GTA/save file data2.txt" mode "rb"  // IF and SET
+0A9A: It_TempFile = openfile TEMPFILE_PATH mode "wb+"  // IF and SET
+
+0A9A: It_LogFile = openfile LOGFILE_PATH mode "ab+"  // IF and SET
+0AD9: write_formatted_text "============================================================%c%c" in_file It_LogFile 0xd 0xa
+0AD9: write_formatted_text "STARTING NEW FILE!...%c%c" in_file It_LogFile 0xd 0xa
+0AD9: write_formatted_text "============================================================%c%c" in_file It_LogFile 0xd 0xa
+
+repeat
+    // TODO: validate It_NumOfData
+    0ADA: It_NumOfData = scan_file It_DatFile format "%s %s %s %s %s" 10@s 12@s 14@s 16@v 20@v //IF and SET
+    0AD9: write_formatted_text "Temp: %s %s %s %s %s" in_file It_TempFile vars 10@s 12@s 14@s 16@v 20@v
+    if 12@s == 'int'
+    then 0AD4: It_NumOfData = scan_string 16@v format "%d" 31@ //IF and SET
+    end
+    if 12@s == 'float'
+    then 0AD4: It_NumOfData = scan_string 16@v format "%f" 31@ //IF and SET
+    end
+    if and
+    12@s == 'int'
+    14@s == 'stat'
+    then 0652: It_Data = integer_stat 31@
+    end
+    if and
+    12@s == 'float'
+    14@s == 'stat'
+    then 0653: It_Data = float_stat 31@
+    end
+    if and
+    12@s == 'int'
+    14@s == 'custom'
+    then 0085: It_Data = 31@ // (int)
+    end
+    if and
+    12@s == 'float'
+    14@s == 'custom'
+    then 0087: It_Data = 31@ // (float)
+    end
+    if 14@s == 'money'
+    then 0085: It_Data = 31@ // (int)
+    end
+    00BF: 25@ = current_time_hours, 26@ = current_time_minutes
+    if 14@s == 'hours'
+    then 0085: It_Data = 25@ // (int)
+    end
+    if 14@s == 'mins'
+    then 0085: It_Data = 26@ // (int)
+    end
+    if 10@s == 'indiv'
+    then
+        for It_Index = 0 to 13
+            0AD3: It_DummyShStr = format "Gp%.2d" It_Index
+            if 12@s == 'int'
+            then 0AD9: write_formatted_text "%c%c%s %d %d %d %d %d %d %d" in_file It_TempFile vars 0xd 0xa It_DummyShStr It_Data It_Data It_Data It_Data It_Data It_Data It_Data
+            end
+            if 12@s == 'float'
+            then 0AD9: write_formatted_text "%c%c%s %f %f %f %f %f %f %f" in_file It_TempFile vars 0xd 0xa It_DummyShStr It_Data It_Data It_Data It_Data It_Data It_Data It_Data
+            end
+        end
+        0AD9: write_formatted_text "%c%c" in_file It_TempFile vars 0xd 0xa
+    end
+    if 10@s == 'group'
+    then
+        if 12@s == 'int'
+        then 0AD9: write_formatted_text "%c%d %d %d %d %d %d %d %d %d %d %d %d %d %d" in_file It_TempFile vars 9 It_Data It_Data It_Data It_Data It_Data It_Data It_Data It_Data It_Data It_Data It_Data It_Data It_Data It_Data
+        end
+        if 12@s == 'float'
+        then 0AD9: write_formatted_text "%c%f %f %f %f %f %f %f %f %f %f %f %f %f %f" in_file It_TempFile vars 9 It_Data It_Data It_Data It_Data It_Data It_Data It_Data It_Data It_Data It_Data It_Data It_Data It_Data It_Data
+        end
+        0AD9: write_formatted_text "%c%c" in_file It_TempFile vars 0xd 0xa
+    end
+    if 10@s == 'global'
+    then
+        if 12@s == 'int'
+        then 0AD9: write_formatted_text "%c%d" in_file It_TempFile vars 9 It_Data
+        end
+        if 12@s == 'float'
+        then 0AD9: write_formatted_text "%c%f" in_file It_TempFile vars 9 It_Data
+        end
+        0AD9: write_formatted_text "%c%c" in_file It_TempFile vars 0xd 0xa
+    end
+until 0AD6:   end_of_file It_DatFile reached
+0A9B: closefile It_DatFile
+0A9B: closefile It_TempFile
+
+0AD9: write_formatted_text "Initialize data routine: finished.%c%c%c%c" in_file It_LogFile 0xd 0xa 0xd 0xa
+0A9B: closefile It_LogFile
+0AB2: ret 0
+
+{======================================================================
+======================================================================}
+:SaveData
+const
+    COPY_TEMP_AS_TEMP = 0
+    COPY_TEMP_AS_SAVE = 1
+    COPY_SAVE_AS_SAVE = 2
+    COPY_SAVE_AS_TEMP = 3
+
+    FLAG_UPDATE = 1
+end
+0A9A: It_LogFile = openfile LOGFILE_PATH mode "ab+"  // IF and SET
+0AD9: write_formatted_text "Saving data...%c%c" in_file It_LogFile 0xd 0xa
+
+if 0AAB:   file_exists SAVEFILE_PATH
+then
+    if 0AAB:   file_exists TEMPFILE_PATH
+    then 0AD9: write_formatted_text "Unexpected error: TEMP file was found when it should not exist!%c%c" in_file It_LogFile 0xd 0xa
+    else
+        0AD9: write_formatted_text "2hugta.sav exists but temp doesn't, so let't clone save as temp...%c%c" in_file It_LogFile 0xd 0xa
+        0B04: copy_file SAVEFILE_PATH to TEMPFILE_PATH //IF and SET
+    end
+else
+    if 0AAB:   file_exists TEMPFILE_PATH
+    then 0AD9: write_formatted_text "So, save file doesn't exist, only temp exists... it's first time saving, so let's create a save file!%c%c" in_file It_LogFile 0xd 0xa
+    end
+end
+
+// Empty save file
+0A9A: It_SavFile = openfile SAVEFILE_PATH mode "wb+"  // IF and SET
+0A9B: closefile It_SavFile
+
+0AB1: @CopySectorIntoSavefile 3 flag COPY_TEMP_AS_SAVE flag 0 create_log_in_file It_LogFile
+0AB1: @CopySectorIntoSavefile 3 flag COPY_TEMP_AS_TEMP flag 0 create_log_in_file It_LogFile
+
+if 0B00: delete_file TEMPFILE_PATH  // IF and SET
+then
+else 0AD8: write_string_to_file It_LogFile from "Unexpected problem occurred trying to delete Temp file.... " //IF and SET
+end
+
+0AD9: write_formatted_text "Saving data routine: finished.%c%c%c%c" in_file It_LogFile 0xd 0xa 0xd 0xa
+0A9B: closefile It_LogFile
+0AB2: ret 0
+
+{======================================================================
+======================================================================}
+:CopySectorIntoSavefile
+const
+    // Same constants as Initialize
+    Flag_StoreData = It_Dummy1
+    Flag_DataDirection = It_Dummy2
+    
+    PROCESS_HEADER_DATA = 0
+    PROCESS_INDIV_DATA = 1
+    PROCESS_GROUP_DATA = 2
+    PROCESS_GLOBAL_DATA = 3
+end
+0A9A: It_TempFile = openfile TEMPFILE_PATH mode "rb"  // IF and SET
+0A9A: It_SavFile = openfile SAVEFILE_PATH mode "ab+"  // IF and SET
+
+0085: Flag_DataDirection = It_RdState // (int)
+0006: It_RdState = PROCESS_HEADER_DATA
+repeat
+    if It_RdState == PROCESS_HEADER_DATA
+    then
+        0ADA: It_NumOfData = scan_file It_TempFile format "%s %s %s %s %s %s" 24@s 10@s 12@s 14@s 16@v 20@v //IF and SET
+        if It_NumOfData == 6
+        then
+            if and
+            COPY_TEMP_AS_SAVE >= 0@
+            24@s == 'Temp:'
+            then
+                Flag_StoreData = 1
+                if 0@ == COPY_TEMP_AS_TEMP
+                then 26@s = 'Temp:'
+                end
+                if 0@ == COPY_TEMP_AS_SAVE
+                then 26@s = 'Save:'
+                end
+                0AD9: write_formatted_text "%s %s %s %s %s %s" in_file It_SavFile vars 26@s 10@s 12@s 14@s 16@v 20@v
+                0AD9: write_formatted_text "writing temp data as%c" in_file It_LogFile vars 9
+                0AD9: write_formatted_text "%s %s %s %s %s %s...%c" in_file It_LogFile vars 26@s 10@s 12@s 14@s 16@v 20@v 9
+            end
+            if and
+            0@ >= COPY_SAVE_AS_SAVE
+            24@s == 'Save:'
+            then
+                Flag_StoreData = 1
+                if 0@ == COPY_SAVE_AS_TEMP
+                then 26@s = 'Temp:'
+                end
+                if 0@ == COPY_SAVE_AS_SAVE
+                then 26@s = 'Save:'
+                end
+                0AD9: write_formatted_text "%s %s %s %s %s %s" in_file It_SavFile vars 26@s 10@s 12@s 14@s 16@v 20@v
+                0AD9: write_formatted_text "writing save data as%c" in_file It_LogFile vars 9
+                0AD9: write_formatted_text "%s %s %s %s %s %s...%c" in_file It_LogFile vars 26@s 10@s 12@s 14@s 16@v 20@v 9
+            end
+            if 10@s == 'indiv'
+            then It_RdState=PROCESS_INDIV_DATA
+            end
+            if 10@s == 'group'
+            then It_RdState=PROCESS_GROUP_DATA
+            end
+            if 10@s == 'global'
+            then It_RdState=PROCESS_GLOBAL_DATA
+            end
+            if 12@s == 'float'
+            then It_Data = 1
+            else It_Data = 0
+            end
+            26@v = 20@v
+        else 0AD9: write_formatted_text "General data not recognized%c%c" in_file It_LogFile vars 0xd 0xa
+        end
+    end
+    if It_RdState == PROCESS_INDIV_DATA
+    then
+        for It_Index = 0 to 13
+            31@=0
+            if and
+            Flag_DataDirection == FLAG_UPDATE
+            Flag_StoreData == 1
+            0@ == COPY_TEMP_AS_TEMP
+            then
+                if 0AB1: @SearchIntoTempDataFile 7 float_or_int_flag It_Data type_of_data It_RdState variable_name 26@ 27@ 28@ 29@ group_id It_Index store_value_in 10@ 11@ 12@ 13@ 14@ 15@ 16@ 17@ 18@ 19@ 20@ 21@ 22@ 23@
+                then
+                    0AD9: write_formatted_text "Upd (%d) " in_file It_LogFile vars It_RdState
+                    if It_Data == 0
+                    then 0ADA: It_NumOfData = scan_file It_TempFile format "%s %d %d %d %d %d %d %d" 24@s 24@ 24@ 24@ 24@ 24@ 24@ 24@ //IF and SET   // this is just for discard line
+                    else 0ADA: It_NumOfData = scan_file It_TempFile format "%s %f %f %f %f %f %f %f" 24@s 24@ 24@ 24@ 24@ 24@ 24@ 24@ //IF and SET   // this is just for discard line
+                    end
+                    if It_NumOfData <> 8
+                    then 0AD9: write_formatted_text "Err: NumOfData=%d " in_file It_LogFile vars It_NumOfData
+                    end
+                    31@=1
+                end
+            end
+            if 31@ == 0
+            then
+                if It_Data == 0
+                then 0ADA: It_NumOfData = scan_file It_TempFile format "%s %d %d %d %d %d %d %d" 10@s 12@ 13@ 14@ 15@ 16@ 17@ 18@ //IF and SET
+                else 0ADA: It_NumOfData = scan_file It_TempFile format "%s %f %f %f %f %f %f %f" 10@s 12@ 13@ 14@ 15@ 16@ 17@ 18@ //IF and SET
+                end
+            end
+            if Flag_StoreData == 1
+            then
+                if It_NumOfData == 8
+                then
+                    if It_Data == 0
+                    then 0AD9: write_formatted_text "%c%c%s %d %d %d %d %d %d %d" in_file It_SavFile vars 0xd 0xa 10@s 12@ 13@ 14@ 15@ 16@ 17@ 18@
+                    else 0AD9: write_formatted_text "%c%c%s %f %f %f %f %f %f %f" in_file It_SavFile vars 0xd 0xa 10@s 12@ 13@ 14@ 15@ 16@ 17@ 18@
+                    end
+                    0AD9: write_formatted_text "%s " in_file It_LogFile vars 10@s
+                else 0AD9: write_formatted_text "Group not recognized (%d) " in_file It_LogFile vars It_Index
+                end
+            end
+        end
+        if Flag_StoreData == 1
+        then 0AD9: write_formatted_text "%c%c" in_file It_SavFile vars 0xd 0xa
+            0AD9: write_formatted_text "%c%c" in_file It_LogFile vars 0xd 0xa
+        end
+    end
+    if It_RdState == PROCESS_GROUP_DATA
+    then
+        31@=0
+        if and
+        Flag_DataDirection == FLAG_UPDATE
+        Flag_StoreData == 1
+        0@ == COPY_TEMP_AS_TEMP
+        then
+            if 0AB1: @SearchIntoTempDataFile 7 float_or_int_flag It_Data type_of_data It_RdState variable_name 26@ 27@ 28@ 29@ group_id It_Index store_value_in 10@ 11@ 12@ 13@ 14@ 15@ 16@ 17@ 18@ 19@ 20@ 21@ 22@ 23@
+            then
+                0AD9: write_formatted_text "Upd (%d) " in_file It_LogFile vars It_RdState
+                if It_Data == 0
+                then 0ADA: It_NumOfData = scan_file It_TempFile format "%d %d %d %d %d %d %d %d %d %d %d %d %d %d" 24@ 24@ 24@ 24@ 24@ 24@ 24@ 24@ 24@ 24@ 24@ 24@ 24@ 24@ //IF and SET   // this is just for discard line
+                else 0ADA: It_NumOfData = scan_file It_TempFile format "%f %f %f %f %f %f %f %f %f %f %f %f %f %f" 24@ 24@ 24@ 24@ 24@ 24@ 24@ 24@ 24@ 24@ 24@ 24@ 24@ 24@ //IF and SET   // this is just for discard line
+                end
+                if It_NumOfData <> 14
+                then 0AD9: write_formatted_text "Err: NumOfData=%d " in_file It_LogFile vars It_NumOfData
+                end
+                31@=1
+            end
+        end
+        if 31@ == 0
+        then
+            if It_Data == 0
+            then 0ADA: It_NumOfData = scan_file It_TempFile format "%d %d %d %d %d %d %d %d %d %d %d %d %d %d" 10@ 11@ 12@ 13@ 14@ 15@ 16@ 17@ 18@ 19@ 20@ 21@ 22@ 23@ //IF and SET
+            else 0ADA: It_NumOfData = scan_file It_TempFile format "%f %f %f %f %f %f %f %f %f %f %f %f %f %f" 10@ 11@ 12@ 13@ 14@ 15@ 16@ 17@ 18@ 19@ 20@ 21@ 22@ 23@ //IF and SET
+            end
+        end
+        if Flag_StoreData == 1
+        then
+            if It_NumOfData == 14
+            then
+                if It_Data == 0
+                then 0AD9: write_formatted_text "%c%d %d %d %d %d %d %d %d %d %d %d %d %d %d" in_file It_SavFile vars 9 10@ 11@ 12@ 13@ 14@ 15@ 16@ 17@ 18@ 19@ 20@ 21@ 22@ 23@
+                else 0AD9: write_formatted_text "%c%f %f %f %f %f %f %f %f %f %f %f %f %f %f" in_file It_SavFile vars 9 10@ 11@ 12@ 13@ 14@ 15@ 16@ 17@ 18@ 19@ 20@ 21@ 22@ 23@
+                end
+                0AD9: write_formatted_text "writing groups%c" in_file It_LogFile vars 9
+            else 0AD9: write_formatted_text "Data of groups not recognized%c" in_file It_LogFile vars 9
+            end
+            0AD9: write_formatted_text "%c%c" in_file It_SavFile vars 0xd 0xa
+            0AD9: write_formatted_text "%c%c" in_file It_LogFile vars 0xd 0xa
+        end
+    end
+    if It_RdState == PROCESS_GLOBAL_DATA
+    then
+        31@=0
+        if and
+        Flag_DataDirection == FLAG_UPDATE
+        Flag_StoreData == 1
+        0@ == COPY_TEMP_AS_TEMP
+        then
+            if 0AB1: @SearchIntoTempDataFile 7 float_or_int_flag It_Data type_of_data It_RdState variable_name 26@ 27@ 28@ 29@ group_id It_Index store_value_in 10@ 11@ 12@ 13@ 14@ 15@ 16@ 17@ 18@ 19@ 20@ 21@ 22@ 23@
+            then
+                0AD9: write_formatted_text "Upd (%d) " in_file It_LogFile vars It_RdState
+                if It_Data == 0
+                then 0ADA: It_NumOfData = scan_file It_TempFile format "%d" 24@ //IF and SET   // this is just for discard line
+                else 0ADA: It_NumOfData = scan_file It_TempFile format "%f" 24@ //IF and SET   // this is just for discard line
+                end
+                if It_NumOfData <> 1
+                then 0AD9: write_formatted_text "Err: NumOfData=%d " in_file It_LogFile vars It_NumOfData
+                end
+                31@=1
+            end
+        end
+        if 31@ == 0
+        then
+            if It_Data == 0
+            then 0ADA: It_NumOfData = scan_file It_TempFile format "%d" 10@ //IF and SET
+            else 0ADA: It_NumOfData = scan_file It_TempFile format "%f" 10@ //IF and SET
+            end
+        end
+        if Flag_StoreData == 1
+        then
+            if It_NumOfData == 1
+            then
+                if It_Data == 0
+                then 0AD9: write_formatted_text "%c%d" in_file It_SavFile vars 9 10@
+                else 0AD9: write_formatted_text "%c%f" in_file It_SavFile vars 9 10@
+                end
+                0AD9: write_formatted_text "writing global%c" in_file It_LogFile vars 9
+            else 0AD9: write_formatted_text "Global data not recognized%c" in_file It_LogFile vars 9
+            end
+            0AD9: write_formatted_text "%c%c" in_file It_SavFile vars 0xd 0xa
+            0AD9: write_formatted_text "%c%c" in_file It_LogFile vars 0xd 0xa
+        end
+    end
+    It_RdState=PROCESS_HEADER_DATA
+    Flag_StoreData=0
+until 0AD6:   end_of_file It_TempFile reached
+0A9B: closefile It_TempFile
+0A9B: closefile It_SavFile
+0AB2: ret 0
+
+{======================================================================
+======================================================================}
+:LoadData
+// Same vars as InitializeData
+0B04: copy_file SAVEFILE_PATH to TEMPFILE_PATH //IF and SET
+
+// Empty save file
+0A9A: It_SavFile = openfile SAVEFILE_PATH mode "wb+"  // IF and SET
+0A9B: closefile It_SavFile
+
+0A9A: It_LogFile = openfile LOGFILE_PATH mode "ab+"  // IF and SET
+0AD9: write_formatted_text "Loading data...%c%c" in_file It_LogFile 0xd 0xa
+
+0AB1: @CopySectorIntoSavefile 3 flag COPY_SAVE_AS_SAVE flag 0 create_log_in_file It_LogFile
+0AB1: @CopysectorIntoSavefile 3 flag COPY_SAVE_AS_TEMP flag 0 create_log_in_file It_LogFile
+
+if 0B00: delete_file TEMPFILE_PATH  // IF and SET
+then
+else 0AD8: write_string_to_file It_LogFile from "Unexpected problem occurred trying to delete Temp file.... " //IF and SET
+end
+
+0AD9: write_formatted_text "Loading data routine: finished.%c%c%c%c" in_file It_LogFile 0xd 0xa 0xd 0xa
+0A9B: closefile It_LogFile
+0AB2: ret 0
+
+{======================================================================
+======================================================================}
+:UpdateTempSector
+0A9A: It_LogFile = openfile LOGFILE_PATH mode "ab+"  // IF and SET
+
+if 0AAB:   file_exists SAVEFILE_PATH
+then
+    It_RdState=1
+    if 0AAB:   file_exists TEMPFILE_PATH
+    then 0AD9: write_formatted_text "Updating temp sector warning: TEMP file was found when it should not exist!%c%c" in_file It_LogFile 0xd 0xa
+    end
+end
+
+0AD9: write_formatted_text "Updating temp sector%c" in_file It_LogFile 0x20
+
+if 0AAB:   file_exists SAVEFILE_PATH
+then
+    0AD9: write_formatted_text "inside 2hugta.sav...%c%c" in_file It_LogFile 0xd 0xa
+    0B04: copy_file SAVEFILE_PATH to TEMPFILE_PATH //IF and SET
+else
+    if 0AAB:   file_exists TEMPFILE_PATH
+    then 0AD9: write_formatted_text "inside TEMP...%c%c" in_file It_LogFile 0xd 0xa
+    end
+end
+
+// Empty save file
+0A9A: It_SavFile = openfile SAVEFILE_PATH mode "wb+"  // IF and SET
+0A9B: closefile It_SavFile
+
+if It_RdState == 1 // "CLEO\2hugta.sav" existed previously
+then 0AB1: @CopySectorIntoSavefile 3 flag COPY_SAVE_AS_SAVE flag 0 create_log_in_file It_LogFile
+end
+0AB1: @CopySectorIntoSavefile 3 flag COPY_TEMP_AS_TEMP flag FLAG_UPDATE create_log_in_file It_LogFile
+
+if It_RdState == 1 // "CLEO\2hugta.sav" existed previously
+then
+    if 0B00: delete_file TEMPFILE_PATH  // IF and SET
+    then
+    else 0AD8: write_string_to_file It_LogFile from "Unexpected problem occurred trying to delete Temp file.... " //IF and SET
+    end
+else
+    0B04: copy_file SAVEFILE_PATH to TEMPFILE_PATH //IF and SET
+    if 0B00: delete_file SAVEFILE_PATH  // IF and SET
+    then
+    else 0AD8: write_string_to_file It_LogFile from "Unexpected problem occurred trying to delete save file.... " //IF and SET
+    end
+end
+0AD9: write_formatted_text "Update temp routine: finished.%c%c%c%c" in_file It_LogFile 0xd 0xa 0xd 0xa
+0A9B: closefile It_LogFile
+0AB2: ret 0
+
+{======================================================================
+======================================================================}
+:SearchIntoTempDataFile
+// 0@: FlagIntOrFloat, 1@: TypeOfData, 2@v: ParameterName, 6@: GroupId
+const
+    Stdf_TempDataFile = 8@
+    Stdf_NumOfData = 9@
+    
+    FLAG_INT = 0
+    FLAG_FLOAT = 1
+    
+    TYPE_INDIV = 1
+    TYPE_GROUP = 2
+    TYPE_GLOBAL = 3
+end
+if 0A9A: Stdf_TempDataFile = openfile TEMPDATAFILE_PATH mode "rb"  // IF and SET
+then
+    repeat
+        if 1@ == TYPE_INDIV
+        then
+            if 0@ == FLAG_INT
+            then 0ADA: Stdf_NumOfData = scan_file Stdf_TempDataFile format "%s %d %d %d %d %d %d %d %d %d %d %d %d %d %d" 10@v 14@ 15@ 16@ 17@ 18@ 19@ 20@ 21@ 22@ 23@ 24@ 25@ 26@ 27@ //IF and SET
+            else 0ADA: Stdf_NumOfData = scan_file Stdf_TempDataFile format "%s %d %f %f %f %f %f %f %f %d %d %d %d %d %d" 10@v 14@ 15@ 16@ 17@ 18@ 19@ 20@ 21@ 22@ 23@ 24@ 25@ 26@ 27@ //IF and SET
+            end
+        end
+        if 1@ == TYPE_GROUP
+        then
+            if 0@ == FLAG_INT
+            then 0ADA: Stdf_NumOfData = scan_file Stdf_TempDataFile format "%s %d %d %d %d %d %d %d %d %d %d %d %d %d %d" 10@v 14@ 15@ 16@ 17@ 18@ 19@ 20@ 21@ 22@ 23@ 24@ 25@ 26@ 27@ //IF and SET
+            else 0ADA: Stdf_NumOfData = scan_file Stdf_TempDataFile format "%s %f %f %f %f %f %f %f %f %f %f %f %f %f %f" 10@v 14@ 15@ 16@ 17@ 18@ 19@ 20@ 21@ 22@ 23@ 24@ 25@ 26@ 27@ //IF and SET
+            end
+        end
+        if 1@ == TYPE_GLOBAL
+        then
+            if 0@ == FLAG_INT
+            then 0ADA: Stdf_NumOfData = scan_file Stdf_TempDataFile format "%s %d %d %d %d %d %d %d %d %d %d %d %d %d %d" 10@v 14@ 15@ 16@ 17@ 18@ 19@ 20@ 21@ 22@ 23@ 24@ 25@ 26@ 27@ //IF and SET
+            else 0ADA: Stdf_NumOfData = scan_file Stdf_TempDataFile format "%s %f %d %d %d %d %d %d %d %d %d %d %d %d %d" 10@v 14@ 15@ 16@ 17@ 18@ 19@ 20@ 21@ 22@ 23@ 24@ 25@ 26@ 27@ //IF and SET
+            end
+        end
+        if Stdf_NumOfData == 15
+        then
+            if 10@v == 2@v
+            then
+                if 1@ == TYPE_INDIV
+                then
+                    if 003B:   6@ == 14@  // (int)
+                    then
+                        0A9B: closefile Stdf_TempDataFile
+                        0AD3: 26@s = format "Gp%.2d" 14@
+                        0485:  return_true
+                        0AB2: ret 14 26@ 27@ 15@ 16@ 17@ 18@ 19@ 20@ 21@ 0 0 0 0 0
+                    end
+                else
+                    0A9B: closefile Stdf_TempDataFile
+                    0485:  return_true
+                    0AB2: ret 14 14@ 15@ 16@ 17@ 18@ 19@ 20@ 21@ 22@ 23@ 24@ 25@ 26@ 27@
+                end
+            end
+        end
+    until 0AD6:   end_of_file Stdf_TempDataFile reached
+    0A9B: closefile Stdf_TempDataFile
+end
+059A:  return_false
+0AB2: ret 14 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+{======================================================================
+======================================================================}
+:MarkStatsForSave
+const
+    {
+    It_DatFile = 0@       occuped
+    It_RdState = 1@
+    It_LogFile = 2@
+    It_SavFile = 3@
+    It_TempFile = 4@      occuped
+    It_NumOfData = 5@     occuped
+    It_Index = 6@         occuped
+    It_Data = 7@          occuped
+    It_Dummy1 = 8@        occuped
+    It_Dummy2 = 9@        occuped
+    }
+    It_CurrGroup = It_Index
+    It_CurrCharacter = It_Dummy1
+end
+0A9A: It_DatFile = openfile "modloader/2hu GTA/save file data2.txt" mode "rb"  // IF and SET
+0A9A: It_TempFile = openfile TEMPDATAFILE_PATH mode "ab+"  // IF and SET
+
+0AB1: @GetPlayerCharacterData 1 create_log_in_file 0 store_player_character_data_in It_CurrGroup It_CurrCharacter
+repeat
+    // TODO: validate It_NumOfData
+    0ADA: It_NumOfData = scan_file It_DatFile format "%s %s %s %d %s" 10@s 12@s 14@s 16@ 17@v //IF and SET
+    if and
+    12@s == 'int'
+    14@s == 'stat'
+    then 0652: It_Data = integer_stat 16@
+    end
+    if and
+    12@s == 'float'
+    14@s == 'stat'
+    then 0653: It_Data = float_stat 16@
+    end
+    if 14@s == 'money'
+    then 010B: It_Data = player $PLAYER_CHAR money
+    end
+    00BF: $TIME_HOURS = current_time_hours, $TIME_MINS = current_time_minutes
+    if 14@s == 'hours'
+    then 008B: It_Data = $TIME_HOURS // (int)
+    end
+    if 14@s == 'mins'
+    then 008B: It_Data = $TIME_MINS // (int)
+    end
+    if or
+    14@s == 'stat'
+    14@s == 'money'
+    14@s == 'hours'
+    14@s == 'mins'
+    then
+        if 10@s == 'indiv'
+        then
+            0AB1: @SearchIntoTemp 6 variable_to_search 17@ 18@ 19@ 20@ group It_CurrGroup create_log_in_file 0 ret 21@ 22@ 23@ 24@ 25@ 26@ 27@ 28@ 29@ 30@ 30@ 30@ 30@ 30@
+            if 12@s == 'int'
+            then
+                0085: 23@(It_CurrCharacter,7i) = It_Data // (int)
+                0AD9: write_formatted_text "%s %d %d %d %d %d %d %d %d 0 0 0 0 0 0" in_file It_TempFile vars 17@v It_CurrGroup 23@ 24@ 25@ 26@ 27@ 28@ 29@
+            end
+            if 12@s == 'float'
+            then
+                0087: 23@(It_CurrCharacter,7f) = It_Data // (float)
+                0AD9: write_formatted_text "%s %d %f %f %f %f %f %f %f 0 0 0 0 0 0" in_file It_TempFile vars 17@v It_CurrGroup 23@ 24@ 25@ 26@ 27@ 28@ 29@
+            end
+            0AD9: write_formatted_text "%c%c" in_file It_TempFile vars 0xd 0xa
+        end
+        if 10@s == 'group'
+        then
+            22@v = 17@v
+            14@v = 22@v
+            0AB1: @SearchIntoTemp 6 variable_to_search 14@ 15@ 16@ 17@ group 0 create_log_in_file 0 ret 18@ 19@ 20@ 21@ 22@ 23@ 24@ 25@ 26@ 27@ 28@ 29@ 30@ 31@
+            if 12@s == 'int'
+            then
+                0085: 18@(It_CurrGroup,14i) = It_Data // (int)
+                0AD9: write_formatted_text "%s %d %d %d %d %d %d %d %d %d %d %d %d %d %d" in_file It_TempFile vars 14@v 18@ 19@ 20@ 21@ 22@ 23@ 24@ 25@ 26@ 27@ 28@ 29@ 30@ 31@
+            end
+            if 12@s == 'float'
+            then
+                0087: 18@(It_CurrGroup,14f) = It_Data // (float)
+                0AD9: write_formatted_text "%s %f %f %f %f %f %f %f %f %f %f %f %f %f %f" in_file It_TempFile vars 14@v 18@ 19@ 20@ 21@ 22@ 23@ 24@ 25@ 26@ 27@ 28@ 29@ 30@ 31@
+            end
+            0AD9: write_formatted_text "%c%c" in_file It_TempFile vars 0xd 0xa
+        end
+        if 10@s == 'global'
+        then
+            if 12@s == 'int'
+            then 0AD9: write_formatted_text "%s %d 0 0 0 0 0 0 0 0 0 0 0 0 0" in_file It_TempFile vars 17@v It_Data
+            end
+            if 12@s == 'float'
+            then 0AD9: write_formatted_text "%s %f 0 0 0 0 0 0 0 0 0 0 0 0 0" in_file It_TempFile vars 17@v It_Data
+            end
+            0AD9: write_formatted_text "%c%c" in_file It_TempFile vars 0xd 0xa
+        end
+    end
+until 0AD6:   end_of_file It_DatFile reached
+0A9B: closefile It_DatFile
+0A9B: closefile It_TempFile
+0AB2: ret 0
+
+{======================================================================
+======================================================================}
+:UpdateStats
+const
+    It_Flag = It_Dummy1
+    Upd_CurrGroup = It_Dummy2
+    Upd_CurrCharacter = 31@
+    
+    FLAG_CUSTOM = 0
+    FLAG_STAT = 1
+    FLAG_MONEY = 2
+    FLAG_HOURS = 3
+    FLAG_MINS = 4
+end
+
+0AB1: @GetPlayerCharacterData 1 create_log_in_file 0 store_player_character_data_in Upd_CurrGroup Upd_CurrCharacter
+
+0A9A: It_LogFile = openfile LOGFILE_PATH mode "ab+"  // IF and SET
+0AD9: write_formatted_text "Updating stats...%c%c" in_file It_LogFile 0xd 0xa
+
+0A9A: It_SavFile = openfile SAVEFILE_PATH mode "rb"  // IF and SET
+0006: It_RdState = PROCESS_HEADER_DATA
+repeat
+    if It_RdState == PROCESS_HEADER_DATA
+    then
+        0ADA: It_NumOfData = scan_file It_SavFile format "%s %s %s %s %s %s" 24@s 10@s 12@s 14@s 16@v 20@v //IF and SET
+        if It_NumOfData == 6
+        then
+            //0AD9: write_formatted_text "reading...%s %s %s %s %s %s%c%c" in_file It_LogFile vars 24@s 10@s 12@s 14@s 16@v 20@v 0xd 0xa
+            if and
+            if 10@s == 'indiv'
+            then It_RdState=PROCESS_INDIV_DATA
+            end
+            if 10@s == 'group'
+            then It_RdState=PROCESS_GROUP_DATA
+            end
+            if 10@s == 'global'
+            then It_RdState=PROCESS_GLOBAL_DATA
+            end
+            if 12@s == 'float'
+            then It_Data = 1
+            else It_Data = 0
+            end
+            if 14@s == 'custom'
+            then It_Flag = FLAG_CUSTOM
+            end
+            if 14@s == 'stat'
+            then It_Flag = FLAG_STAT
+            end
+            if 14@s == 'money'
+            then It_Flag = FLAG_MONEY
+            end
+            if 14@s == 'hours'
+            then It_Flag = FLAG_HOURS
+            end
+            if 14@s == 'mins'
+            then It_Flag = FLAG_MINS
+            end
+            0AD4: 20@ = scan_string 16@v format "%d" 30@ //IF and SET
+        else 0AD9: write_formatted_text "General data not recognized.%c%c" in_file It_LogFile vars 0xd 0xa
+        end
+    end
+    if It_RdState == PROCESS_INDIV_DATA
+    then
+        for It_Index = 0 to 13
+            if It_Data == 0
+            then 0ADA: It_NumOfData = scan_file It_SavFile format "%s %d %d %d %d %d %d %d" 10@s 12@ 13@ 14@ 15@ 16@ 17@ 18@ //IF and SET
+            else 0ADA: It_NumOfData = scan_file It_SavFile format "%s %f %f %f %f %f %f %f" 10@s 12@ 13@ 14@ 15@ 16@ 17@ 18@ //IF and SET
+            end
+            if and
+            It_NumOfData == 8
+            24@s == 'Temp:'
+            003B:   It_Index == Upd_CurrGroup  // (int)
+            then
+                if It_Flag == FLAG_STAT
+                then
+                    if It_Data == 0
+                    then
+                        0629: change_integer_stat 30@ to 12@(Upd_CurrCharacter,7i)
+                        0AD9: write_formatted_text "Changing player integer stat %d to value %d.%c%c" in_file It_LogFile vars 30@ 12@(Upd_CurrCharacter,7i) 0xd 0xa
+                    else
+                        062A: change_float_stat 30@ to 12@(Upd_CurrCharacter,7f)
+                        0AD9: write_formatted_text "Changing player float stat %d to value %f.%c%c" in_file It_LogFile vars 30@ 12@(Upd_CurrCharacter,7f) 0xd 0xa
+                    end
+                end
+                if It_Flag == FLAG_MONEY
+                then
+                    0AB1: @SetPlayerMoneyToZero 0
+                    0109: player $PLAYER_CHAR money += 12@(Upd_CurrCharacter,7i)
+                    0AD9: write_formatted_text "Changing player money to %d.%c%c" in_file It_LogFile vars 12@(Upd_CurrCharacter,7i) 0xd 0xa
+                end
+            end
+        end
+    end
+    if It_RdState == PROCESS_GROUP_DATA
+    then
+        if It_Data == 0
+        then 0ADA: It_NumOfData = scan_file It_SavFile format "%d %d %d %d %d %d %d %d %d %d %d %d %d %d" 10@ 11@ 12@ 13@ 14@ 15@ 16@ 17@ 18@ 19@ 20@ 21@ 22@ 23@ //IF and SET
+        else 0ADA: It_NumOfData = scan_file It_SavFile format "%f %f %f %f %f %f %f %f %f %f %f %f %f %f" 10@ 11@ 12@ 13@ 14@ 15@ 16@ 17@ 18@ 19@ 20@ 21@ 22@ 23@ //IF and SET
+        end
+        if and
+        It_NumOfData == 14
+        24@s == 'Temp:'
+        It_Flag == FLAG_STAT
+        then
+            if It_Data == 0
+            then
+                0629: change_integer_stat 30@ to 10@(Upd_CurrGroup,14i)
+                0AD9: write_formatted_text "Changing player integer stat %d to value %d.%c%c" in_file It_LogFile vars 30@ 10@(Upd_CurrGroup,14i) 0xd 0xa
+            else
+                062A: change_float_stat 30@ to 10@(Upd_CurrGroup,14f)
+                0AD9: write_formatted_text "Changing player float stat %d to value %f.%c%c" in_file It_LogFile vars 30@ 10@(Upd_CurrGroup,14f) 0xd 0xa
+            end
+        end
+    end
+    if It_RdState == PROCESS_GLOBAL_DATA
+    then
+        if It_Data == 0
+        then 0ADA: It_NumOfData = scan_file It_SavFile format "%d" 10@ //IF and SET
+        else 0ADA: It_NumOfData = scan_file It_SavFile format "%f" 10@ //IF and SET
+        end
+        if and
+        It_NumOfData == 1
+        24@s == 'Temp:'
+        if It_Flag == FLAG_STAT
+        then
+            if It_Data == 0
+            then
+                0629: change_integer_stat 30@ to 10@
+                0AD9: write_formatted_text "Changing player integer stat %d to value %d.%c%c" in_file It_LogFile vars 30@ 10@ 0xd 0xa
+            else
+                062A: change_float_stat 30@ to 10@
+                0AD9: write_formatted_text "Changing player float stat %d to value %f.%c%c" in_file It_LogFile vars 30@ 10@ 0xd 0xa
+            end
+        end
+        if It_Flag == FLAG_HOURS
+        then
+            00BF: 20@ = current_time_hours, 21@ = current_time_minutes
+            00C0: set_current_time_hours_to 10@ minutes_to 21@
+        end
+        if It_Flag == FLAG_MINS
+        then
+            00BF: 20@ = current_time_hours, 21@ = current_time_minutes
+            00C0: set_current_time_hours_to 20@ minutes_to 10@
+        end
+    end
+    It_RdState=PROCESS_HEADER_DATA
+until 0AD6:   end_of_file It_SavFile reached
+0A9B: closefile It_SavFile
+
+0AD9: write_formatted_text "Saving data routine: finished.%c%c%c%c" in_file It_LogFile 0xd 0xa 0xd 0xa
+0A9B: closefile It_LogFile
+0AB2: ret 0
+

@@ -1,0 +1,798 @@
+//-------------Taxi custom mission---------------
+{$CLEO .cm}
+{======================================================================
+======================================================================}
+:CmTaxi
+thread 'CmTaxi' 
+gosub @CmTaxiStart
+if wasted_or_busted 
+then gosub @CmTaxiFailed
+end
+gosub @CmTaxiCleanUp
+end_thread 
+
+{======================================================================
+======================================================================}
+const
+    PlayerCar= 0@
+    DummyX = 1@
+    DummyY = 2@
+    DummyZ = 3@
+    Dummy1 = 4@
+    Dummy2 = 5@
+    Dummy3 = 6@
+    DummyX2 = 7@
+    DummyY2 = 8@
+    DummyZ2 = 9@
+    MissionState = 10@
+    Passenger = 11@
+    DummyMarker = 12@
+    Dummy4 = 13@
+    Dummy5 = 14@
+    Dummy6 = 15@
+    FaresInrowCompleted = 16@
+    CmTaxiMode = 17@
+    EarnedLaboralExperience = 18@
+    EarnedTaxiExperience = 19@
+    TaxiEarning = 20@
+    TotalTaxiEarnings = 21@
+    FaresInrowBonus = 22@
+    FaresForNextInrowBonus = 23@
+    FaresInrowCompleted = 24@
+    MissionTimerFlag = 25@
+    
+    PAD_SUBMISSIONS = 19
+    ICON_P_SPRAY = 63
+    COUNT_DOWN = 1
+
+    ACTION_INITIALIZE = 0
+    ACTION_SAVE = 1
+    ACTION_LOAD = 2
+    ACTION_UPDATE = 3
+    SAVEFILE_PATH = "cleo\2hugta.sav"
+    TEMPFILE_PATH = "cleo\TEMP"
+end
+
+{======================================================================
+======================================================================}
+{$I common/SearchIntoTemp.txt}
+
+{======================================================================
+======================================================================}
+:CmTaxiStart
+$ONMISSION=1
+CmTaxiMode=0 // 0: no bonus, no speed bonus, no timer
+00D9: PlayerCar = actor $PLAYER_ACTOR car
+
+MissionState = 0
+EarnedLaboralExperience = 0
+EarnedTaxiExperience = 0
+$M_TIMER=0 
+MissionTimerFlag=0
+$FARES_INROW_COMPLETED=0
+TotalTaxiEarnings = 0 // integer values 
+FaresForNextInrowBonus = 5 // integer values 
+FaresInrowBonus = 25 // integer values
+
+03C4: set_status_text $FARES_INROW_COMPLETED type 0 GXT 'FARES' // Tarifas:
+00BB: show_text_lowpriority GXT 'TAXI1' time 1500 flag 1  // ~g~Look for a fare.
+03E5: show_text_box 'TAXIH1'  // Stop near a highlighted pedestrian to pick them up then drive them to their destination before the time runs out.
+0216: enable_taxi PlayerCar light 1
+
+{======================================================================
+======================================================================}
+repeat
+wait 0 ms
+    if MissionState == 0
+    then
+        if 0154:   actor $PLAYER_ACTOR in_zone 'IND_ZON'  // Portland
+        then 02DD: Passenger = get_random_ped_in_zone 'IND_ZON' with_pedtype_civilian 1 gang 0 criminal/prostitute 1
+        end
+        if 0154:   actor $PLAYER_ACTOR in_zone 'COM_ZON'  // Stauton
+        then 02DD: Passenger = get_random_ped_in_zone 'COM_ZON' with_pedtype_civilian 1 gang 0 criminal/prostitute 1
+        end
+        if 0154:   actor $PLAYER_ACTOR in_zone 'SUB_ZON'  // Shoreside Vale
+        then 02DD: Passenger = get_random_ped_in_zone 'SUB_ZON' with_pedtype_civilian 1 gang 0 criminal/prostitute 1
+        end
+        if not Passenger == -1 // integer values 
+        then
+            //009F: set_actor Passenger objective_to-1 
+            //01ED: reset_actor Passenger flags 
+            //0291: unknown_actor Passenger unknown_behavior_flag 0 
+            0187: DummyMarker = create_marker_above_actor Passenger 
+            //0365: set_actor Passenger objective_to-29 
+            MissionState=1
+        end
+    end
+    
+    if or
+    MissionState == 1
+    MissionState == 2
+    then
+        if 8106:   not actor $PLAYER_ACTOR near_actor Passenger radius 90.0 90.0 20.0 sphere 0 in_car
+        then
+            0164: disable_marker DummyMarker 
+            01C2: remove_references_to_actor Passenger // Like turning an actor into a random pedestrian 
+            MissionState=0
+        end
+    end
+    
+    if MissionState == 1
+    then
+        if and
+        0106:   actor $PLAYER_ACTOR near_actor Passenger radius 7.0 7.0 2.0 sphere 0 in_car
+        01C1:   car PlayerCar stopped
+        then
+            //0319: set_actor Passenger wander_state_to 1 
+            //01D4: actor Passenger go_to_car PlayerCar and_enter_it_as_a_passenger
+            0AB1: @SitOnClosestPassengerSeat 2 Passenger PlayerCar
+            MissionState=2 
+        end
+        //020F: actor Passenger look_at_player $PLAYER_CHAR
+    end
+    
+    if MissionState == 2
+    then
+        if 00DB:   actor Passenger in_car PlayerCar
+        then
+            0164: disable_marker DummyMarker
+            0216: enable_taxi PlayerCar light 0
+            00A0: store_actor Passenger position_to 13@ 14@ 15@ 
+            0AB1: @CmTaxi_GetDestination 0 ret cube_cornerA 1@ 2@ 3@ cube_cornerB 7@ 8@ 9@
+            gosub @M_TAXI_CALCULATE_EARNINGS // salida: 4@ y 5@ (calculadas a partir de 13@, 14@ y 15@)   // 4@: bonus de tiempo, 5@: ganancia
+            if CmTaxiMode == 1 // With Bonus
+            then gosub @M_TAXI_CALCULATE_TIMER
+            end
+            MissionState=3
+        end
+    end
+    
+    if MissionState == 3
+    then
+        if 01AC:   car PlayerCar sphere 1 in_cube_cornerA 1@ 2@ 3@ cornerB 7@ 8@ 9@ stopped
+        then
+            gosub @M_TAXI_SHOW_BONUS
+            gosub @M_TAXI_SHOW_EARNINGS
+            gosub @M_TAXI_JOB_EXPERIENCE
+            0164: disable_marker DummyMarker 
+            01C2: remove_references_to_actor Passenger // Like turning an actor into a random pedestrian 
+            0216: enable_taxi PlayerCar light 1
+            00BB: show_text_lowpriority GXT 'TAXI1' time 3000 flag 1  // ~g~Look for a fare.
+            MissionState=0
+        end
+        if and
+        01F4:   car PlayerCar flipped 
+        01C1:   car PlayerCar stopped 
+        then
+            00BB: show_text_lowpriority GXT 'TAXI3' time 5000 flag 1  // ~r~Your passenger fled in terror!
+            if 8118:   not actor Passenger dead 
+            then 0193: set_actor Passenger objective_to_act_like_ped
+            end
+            MissionState=21 // 'M_TAXI_PED_FLIES_FROM_CAR' state
+        end
+    end
+    
+    // Coche destruido o averiado
+    if 0119:   car PlayerCar wrecked 
+    then jump @CmTaxiPassed
+    end
+    
+    // Cliente muerto o lesionado
+    if and
+    MissionState>0
+    3>=MissionState
+    then
+        if 0118:   actor Passenger dead 
+        then 00BB: show_text_lowpriority GXT 'M_WTX3' time 5000 flag 1  // ~r~Tu cliente esta muerto!
+            jump @CmTaxiPassed
+        end
+        if 051A:   actor Passenger damaged_by_actor $PLAYER_ACTOR
+        then
+            00BB: show_text_lowpriority GXT 'TAXI8' time 5000 flag 1  // ~r~Oops! You better find another ~b~passenger~s~.
+            0164: disable_marker DummyMarker
+            01C2: remove_references_to_actor Passenger // Like turning an actor into a random pedestrian
+            MissionState=0
+        end
+    end
+    
+    // Jugador se salió del vehículo
+    if 80DB:   not actor $PLAYER_ACTOR in_car PlayerCar
+    then jump @CmTaxiPassed
+    end
+    
+    // El tiempo (modo Bonus) se agotó
+    if and
+      MissionTimerFlag == 1 // integer values 
+      $M_TIMER == 0 // integer values 
+    then
+        00BB: show_text_lowpriority GXT 'TAXI2' time 5000 flag 1  // ~r~You're out of time!
+        jump @CmTaxiPassed
+    end
+    
+    {if $energy == 0
+    then 00BB: text_lowpriority 'T_EN2' 5000 ms 1 // ~r~Te haz quedado sin energia para seguir trabajando. Necesitas descansar.
+         jump @CmTaxiPassed
+    end}
+    
+    // El jugador presionó el botón de abandonar misión
+    gosub @M_TAXI_CANCEL
+    if MissionState==100
+    then jump @CmTaxiPassed
+    end
+    
+    gosub @M_TAXI_CAR_DAMAGED
+    gosub @M_TAXI_PED_FLIES_FROM_CAR
+until false
+
+{===================================================
+LOCAL SUBROUTINES
+===================================================}
+{======================================================================
+======================================================================}
+:M_TAXI_CANCEL
+if and
+00E1:   pad 0 key_pressed PAD_SUBMISSIONS 
+$ONMISSION == 1 // integer values 
+then MissionState=99
+end
+if MissionState==99
+then
+    if and
+    80E1:   not pad 0 key_pressed PAD_SUBMISSIONS 
+    $ONMISSION == 1 // integer values 
+    then MissionState=100
+    end
+end
+return
+
+{======================================================================
+======================================================================}
+:M_TAXI_CAR_DAMAGED
+if and
+002B:   3 >= MissionState
+8185:   not car PlayerCar health >= 500 
+then
+    0216: set_car PlayerCar taxi_available_light_to 0 
+    00BB: show_text_lowpriority GXT 'TAXI7' time 4000 flag 1  // ~r~Your car is trashed, get it repaired.
+    0164: disable_marker DummyMarker 
+    if 0154:   actor $PLAYER_ACTOR in_zone 'IND_ZON'  // Portland
+    then 02A8: DummyMarker = create_marker ICON_P_SPRAY at 590.0 -359.55 -100.0
+    end
+    if 0154:   actor $PLAYER_ACTOR in_zone 'COM_ZON'  // Stauton
+    then 02A8: DummyMarker = create_marker ICON_P_SPRAY at 44.0 -493.8 -100.0
+    end
+    if 0154:   actor $PLAYER_ACTOR in_zone 'SUB_ZON'  // Shoreside Vale
+    then 02A8: DummyMarker = create_marker ICON_P_SPRAY at -1463.0 32.45 -100.0
+    end
+    MissionState=20
+end
+if MissionState == 20
+then
+    if 0185:   car PlayerCar health >= 500
+    then
+        0164: disable_marker DummyMarker
+        if 00DB:   actor Passenger in_car PlayerCar
+        then
+            gosub @M_TAXI_CALCULATE_EARNINGS // salida: 4@ y 5@ (calculadas a partir de 13@, 14@ y 15@)
+            MissionState=3
+        else
+            0216: set_car PlayerCar taxi_available_light_to 1 
+            00BB: show_text_lowpriority GXT 'TAXI1' time 1500 flag 1  // ~g~Look for a fare.
+            MissionState=0
+        end
+    end
+end
+return
+
+{======================================================================
+======================================================================}
+:M_TAXI_PED_FLIES_FROM_CAR
+if MissionState == 21
+then
+    if 8118:   not actor Passenger dead 
+    then
+        if 8119:   not car PlayerCar wrecked 
+        then
+            if 00DB:   actor Passenger in_car PlayerCar 
+            then
+                05CD: AS_actor Passenger exit_car PlayerCar
+                if 0256:   player $PLAYER_CHAR defined 
+                then 01B4: set_player $PLAYER_CHAR can_move 0
+                end
+                while 00DB:   actor Passenger in_car PlayerCar 
+                    wait 0 
+                end
+            end
+        end
+    end
+    MissionState=22
+end
+if MissionState == 22
+then
+    01B4: set_player $PLAYER_CHAR frozen_state 1
+    MissionState=20
+end
+return
+
+{======================================================================
+======================================================================}
+:CmTaxi_GetDestination
+wait 0
+if 0154:   actor $PLAYER_ACTOR in_zone 'IND_ZON'  // Portland
+then
+    0209: 4@ = random_int 1 11 
+    if 4@ == 1 // integer values 
+    then
+        if 0154:   actor $PLAYER_ACTOR in_zone 'REDLIGH'  // Red Light District
+        then jump @CmTaxi_GetDestination
+        end
+        00BC: text_highpriority 'FARE1' 5000 ms 1  // ~g~Destination ~w~'Meeouch Sex Kitten Club' ~g~in Redlight.
+        0AB1: @Set2Coords 6 xyz_1 936.25 -462.5625 14.375 xyz_2 913.6875 -456.0 16.375 ret 1@ 2@ 3@ 7@ 8@ 9@
+    end
+    if 4@ == 2 // integer values 
+    then
+        if 0154:   actor $PLAYER_ACTOR in_zone 'S_VIEW'  // Portland View
+        then jump @CmTaxi_GetDestination
+        end
+        00BC: text_highpriority 'FARE2' 5000 ms 1  // ~g~Destination ~w~'Supa Save' ~g~in Portland View.
+        0AB1: @Set2Coords 6 xyz_1 1268.5 -616.375 11.6875 xyz_2 1288.25 -627.5625 13.6875 ret 1@ 2@ 3@ 7@ 8@ 9@
+    end
+    if 4@ == 3 // integer values 
+    then
+        if 0154:   actor $PLAYER_ACTOR in_zone 'CHINA'  // Chinatown
+        then jump @CmTaxi_GetDestination
+        end
+        00BC: text_highpriority 'FARE3' 5000 ms 1  // ~g~Destination ~w~'old school hall' ~g~in Chinatown.
+        0AB1: @Set2Coords 6 xyz_1 1008.875 -871.875 14.375 xyz_2 995.25 -881.875 16.375 ret 1@ 2@ 3@ 7@ 8@ 9@
+    end
+    if 4@ == 4 // integer values 
+    then
+        if 0154:   actor $PLAYER_ACTOR in_zone 'PORT_W'  // Callahan Point
+        then jump @CmTaxi_GetDestination
+        end
+        00BC: text_highpriority 'FARE4' 5000 ms 1  // ~g~Destination ~w~'Greasy Joe's Cafe' ~g~in Callahan Point.
+        0AB1: @Set2Coords 6 xyz_1 849.25 -990.0625 4.5 xyz_2 869.375 -1002.563 6.5 ret 1@ 2@ 3@ 7@ 8@ 9@
+    end
+    if 4@ == 5 // integer values 
+    then
+        if 0154:   actor $PLAYER_ACTOR in_zone 'REDLIGH'  // Red Light District
+        then jump @CmTaxi_GetDestination
+        end
+        00BC: text_highpriority 'FARE5' 5000 ms 1  // ~g~Destination ~w~'AmmuNation' ~g~in Redlight.
+        0AB1: @Set2Coords 6 xyz_1 1065.375 -394.0625 14.25 xyz_2 1057.875 -408.875 16.25 ret 1@ 2@ 3@ 7@ 8@ 9@
+    end
+    if 4@ == 6 // integer values 
+    then
+        if 0154:   actor $PLAYER_ACTOR in_zone 'LITTLEI'  // Saint Mark's
+        then jump @CmTaxi_GetDestination
+        end
+        00BC: text_highpriority 'FARE6' 5000 ms 1  // ~g~Destination ~w~'Easy Credit Autos' ~g~in Saint Mark's.
+        0AB1: @Set2Coords 6 xyz_1 1207.0 -122.0 14.0 xyz_2 1224.0 -108.0 16.0 ret 1@ 2@ 3@ 7@ 8@ 9@
+    end
+    if 4@ == 7 // integer values 
+    then
+        if 0154:   actor $PLAYER_ACTOR in_zone 'REDLIGH'  // Red Light District
+        then jump @CmTaxi_GetDestination
+        end
+        00BC: text_highpriority 'FARE7' 5000 ms 1  // ~g~Destination ~w~'Woody's topless bar' ~g~in Redlight.
+        0AB1: @Set2Coords 6 xyz_1 912.875 -419.0 14.0 xyz_2 919.5 -401.25 16.0 ret 1@ 2@ 3@ 7@ 8@ 9@
+    end
+    if 4@ == 8 // integer values 
+    then
+        if 0154:   actor $PLAYER_ACTOR in_zone 'LITTLEI'  // Saint Mark's
+        then jump @CmTaxi_GetDestination
+        end
+        00BC: text_highpriority 'FARE8' 5000 ms 1  // ~g~Destination ~w~'Marcos Bistro' ~g~in Saint Mark's.
+        0AB1: @Set2Coords 6 xyz_1 1345.75 -461.75 49.375 xyz_2 1334.688 -447.0 51.375 ret 1@ 2@ 3@ 7@ 8@ 9@
+    end
+    if 4@ == 9 // integer values 
+    then
+        if 0154:   actor $PLAYER_ACTOR in_zone 'PORT_E'  // Portland Harbor
+        then jump @CmTaxi_GetDestination
+        end
+        00BC: text_highpriority 'FARE9' 5000 ms 1  // ~g~Destination ~w~'import export garage' ~g~in Portland Harbor.
+        0AB1: @Set2Coords 6 xyz_1 1475.0 -686.0 11.25 xyz_2 1485.25 -667.5 13.25 ret 1@ 2@ 3@ 7@ 8@ 9@
+    end
+    if 4@ == 10 // integer values 
+    then
+        if 0154:   actor $PLAYER_ACTOR in_zone 'CHINA'  // Chinatown
+        then jump @CmTaxi_GetDestination
+        end
+        00BC: text_highpriority 'FARE10' 5000 ms 1  // ~g~Destination ~w~'Punk Noodles' ~g~in Chinatown.
+        0AB1: @Set2Coords 6 xyz_1 1039.063 -660.0625 14.375 xyz_2 1043.875 -647.875 16.375 ret 1@ 2@ 3@ 7@ 8@ 9@
+    end
+end
+if 0154:   actor $PLAYER_ACTOR in_zone 'COM_ZON'  // Stauton
+then
+    0209: 4@ = random_int 11 21 
+    if 4@ == 11 // integer values 
+    then
+        if 0154:   actor $PLAYER_ACTOR in_zone 'CONSTRU'  // Fort Staunton
+        then jump @CmTaxi_GetDestination
+        end
+        00BC: text_highpriority 'FARE11' 5000 ms 1  // ~g~Destination ~w~'Construction site' ~g~in Fort staunton.
+        0AB1: @Set2Coords 6 xyz_1 441.8125 -193.0 20.3125 xyz_2 447.375 -201.875 22.1875 ret 1@ 2@ 3@ 7@ 8@ 9@
+    end
+    if 4@ == 12 // integer values 
+    then
+        if 0154:   actor $PLAYER_ACTOR in_zone 'STADIUM'  // Aspatria
+        then jump @CmTaxi_GetDestination
+        end
+        00BC: text_highpriority 'FARE12' 5000 ms 1  // ~g~Destination ~w~'Football Stadium' ~g~in Aspatria.
+        0AB1: @Set2Coords 6 xyz_1 -27.0 -269.5625 14.9375 xyz_2 -11.6875 -278.875 16.875 ret 1@ 2@ 3@ 7@ 8@ 9@
+    end
+    if 4@ == 13 // integer values 
+    then
+        if 0154:   actor $PLAYER_ACTOR in_zone 'SHOPING'  // Bedford Point
+        then jump @CmTaxi_GetDestination
+        end
+        00BC: text_highpriority 'FARE13' 5000 ms 1  // ~g~Destination ~w~'The Church' ~g~in Bedford Point
+        0AB1: @Set2Coords 6 xyz_1 22.0625 -1136.938 25.125 xyz_2 28.9375 -1125.625 27.0625 ret 1@ 2@ 3@ 7@ 8@ 9@
+    end
+    if 4@ == 14 // integer values 
+    then
+        if 0154:   actor $PLAYER_ACTOR in_zone 'YAKUSA'  // Torrington
+        then jump @CmTaxi_GetDestination
+        end
+        00BC: text_highpriority 'FARE14' 5000 ms 1  // ~g~Destination ~w~'The Casino' ~g~in Torrington
+        0AB1: @Set2Coords 6 xyz_1 421.375 -1390.813 24.9375 xyz_2 415.4375 -1401.188 26.875 ret 1@ 2@ 3@ 7@ 8@ 9@
+    end
+    if 4@ == 15 // integer values 
+    then
+        if 0154:   actor $PLAYER_ACTOR in_zone 'UNIVERS'  // Liberty Campus
+        then jump @CmTaxi_GetDestination
+        end
+        00BC: text_highpriority 'FARE15' 5000 ms 1  // ~g~Destination ~w~'Liberty University' ~g~in Liberty Campus
+        0AB1: @Set2Coords 6 xyz_1 183.125 -215.5 17.0 xyz_2 167.1875 -221.1875 19.25 ret 1@ 2@ 3@ 7@ 8@ 9@
+    end
+    if 4@ == 16 // integer values 
+    then
+        if 0154:   actor $PLAYER_ACTOR in_zone 'PARK'  // Belleville Park
+        then jump @CmTaxi_GetDestination
+        end
+        00BC: text_highpriority 'FARE16' 5000 ms 1  // ~g~Destination ~w~'Shopping Mall' ~g~in Belleville Park Area
+        0AB1: @Set2Coords 6 xyz_1 193.75 -626.1875 25.0625 xyz_2 180.8125 -616.5 27.0625 ret 1@ 2@ 3@ 7@ 8@ 9@
+    end
+    if 4@ == 17 // integer values 
+    then
+        if 0154:   actor $PLAYER_ACTOR in_zone 'COM_EAS'  // Newport
+        then jump @CmTaxi_GetDestination
+        end
+        00BC: text_highpriority 'FARE17' 5000 ms 1  // ~g~Destination ~w~'Museum' ~g~in Newport
+        0AB1: @Set2Coords 6 xyz_1 326.0625 -1001.688 29.0 xyz_2 316.25 -1012.375 24.4375 ret 1@ 2@ 3@ 7@ 8@ 9@
+    end
+    if 4@ == 18 // integer values 
+    then
+        if 0154:   actor $PLAYER_ACTOR in_zone 'YAKUSA'  // Torrington
+        then jump @CmTaxi_GetDestination
+        end
+        00BC: text_highpriority 'FARE18' 5000 ms 1  // ~g~Destination ~w~'AmCo Building' ~g~in Torrington
+        0AB1: @Set2Coords 6 xyz_1 246.1875 -1192.75 24.6875 xyz_2 256.625 -1184.125 26.6875 ret 1@ 2@ 3@ 7@ 8@ 9@
+    end
+    if 4@ == 19 // integer values 
+    then
+        if 0154:   actor $PLAYER_ACTOR in_zone 'SHOPING'  // Bedford Point
+        then jump @CmTaxi_GetDestination
+        end
+        00BC: text_highpriority 'FARE19' 5000 ms 1  // ~g~Destination ~w~'Bolt Burgers' ~g~in Bedford Point
+        0AB1: @Set2Coords 6 xyz_1 28.6875 -1066.625 26.6875 xyz_2 34.0625 -1078.938 24.9375 ret 1@ 2@ 3@ 7@ 8@ 9@
+    end
+    if 4@ == 20 // integer values 
+    then
+        if 0154:   actor $PLAYER_ACTOR in_zone 'PARK'  // Belleville Park
+        then jump @CmTaxi_GetDestination
+        end
+        00BC: text_highpriority 'FARE20' 5000 ms 1  // ~g~Destination ~w~'The Park' ~g~in Belleville
+        0AB1: @Set2Coords 6 xyz_1 27.5 -776.375 26.25 xyz_2 38.75 -765.0 28.5625 ret 1@ 2@ 3@ 7@ 8@ 9@
+    end
+end
+if 0154:   actor $PLAYER_ACTOR in_zone 'SUB_ZON'  // Shoreside Vale
+then
+    0209: 4@ = random_int 21 27 
+    if 4@ == 21 // integer values 
+    then
+        if 0154:   actor $PLAYER_ACTOR in_zone 'AIRPORT'  // Francis Intl. Airport
+        then jump @CmTaxi_GetDestination
+        end
+        00BC: text_highpriority 'FARE21' 5000 ms 1  // ~g~Destination ~w~'Francis intl. Airport'
+        0AB1: @Set2Coords 6 xyz_1 -744.5 -598.5625 8.0 xyz_2 -752.0 -617.1875 15.0 ret 1@ 2@ 3@ 7@ 8@ 9@
+    end
+    if 4@ == 22 // integer values 
+    then
+        if 0154:   actor $PLAYER_ACTOR in_zone 'BIG_DAM'  // Cochrane Dam
+        then jump @CmTaxi_GetDestination
+        end
+        00BC: text_highpriority 'FARE22' 5000 ms 1  // ~g~Destination ~w~'Cochrane Dam'
+        0AB1: @Set2Coords 6 xyz_1 -1111.25 522.875 65.0 xyz_2 -1101.0 516.6875 70.0 ret 1@ 2@ 3@ 7@ 8@ 9@
+    end
+    if 4@ == 23 // integer values 
+    then
+        if 0154:   actor $PLAYER_ACTOR in_zone 'SUB_IND'  // Pike Creek
+        then jump @CmTaxi_GetDestination
+        end
+        00BC: text_highpriority 'FARE23' 5000 ms 1  // ~g~Destination ~w~'import export garage' ~g~in Cochrane Dam district
+        0AB1: @Set2Coords 6 xyz_1 -1107.875 163.5 50.0 xyz_2 -1115.375 155.5625 68.0 ret 1@ 2@ 3@ 7@ 8@ 9@
+    end
+    if 4@ == 24 // integer values 
+    then
+        if 0121:   player $PLAYER_CHAR in_zone 'SUB_IND'  // Pike Creek
+        then jump @CmTaxi_GetDestination
+        end
+        00BC: text_highpriority 'FARE24' 5000 ms 1  // ~g~Destination ~w~'The hospital' ~g~in Pike Creek
+        0AB1: @Set2Coords 6 xyz_1 -1253.0 -136.5625 55.0 xyz_2 -1260.25 -148.375 62.0 ret 1@ 2@ 3@ 7@ 8@ 9@
+    end
+    if 4@ == 25 // integer values 
+    then
+        if or
+        0154:   actor $PLAYER_ACTOR in_zone 'SUB_ZO2'  // Shoreside Vale
+        0154:   actor $PLAYER_ACTOR in_zone 'SUB_ZO3'  // Shoreside Vale
+        then jump @CmTaxi_GetDestination
+        end
+        00BC: text_highpriority 'FARE25' 5000 ms 1  // ~g~Destination ~w~'The Park' ~g~in Shoreside Vale
+        0AB1: @Set2Coords 6 xyz_1 -230.0625 311.5 0.0 xyz_2 -220.1875 322.5 10.0 ret 1@ 2@ 3@ 7@ 8@ 9@
+    end
+    if 4@ == 26 // integer values 
+    then
+        if or
+        0154:   actor $PLAYER_ACTOR in_zone 'PROJECT'  // Wichita Gardens
+        0154:   actor $PLAYER_ACTOR in_zone 'SWANKS'  // Cedar Grove
+        then jump @CmTaxi_GetDestination
+        end
+        00BC: text_highpriority 'FARE26' 5000 ms 1  // ~g~Destination ~w~'North West Towers' ~g~in Wichita Gardens
+        0AB1: @Set2Coords 6 xyz_1 -682.5 95.25 10.0 xyz_2 -673.0 88.375 25.0 ret 1@ 2@ 3@ 7@ 8@ 9@
+    end
+end
+0AB2: ret 6 1@ 2@ 3@ 7@ 8@ 9@
+
+{======================================================================
+======================================================================}
+:Set2Coords
+0AB1: @GTAIIIcoords2SA 3 0@ 1@ 2@ ret 0@ 1@ 2@
+0AB1: @GTAIIIcoords2SA 3 3@ 4@ 5@ ret 3@ 4@ 5@
+0AB2: ret 6 0@ 1@ 2@ 3@ 4@ 5@
+
+:GTAIIIcoords2SA
+0@ += -335.0058
+1@ += -0.0478
+2@ += 5.5
+0AB2: ret 3 0@ 1@ 2@
+
+
+{======================================================================
+======================================================================}
+:M_TAXI_CALCULATE_EARNINGS
+// 4@ y 5@: punto medio entre los dos puntos x-y: 1@,2@ y 7@,8@; que conforman el "cubo" (destino).
+// 4@ = (1@ + 7@)/2   -   5@ = (2@ + 8@)/2
+0086: 4@ = 1@ // floating-point values only 
+0059: 4@ += 7@ // floating-point values 
+4@ /= 2.0 // floating-point values 
+0086: 5@ = 2@ // floating-point values only 
+0059: 5@ += 8@ // floating-point values 
+5@ /= 2.0 // floating-point values
+
+018A: DummyMarker = create_checkpoint_at 4@ 5@ -100.0 
+//018B: show_on_radar DummyMarker 2 
+
+// 6@: distancia entre el origen (13@,14@) y el destino (4@,5@)
+// 6@ = sqrt((13@ - 4@)^2 + (14@ - 5@)^2)
+0086: 6@ = 13@ // floating-point values only 
+0061: 6@ -= 4@ // floating-point values 
+0086: 15@ = 14@ // floating-point values only 
+0061: 15@ -= 5@ // floating-point values 
+0069: 6@ *= 6@ // floating-point values 
+0069: 15@ *= 15@ // floating-point values 
+0059: 6@ += 15@ // floating-point values 
+01FB: 6@ = square_root 6@ 
+008C: 6@ = float_to_integer 6@ 
+
+// 4@: permite calcular el bono de tiempo
+// 5@: contiene el bono de ganancias
+0084: 4@ = 6@ // integer values and handles
+0084: 5@ = 6@ // integer values and handles
+
+//0209: 6@ = random_int 10 16
+0014: 5@ /= 100 // integer values 
+//0068: 5@ *= 6@ // integer values 
+0010: 5@ *= 12 // integer values 
+return
+
+{======================================================================
+======================================================================}
+:M_TAXI_CALCULATE_TIMER
+if 0154:   actor $PLAYER_ACTOR in_zone 'IND_ZON'  // Portland
+then
+    if $FARES_INROW_COMPLETED == 0 // integer values 
+    then 4@ *= 100 // integer values
+    end
+end
+if 0154:   actor $PLAYER_ACTOR in_zone 'COM_ZON'  // Stauton
+then
+    if $FARES_INROW_COMPLETED == 0 // integer values 
+    then 4@ *= 95 // integer values
+    end
+end
+if 0154:   actor $PLAYER_ACTOR in_zone 'SUB_ZON'  // Shoreside Vale
+then
+    if $FARES_INROW_COMPLETED == 0 // integer values 
+    then 4@ *= 115 // integer values
+    end
+end
+if $FARES_INROW_COMPLETED == 1 // integer values 
+then 4@ *= 90 // integer values
+end
+if $FARES_INROW_COMPLETED == 2 // integer values 
+then 4@ *= 85 // integer values
+end
+if $FARES_INROW_COMPLETED == 3 // integer values 
+then 4@ *= 84 // integer values
+end
+if $FARES_INROW_COMPLETED == 4 // integer values 
+then 4@ *= 83 // integer values
+end
+if $FARES_INROW_COMPLETED == 5 // integer values 
+then 4@ *= 82 // integer values
+end
+if and
+  $FARES_INROW_COMPLETED > 5 // integer values 
+  10 >= $FARES_INROW_COMPLETED // integer values 
+then 4@ *= 80 // integer values
+end
+if and
+  $FARES_INROW_COMPLETED > 11 // integer values 
+  20 >= $FARES_INROW_COMPLETED // integer values 
+then 4@ *= 75 // integer values
+end
+if and
+  $FARES_INROW_COMPLETED > 20 // integer values 
+  50 >= $FARES_INROW_COMPLETED // integer values 
+then 4@ *= 70 // integer values
+end
+if $FARES_INROW_COMPLETED > 50 // integer values 
+then 4@ *= 60 // integer values
+end
+0058: $M_TIMER += 4@ // integer values 
+if MissionTimerFlag == 0 // integer values 
+then
+    014E: start_timer_at $M_TIMER count_in_direction COUNT_DOWN // global_variable
+    MissionTimerFlag = 1 // integer values
+end
+4@ /= 100 // integer values 
+4@ *= 65 // integer values 
+33@ = 0 // integer values 
+if 0154:   actor $PLAYER_ACTOR in_zone 'SUB_ZON'  // Shoreside Vale
+then
+    if $FARES_INROW_COMPLETED == 0 // integer values 
+    then $M_TIMER += 15000 // integer values
+    end
+else
+    if $FARES_INROW_COMPLETED == 0 // integer values 
+    then $M_TIMER += 10000 // integer values
+    end
+end
+return
+
+{======================================================================
+======================================================================}
+:SitOnClosestPassengerSeat
+// 0@: actor, 1@: car
+const
+    Object1 = 92@
+    Object2 = 93@
+    ActorX = 58@  
+    ActorY = 59@
+    ActorZ = 60@
+    Obj1_X = 61@  
+    Obj1_Y = 62@
+    Obj1_Z = 63@
+    Obj2_X = 64@  
+    Obj2_Y = 65@
+    Obj2_Z = 66@
+    Distance1 = 80@
+    Distance2 = 81@
+end
+0107: Object1 = create_object #CR_AMMOBOX at 0.0 0.0 0.0 
+0382: set_object Object1 collision_detection 0 
+0750: set_object Object1 visibility 0 
+0681: attach_object Object1 to_car 1@ with_offset -1.0 -1.0 0.0 rotation 0.0 0.0 0.0 
+0107: Object2 = create_object #CR_AMMOBOX at 0.0 0.0 0.0 
+0382: set_object Object2 collision_detection 0 
+0750: set_object Object2 visibility 0 
+0681: attach_object Object2 to_car 1@ with_offset 1.0 -1.0 0.0 rotation 0.0 0.0 0.0 
+
+00A0: store_actor 0@ position_to ActorX ActorY ActorZ
+01BB: store_object Object1 position_to Obj1_X Obj1_Y Obj1_Z
+01BB: store_object Object2 position_to Obj2_X Obj2_Y Obj2_Z
+050A: Distance1 = distance_between_XYZ ActorX ActorY ActorZ and_XYZ Obj1_X Obj1_Y Obj1_Z
+050A: Distance2 = distance_between_XYZ ActorX ActorY ActorZ and_XYZ Obj2_X Obj2_Y Obj2_Z
+if 0025:   Distance2 > Distance1 // (float) 
+then 05CA: AS_actor 0@ enter_car 1@ passenger_seat 1 -2 ms
+else 05CA: AS_actor 0@ enter_car 1@ passenger_seat 2 -2 ms
+end
+0108: destroy_object Object1
+0108: destroy_object Object2
+0AB2: ret 0
+
+{======================================================================
+======================================================================}
+:M_TAXI_SHOW_BONUS
+0085: TaxiEarning = 5@ // (int)
+if 0154:   actor $PLAYER_ACTOR in_zone 'SUB_ZON'  // Shoreside Vale
+then
+    if or
+    001F:   33@ > 4@ // integer values
+    CmTaxiMode == 0 // No bonus
+    then 00BA: text_styled 'TAXI4' 5000 ms 5  // Fare complete!
+    else
+        TaxiEarning *= 2 // integer values 
+        00BA: text_styled 'TAXI5' 5000 ms 5  // SPEED BONUS!!
+    end
+else
+    if or
+    001F:   33@ > 4@ // integer values 
+    CmTaxiMode == 0 // No bonus
+    then
+        TaxiEarning /= 2 // integer values 
+        00BA: text_styled 'TAXI4' 5000 ms 5  // Fare complete!
+    else 00BA: text_styled 'TAXI5' 5000 ms 5  // SPEED BONUS!!
+    end
+end
+return
+
+{======================================================================
+======================================================================}
+:M_TAXI_SHOW_EARNINGS
+0109: player $PLAYER_CHAR money += TaxiEarning 
+01E3: show_text_1number_styled GXT 'TSCORE2' number TaxiEarning time 6000 style 6  // $~1~
+018C: play_sound 1058 at 0.0 0.0 0.0
+005A: TotalTaxiEarnings += TaxiEarning  // (int)
+$TAXIMISSIONS_COMPLETED += 1 // integer values 
+$FARES_INROW_COMPLETED += 1 // integer values 
+$M_TIMER += 10000 // integer values 
+if and
+003C:   $FARES_INROW_COMPLETED == FaresForNextInrowBonus  // (int)
+CmTaxiMode == 1 // With Bonus
+then
+    036D: show_text_2numbers_styled GXT 'IN_ROW' numbers $FARES_INROW_COMPLETED FaresInrowBonus time 5000 style 6  // ~1~ IN A ROW bonus! $~1~
+    0109: player $PLAYER_CHAR money += FaresInrowBonus 
+    005A: TotalTaxiEarnings += FaresInrowBonus // integer values 
+    FaresForNextInrowBonus += 5 // integer values 
+    FaresInrowBonus += 8//2000 // integer values
+end
+return
+
+{======================================================================
+======================================================================}
+:M_TAXI_JOB_EXPERIENCE
+000A: EarnedLaboralExperience += 1 // integer values 
+0209: 6@ = random_int 1 3 
+005A: EarnedTaxiExperience += 6@  // (int)
+return
+
+{===================================================
+END OF THE MISSION
+===================================================}
+:CmTaxiPassed
+00BA: show_text_styled GXT 'TAXI6' time 5000 style 5  // Taxi mission over
+01E3: show_text_1number_styled GXT 'TSCORE' number TotalTaxiEarnings time 6000 style 6  // EARNINGS: $~1~
+return
+
+:CmTaxiFailed
+return
+
+:CmTaxiCleanUp
+100@v = "LaboralExp"
+0AB1: @AddToIndividualData inputs 7 var_to_update 100@ 101@ 102@ 103@ with_value EarnedLaboralExperience that_is_data_type 0 and_create_log_in_file 0
+100@v = "TaxiExp"
+0AB1: @AddToIndividualData inputs 7 var_to_update 100@ 101@ 102@ 103@ with_value EarnedTaxiExperience that_is_data_type 0 and_create_log_in_file 0
+0A92: create_custom_thread "SaveData.s" ACTION_UPDATE
+
+$ONMISSION = 0 // integer values
+0164: disable_marker DummyMarker 
+01C2: remove_references_to_actor Passenger // Like turning an actor into a random pedestrian 
+0151: remove_status_text $FARES_INROW_COMPLETED 
+014F: stop_timer $M_TIMER 
+0216: set_car PlayerCar taxi_available_light_to 0 
+00D8: mission_cleanup 
+return
+
+

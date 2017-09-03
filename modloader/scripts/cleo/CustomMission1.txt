@@ -1,0 +1,125 @@
+{$CLEO .cm}
+thread 'CustomMission' 
+gosub @CmStart
+if wasted_or_busted 
+then gosub @CmFail
+end
+gosub @CmCleanUp
+end_thread 
+
+:CmStart
+$ONMISSION = 1
+0AB1: @IIIFade 2 0 1000
+00A1: put_actor $PLAYER_ACTOR at 1052.1741 -818.5352 17.8103
+0173: set_actor $PLAYER_ACTOR Z_angle_to 90.0
+0373: set_camera_directly_behind_player
+02EB: restore_camera_with_jumpcut
+0AB1: @LoadModel 1 #admiral
+0AB1: @CreateVehicle 5 model #admiral coord 1045.2947 -821.5359 18.0814 88.0 ret 0@
+0249: release_model #admiral
+0186: 1@ = create_marker_above_car 0@
+
+wait 1000
+0AB1: @IIIFade 2 1 1500
+
+0ACC: show_text_lowpriority "Aborda el ~b~vehiculo~s~, y que sea rapidito marikon invesilo." time 4000
+
+:CmAboardCar
+repeat
+wait 0
+    if 0119:   car 0@ wrecked
+    then jump @CmFail
+    end
+until 00DB:   actor $PLAYER_ACTOR in_car 0@
+0164: disable_marker 1@
+018A: 1@ = create_checkpoint_at 808.6345 -593.761 20.8597
+0ACC: show_text_lowpriority "Dirigete al ~y~hospital~s~." time 4000
+
+
+repeat
+wait 0
+    if 80DB:   not actor $PLAYER_ACTOR in_car 0@
+    then
+        0ACC: show_text_lowpriority "Regresa al ~b~coche~s~ carajo!" time 4000
+        0164: disable_marker 1@
+        0186: 1@ = create_marker_above_car 0@
+        jump @CmAboardCar
+    end
+until 0100:   actor $PLAYER_ACTOR in_sphere 808.6345 -593.761 20.8597 radius 4.0 4.0 4.0 sphere 1 in_car
+
+0164: disable_marker 1@
+05CD: AS_actor $PLAYER_ACTOR exit_car 0@
+
+wait 500
+0AB1: @IIIFade 2 0 2000
+
+00A1: put_actor $PLAYER_ACTOR at 801.6012 -601.1277 20.8597
+0173: set_actor $PLAYER_ACTOR Z_angle_to 92.0
+0373: set_camera_directly_behind_player
+02EB: restore_camera_with_jumpcut
+wait 1000
+0AB1: @IIIFade 2 1 2500
+wait 1000
+
+:CmPassed
+//0394: play_music 2
+0A92: create_custom_thread "PlayMusic.s" 0
+0ADF: add_dynamic_GXT_entry "MPASSD" text "Mision pasada!"
+00BA: show_text_styled GXT "MPASSD" time 5000 style 1
+0ACC: show_text_lowpriority "Felicidades, ya completaste la mision tipo 'Hola mundo'!" time 6000
+wait 5000
+0ACC: show_text_lowpriority "Ahora fajate a hacer 200 misiones de complejidad muy muy superior a esta, y que sea rapidito marikon pendejete." time 8000
+return
+
+:CmFail
+0ADF: add_dynamic_GXT_entry "MFAILD" text "Mision fallida!"
+00BA: show_text_styled GXT "MFAILD" time 5000 style 1
+0ACC: show_text_lowpriority "~r~La habeis cagado majo." time 4000
+return
+
+:CmCleanUp
+01C3: remove_references_to_car 0@
+0164: disable_marker 1@
+$ONMISSION = 0
+return
+
+{======================================================================
+======================================================================}
+:CreateVehicle
+// 0@: model, 1@ 2@ 3@ 4@: coordinates
+00A5: 10@ = create_car 0@ at 1@ 2@ 3@
+0175: set_car 10@ Z_angle_to 4@
+0AB2: ret 1 10@
+
+{======================================================================
+======================================================================}
+:LoadModel
+0247: load_model 0@
+038B: load_requested_models
+repeat
+wait 0
+until 0248:   model 0@ available
+0AB2: ret 0
+
+{======================================================================
+======================================================================}
+:IIIFadeLoop
+0390: load_txd_dictionary 0@s
+038F: load_texture 2@v as 1 // Load dictionary with 0390 first
+038D: draw_texture 1 position 320.0 224.0 size 640.0 448.0 RGBA 255 255 255 255
+0AB2: ret 0
+
+{======================================================================
+======================================================================}
+:IIIFade
+03F0: enable_text_draw 0
+2@s='splash1'
+4@v="splash1"
+0A92: create_custom_thread "IIIFade.s" 0@ 1@ 2@ 3@ 4@ 5@ 6@ 7@
+if 0@ == 0
+then
+    wait 1@
+    0AB1: @IIIFadeLoop 6 2@ 3@ 4@ 5@ 6@ 7@
+end
+0AB2: ret 0
+

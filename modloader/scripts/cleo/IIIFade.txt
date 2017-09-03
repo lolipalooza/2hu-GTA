@@ -1,0 +1,88 @@
+{======================================================================
+======================================================================}
+{$CLEO .s}
+thread 'IIIFade'
+
+{======================================================================
+======================================================================}
+const
+    fdFlag = 0@
+    fdTime = 1@
+    fdTxdDictionary = 2@s // 2@ 3@
+    fdTexture = 4@v // 4@ 5@ 6@ 7@
+    
+    fdAlpha = 8@
+end
+
+{======================================================================
+======================================================================}
+:Main
+fade 1 0
+//03F0: enable_text_draw 0
+0390: load_txd_dictionary fdTxdDictionary
+038F: load_texture fdTexture as 1 // Load dictionary with 0390 first
+if fdFlag == 1
+then 038D: draw_texture 1 position 320.0 224.0 size 640.0 448.0 RGBA 255 255 255 255
+end
+0006: 32@ = 0
+repeat
+wait 0
+    if fdFlag == 0
+    then 0AB1: @TimedIncreaseVar 2 255 fdTime ret fdAlpha
+    else 0AB1: @TimedDecreaseVar 2 255 fdTime ret fdAlpha
+    end
+    03F0: enable_text_draw 0
+    03E3: set_texture_to_be_drawn_antialiased 1
+    038D: draw_texture 1 position 320.0 224.0 size 640.0 448.0 RGBA 255 255 255 fdAlpha
+until 002D:   32@ >= fdTime  // (int)
+0391: release_textures
+0A93: end_custom_thread
+
+{======================================================================
+======================================================================}
+:TimedDecreaseVar
+const
+    Td_MaxVarValue = 0@
+    Td_MaxTimeValue = 1@
+    Td_Var = 2@
+    Td_Time = 3@
+end
+// var = - (max_var_value/max_time_value) * time(ms) + max_var_value
+0093: Td_MaxVarValue = integer Td_MaxVarValue to_float
+0093: Td_MaxTimeValue = integer Td_MaxTimeValue to_float
+0087: Td_Var = Td_MaxVarValue // (float)
+0073: Td_Var /= Td_MaxTimeValue // (float)
+0013: Td_Var *= -1.0
+0093: Td_Time = integer 32@ to_float
+006B: Td_Var *= Td_Time  // (float)
+005B: Td_Var += Td_MaxVarValue  // (float)
+0092: Td_Var = float Td_Var to_integer
+if 0 > Td_Var
+then Td_Var = 0
+end
+0AB2: ret 1 Td_Var
+
+{======================================================================
+======================================================================}
+:TimedIncreaseVar
+const
+    Td_MaxVarValue = 0@
+    Td_MaxTimeValue = 1@
+    Td_Var = 2@
+    Td_Time = 3@
+    Td_MaxVarValueInt = 4@
+end
+// var =  max_var_value/max_time_value * time(ms)
+0085: Td_MaxVarValueInt = Td_MaxVarValue // (int)
+0093: Td_MaxVarValue = integer Td_MaxVarValue to_float
+0093: Td_MaxTimeValue = integer Td_MaxTimeValue to_float
+0087: Td_Var = Td_MaxVarValue // (float)
+0073: Td_Var /= Td_MaxTimeValue // (float)
+0093: Td_Time = integer 32@ to_float
+006B: Td_Var *= Td_Time  // (float)
+0092: Td_Var = float Td_Var to_integer
+if 001D:   Td_Var > Td_MaxVarValueInt  // (int)
+then 0085: Td_Var = Td_MaxVarValueInt // (int)
+end
+0AB2: ret 1 Td_Var
+

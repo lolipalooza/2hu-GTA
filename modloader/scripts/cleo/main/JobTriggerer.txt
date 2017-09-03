@@ -1,0 +1,75 @@
+{======================================================================
+======================================================================}
+:JobTriggerer
+// Taxi Mission Triggerer
+if 0038: $ONMISSION == 0
+then
+    if 0602:   actor $PLAYER_ACTOR driving_taxi
+    then
+        if 00E1:   player 0 pressed_key 19 // ~k~~TOGGLE_SUBMISSIONS~
+        then
+            repeat
+            wait 0
+            until 80E1:   not player 0 pressed_key 19
+            00BA: show_text_styled GXT 'TAXI_M' time 6000 style 5  // ~y~'TAXI DRIVER'
+            0A94: start_custom_mission "CmTaxi"
+            0004: $ONMISSION = 1
+        else if 0039: 30@ == 0
+            then 03E5: show_text_box 'TTUTOR'  // Press ~k~~TOGGLE_SUBMISSIONS~ to toggle taxi missions on or off.
+                30@=1
+            end
+        end
+    else 30@=0
+    end
+end
+    
+{if 20@ == 0
+then
+    if 00FF:   actor $PLAYER_ACTOR sphere 1 in_sphere 1091.8901 -803.3321 17.784 radius 2.0 2.0 2.0 on_foot
+    then
+        0ACB: show_styled_text "Custom Mission 1" time 300 style 2
+        0A94: start_custom_mission "CustomMission1"
+        0164: disable_marker 21@
+        20@ = 1
+    end
+end
+if 22@ == 0
+then
+    if 00FF:   actor $PLAYER_ACTOR sphere 1 in_sphere -426.6884 -921.9352 32.1303 radius 2.0 2.0 2.0 on_foot
+    then
+        01B4: set_player $PLAYER_CHAR can_move 0
+        015F: set_camera_position -410.763122 -931.781127 41.730255 rotation 0.0 0.0 0.0
+        0160: set_camera_point_at -411.628265 -931.342102 41.487754 switchstyle 2
+        0A92: create_custom_thread "PlayMusic.s" 1
+        0ADF: add_dynamic_GXT_entry "MPASSD" text "Mision pasada!"
+        00BA: show_text_styled GXT "MPASSD" time 2000 style 1
+        0AE0: remove_dynamic_GXT_entry "MPASSD"
+        0ACC: show_text_lowpriority "See you in ~b~Vice City~s~!" time 6000
+        wait 6000
+        0373: set_camera_directly_behind_player
+        02EB: restore_camera_with_jumpcut
+        01B4: set_player $PLAYER_CHAR can_move 1
+        22@ = 1
+    end
+end
+if 23@ == 0
+then
+    if 00FF:   actor $PLAYER_ACTOR sphere 1 in_sphere 1120.662 -188.2301 61.3898 radius 2.0 2.0 2.0 on_foot
+    then
+        01B4: set_player $PLAYER_CHAR can_move 0
+        015F: set_camera_position 1092.354858 -214.894989 77.584946 rotation 0.0 0.0 0.0
+        0160: set_camera_point_at 1093.077881 -214.288269 77.254585 switchstyle 2
+        0A92: create_custom_thread "PlayMusic.s" 2
+        0ADF: add_dynamic_GXT_entry "MPASSD" text "Mision pasada!"
+        00BA: show_text_styled GXT "MPASSD" time 2000 style 1
+        0AE0: remove_dynamic_GXT_entry "MPASSD"
+        0ACC: show_text_lowpriority "Fuck u cockstar for not porting ~y~Liberty City Stories~s~ for PC!" time 6000
+        wait 6000
+        0373: set_camera_directly_behind_player
+        02EB: restore_camera_with_jumpcut
+        01B4: set_player $PLAYER_CHAR can_move 1
+        0164: disable_marker 10@
+        23@ = 1
+    end
+end}
+return

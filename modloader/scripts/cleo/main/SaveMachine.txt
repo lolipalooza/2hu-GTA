@@ -1,0 +1,22 @@
+{======================================================================
+======================================================================}
+:SaveMachine
+if 00FE:   actor $PLAYER_ACTOR sphere 0 in_sphere 785.0534 28.0487 8.1527 radius 45.0 45.0 45.0
+then
+    if 00FF:   actor $PLAYER_ACTOR sphere 1 in_sphere 785.0534 28.0487 8.1527 radius 2.0 2.0 2.0 on_foot
+    then
+        0AB1: @IIIFade 2 0 2000
+        13@v = "StartPosId"
+        0AB1: @SetIndividualData inputs 7 var_to_update 13@ 14@ 15@ 16@ with_value 1 that_is_data_type 0 and_create_log_in_file 0
+        0A92: create_custom_thread "SaveData.s" ACTION_SAVE
+        00A1: put_actor $PLAYER_ACTOR at 789.9366 29.2542 7.7647
+        0173: set_actor $PLAYER_ACTOR Z_angle_to 275.0
+        0373: set_camera_directly_behind_player
+        02EB: restore_camera_with_jumpcut
+        wait 1000
+        0AB1: @IIIFade 2 1 2500
+        wait 500
+        0ACC: show_text_lowpriority "~b~Your ~s~statistics ~b~have been ~s~saved~b~." time 5000
+    end
+end
+return

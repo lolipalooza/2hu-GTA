@@ -1,0 +1,65 @@
+{======================================================================
+======================================================================}
+:SetDrawText
+const
+    DwTx_Font = 0@
+    DwTx_Linewidth = 1@
+    DwTx_SizeX = 2@
+    DwTx_SizeY = 3@
+    DwTx_PosX = 4@
+    DwTx_PosY = 5@
+    DwTx_gxt1 = 6@
+    DwTx_gxt2 = 7@
+    DwTx_Gxt = 6@s
+end
+0349: set_text_draw_font DwTx_Font
+0343: set_text_draw_linewidth DwTx_Linewidth
+033F: set_text_draw_letter_size DwTx_SizeX DwTx_SizeY
+033E: set_draw_text_position DwTx_PosX DwTx_PosY GXT DwTx_Gxt
+0AB2: ret 0
+
+{======================================================================
+======================================================================}
+:SetDrawText1num
+const
+    {DwTx_Font = 0@
+    DwTx_Linewidth = 1@
+    DwTx_SizeX = 2@
+    DwTx_SizeY = 3@
+    DwTx_PosX = 4@
+    DwTx_PosY = 5@
+    DwTx_gxt1 = 6@
+    DwTx_gxt2 = 7@
+    DwTx_Gxt = 6@s} // Already declared
+    DwTx_Int = 8@
+end
+0349: set_text_draw_font DwTx_Font
+0343: set_text_draw_linewidth DwTx_Linewidth
+033F: set_text_draw_letter_size DwTx_SizeX DwTx_SizeY
+045A: draw_text_1number DwTx_PosX DwTx_PosY GXT DwTx_Gxt number DwTx_Int
+0AB2: ret 0
+
+{======================================================================
+======================================================================}
+:SetDrawText2num
+const
+    {DwTx_Font = 0@
+    DwTx_Linewidth = 1@
+    DwTx_SizeX = 2@
+    DwTx_SizeY = 3@
+    DwTx_PosX = 4@
+    DwTx_PosY = 5@
+    DwTx_gxt1 = 6@
+    DwTx_gxt2 = 7@
+    DwTx_Gxt = 6@s} // Already declared
+    DwTx_Int1 = 8@
+    DwTx_Int2 = 9@
+end
+0349: set_text_draw_font DwTx_Font
+0343: set_text_draw_linewidth DwTx_Linewidth
+033F: set_text_draw_letter_size DwTx_SizeX DwTx_SizeY
+045B: draw_text_2numbers DwTx_PosX DwTx_PosY GXT DwTx_Gxt numbers DwTx_Int1 DwTx_Int2
+0AB2: ret 0
+
+{======================================================================
+======================================================================}

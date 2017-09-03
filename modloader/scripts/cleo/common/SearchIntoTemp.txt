@@ -1,0 +1,246 @@
+{======================================================================
+======================================================================}
+:SearchIntoTemp
+// Inputs: 0@: 1@ 2@ 3@: varible to search, 4@: group to search, 5@: log file
+const
+    PROCESS_HEADER_DATA = 0
+    PROCESS_INDIV_DATA = 1
+    PROCESS_GROUP_DATA = 2
+    PROCESS_GLOBAL_DATA = 3
+
+    St_LogFile = 5@
+    St_RdState = 6@
+    St_TempFile = 7@
+    St_NumOfData = 8@
+    St_FlagRead = 9@
+    St_Index = 30@
+    St_FlagIntOrFloat = 31@
+    // 10@ 11@ 12@ ...  25@ dummy inputs
+end
+
+if 0AAB:   file_exists SAVEFILE_PATH
+then 0A9A: St_TempFile = openfile SAVEFILE_PATH mode "rb"  // IF and SET
+else
+    if 0AAB:   file_exists TEMPFILE_PATH
+    then 0A9A: St_TempFile = openfile TEMPFILE_PATH mode "rb"  // IF and SET
+    else // TODO: return with no data and error message
+        059A:  return_false
+        0AB2: ret 14 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+    end
+end
+
+if St_LogFile <> 0
+then 0AD9: write_formatted_text "Searching for data in Saved file...%c%c" in_file St_LogFile 0xd 0xa
+end
+0006: St_RdState = PROCESS_HEADER_DATA
+repeat
+    if St_RdState == PROCESS_HEADER_DATA
+    then
+        0ADA: St_NumOfData = scan_file St_TempFile format "%s %s %s %s %s %s" 24@s 10@s 12@s 14@s 16@v 20@v //IF and SET
+        if St_NumOfData == 6
+        then
+            if and
+            24@s == 'Temp:'
+            St_LogFile <> 0
+            then 0AD9: write_formatted_text "Reading...%s %s %s %s %s %s%c%c" in_file St_LogFile 24@s 10@s 12@s 14@s 16@v 20@v 0xd 0xa
+            end
+            if and
+            24@s == 'Temp:'
+            0@v == 20@v
+            then St_FlagRead = 1
+            else St_FlagRead = 0
+            end
+            if 10@s == 'indiv'
+            then St_RdState=PROCESS_INDIV_DATA
+            end
+            if 10@s == 'group'
+            then St_RdState=PROCESS_GROUP_DATA
+            end
+            if 10@s == 'global'
+            then St_RdState=PROCESS_GLOBAL_DATA
+            end
+            if 12@s == 'float'
+            then St_FlagIntOrFloat = 1
+            else St_FlagIntOrFloat = 0
+            end
+        else
+            if St_LogFile <> 0
+            then 0AD9: write_formatted_text "General data not recognized%c%c" in_file St_LogFile vars 0xd 0xa
+            end
+        end
+    end
+    if St_RdState == PROCESS_INDIV_DATA
+    then
+        for St_Index = 0 to 13
+            if St_FlagIntOrFloat == 0
+            then 0ADA: St_NumOfData = scan_file St_TempFile format "%s %d %d %d %d %d %d %d" 10@s 12@ 13@ 14@ 15@ 16@ 17@ 18@ //IF and SET
+            else 0ADA: St_NumOfData = scan_file St_TempFile format "%s %f %f %f %f %f %f %f" 10@s 12@ 13@ 14@ 15@ 16@ 17@ 18@ //IF and SET
+            end
+            if St_NumOfData == 8
+            then
+                if and
+                003B:   4@ == St_Index  // (int)
+                0039:   St_FlagRead == 1
+                then
+                    if St_LogFile <> 0
+                    then
+                        if St_FlagIntOrFloat == 0
+                        then 0AD9: write_formatted_text "returning data of group %s: %d %d %d %d %d %d %d%c%c" in_file St_LogFile vars 10@s 12@ 13@ 14@ 15@ 16@ 17@ 18@ 0xd 0xa
+                        else 0AD9: write_formatted_text "returning data of group %s: %f %f %f %f %f %f %f%c%c" in_file St_LogFile vars 10@s 12@ 13@ 14@ 15@ 16@ 17@ 18@ 0xd 0xa
+                        end
+                    end
+                    0485:  return_true
+                    jump @SearchIntoTemp_End
+                end
+            else
+                if St_LogFile <> 0
+                then 0AD9: write_formatted_text "Error: Group not recognized (%d)%c%c" in_file St_LogFile vars St_Index 0xd 0xa
+                end
+            end
+        end
+    end
+    if St_RdState == PROCESS_GROUP_DATA
+    then
+        if St_FlagIntOrFloat == 0
+        then 0ADA: St_NumOfData = scan_file St_TempFile format "%d %d %d %d %d %d %d %d %d %d %d %d %d %d" 10@ 11@ 12@ 13@ 14@ 15@ 16@ 17@ 18@ 19@ 20@ 21@ 22@ 23@ //IF and SET
+        else 0ADA: St_NumOfData = scan_file St_TempFile format "%f %f %f %f %f %f %f %f %f %f %f %f %f %f" 10@ 11@ 12@ 13@ 14@ 15@ 16@ 17@ 18@ 19@ 20@ 21@ 22@ 23@ //IF and SET
+        end
+        if St_NumOfData == 14
+        then
+            if 0039:   St_FlagRead == 1
+            then
+                if St_LogFile <> 0
+                then
+                    if St_FlagIntOrFloat == 0
+                    then 0AD9: write_formatted_text "returning data: %d %d %d %d %d %d %d %d %d %d %d %d %d %d%c%c" in_file St_LogFile vars 10@ 11@ 12@ 13@ 14@ 15@ 16@ 17@ 18@ 19@ 20@ 21@ 22@ 23@ 0xd 0xa
+                    else 0AD9: write_formatted_text "returning data: %f %f %f %f %f %f %f %f %f %f %f %f %f %f%c%c" in_file St_LogFile vars 10@ 11@ 12@ 13@ 14@ 15@ 16@ 17@ 18@ 19@ 20@ 21@ 22@ 23@ 0xd 0xa
+                    end
+                end
+                0485:  return_true
+                jump @SearchIntoTemp_End
+            end
+        else
+            if St_LogFile <> 0
+            then 0AD9: write_formatted_text "Error: Data of groups not recognized%c%c" in_file St_LogFile vars 0xd 0xa
+            end
+        end
+    end
+    if St_RdState == PROCESS_GLOBAL_DATA
+    then
+        if St_FlagIntOrFloat == 0
+        then 0ADA: St_NumOfData = scan_file St_TempFile format "%d" 10@ //IF and SET
+        else 0ADA: St_NumOfData = scan_file St_TempFile format "%f" 10@ //IF and SET
+        end
+        if St_NumOfData == 1
+        then
+            if 0039:   St_FlagRead == 1
+            then
+                if St_LogFile <> 0
+                then
+                    if St_FlagIntOrFloat == 0
+                    then 0AD9: write_formatted_text "returning data: %d%c%c" in_file St_LogFile vars 10@ 0xd 0xa
+                    else 0AD9: write_formatted_text "returning data: %f%c%c" in_file St_LogFile vars 10@ 0xd 0xa
+                    end
+                end
+                0485:  return_true
+                jump @SearchIntoTemp_End
+            end
+        else
+            if St_LogFile <> 0
+            then 0AD9: write_formatted_text "Error: Global data not recognized%c%c" in_file St_LogFile vars 0xd 0xa
+            end
+        end
+    end
+    St_RdState = PROCESS_HEADER_DATA
+until 0AD6:   end_of_file St_TempFile reached
+059A:  return_false
+
+:SearchIntoTemp_End
+if St_LogFile <> 0
+then 0AD9: write_formatted_text "Search process finalized....%c%c%c%c" in_file St_LogFile vars 0xd 0xa 0xd 0xa
+end
+0A9B: closefile St_TempFile
+0AB2: ret 14 10@ 11@ 12@ 13@ 14@ 15@ 16@ 17@ 18@ 19@ 20@ 21@ 22@ 23@
+
+{======================================================================
+======================================================================}
+:ReadGroupOffsets
+// 0@: group
+0A9A: 1@ = openfile "modloader/2hu gta/groups.dat" mode "rb"  // IF and SET
+3@=0
+repeat
+    0ADA: 2@ = scan_file 1@ format "%d %d %d %d %d %d %d" 10@ 11@ 12@ 13@ 14@ 15@ 16@ //IF and SET
+    if 2@ == 7
+    then
+        if or
+        003B:   0@ == 3@  // (int)
+        3@ >= 13
+        then break
+        else 3@++
+        end
+    else 0ADA: 2@ = scan_file 1@ format "%s" 10@v //IF and SET
+    end
+until 0AD6:   end_of_file 1@ reached
+0A9B: closefile 1@
+0AB2: ret 7 10@ 11@ 12@ 13@ 14@ 15@ 16@
+
+{======================================================================
+======================================================================}
+:GetPlayerCharacterData
+const
+    Gpd_LogFile = 0@
+    Gpd_Group = 1@
+    // 24@ 25@ 26@ 27@: long string to search
+end
+24@v = "GroupId"
+0AB1: @SearchIntoTemp 6 variable_to_search 24@ 25@ 26@ 27@ group 0 create_log_in_file Gpd_LogFile ret Gpd_Group 10@ 10@ 10@ 10@ 10@ 10@ 10@ 10@ 10@ 10@ 10@ 10@ 10@
+24@v = "SelectedCharId"
+0AB1: @SearchIntoTemp 6 variable_to_search 24@ 25@ 26@ 27@ group 0 create_log_in_file Gpd_LogFile ret 10@ 11@ 12@ 13@ 14@ 15@ 16@ 17@ 18@ 19@ 20@ 21@ 22@ 23@
+0AB2: ret 2 group_id Gpd_Group character_id 10@(Gpd_Group,14i)
+
+{======================================================================
+======================================================================}
+:AddToIndividualData
+// inputs: 0@ 1@ 2@ 3@: string representing variable to update, 4@ data to update, 5@: int or float flag, 6@: log file
+const
+    Upd_Data = 4@
+    Upd_Flag_IntOrFloat = 5@
+    Upd_LogFile = 6@
+    Upd_Group = 7@
+    Upd_Character = 8@
+    Upd_UpdateFile = 9@
+    // 10@ 11@ ... 23@: dummy holders
+end
+0A9A: Upd_UpdateFile = openfile "cleo\__temp_data__" mode "ab+"  // IF and SET
+0AB1: @GetPlayerCharacterData 1 create_log_in_file Upd_LogFile store_player_character_data_in Upd_Group Upd_Character
+
+0AB1: @SearchIntoTemp 6 variable_to_search 0@ 1@ 2@ 3@ group Upd_Group create_log_in_file Upd_LogFile ret 10@ 11@ 12@ 13@ 14@ 15@ 16@ 17@ 18@ 19@ 20@ 21@ 22@ 23@
+if Upd_Flag_IntOrFloat == 0 // int
+then
+    005A: 12@(Upd_Character,7i) += Upd_Data  // (int)
+    0AD9: write_formatted_text "%s %d %d %d %d %d %d %d %d 0 0 0 0 0 0%c%c" in_file Upd_UpdateFile vars 0@v Upd_Group 12@ 13@ 14@ 15@ 16@ 17@ 18@ 0xd 0xa
+else
+    005B: 12@(Upd_Character,7f) += Upd_Data  // (float)
+    0AD9: write_formatted_text "%s %d %f %f %f %f %f %f %f %f %f %f %f %f %f%c%c" in_file Upd_UpdateFile vars 0@v Upd_Group 12@ 13@ 14@ 15@ 16@ 17@ 18@ 0.0 0.0 0.0 0.0 0.0 0.0 0xd 0xa
+end
+0A9B: closefile Upd_UpdateFile
+0AB2: ret 0
+
+{======================================================================
+======================================================================}
+:SetIndividualData
+// inputs: 0@ 1@ 2@ 3@: string representing variable to update, 4@ data to update, 5@: int or float flag, 6@: log file
+0A9A: Upd_UpdateFile = openfile "cleo\__temp_data__" mode "ab+"  // IF and SET
+0AB1: @GetPlayerCharacterData 1 create_log_in_file Upd_LogFile store_player_character_data_in Upd_Group Upd_Character
+0AB1: @SearchIntoTemp 6 variable_to_search 0@ 1@ 2@ 3@ group Upd_Group create_log_in_file Upd_LogFile ret 10@ 11@ 12@ 13@ 14@ 15@ 16@ 17@ 18@ 19@ 20@ 21@ 22@ 23@
+if Upd_Flag_IntOrFloat == 0 // int
+then
+    0085: 12@(Upd_Character,7i) = Upd_Data // (int)
+    0AD9: write_formatted_text "%s %d %d %d %d %d %d %d %d 0 0 0 0 0 0%c%c" in_file Upd_UpdateFile vars 0@v Upd_Group 12@ 13@ 14@ 15@ 16@ 17@ 18@ 0xd 0xa
+else
+    0087: 12@(Upd_Character,7f) = Upd_Data // (float)
+    0AD9: write_formatted_text "%s %d %f %f %f %f %f %f %f %f %f %f %f %f %f%c%c" in_file Upd_UpdateFile vars 0@v Upd_Group 12@ 13@ 14@ 15@ 16@ 17@ 18@ 0.0 0.0 0.0 0.0 0.0 0.0 0xd 0xa
+end
+0A9B: closefile Upd_UpdateFile
+0AB2: ret 0
+

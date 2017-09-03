@@ -1,0 +1,338 @@
+{======================================================================
+======================================================================}
+// Playable characters
+:ModelsList
+hex
+    "reimu1" "marisa" "alice1" "suikyn"                              // team 1  (Hakurei Shrine Team)
+    "youmu1" "yuyuko" "yukn2c" "ranykm" "chnnt1"                     // team 2  (Perfect Cherry Blossom Team)
+    "sakuy1" "meilin" "patzak" "koaku1" "remil1" "flandr"            // team 3  (Scarlet Devil Mansion Team)
+    "sanaek" "kanako" "suwak1"                                       // team 4  (Mountain of Faith Team)
+    "ayamin" "hatate" "mmjeto" "minori" "shizu1" "hinaky" "nitor2"   // team 5  (Bonbunmaru Team)
+    "satori" "koikyn" "rinnm1" "okuus1"                              // team 6  (Subterranean Animism Team)
+    "cirno1" "daiyou" "rumia1" "letty1" "wriggl" "mystia" "tokiko"   // team 7  (Baka Team)
+    "sunny1" "lunach" "starzp" "lilywh" "lyrica" "lunasa" "merlin"   // team 8  (Fairy Team)
+    "eirin1" "kaguy1" "reisen" "tewinb" "mokou1" "keine1"            // team 9  (Imperishable Night Team)
+    "tenshi" "ikunge" "shiki1" "komach" "yuuka1" "medtoy"            // team 10 (Phantasmagoria of Flower View Team)
+    "yamam1" "kisume" "parsee" "yuugi1"                              // team 11 (Subterranean Animism 2 Team)
+    "byakur" "ichrn1" "nuemek" "shoutm" "nazrin" "muras1" "kogasa"   // team 12 (Undefined Fantastic Object Team)
+    "seiga1" "miksb2" "futokn" "tojik1" "yoshik" "mamizo" "kyouko"   // team 13 (Ten Desires Team)
+    "______" "______" "______" "______" "______" "______" "______"   // team 14 (Custom Team)
+end
+
+// Special Clothes for each Character
+:ReimuHakurei
+hex
+    "reimu1"
+end
+:MarisaKirisame
+hex
+    "marisa"
+end
+:AliceMargatroid
+hex
+    "alice1" "alice2" "alice3"
+end
+:SuikaIbuki
+hex
+    "suikyn" "suizak" "suika3"
+end
+:YoumuKonpaku
+hex
+    "youmu1"
+end
+:YuyukoSaigyouji
+hex
+    "yuyuko"
+end
+:YukariYakumo
+hex
+    "yuknm1" "yukn1p" "yuknm2" "yukn2b" "yukn2c" "yukn2p" "yuknm3" "yukn3p"
+end
+:RanYakumo
+hex
+    "ranykm"
+end
+:Chen
+hex
+    "chnnt1" "chnnt2"
+end
+:SakuyaIzayoi
+hex
+    "sakuy1" "sakuy2" "sk1ts1" "sk1sw1" "sk1ts2" "sk1ts3" "sk1ts4" "sk1ts5" "sk1sp1" "sk1sp2"
+    "sk1sp3" "sk1sp4" "sk2sp1" "sk2sw1" "sk2sw2" "sk2sw3" "sk2sp2" "sk2sp3" "sk2sp4" "sakde1"
+    "sakde2" "sakte1" "sakte2" "sakte3" "sktesp" "sk2ts1" "sk2ts2" "sk2ts3" "sktss1" "sktss2"
+    "sakdns"
+end
+:HongMeiling
+hex
+    "meilin" "meidr1" "meidr2" "meisp1" "meisp2" "meisp3" "meisp4" "meisw1" "meisw2" "meisw3"
+    "mesw4a" "mesw4b" "mesw4c"
+end
+:PatchouliKnowledge
+hex
+    "patzak"
+end
+:Koakuma
+hex
+    "koaku1" "koaku2" "koaku3" "kalsh1" "kalsh2" "kalsh3" "koasp1" "koasp2" "koasp3" "koasp4"
+    "kosw1a" "kosw1b" "koasw2" "koasw3" "kosw4a" "kosw4b" "kosw4c" "kosw5a" "kosw5b" "kosw5c"
+    "kosw6a" "kosw6b" "kosw6c" "korpg1" "korpg2"
+end
+:RemiliaScarlet
+hex
+    "remil1"
+end
+:FlandreScarlet
+hex
+    "flandr"
+end
+:SanaeKochiya
+hex
+    "sanaek" "sanaeb"
+end
+:KanakoYasaka
+hex
+    "kanako" "kanklg"
+end
+:SuwakoMoriya
+hex
+    "suwak1" "suwak2"
+end
+:AyaShameimaru
+hex
+    "ayamin" "ayaipj"
+end
+:HatateHimekaidou
+hex
+    "hatate"
+end
+:MomijiInubashiri
+hex
+    "mmjeto"
+end
+:MinorikoAki
+hex
+    "minori"
+end
+:ShizuhaAki
+hex
+    "shizu1" "shizu2"
+end
+:HinaKagiyama
+hex
+    "hinaky"
+end
+:NitoriKawashiro
+hex
+    "nitor1" "nitor2" "nitsw1" "nitsw2"
+end
+:SatoriKomeiji
+hex
+    "satori"
+end
+:KoishiKomeiji
+hex
+    "koikyn" "koibik"
+end
+:RinKaenbyou
+hex
+    "rinnm1" "rinnm2" "rsw1v0" "rsw2v0" "rinun1" "rinun2" "rinun3" "rinun4" "rinun5" "rinun6"
+    "rinun7" "rinun8" "rinun9" "rinu10" "rinu11" "rinu12" "rinu13" "rinsw1" "rinsw2" "rinsw3"
+    "rinsw4" "rinsw5" "rinsw6" "rinsw7" "rinsw8" "rinsw9" "rnsw10" "rnsw11" "rnsw12" "rnsw13"
+    "rinsp1" "rinsp2" "rinsp3" "rinsp4" "rinsp5" "rinsp6" "rinsp7" "rinsp8" "rinsp9" "rnsp10"
+    "rnsp11" "rnsp12" "rnsp13"
+end
+:UtsuhoReiuji
+hex
+    "okuub1" "okuub2" "okuus1" "okuus2" "okuus3" "okuus4" "okuus5"
+end
+:Cirno
+hex
+    "cirno1"
+end
+:Daiyousei
+hex
+    "daiyou"
+end
+:Rumia
+hex
+    "rumia1"
+end
+:LettyWhiterock
+hex
+    "letty1"
+end
+:WriggleNightbug
+hex
+    "wriggl"
+end
+:MystiaLorelei
+hex
+    "mystia" "mysti1" "mysti2"
+end
+:Tokiko
+hex
+    "tokiko"
+end
+:SunnyMilk
+hex
+    "sunny1"
+end
+:LunaChild
+hex
+    "lunach"
+end
+:StarZapphire
+hex
+    "starzp"
+end
+:LilyWhite
+hex
+    "lilywh"
+end
+:LyricaPrismriver
+hex
+    "lyrica"
+end
+:LunasaPrismriver
+hex
+    "lunasa"
+end
+:MerlinPrismriver
+hex
+    "merlin"
+end
+:EirinYakogoro
+hex
+    "eirin1" "eirnsp"
+end
+:KaguyaHouraisan
+hex
+    "kaguy1" "kaguy2"
+end
+:ReisenUdongeinInaba
+hex
+    "reisen" "reissw"
+end
+:TewiInaba
+hex
+    "tewinb" "tewib2"
+end
+:FujiwaraNoMokou
+hex
+    "mokou1" "mokusp" "mkspnk" "mokusw"
+end
+:KeineKamishirasawa
+hex
+    "keine1"
+end
+:TenshiHinanai
+hex
+    "tenshi"
+end
+:IkuNagae
+hex
+    "ikunge"
+end
+:ShikieikiYamaxadanu
+hex
+    "shiki1"
+end
+:KomachiOnozuka
+hex
+    "komach"
+end
+:YuukaKazami
+hex
+    "yuuka1" "yupc1a" "yupc2a" "yupc3a" "yupc3b"
+end
+:MedicineMelancholy
+hex
+    "medtoy"
+end
+:YamameKurodani
+hex
+    "yamam1" "yamam2"
+end
+:Kisume
+hex
+    "kisume"
+end
+:ParseeMizuhashi
+hex
+    "parsee"
+end
+:YuugiHoshiguma
+hex
+    "yuugi1" "ygptl1" "ygptl2" "ygptsp"
+end
+:ByakurenHijiri
+hex
+    "byakur"
+end
+:IchirinKumoi
+hex
+    "ichrn1" "ichrn2"
+end
+:NueHoujuu
+hex
+    "nuemek"
+end
+:ShouToramaru
+hex
+    "shoutm"
+end
+:Nazrin
+hex
+    "nazrin"
+end
+:MinamitsuMurasa
+hex
+    "muras1" "muras2"
+end
+:KogasaTatara
+hex
+    "kogasa"
+end
+:SeigaKaku
+hex
+    "seiga1"
+end
+:ToyosatomimiNoMiko
+hex
+    "miksb1" "miksb2"
+end
+:MononobeNoFuto
+hex
+    "futokn"
+end
+:SogaNoTojiko
+hex
+    "tojik1" "tojik2"
+end
+:YoshikaMiyako
+hex
+    "yoshik"
+end
+:MamizouFutatsuiwa
+hex
+    "mamizo"
+end
+:KyoukoKasodani
+hex
+    "kyouko"
+end
+    
+:SpecialCharacters
+hex
+    "maribe" "marbsw" "renko1" "renksw"
+    "toyohm" "yorihm" "reisn2"
+    "rinosk"
+    "akyuu1"
+    "ibkase"
+    "motoo1" "motoo2"
+    "bfair1" "bfair2" "bfai3a" "bfai3b" "bfai3c" "bfair4" "bfai5a" "bfai5b" "bfai5c" "bfai5d" "mfair1" "mfair2" "mfair3" "zfairy"
+    "shangh" "hourai" "goliat"
+    "mima00" "shinki"
+end
+

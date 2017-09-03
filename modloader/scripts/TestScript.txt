@@ -1,0 +1,301 @@
+{$CLEO .cs}
+thread 'TsetingTheTset'
+
+:first
+{=======================
+Handle files test
+========================}
+const
+    BIN_READ = 0x6272
+    TXT_READ = 0x72
+    BIN_WRITE = 0x6277
+    TXT_WRITE = 0x77
+
+    FLAG_TEXT = 1
+    FLAG_BOX = 0
+end
+
+{0A9A: 0@ = openfile "cleo/test.txt" mode BIN_WRITE  // IF and SET
+00A0: store_actor $PLAYER_ACTOR position_to 1@ 2@ 3@
+0A9E: writefile 0@ size 12 from 1@
+0A9B: closefile 0@}
+
+{======================================================================
+======================================================================}
+{0AB1: call_scm_func @getString 1 0 0@ 1@
+00BB: show_text_lowpriority GXT 0@s time 6000 flag 1}  // It works, fuck yeah!!
+
+{30@ = @getString
+0AB1: call_scm_func 30@ 1 0 0@ 1@
+00BB: show_text_lowpriority GXT 0@s time 6000 flag 1}  // It works TOO!! fuck wea
+
+{if 0AB1: @Test 2 69 13 ret 0@ 1@
+then 02FD: show_text_2numbers_lowpriority GXT 'BB_05' numbers 0@ 1@ time 8000 flag 1  // ~b~1 Pointer!~s~ Distance ~1~.~1~m    // It works!! Fuck wea
+end}
+
+{======================================================================
+======================================================================}
+{var
+    4@ : Float
+end
+
+while true
+wait 0
+    0494: get_joystick 0 data_to 0@ 1@ 2@ 3@
+    if //or
+    -100 > 1@ // UP
+    //1@ > 100 // DOWN
+    then 0605: actor $PLAYER_ACTOR perform_animation "WALK_player" IFP "PED" framedelta 4.0 loop 1 lockX 1 lockY 1 lockF 0 time -1
+    else
+        if and
+        -100<1@
+        1@< 100
+        0@==0
+        then 0687: clear_actor $PLAYER_ACTOR task
+        end
+    end
+        
+    if -100 > 0@ // LEFT
+    then
+        01B4: set_player $PLAYER_CHAR can_move 0
+        0172: 4@ = actor $PLAYER_ACTOR Z_angle
+        4@ += 20.0
+        05D4: AS_actor $PLAYER_ACTOR rotate_angle 4@
+    else 01B4: set_player $PLAYER_CHAR can_move 1
+    end
+    
+    if 0@ > 100 // RIGHT
+    then
+        01B4: set_player $PLAYER_CHAR can_move 0
+        0172: 4@ = actor $PLAYER_ACTOR Z_angle
+        4@ -= 20.0
+        05D4: AS_actor $PLAYER_ACTOR rotate_angle 4@
+    else 01B4: set_player $PLAYER_CHAR can_move 1
+    end
+end}
+
+{======================================================================
+======================================================================}
+{
+//====================
+// This Works, hooray! YAAAYY
+//====================
+while true
+    repeat
+    wait 0
+    until 0AB0:   key_pressed 80
+    repeat
+    wait 0
+    until 8AB0:   not key_pressed 80
+    
+    0ACC: show_text_lowpriority "New walkstyle" time 5000
+    
+    04ED: load_animation  "NewWalkstyle"
+    repeat
+    wait 0
+    until 04EE:   animation "NewWalkstyle" loaded
+    gosub @ReadFromPedsIde 
+    0245: set_actor $PLAYER_ACTOR walk_style_to "NEW"
+    04EF: release_animation "NewWalkstyle"
+    
+    repeat
+    wait 0
+    until 0AB0:   key_pressed 80
+    repeat
+    wait 0
+    until 8AB0:   not key_pressed 80
+    
+    gosub @ReadFromMemory
+    0ACC: show_text_lowpriority "Original walkstyle" time 5000
+end
+
+// ======================
+// This doesn't work duuh
+//=======================
+while true
+    repeat
+    wait 0
+    until 0AB0:   key_pressed 80
+    repeat
+    wait 0
+    until 8AB0:   not key_pressed 80
+
+    if 0B04: copy_file "models\files\ifps\ped.ifp" to "modloader/animations/ped.ifp" //IF and SET
+    then
+        gosub @ReadFromMemory
+        0ACC: show_text_lowpriority "Created new ped.ifp" time 5000
+    else 0ACC: show_text_lowpriority "Could not copy ped.ifp" time 5000
+    end
+    
+    repeat
+    wait 0
+    until 0AB0:   key_pressed 80
+    repeat
+    wait 0
+    until 8AB0:   not key_pressed 80
+
+    if 0B00: delete_file "modloader/animations/ped.ifp"  // IF and SET
+    then
+        gosub @ReadFromMemory
+        0ACC: show_text_lowpriority "Restored original ped.ifp" time 5000
+    else 0ACC: show_text_lowpriority "Could not find false ped.ifp" time 5000
+    end
+end
+
+:GetBaseAddress
+0@ = 0x609A4E 
+return 
+
+:ReadFromMemory
+gosub @GetBaseAddress 
+0A8C: write_memory 0@ size 4 value 0x04D48689 virtual_protect 1 
+0@ += 0x4 
+0A8C: write_memory 0@ size 2 value 0x0 virtual_protect 1 
+return 
+
+:ReadFromPedsIde
+gosub @GetBaseAddress 
+0A8C: write_memory 0@ size 4 value 0x90909090 virtual_protect 1 
+0@ += 0x4 
+0A8C: write_memory 0@ size 2 value 0x9090 virtual_protect 1 
+return 
+}
+{======================================================================
+======================================================================}
+
+{while true
+wait 0
+    if 1@ == 0
+    then
+        if 0AB0:   key_pressed 80
+        then 1@=1
+            094B: 10@v = get_active_interior_name_from_actor $PLAYER_ACTOR // 16-byte string
+            0AD0: show_formatted_text_lowpriority "~g~Active interior name: ~s~%s" time 5000 10@v
+        end
+    end
+    if 1@ == 1
+    then
+        if 8AB0:   not key_pressed 80
+        then 1@=0
+        end
+    end
+    if 00FF:   actor $PLAYER_ACTOR sphere 1 in_sphere 2524.2939 -1658.2963 15.4935 radius 1.0 1.0 2.0 on_foot
+    then
+        fade 0 800
+        wait 800
+        04BB: select_interior 8
+        0860: link_actor $PLAYER_ACTOR to_interior 8
+        00A1: put_actor $PLAYER_ACTOR at 2365.1375 -1131.2976 1050.875
+        wait 500
+        fade 1 800
+    end
+end}
+
+{while true
+wait 0
+    if 00E1:   player 0 pressed_key 4
+    then
+        0390: load_txd_dictionary "bar1"
+        038F: load_texture "bar1" as 1 // Load dictionary with 0390 first
+        0390: load_txd_dictionary "bar2"
+        038F: load_texture "bar2" as 2 // Load dictionary with 0390 first
+        0390: load_txd_dictionary "bar3"
+        038F: load_texture "bar3" as 3 // Load dictionary with 0390 first
+        0390: load_txd_dictionary "bar4"
+        038F: load_texture "bar4" as 4 // Load dictionary with 0390 first
+        0390: load_txd_dictionary "bar5"
+        038F: load_texture "bar5" as 5 // Load dictionary with 0390 first
+        0390: load_txd_dictionary "bar6"
+        038F: load_texture "bar6" as 6 // Load dictionary with 0390 first
+        0390: load_txd_dictionary "bar7"
+        038F: load_texture "bar7" as 7 // Load dictionary with 0390 first
+        0390: load_txd_dictionary "bar8"
+        038F: load_texture "bar8" as 8 // Load dictionary with 0390 first
+        0390: load_txd_dictionary "TH_59"
+        038F: load_texture "TH_59" as 9 // Load dictionary with 0390 first
+        03E3: set_texture_to_be_drawn_antialiased 1
+        038D: draw_texture 1 position 563.0 373.0 size 121.0 126.0 RGBA 255 255 255 255
+        03E3: set_texture_to_be_drawn_antialiased 1
+        038D: draw_texture 2 position 563.0 373.0 size 121.0 126.0 RGBA 80 80 80 255
+        03E3: set_texture_to_be_drawn_antialiased 1
+        038D: draw_texture 3 position 563.0 373.0 size 121.0 126.0 RGBA 80 80 80 255
+        03E3: set_texture_to_be_drawn_antialiased 1
+        038D: draw_texture 4 position 563.0 373.0 size 121.0 126.0 RGBA 80 80 80 255
+        03E3: set_texture_to_be_drawn_antialiased 1
+        038D: draw_texture 5 position 563.0 373.0 size 121.0 126.0 RGBA 80 80 80 255
+        03E3: set_texture_to_be_drawn_antialiased 1
+        038D: draw_texture 6 position 563.0 373.0 size 121.0 126.0 RGBA 80 80 80 255
+        03E3: set_texture_to_be_drawn_antialiased 1
+        038D: draw_texture 7 position 563.0 373.0 size 121.0 126.0 RGBA 80 80 80 255
+        03E3: set_texture_to_be_drawn_antialiased 1
+        038D: draw_texture 8 position 563.0 373.0 size 121.0 126.0 RGBA 80 80 80 255
+        03E3: set_texture_to_be_drawn_antialiased 1
+        038D: draw_texture 9 position 563.0 373.0 size 97.0 102.0 RGBA 255 255 255 255
+        03F0: enable_text_draw 0
+        31@++
+        0AD0: show_formatted_text_lowpriority "%d" time 1 31@
+        wait 0
+        0391: release_textures
+    end
+end}
+0A93: end_custom_thread
+
+{======================================================================
+======================================================================}
+:getString
+const
+    // 0@ : String Index
+    Offset = 1@
+    Pointer = 2@
+    OutputString = 3@s
+    OutputStr1 = 3@
+    OutputStr2 = 4@
+end
+0AB1: @GetAddress 1 @Strings ret Pointer
+Offset=8
+006A: Offset *= 0@  // (int)
+005A: Pointer += Offset  // (int)
+0A8D: OutputStr1 = read_memory Pointer size 4 virtual_protect 0
+Pointer+=4
+0A8D: OutputStr2 = read_memory Pointer size 4 virtual_protect 0
+0AB2: ret 2 OutputStr1 OutputStr2
+
+
+{======================================================================
+======================================================================}
+:Test
+0485:  return_true
+0AB2: ret 2 0@ 1@
+
+{======================================================================
+======================================================================}
+:Test2
+if 0@ == 0
+then 059A:  return_false
+else 0485:  return_true
+end
+0AB2: ret 0
+
+{======================================================================
+======================================================================}
+:GetAddress
+0A9F: 1@ = current_thread_pointer
+000A: 1@ += 0x10
+0A8D: 1@ = read_memory 1@ size 4 virtual_protect 0
+000E: 1@ -= 0@
+0AB2: ret 1 1@
+
+{======================================================================
+======================================================================}
+:Strings
+hex
+"TEST1" 000000 "TEST2" 000000 "TEST3" 000000 "TEST4" 000000 "TEST5" 000000 00
+end
+
+:EmptySpace
+hex
+00000000 00000000
+end
+
+
+

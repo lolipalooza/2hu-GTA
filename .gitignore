@@ -15,7 +15,7 @@
 *.img
 *.mp3
 
-*.ink
+*.lnk
 
 stream.ini
 
@@ -35,7 +35,7 @@ modloader/*
 !modloader/LC/
 !modloader/LCS/
 !modloader/scripts/
-modloader/scripts/old script [deprecated]/
+modloader/scripts/old script \[deprecated\]/
 !modloader/VCS/
 !modloader/skins/
 modloader/skins/*.dff
@@ -43,5 +43,5 @@ modloader/skins/*.txd
 
 /movies/
 /ReadMe/
-scripts/
+/scripts/
 /text/
