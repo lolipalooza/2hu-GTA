@@ -33,7 +33,7 @@ modloader/*
 # !modloader/2hu GTA/
 !modloader/LC/
 !modloader/LCS/
-!modloader/scripts/
+# !modloader/scripts/
 modloader/scripts/old script [deprecated]/
 !modloader/VCS/
 !modloader/2hu GTA/
