@@ -6,10 +6,6 @@
 *.dll
 *.log
 
-*.cs
-*.cm
-*.scm
-
 *.dff
 *.txd
 *.img
