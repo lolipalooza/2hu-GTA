@@ -1,0 +1,511 @@
+objs
+7114, sublandpart22, newprojectland, 290, 0
+7115, sublandpart24, gtaiii, 290, 0
+7116, sublandpart20, gtaiii, 290, 0
+7117, landpart15, subvillabits, 290, 0
+7118, observatory_temp, nipple, 299, 0
+7119, tunent3, tunlentnew, 290, 0
+7120, wal_1, gtaiii, 200, 0
+7121, tunent4, gtaiii, 200, 0
+7122, tunent5, gtaiii, 200, 0
+7123, wal_2, gtaiii, 200, 0
+7124, landpart16, gtaiii, 290, 0
+7125, landpart10, sub_villas, 290, 0
+7126, shedge1, sub_villas, 290, 0
+7127, decking3, sub_villas, 200, 0
+7128, decking1, sub_villas, 200, 0
+7129, forsalesign3, subvillabits, 200, 0
+7130, mailbox2, subvillabits, 200, 0
+7131, mailbox6, subvillabits, 200, 0
+7132, mailbox5, subvillabits, 200, 0
+7133, mailbox1, sub_villas, 50, 0
+7134, landpart11, sub_villas, 290, 0
+7135, landpart12, sub_villas, 290, 0
+7136, landpart13, sub_villas, 290, 0
+7137, landpart14, gtaiii, 100, 0
+7138, shedge2, sub_villas, 290, 0
+7139, shedge3, sub_villas, 290, 0
+7140, shedge4, sub_villas, 290, 0
+7141, shedge5, sub_villas, 290, 0
+7142, subpro_bridge, sub_probridge, 200, 0
+7143, parkinglines1, gtaiii, 200, 0
+7144, parkinglines2, gtaiii, 200, 0
+7145, parkinglines3, gtaiii, 200, 0
+7146, projectland1, newprojectland, 290, 0
+7147, projwall1, sub_projects, 200, 0
+7148, projwall2, sub_projects, 290, 0
+7149, tunnel1, subtunl10, 290, 0
+7150, landpart23, gtaiii, 290, 0
+7151, landpart25, gtaiii, 290, 0
+7152, landpart26, gtaiii, 290, 0
+7153, projwall12, sub_projects, 290, 0
+7154, projwall13, sub_projects, 290, 0
+7155, projwall21, sub_projects, 290, 0
+7156, projwall22, sub_projects, 290, 0
+7157, garage7, colmansion, 200, 0
+7158, columansion_wall, colmansion, 290, 4
+7159, dam_pod2, dam, 290, 4
+7160, gate_small3, sub_villas, 200, 0
+7161, shedge6, sub_villas, 290, 0
+7162, projbridgewall1, sub_probridge, 200, 0
+7163, projbridgewall2, sub_probridge, 200, 0
+7164, Pumpfirescape, pumphouse, 200, 4
+7165, Pumphouse, pumphouse, 270, 0
+7166, LODphouse, suburb2, 1000, 0
+7167, suburbbridge1, highbridge, 280, 4
+7168, LODurbbridge1, suburb2, 1000, 0
+7169, dam_base, dambase, 290, 0
+7170, LOD_base, suburb2, 1000, 0
+7171, new_GOD_DAM, dam, 290, 128
+7172, LOD_GOD_DAM, dam, 2000, 128
+7173, golf13, gtaiii, 290, 128
+7174, landpart7, gtaiii, 290, 0
+7175, landpart_mount4, gtaiii, 290, 0
+7176, landpart_mount3, gtaiii, 290, 0
+7177, landpart_mount2, gtaiii, 290, 0
+7178, clif22, clif22, 290, 0
+7179, LODf22, suburb1, 1000, 0
+7180, LODdpart7, suburb1, 1000, 0
+7181, LODdpart_mount3, suburb1, 2000, 0
+7182, LODdpart_mount4, suburb1, 2000, 0
+7183, LODf13, suburb1, 1000, 128
+7184, LODdpart_mount2, suburb1, 2000, 0
+7185, landpart_mount1, gtaiii, 290, 0
+7186, clif12, gtaiii, 290, 0
+7187, clif12_2, gtaiii, 290, 0
+7188, LODdpart_mount1, suburb1, 2000, 0
+7189, LODf12_22, suburb1, 2000, 0
+7190, LODf12, suburb1, 2000, 0
+7191, landpart21, gtaiii, 290, 0
+7192, clif21, gtaiii, 290, 0
+7193, clif20, gtaiii, 290, 0
+7194, clif19, gtaiii, 290, 0
+7195, landpart17, gtaiii, 290, 0
+7196, LODdpart17, suburb1, 2000, 0
+7197, parkpath1, gtaiii, 290, 0
+7198, pathpark2, gtaiii, 290, 0
+7199, clif15, gtaiii, 290, 0
+7200, clif16, gtaiii, 290, 0
+7201, clif17, gtaiii, 290, 0
+7202, clif18, gtaiii, 290, 0
+7203, clif14, gtaiii, 290, 0
+7204, landpart19, gtaiii, 290, 0
+7205, landpart18, gtaiii, 290, 0
+7206, dam_pod1, dam, 290, 128
+7207, LOD_pod1, suburb2, 1000, 128
+7208, LODf21, suburb1, 2000, 0
+7209, LODdpart18, suburb1, 2000, 0
+7210, LODdpart14, suburb1, 1000, 0
+7211, LODdpart10, suburb1, 2000, 0
+7212, LODf20, suburb1, 2000, 0
+7213, LODf19, suburb1, 2000, 0
+7214, LODdpart16, suburb1, 1000, 0
+7215, LODdpart21, suburb1, 2000, 0
+7216, LODhpark2, suburb1, 2000, 0
+7217, LODkpath1, suburb1, 2000, 0
+7218, LODdpart11, suburb1, 2000, 0
+7219, LODdpart12, suburb1, 2000, 0
+7220, LODdpart13, suburb1, 2000, 0
+7221, LODdpart15, suburb1, 2000, 0
+7222, LODlandpart20, suburb1, 1000, 0
+7223, LODjectland1, suburb1, 2000, 0
+7224, LODlandpart24, suburb1, 2000, 0
+7225, LODdpart23, suburb1, 2000, 0
+7226, LODlandpart22, suburb1, 1000, 0
+7227, LODdpart25, suburb1, 2000, 0
+7228, LODdpart26, suburb1, 1000, 0
+7229, LODf18, suburb1, 900, 0
+7230, LODf17, suburb1, 2000, 0
+7231, LODf16, suburb1, 2000, 0
+7232, LODf15, suburb1, 2000, 0
+7233, LODf14, suburb1, 2000, 0
+7234, LODdpart19, suburb1, 2000, 0
+7235, LOD_pod2, suburb2, 1000, 0
+7236, towernew1, sub_projects, 290, 0
+7237, LODernew1, suburb2, 1000, 0
+7238, towerflat26, sub_projects, 290, 0
+7239, LODerflat26, suburb2, 1000, 0
+7240, LODerflat28, suburb2, 1000, 0
+7241, LODerflat29, suburb2, 1000, 0
+7242, LODerflat27, suburb2, 1000, 0
+7243, clif1, gtaiii, 290, 128
+7244, mount8, gtaiii, 290, 128
+7245, mount7, gtaiii, 290, 128
+7246, LODnt7, suburb1, 2000, 0
+7247, mount6, gtaiii, 290, 128
+7248, LODnt6, suburb1, 1000, 0
+7249, mount5, gtaiii, 290, 128
+7250, LODnt5, suburb1, 2000, 0
+7251, LODtm_rd35, suburb1, 1000, 0
+7252, LOD_subroads48, suburb1, 500, 0
+7253, LOD_subroads47, suburb1, 500, 0
+7254, LOD_subroads28, suburb1, 500, 0
+7255, LOD_subroads29, suburb1, 500, 0
+7256, LOD_subroads30, suburb1, 500, 0
+7257, LOD_subroads37, suburb1, 500, 0
+7259, LOD_subroads38, suburb1, 700, 0
+7260, LOD_subroads39, suburb1, 700, 0
+7261, LOD_subroads40, suburb1, 800, 0
+7262, LOD_subroads41, suburb1, 700, 0
+7263, LOD_subroads42, suburb1, 800, 0
+7264, LOD_subroads43, suburb1, 900, 0
+7265, LOD_subroads45, suburb1, 2000, 0
+7266, LOD_subroads46, suburb1, 2000, 0
+7267, LOD_subroads86, suburb1, 500, 0
+7268, LOD_subroads87, suburb1, 500, 0
+7269, LOD_subroads49, suburb1, 500, 0
+7270, LOD_subroads50, suburb1, 500, 0
+7271, LOD_subroads51, suburb1, 500, 0
+7272, LOD_subroads52, suburb1, 500, 0
+7273, LOD_subroads53, suburb1, 500, 0
+7274, LOD_subroads54, suburb1, 500, 0
+7275, LOD_subroads55, suburb1, 500, 0
+7276, LOD_subroads56, suburb1, 2000, 0
+7277, LOD_subroads57, suburb1, 500, 0
+7278, LOD_subroads58, suburb1, 500, 0
+7279, LOD_subroads59, suburb1, 500, 0
+7280, LOD_subroads60, suburb1, 500, 0
+7281, LOD_subroads61, suburb1, 500, 0
+7282, LOD_subroads62, suburb1, 500, 0
+7283, LOD_subroads63, suburb1, 500, 0
+7284, LOD_subroads64, suburb1, 700, 0
+7285, LOD_subroads65, suburb1, 500, 0
+7286, LOD_subroads66, suburb1, 500, 0
+7287, LOD_subroads67, suburb1, 2000, 0
+7288, LOD_subroads68, suburb1, 500, 0
+7289, LOD_subroads69, suburb1, 500, 0
+7290, LOD_subroads70, suburb1, 500, 0
+7291, LOD_subroads71, suburb1, 2000, 0
+7292, LOD_subroads72, suburb1, 2000, 0
+7293, LOD_subroads73, suburb1, 2000, 0
+7294, LOD_subroads74, suburb1, 500, 0
+7295, LODtm_rd39, suburb1, 2000, 0
+7296, LOD_subroads76, suburb1, 2000, 0
+7297, LOD_subroads77, suburb1, 2000, 0
+7298, LOD_subroads78, suburb1, 2000, 0
+7299, LOD_subroads79, suburb1, 500, 0
+7300, LOD_subroads80, suburb1, 500, 0
+7301, LOD_subroads81, suburb1, 800, 0
+7302, LOD_subroads82, suburb1, 800, 0
+7303, LOD_subroads83, suburb1, 600, 0
+7304, LOD_subroads84, suburb1, 600, 0
+7305, LOD_subroads85, suburb1, 500, 0
+7306, Tunl_Junc_Road02, gtaiii, 200, 0
+7307, LODsion1, suburb2, 900, 0
+7308, LODsion2, suburb1, 900, 0
+7309, LODsion3, suburb1, 900, 0
+7310, LODsion4, suburb2, 1000, 0
+7311, LODsion5, suburb2, 900, 0
+7312, LODsion6, suburb2, 1000, 0
+7313, LODdge6, suburb2, 1000, 0
+7314, LODdge1, suburb2, 1000, 0
+7315, LODdge3, suburb2, 1000, 0
+7316, LODdge4, suburb2, 1000, 0
+7317, LODdge5, suburb2, 1000, 0
+7318, LODdge2, suburb2, 1000, 0
+7319, cliffwall06, cliffwall, 290, 0
+7320, cliffwall02, cliffwall, 290, 0
+7321, cliffwall03, cliffwall, 290, 0
+7322, cliffwall04, cliffwall, 290, 0
+7323, cliffwall05, cliffwall, 290, 0
+7324, cliffwall01, cliffwall, 290, 0
+7325, cliffwall07, cliffwall, 290, 0
+7326, cliffwall08, cliffwall, 290, 0
+7327, cliffwall09, cliffwall, 290, 0
+7328, cliffwall10, cliffwall, 290, 0
+7329, cliffwall11, cliffwall, 290, 0
+7330, view_carpark, subcarparc, 290, 0
+7331, LODnel1, suburb1, 1000, 0
+7332, newroadsec01, gtaiii, 220, 0
+7333, newroadsec02, gtaiii, 100, 0
+7334, Security_Hut, securityhut, 200, 4
+7335, Tunl_Junc_Road03, gtaiii, 200, 0
+7336, Tunl_Junc_Road01, gtaiii, 200, 0
+7337, damfence04, damfence, 100, 4
+7338, damfence01, damfence, 100, 4
+7339, damfence02, damfence, 100, 4
+7340, damfence03, damfence, 100, 4
+7341, damfence05, damfence, 290, 4
+7342, damfence07, damfence, 290, 4
+7343, damfence06, damfence, 290, 4
+7344, Mansion_feature, colmansion, 290, 0
+7345, New_Colmansn, colmansion, 290, 0
+7346, indfrate09, subcrates, 290, 0
+7347, indfrate10, subcrates, 290, 0
+7348, indfrate11, subcrates, 290, 0
+7349, towergaragedoor2, projbits, 100, 2048
+7350, towergaragedoor1, projbits, 100, 0
+7351, towergaragedoor3, projbits, 100, 2048
+7352, subposter09, postersub, 290, 0
+7353, subposter10, postersub, 290, 0
+7354, subposter11, postersub, 290, 0
+7355, subposter12, postersub, 290, 0
+7356, subposter14, postersub, 290, 0
+7357, landpart_mount22, gtaiii, 290, 0
+7358, landpart_mount33, gtaiii, 290, 0
+7359, clif12_22, gtaiii, 290, 0
+7360, clif12_23, gtaiii, 290, 0
+7361, landpart_mount44, gtaiii, 290, 128
+7362, LODf1, suburb1, 2000, 128
+7363, LODnt8, suburb1, 2000, 128
+7364, towerflat27, sub_projects, 290, 0
+7365, towerflat28, sub_projects, 290, 0
+7366, towerflat29, sub_projects, 290, 0
+7367, suburbansigns4, localsignsub, 100, 0
+7368, suburbansigns6, localsignsub, 100, 0
+7369, suburbansigns5, localsignsub, 100, 0
+7370, mansion5, sub_villas, 290, 0
+7371, mansion6, sub_villas, 290, 0
+7372, mansion4, sub_villas, 290, 0
+7373, mansion3, sub_villas, 290, 0
+7374, mansion2, sub_villas, 270, 0
+7375, mansion1, sub_villas, 270, 0
+7376, LODdpart18a, suburb1, 2000, 0
+7377, landpart18a, gtaiii, 290, 0
+7378, newfence1, sub_villas, 290, 0
+7379, newfence, sub_villas, 290, 0
+7380, clif2, gtaiii, 290, 128
+7381, telepole, nipple, 290, 0
+7382, telepole01, nipple, 290, 0
+7383, telepole02, nipple, 290, 0
+7384, telepole03, nipple, 290, 0
+7385, telepole04, nipple, 290, 0
+7386, newtreepatch_sub, trees2, 299, 4
+7387, LODtreepatch_sub, suburb2, 1000, 4
+7388, LODf2, suburb1, 2000, 128
+7389, hill_tunnel2, tunnels, 290, 0
+7390, LODl_tunnel2, suburb1, 2000, 0
+7391, hill_tunnel1, tunnels, 290, 0
+7392, LODl_tunnel1, suburb1, 1000, 0
+7393, round_bit, damentrance, 290, 0
+7394, LODnd_bit, suburb1, 1000, 0
+7395, newtrees1_sub, trees2, 299, 4
+7396, LODtrees1_sub, suburb2, 1000, 4
+7397, LODent3, suburb1, 1000, 0
+7398, LODent4, suburb1, 1000, 0
+7399, LODdpart_mount33, suburb1, 2000, 0
+7400, damfence08, damfence, 290, 4
+7401, treepatchnew_sub, trees2, 299, 4
+7402, LODepatchnew_sub, suburb2, 2000, 4
+7403, treepatch25_sub, trees2, 299, 4
+7404, treepatch01_sub, trees2, 299, 4
+7405, treepatch02_sub, trees2, 299, 4
+7406, treepatch03_sub, trees2, 299, 4
+7407, treepatch04_sub, trees2, 299, 4
+7408, treepatch05_sub, trees2, 299, 4
+7409, treepatch06_sub, trees2, 299, 4
+7410, treepatch07_sub, trees2, 299, 4
+7411, treepatch08_sub, trees2, 299, 4
+7412, treepatch09_sub, trees2, 299, 4
+7413, treepatch10_sub, trees2, 299, 4
+7414, treepatch27_sub, trees2, 299, 4
+7415, treepatch26_sub, trees2, 299, 4
+7416, treepatch31_sub, trees2, 299, 4
+7417, treepatch32_sub, trees2, 299, 4
+7418, treepatch34_sub, trees2, 299, 4
+7419, treepatch35_sub, trees2, 299, 4
+7420, treepatch30_sub, trees2, 299, 4
+7421, treepatch29_sub, trees2, 299, 4
+7422, treepatch28_sub, trees2, 299, 4
+7423, LODepatch10_sub, suburb2, 1000, 4
+7424, LODepatch09_sub, suburb2, 1000, 4
+7425, LODepatch31_sub, suburb2, 1000, 4
+7426, LODepatch32_sub, suburb2, 1000, 4
+7427, LODepatch08_sub, suburb2, 1000, 4
+7428, LODepatch07_sub, suburb2, 1000, 4
+7429, LODepatch05_sub, suburb2, 1000, 4
+7430, LODepatch06_sub, suburb2, 1000, 4
+7431, LODepatch26_sub, suburb2, 1000, 4
+7432, LODepatch01_sub, suburb2, 1000, 4
+7433, LODepatch02_sub, suburb2, 1000, 4
+7434, LODepatch03_sub, suburb2, 1000, 4
+7435, LODepatch27_sub, suburb2, 1000, 4
+7436, LODepatch28_sub, suburb2, 1000, 4
+7437, LODepatch04_sub, suburb2, 1000, 4
+7438, LODepatch25_sub, suburb2, 1000, 0
+7439, LODepatch29_sub, suburb2, 1000, 4
+7440, LODepatch30_sub, suburb2, 1000, 4
+7441, LODepatch35_sub, suburb2, 1000, 4
+7442, LODepatch34_sub, suburb2, 1000, 4
+7443, LODf12_23, suburb1, 2000, 0
+7444, LODdpart_mount44, suburb1, 2000, 128
+7454, damfencing, dambase, 290, 4
+7455, custm_rd35, gtaiii, 280, 0
+7456, newclifbit, gtaiii, 280, 0
+9607, fixNewcliff_01, gtaiii, 299, 128
+9605, fixNewcliff_02, gtaiii, 299, 128
+9603, fixNewcliff_03, gtaiii, 299, 0
+9601, fixNewcliff_04, gtaiii, 299, 128
+9608, fixNewcliff_05, gtaiii, 299, 0
+9606, fixNewcliff_06, gtaiii, 299, 128
+9604, fixNewcliff_07, gtaiii, 299, 128
+9602, fixNewcliff_08, gtaiii, 299, 0
+9600, fixNewcliff_09, gtaiii, 299, 0
+9610, LODnewcliff_01, suburb1, 1500, 0
+9611, LODnewcliff_02, suburb1, 1500, 0
+9612, LODnewcliff_03, suburb1, 1500, 0
+9613, LODnewcliff_04, suburb1, 1500, 0
+9614, LODnewcliff_05, suburb1, 1500, 0
+9615, LODnewcliff_06, suburb1, 1500, 0
+9616, LODnewcliff_07, suburb1, 1500, 0
+9617, LODnewcliff_08, suburb1, 1500, 0
+9618, LODnewcliff_09, suburb1, 1500, 0
+10098, fixssvgarge_03, projbits, 200, 0
+10085, fixssvgarge_01, projbits, 200, 0
+10086, LODssvgarge_01, projbits, 1000, 0
+10087, fixssvgarge_02, projbits, 200, 0
+10088, LODssvgarge_02, projbits, 1000, 0
+10097, LODssvgarge_03, projbits, 1000, 0
+10099, fixssvgarge_05, projbits, 200, 0
+10100, LODssvgarge_05, projbits, 1000, 0
+10093, LODssvgarge_07, projbits, 1000, 0
+10092, fixssvgarge_08, projbits, 200, 0
+10091, LODssvgarge_08, projbits, 1000, 0
+10090, fixssvgarge_09, projbits, 200, 0
+10089, LODssvgarge_09, projbits, 1000, 0
+10095, fixssvgarge_04, projbits, 200, 0
+10096, LODssvgarge_04, projbits, 1000, 0
+10101, fixssvgarge_06, projbits, 200, 0
+10102, LODssvgarge_06, projbits, 1000, 0
+10094, fixssvgarge_07, projbits, 200, 0
+18462, pondbedfix, gtaiii, 299, 0
+18468, fixNewcliff_10, gtaiii, 299, 0
+18469, fixNewcliff_11, gtaiii, 299, 0
+18470, fixNewcliff_12, gtaiii, 299, 0
+18471, fixNewcliff_13, gtaiii, 299, 0
+18472, LODnewcliff_10, suburb1, 1500, 0
+18473, LODnewcliff_11, suburb1, 1500, 0
+18474, LODnewcliff_12, suburb1, 1500, 0
+18475, LODnewcliff_13, suburb1, 1500, 0
+18478, clifflookout, brokenbridge, 299, 0
+18483, LODlookout, brokenbridge, 1000, 0
+18484, dam_barr, dam, 299, 0
+18485, cavecollap, gtaiii, 299, 0
+18486, newl1, gtaiii, 299, 128
+18487, newl2, gtaiii, 299, 128
+18488, newl3, gtaiii, 299, 128
+18489, newl4, gtaiii, 299, 0
+18490, newl5, gtaiii, 299, 0
+18491, LODl1, suburb1, 1500, 0
+18492, LODl2, suburb1, 1500, 0
+18493, LODl3, suburb1, 1500, 0
+18494, LODl4, suburb1, 1500, 0
+18495, LODl5, suburb1, 1500, 0
+18496, LODf12_2, suburb1, 2000, 0
+18497, LODervatory_temp, LODple, 1500, 0
+end
+tobj
+7457, sublightsb, towerlights, 3000, 12, 19, 5
+end
+path
+end
+2dfx
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

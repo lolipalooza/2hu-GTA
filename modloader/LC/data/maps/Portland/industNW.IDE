@@ -1,0 +1,132 @@
+objs
+8288, ind_land101, pjs, 127, 0
+8289, ind_land053, gtaiii, 180, 0
+8290, ind_land041, gtaiii, 189, 0
+8291, ind_land014, gtaiii, 136, 0
+8292, ind_land010, gtaiii, 157, 0
+8293, ind_land029, gtaiii, 120, 0
+8294, ind_land148, gtaiii, 120, 0
+8295, LODhibuild2, indust1, 1800, 0
+8296, LOD_land028, indust1, 1800, 0
+8297, LOD_land029, indust1, 1800, 0
+8298, LOD_land052, indust1, 1800, 0
+8299, LOD_land147, indust1, 1800, 0
+8300, LOD_land148, indust1, 1800, 0
+8301, LOD_land149, indust1, 1800, 0
+8302, LOD_land039, indust1, 750, 0
+8303, LOD_land053, indust1, 1000, 0
+8304, LOD_land040, indust1, 750, 0
+8305, LOD_land015, indust1, 750, 0
+8306, LOD_land014, indust1, 750, 0
+8307, LODlightbuild12, indust1, 750, 0
+8308, LODlightbuild08a, indust1, 750, 0
+8309, LODlightbuild06v, indust1, 750, 0
+8310, LODlightbuild06e, indust1, 1800, 0
+8311, LODlightbuild03, indust1, 1800, 0
+8312, LODlightfront, indust1, 750, 0
+8313, LODhibuild3, indust1, 1800, 0
+8314, LODGICLUBout, indust1, 500, 0
+8315, LODlightbuild06b, indust1, 750, 0
+8316, LODhibuild10, indust1, 750, 0
+8317, LODhibuild9, indust1, 750, 0
+8318, LODercenter, indust1, 1800, 0
+8319, LOD_land101, indust1, 750, 0
+8320, redlightbuild13, indredlitgrey, 100, 0
+8321, towercenter, indpj, 110, 0
+8322, roadtun_entrance, roadtunnelent, 240, 0
+8323, LOD_land150, indust1, 2000, 0
+8324, indNcoast5, gtaiii, 148, 0
+8325, LOD_inland667, indust1, 1000, 0
+8326, LODNcoast6, indust1, 750, 0
+8327, LODNcoast5, indust1, 750, 0
+8328, LODlightbuild11, indust1, 750, 0
+8329, luigiineerclub, luigiclub, 100, 6
+8330, LOD_newradio, indust1, 750, 0
+8331, treepatchindnew, trees2, 250, 4
+8332, DIRTPASS3, dirtpass, 100, 68
+8333, LOD_land118, indust1, 800, 0
+8334, indhibuild9, indhibuildns, 100, 0
+8335, redlightbuild06e, indredlitblk4, 100, 0
+8336, redlightbuild06v, indredlitblk4, 100, 0
+8337, redlightbuild06b, indredlitblk4, 120, 0
+8338, redlightbuild11, indredlitblk1b, 140, 0
+8339, redlightbuild10, indredlitblk1b, 120, 0
+8340, redlightbuild09, indredlitgrey, 100, 0
+8341, LUIGICLUBout, luigiclub, 90, 0
+8342, indhibuild3, luigiclub, 90, 0
+8343, indhibuild10, indhibuildns, 123, 0
+8344, redlightbuild12, indredlitgrey, 100, 0
+8345, redlightbuild08a, indredlitblk1b, 115, 0
+8346, redlightfront, indredlitblk1b, 130, 0
+8347, redlightbuild03, indredlitblk1b, 123, 0
+8348, ind_land150, gtaiii, 175, 0
+8349, indtrainshad, trainstair, 100, 68
+8350, ind_land040, gtaiii, 130, 0
+8351, ind_land012, gtaiii, 205, 0
+8352, ind_land052, gtaiii, 220, 0
+8353, ind_inland667, gtaiii, 117, 0
+8354, ind_newradio, indradio, 200, 0
+8355, CrossRoadn1, gtaiii, 200, 0
+8356, rdsign18bk, rdsign18bk, 100, 0
+8357, nrailsteps, trainstair, 100, 4
+8358, indsubway03, subwayind, 80, 16
+8359, dirtpass2, dirtpass, 100, 68
+8360, ind_land118, gtaiii, 170, 0
+8361, ind_land043, bridgewee, 299, 0
+8362, ind_land092, gtaiii, 112, 0
+8363, ind_land149, gtaiii, 220, 0
+8364, ind_land039, gtaiii, 141, 0
+8365, treepatch, trees2, 150, 4
+8366, treepatchindnew2, trees2, 250, 4
+8367, ind_land095, indredlitblk1b, 150, 0
+8368, indNcoast6, gtaiii, 148, 0
+8369, treepatch2, trees2, 250, 4
+8370, ind_land028, gtaiii, 120, 0
+8371, cussRoads5, gtaiii, 200, 0
+8372, ind_land015, gtaiii, 134, 0
+8373, ind_land044, weebridge2, 190, 0
+8374, playerwarehouseint, playerint, 45, 0
+8375, isubntrnce_b, subwayindt, 110, 0
+8376, ind_slidedoor, indredlitblk2, 58, 2048
+8377, ind_land147, gtaiii, 121, 0
+8378, LODlightbuild10, indust1, 600, 0
+8379, LODlightbuild09, indust1, 500, 0
+8380, LODlightbuild13, indust1, 600, 0
+8381, LOD_land041, indust2, 750, 0
+8382, indhibuild2, indhibuildns, 123, 0
+8383, ind_plyrwoor, indredlitblk1b, 80, 2048
+8384, indnwpath, gtaiii, 2, 0
+8385, indnwpath01, gtaiii, 2, 0
+8386, indnwpath02, gtaiii, 2, 0
+8387, indnwpath03, gtaiii, 2, 0
+8388, LODdtun_entrance, indust1, 1000, 0
+8389, LODepatchindnew2, indust2, 1000, 4
+8390, LODepatch2, indust2, 1000, 4
+8391, LODepatchindnew, indust2, 1000, 4
+8392, LODepatch, indust2, 1000, 4
+8393, LODbntrnce_b, indust1, 750, 0
+8394, LODilsteps, indust2, 750, 0
+8395, treepatchindaa2, trees2, 299, 4
+8396, trepatchindaa1, trees2, 299, 4
+8397, LODepatchindaa2, indust2, 1000, 4
+8398, LODpatchindaa1, indust2, 1000, 4
+#10903, PLLODfix04, pjects, 3000, 0
+#10901, PLLODfix02, pjects, 3000, 0
+#10900, PLLODfix01, pjects, 3000, 0
+#10902, PLLODfix03, pjects, 3000, 0
+10902, LODerflat, pjects, 3000, 0
+end
+tobj
+8399, redlightbuild05_dy, indredlitblk1b, 130, 0, 6, 19
+8400, LODlightbuild05_dy, indust1, 750, 0, 6, 19
+8401, LODlightbuild05_nt, indust1, 700, 0, 19, 6
+8402, redlightbuild05_nt, indredlitblk1b, 130, 0, 19, 6
+end
+path
+end
+2dfx
+end
+
+
+
+

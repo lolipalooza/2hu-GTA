@@ -1,0 +1,77 @@
+objs
+18339, triad_main, triad_main, 299, 0
+18340, triad_main2, triad_main, 299, 0
+18341, triad_main3, triad_main, 299, 0
+18342, mafcasmain1, MafCasMain, 299, 0
+18343, mafcasmain2, MafCasMain, 299, 0
+18344, mafcasmain3, MafCasMain, 299, 0
+18345, mafcasmain4, MafCasMain, 299, 0
+18383, cj_slot_bank, slot_bank, 299, 0
+18384, gen_doorext19, dave_door_2b, 299, 0
+18385, mafiacasinobar1, casmafbar, 299, 0
+18386, roulette_tbl, kbroul1, 299, 0
+18387, blck_jack, kbblackjack, 299, 0
+18407, triad_lights, triad_ext, 299, 2097152
+18408, cj_slotcover1, cj_int, 299, 0
+18535, triad_lights2, casino, 100, 4
+18536, wheel_wee, kbroul2, 30, 4
+end
+
+end
+
+
+
+end
+
+end
+
+
+
+
+
+end
+
+end
+
+
+
+end
+
+end
+
+
+
+
+
+
+
+end
+
+end
+
+
+
+end
+
+end
+
+
+
+
+
+end
+
+end
+
+
+
+end
+
+end
+
+
+
+
+
+
+

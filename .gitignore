@@ -19,15 +19,15 @@
 
 stream.ini
 
-anim/
+/anim/
 
-audio/CONFIG
-audio/SFX
-audio/streams
+/audio/CONFIG
+/audio/SFX
+/audio/streams
 
-cleo/
-data/
-models/
+/cleo/
+/data/
+/models/
 
 !modloader/
 modloader/*
@@ -41,7 +41,7 @@ modloader/scripts/old script [deprecated]/
 modloader/skins/*.dff
 modloader/skins/*.txd
 
-movies/
-ReadMe/
+/movies/
+/ReadMe/
 scripts/
-text/
+/text/

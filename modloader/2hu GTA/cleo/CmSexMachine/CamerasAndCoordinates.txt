@@ -1,0 +1,268 @@
+{======================================================================
+======================================================================}
+:ToggleSexualCamera
+// 0@: Camera index, 1@: sexual pose, 2@: actress
+0AB1: @GetCameraCoordinates 3 0@ 1@ 2@ ret 3@ 4@ 5@ 6@ 7@ 8@
+015F: set_camera_position 3@ 4@ 5@ rotation 0.0 0.0 0.0
+0160: set_camera_point_at 6@ 7@ 8@ switchstyle 2
+0AB2: ret 0
+
+{======================================================================
+======================================================================}
+:Set6numbers
+0AB2: ret 6 0@ 1@ 2@ 3@ 4@ 5@
+
+{======================================================================
+======================================================================}
+:GetCameraCoordinates
+094B: 10@v = get_active_interior_name_from_actor $PLAYER_ACTOR // 16-byte string
+if or
+10@v == "SVLAMD"
+PlayerInterior == 0
+then
+    if 1@ == SEX_FUCKING
+    then
+        if 0@ == 0
+        then 0AB1: @Set6numbers 6 cam_pos 2373.360839 -1134.396972 1051.675415 cam_target 2372.830078 -1133.676879 1051.228271 store_in 4@ 5@ 6@ 7@ 8@ 9@
+        end
+        if 0@ == 1
+        then 0AB1: @Set6numbers 6 cam_pos 2370.840087 -1132.937622 1051.675415 cam_target 2371.658447 -1132.903564 1051.101684 store_in 4@ 5@ 6@ 7@ 8@ 9@
+        end
+        if 0@ == 2
+        then 0AB1: @Set6numbers 6 cam_pos 2371.700439 -1134.403198 1051.175537 cam_target 2371.944091 -1133.470336 1050.910156 store_in 4@ 5@ 6@ 7@ 8@ 9@
+        end
+        if 0@ == 3
+        then 0AB1: @Set6numbers 6 cam_pos 2372.286865 -1133.062622 1052.975097 cam_target 2372.226806 -1132.963989 1051.981811 store_in 4@ 5@ 6@ 7@ 8@ 9@
+        end
+        if 0@ == 4
+        then 0AB1: @Set6numbers 6 cam_pos 2372.265136 -1133.077148 1052.075317 cam_target 2372.155029 -1132.927856 1051.092651 store_in 4@ 5@ 6@ 7@ 8@ 9@
+        end
+        if 0@ == 5
+        then 0AB1: @Set6numbers 6 cam_pos 2371.559814 -1132.563598 1052.075317 cam_target 2371.843505 -1132.798461 1051.145629 store_in 4@ 5@ 6@ 7@ 8@ 9@
+        end
+        if 0@ == 6
+        then 0AB1: @Set6numbers 6 cam_pos 2372.394042 -1132.386840 1051.575439 cam_target 2372.034912 -1132.926391 1050.813964 store_in 4@ 5@ 6@ 7@ 8@ 9@
+        end
+        if 0@ == 7
+        then 0AB1: @Set6numbers 6 cam_pos 2371.326904 -1130.574951 1052.475219 cam_target 2371.521240 -1131.331176 1051.850463 store_in 4@ 5@ 6@ 7@ 8@ 9@
+        end
+        if 0@ == 8
+        then 0AB1: @Set6numbers 6 cam_pos 2370.883544 -1132.128417 1050.875610 cam_target 2371.674316 -1132.715576 1051.048095 store_in 4@ 5@ 6@ 7@ 8@ 9@
+        end
+        if 0@ == 9
+        then 0AB1: @Set6numbers 6 cam_pos 2372.027587 -1132.840576 1051.573439 cam_target 2371.727294 -1132.847900 1050.621382 store_in 4@ 5@ 6@ 7@ 8@ 9@
+        end
+        if 0@ == 10
+        then 0AB1: @Set6numbers 6 cam_pos 2371.823242 -1132.939453 1052.175292 cam_target 2371.935791 -1132.936645 1051.181640 store_in 4@ 5@ 6@ 7@ 8@ 9@
+        end
+        if 0@ == 11
+        then 0AB1: @Set6numbers 6 cam_pos 2371.022216 -1133.324340 1050.775634 cam_target 2371.881347 -1132.916259 1051.084472 store_in 4@ 5@ 6@ 7@ 8@ 9@
+        end
+    end
+    if 1@ == SEX_BJ
+    then
+        if 0@ == 0
+        then 0AB1: @Set6numbers 6 cam_pos 2361.257568 -1132.872925 1052.175293 cam_target 2360.593506 -1132.852295 1051.427979 store_in 4@ 5@ 6@ 7@ 8@ 9@
+        end
+        if 0@ == 1
+        then 0AB1: @Set6numbers 6 cam_pos 2359.404053 -1132.374023 1051.775391 cam_target 2359.727539 -1132.743408 1050.904297 store_in 4@ 5@ 6@ 7@ 8@ 9@
+        end
+        if 0@ == 2
+        then 0AB1: @Set6numbers 6 cam_pos 2359.998047 -1132.595825 1052.675171 cam_target 2359.951660 -1132.625000 1051.676636 store_in 4@ 5@ 6@ 7@ 8@ 9@
+        end
+        if 0@ == 3
+        then 0AB1: @Set6numbers 6 cam_pos 2360.783691 -1132.327026 1050.675659 cam_target 2359.895752 -1132.784424 1050.725708 store_in 4@ 5@ 6@ 7@ 8@ 9@
+        end
+        if 0@ == 4
+        then 0AB1: @Set6numbers 6 cam_pos 2359.209961 -1133.201050 1050.375732 cam_target 2359.974609 -1132.773193 1050.857544 store_in 4@ 5@ 6@ 7@ 8@ 9@
+        end
+        if 0@ == 5
+        then 0AB1: @Set6numbers 6 cam_pos 2361.031494 -1133.537842 1050.275757 cam_target 2360.308105 -1132.891479 1050.518433 store_in 4@ 5@ 6@ 7@ 8@ 9@
+        end
+        if 0@ == 6
+        then 0AB1: @Set6numbers 6 cam_pos 2360.577881 -1133.010010 1050.875610 cam_target 2359.663818 -1132.607300 1050.925537 store_in 4@ 5@ 6@ 7@ 8@ 9@
+        end
+        if 0@ == 7
+        then 0AB1: @Set6numbers 6 cam_pos 2359.953613 -1132.849365 1051.675415 cam_target 2360.000000 -1132.845947 1050.676514 store_in 4@ 5@ 6@ 7@ 8@ 9@
+        end
+        if 0@ == 8
+        then 0AB1: @Set6numbers 6 cam_pos 2361.001953 -1134.026733 1052.075317 cam_target 2360.549072 -1133.472046 1051.377319 store_in 4@ 5@ 6@ 7@ 8@ 9@
+        end
+        if 0@ == 9
+        then 0AB1: @Set6numbers 6 cam_pos 2359.497803 -1132.797852 1051.375488 cam_target 2360.186523 -1132.759155 1050.651489 store_in 4@ 5@ 6@ 7@ 8@ 9@
+        end
+        if 0@ == 10
+        then 0AB1: @Set6numbers 6 cam_pos 2358.820313 -1134.993774 1052.775146 cam_target 2359.186523 -1134.378418 1052.077148 store_in 4@ 5@ 6@ 7@ 8@ 9@
+        end
+        if 0@ == 11
+        then 0AB1: @Set6numbers 6 cam_pos 2361.084717 -1133.306641 1051.275513 cam_target 2360.292969 -1132.871704 1050.846558 store_in 4@ 5@ 6@ 7@ 8@ 9@
+        end
+    end
+    if 1@ == SEX_ANAL
+    then
+        if 0@ == 0
+        then 0AB1: @Set6numbers 6 cam_pos 2368.826416 -1131.872925 1050.875610 cam_target 2369.775146 -1132.185059 1050.825562 store_in 4@ 5@ 6@ 7@ 8@ 9@
+        end
+        if 0@ == 1
+        then 0AB1: @Set6numbers 6 cam_pos 2371.220947 -1134.273071 1051.275513 cam_target 2371.863770 -1133.539185 1051.055908 store_in 4@ 5@ 6@ 7@ 8@ 9@
+        end
+        if 0@ == 2
+        then 0AB1: @Set6numbers 6 cam_pos 2373.829590 -1133.798096 1051.275513 cam_target 2373.007813 -1133.319336 1050.966797 store_in 4@ 5@ 6@ 7@ 8@ 9@
+        end
+        if 0@ == 3
+        then 0AB1: @Set6numbers 6 cam_pos 2372.715576 -1132.182251 1051.075562 cam_target 2372.287842 -1133.052979 1050.832764 store_in 4@ 5@ 6@ 7@ 8@ 9@
+        end
+        if 0@ == 4
+        then 0AB1: @Set6numbers 6 cam_pos 2371.227295 -1132.889160 1051.075562 cam_target 2372.191650 -1132.994019 1050.832642 store_in 4@ 5@ 6@ 7@ 8@ 9@
+        end
+        if 0@ == 5
+        then 0AB1: @Set6numbers 6 cam_pos 2371.172607 -1133.502930 1051.075562 cam_target 2372.068604 -1133.070068 1050.975952 store_in 4@ 5@ 6@ 7@ 8@ 9@
+        end
+        if 0@ == 6
+        then 0AB1: @Set6numbers 6 cam_pos 2372.159424 -1133.178223 1052.375244 cam_target 2372.306641 -1133.103882 1051.388916 store_in 4@ 5@ 6@ 7@ 8@ 9@
+        end
+        if 0@ == 7
+        then 0AB1: @Set6numbers 6 cam_pos 2373.610352 -1132.068848 1049.975830 cam_target 2372.873291 -1132.619995 1050.366821 store_in 4@ 5@ 6@ 7@ 8@ 9@
+        end
+        if 0@ == 8
+        then 0AB1: @Set6numbers 6 cam_pos 2372.980713 -1132.563232 1052.075317 cam_target 2372.552490 -1132.895386 1051.234863 store_in 4@ 5@ 6@ 7@ 8@ 9@
+        end
+        if 0@ == 9
+        then 0AB1: @Set6numbers 6 cam_pos 2372.608154 -1132.990723 1051.675415 cam_target 2372.060059 -1133.007813 1050.839233 store_in 4@ 5@ 6@ 7@ 8@ 9@
+        end
+        if 0@ == 10
+        then 0AB1: @Set6numbers 6 cam_pos 2372.009277 -1133.036255 1051.775391 cam_target 2372.367676 -1133.056152 1050.842041 store_in 4@ 5@ 6@ 7@ 8@ 9@
+        end
+        if 0@ == 11
+        then 0AB1: @Set6numbers 6 cam_pos 2372.602539 -1133.442871 1051.775391 cam_target 2372.213135 -1133.178345 1050.893188 store_in 4@ 5@ 6@ 7@ 8@ 9@
+        end
+    end
+    if 1@ == SEX_HJ
+    then
+        if 0@ == 0
+        then 0AB1: @Set6numbers 6 cam_pos cam_pos 2371.697266 -1120.968262 1051.475464 cam_target 2372.168457 -1121.673340 1050.945435 store_in 4@ 5@ 6@ 7@ 8@ 9@
+        end
+        if 0@ == 1
+        then 0AB1: @Set6numbers 6 cam_pos 2372.806152 -1122.427490 1051.375488 cam_target 2372.213379 -1121.890381 1050.775391 store_in 4@ 5@ 6@ 7@ 8@ 9@
+        end
+        if 0@ == 2
+        then 0AB1: @Set6numbers 6 cam_pos 2372.500488 -1122.824341 1050.475708 cam_target 2372.158203 -1121.922974 1050.741089 store_in 4@ 5@ 6@ 7@ 8@ 9@
+        end
+        if 0@ == 3
+        then 0AB1: @Set6numbers 6 cam_pos 2371.911377 -1122.523315 1051.875366 cam_target 2372.188721 -1122.098999 1051.013428 store_in 4@ 5@ 6@ 7@ 8@ 9@
+        end
+        if 0@ == 4
+        then 0AB1: @Set6numbers 6 cam_pos 2372.723145 -1120.937378 1050.575684 cam_target 2372.305420 -1121.824463 1050.771973 store_in 4@ 5@ 6@ 7@ 8@ 9@
+        end
+        if 0@ == 5
+        then 0AB1: @Set6numbers 6 cam_pos 2371.590576 -1120.936768 1050.375732 cam_target 2372.215088 -1121.714111 1050.450562 store_in 4@ 5@ 6@ 7@ 8@ 9@
+        end
+        if 0@ == 6
+        then 0AB1: @Set6numbers 6 cam_pos 2371.106689 -1121.890015 1051.075562 cam_target 2372.010010 -1121.877319 1050.646606 store_in 4@ 5@ 6@ 7@ 8@ 9@
+        end
+        if 0@ == 7
+        then 0AB1: @Set6numbers 6 cam_pos 2373.109131 -1121.870239 1051.075562 cam_target 2372.197266 -1121.866943 1050.665283 store_in 4@ 5@ 6@ 7@ 8@ 9@
+        end
+        if 0@ == 8
+        then 0AB1: @Set6numbers 6 cam_pos 2372.413086 -1122.002319 1052.075317 cam_target 2372.265625 -1121.929810 1051.088867 store_in 4@ 5@ 6@ 7@ 8@ 9@
+        end
+        if 0@ == 9
+        then 0AB1: @Set6numbers 6 cam_pos 2372.268066 -1121.426758 1051.175537 cam_target 2372.236084 -1122.274170 1050.645508 store_in 4@ 5@ 6@ 7@ 8@ 9@
+        end
+        if 0@ == 10
+        then 0AB1: @Set6numbers 6 cam_pos 2371.596680 -1121.245850 1050.575684 cam_target 2372.327637 -1121.864624 1050.863403 store_in 4@ 5@ 6@ 7@ 8@ 9@
+        end
+        if 0@ == 11
+        then 0AB1: @Set6numbers 6 cam_pos 2371.123535 -1123.923096 1051.975342 cam_target 2371.520996 -1123.239990 1051.362671 store_in 4@ 5@ 6@ 7@ 8@ 9@
+        end
+    end
+    if 1@ == SEX_CUNNI
+    then
+        if 0@ == 0
+        then 0AB1: @Set6numbers 6 cam_pos 2372.754395 -1124.290405 1052.075317 cam_target 2373.351318 -1123.979980 1051.335449 store_in 4@ 5@ 6@ 7@ 8@ 9@
+        end
+        if 0@ == 1
+        then 0AB1: @Set6numbers 6 cam_pos 2372.755615 -1122.334229 1051.575439 cam_target 2373.409668 -1122.874023 1051.045532 store_in 4@ 5@ 6@ 7@ 8@ 9@
+        end
+        if 0@ == 2
+        then 0AB1: @Set6numbers 6 cam_pos 2373.535400 -1123.435181 1052.975098 cam_target 2373.822754 -1123.514893 1052.020630 store_in 4@ 5@ 6@ 7@ 8@ 9@
+        end
+        if 0@ == 3
+        then 0AB1: @Set6numbers 6 cam_pos 2375.149658 -1123.670776 1051.875366 cam_target 2374.770752 -1123.627441 1050.950928 store_in 4@ 5@ 6@ 7@ 8@ 9@
+        end
+        if 0@ == 4
+        then 0AB1: @Set6numbers 6 cam_pos 2374.351563 -1123.600464 1051.875366 cam_target 2374.473877 -1123.623169 1050.883179 store_in 4@ 5@ 6@ 7@ 8@ 9@
+        end
+        if 0@ == 5
+        then 0AB1: @Set6numbers 6 cam_pos 2373.963135 -1123.475708 1051.175537 cam_target 2374.762939 -1123.482544 1050.575439 store_in 4@ 5@ 6@ 7@ 8@ 9@
+        end
+        if 0@ == 6
+        then 0AB1: @Set6numbers 6 cam_pos 2374.817627 -1122.566040 1051.075562 cam_target 2374.499512 -1123.462402 1050.766724 store_in 4@ 5@ 6@ 7@ 8@ 9@
+        end
+        if 0@ == 7
+        then 0AB1: @Set6numbers 6 cam_pos 2374.577148 -1124.654175 1051.075562 cam_target 2374.474609 -1123.756714 1050.646606 store_in 4@ 5@ 6@ 7@ 8@ 9@
+        end
+        if 0@ == 8
+        then 0AB1: @Set6numbers 6 cam_pos 2374.731689 -1123.368896 1052.275269 cam_target 2374.673584 -1123.450439 1051.280273 store_in 4@ 5@ 6@ 7@ 8@ 9@
+        end
+        if 0@ == 9
+        then 0AB1: @Set6numbers 6 cam_pos 2374.071777 -1123.518188 1051.075562 cam_target 2374.938721 -1123.510742 1050.577026 store_in 4@ 5@ 6@ 7@ 8@ 9@
+        end
+        if 0@ == 10
+        then 0AB1: @Set6numbers 6 cam_pos 2374.969482 -1124.286377 1051.175537 cam_target 2374.552246 -1123.548218 1050.645508 store_in 4@ 5@ 6@ 7@ 8@ 9@
+        end
+        if 0@ == 11
+        then 0AB1: @Set6numbers 6 cam_pos 2373.105957 -1124.657837 1051.175537 cam_target 2373.761719 -1124.036255 1050.746826 store_in 4@ 5@ 6@ 7@ 8@ 9@
+        end
+    end
+end
+0AB2: ret 6 4@ 5@ 6@ 7@ 8@ 9@
+
+{======================================================================
+======================================================================}
+:GetPoseFromString
+// inputs: 0@-1@: string
+if 0@s == 'S_BJ_1'
+then 0AB2: ret 1 SEX_BJ
+end
+if 0@s == 'S_HJ_1'
+then 0AB2: ret 1 SEX_HJ
+end
+if 0@s == 'S_CN_1'
+then 0AB2: ret 1 SEX_CUNNI
+end
+if 0@s == 'S_FK_1'
+then 0AB2: ret 1 SEX_FUCKING
+end
+if 0@s == 'S_AN_1'
+then 0AB2: ret 1 SEX_ANAL
+end
+0AB2: ret 1 404
+
+{======================================================================
+======================================================================}
+:GetActorsCoordinates
+// inputs: 0@: pose, 1@: place
+094B: 10@v = get_active_interior_name_from_actor $PLAYER_ACTOR // 16-byte string
+if or
+10@v == "SVLAMD"
+PlayerInterior == 0
+then
+    if 0@ == SEX_FUCKING
+    then 0AB2: ret 8 fem_xyz 2372.198 -1132.888 1049.775 angle -90.0 male_xyz 2372.195 -1132.905 1049.825 angle -90.0
+    end
+    if 0@ == SEX_BJ
+    then 0AB2: ret 8 fem_xyz 2359.824 -1132.73 1049.635 angle 90.0 male_xyz 2359.758 -1132.749 1049.665 angle 90.0
+    end
+    if 0@ == SEX_ANAL
+    then 0AB2: ret 8 fem_xyz 2372.688 -1132.955 1049.905 angle -90.0 male_xyz 2372.681 -1133.057 1049.975 angle -90.0
+    end
+    if 0@ == SEX_HJ
+    then 0AB2: ret 8 fem_xyz 2372.3 -1121.857 1049.415 angle 0.0 male_xyz 2372.317 -1121.818 1049.475 angle 0.0
+    end
+    if 0@ == SEX_CUNNI
+    then 0AB2: ret 8 fem_xyz 2374.48 -1123.599 1049.475 angle -90.0 male_xyz 2374.523 -1123.617 1049.535 angle -90.0
+    end
+end
+0AB2: ret 8 fem_xyz 0.0 0.0 0.0 angle 0.0 male_xyz 0.0 0.0 0.0 angle 0.0
+

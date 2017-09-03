@@ -1,0 +1,48 @@
+objs
+6200, dockcranescale, doccrane, 272, 0
+6201, mak_fratea, frate, 166, 0
+6202, mak_frateb, frate, 166, 0
+6203, mak_fratec, frate, 166, 0
+6204, mak_billboard, billboard, 100, 0
+6205, mak_Watertank, watertower, 191, 0
+6206, mak_ventchim, pipes, 131, 0
+6207, pipe2, pipes, 177, 0
+6208, junk_tyre_pilebig, tyres, 110, 0
+6209, junk_tyre_pilemid, tyres, 100, 0
+6210, junk_bit5, rubbish, 128, 0
+6211, junk_bit6, rubbish, 137, 0
+6212, car_fucko, fuckedcar, 133, 0
+6213, fuckedup_skewlbus, schoolbus, 168, 0
+6214, lofucked_car, fuckedcar, 132, 0
+6215, mak_billsmall, billboard, 100, 0
+6216, warehouse1z, warehouses, 200, 0
+6217, cranetopb, gtaiii, 750, 4
+6218, cranetopa, gtaiii, 750, 4
+6219, doc_shedwee1, warehouse, 200, 0
+6220, fuel8, dockvats, 260, 0
+6221, fuel3, dockvats, 260, 0
+6222, doc_floodlite, docklight, 150, 0
+6223, doc_shedwkway, dockbit, 244, 0
+6224, trainsleeper, trainyard, 45, 0
+6225, train_rust, trainyard, 90, 4
+6226, cranesmalltop, gtaiii, 650, 4
+6227, doc_crane_leggs, doccrane, 158, 4
+6228, doc_crane_cab, doccrane, 251, 4
+6229, mak_Watertank2, watertower, 186, 0
+6230, mak_Watertank3, watertower, 174, 0
+6231, LOD_shedwee1, indust1, 750, 0
+6232, LODehouse1z, indust1, 750, 0
+6233, plnt_pylon01, pylon, 100, 4
+6234, junk_tyre_cubewee, tyrestack, 50, 0
+6235, junk_tyre_cubebig, tyrestack, 50, 0
+6236, junk_tyre_cubemid, tyrestack, 50, 0
+6237, LODkcranescale, indust1, 800, 0
+6238, salvs_door1, frankiesbase, 100, 0
+6239, salvs_door2, frankiesbase, 100, 0
+end
+tobj
+end
+path
+end
+2dfx
+end

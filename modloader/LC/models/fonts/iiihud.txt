@@ -1,0 +1,856 @@
+// This file was decompiled using SASCM.ini published by GTAG (http://gtag.gtagaming.com/opcode-database) on 14.6.2013
+{$CLEO .cs}
+
+//-------------MAIN---------------
+0AC7: 4@ = var 31@ offset 
+0AC6: 1@ = label @Noname_6385 offset 
+0AC6: 2@ = label @Noname_6461 offset 
+2@ += 2 
+0AC6: 3@ = label @Noname_6297 offset 
+0A8C: write_memory 2@ size 4 value 3@ virtual_protect 0 
+2@ += 8 
+0A8E: 3@ = 2@ + 4 // int 
+0A8F: 3@ = 7443360 - 3@ // int 
+0A8C: write_memory 2@ size 4 value 3@ virtual_protect 0 
+2@ += 5 
+0A8E: 3@ = 2@ + 4 // int 
+0A8F: 3@ = 5812397 - 3@ // int 
+0A8C: write_memory 2@ size 4 value 3@ virtual_protect 0 
+2@ += 5 
+0A8E: 3@ = 2@ + 4 // int 
+0A8F: 3@ = 7443728 - 3@ // int 
+0A8C: write_memory 2@ size 4 value 3@ virtual_protect 0 
+2@ += 7 
+0A8E: 3@ = 2@ + 4 // int 
+0A8F: 3@ = 5811615 - 3@ // int 
+0A8C: write_memory 2@ size 4 value 3@ virtual_protect 0 
+2@ += 6 
+0AC6: 3@ = label @Noname_6325 offset 
+3@ += 36 
+0A8C: write_memory 2@ size 4 value 3@ virtual_protect 0 
+2@ += 8 
+0A8E: 3@ = 2@ + 4 // int 
+0A8F: 3@ = 7443328 - 3@ // int 
+0A8C: write_memory 2@ size 4 value 3@ virtual_protect 0 
+2@ += 5 
+0A8E: 3@ = 2@ + 4 // int 
+0A8F: 3@ = 5821161 - 3@ // int 
+0A8C: write_memory 2@ size 4 value 3@ virtual_protect 0 
+2@ += 15 
+0A8E: 3@ = 2@ + 4 // int 
+0A8F: 3@ = 4798033 - 3@ // int 
+0A8C: write_memory 2@ size 4 value 3@ virtual_protect 0 
+2@ += 6 
+0A8C: write_memory 2@ size 4 value 4@ virtual_protect 0 
+2@ += 63 
+0AC6: 3@ = label @Noname_6413 offset 
+0A8C: write_memory 2@ size 4 value 3@ virtual_protect 0 
+2@ += 5 
+0A8E: 3@ = 2@ + 4 // int 
+0A8F: 3@ = 5827502 - 3@ // int 
+0A8C: write_memory 2@ size 4 value 3@ virtual_protect 0 
+2@ += 9 
+0AC6: 3@ = label @Noname_6423 offset 
+0A8C: write_memory 2@ size 4 value 3@ virtual_protect 0 
+2@ += 5 
+0A8E: 3@ = 2@ + 4 // int 
+0A8F: 3@ = 5827502 - 3@ // int 
+0A8C: write_memory 2@ size 4 value 3@ virtual_protect 0 
+2@ += 11 
+0A8E: 3@ = 2@ + 4 // int 
+0A8F: 3@ = 5827497 - 3@ // int 
+0A8C: write_memory 2@ size 4 value 3@ virtual_protect 0 
+2@ += 11 
+0A8E: 3@ = 2@ + 4 // int 
+0A8F: 3@ = 5730443 - 3@ // int 
+0A8C: write_memory 2@ size 4 value 3@ virtual_protect 0 
+2@ += 7 
+0A8E: 3@ = 2@ + 4 // int 
+0A8F: 3@ = 5730443 - 3@ // int 
+0A8C: write_memory 2@ size 4 value 3@ virtual_protect 0 
+2@ += 14 
+0AC6: 3@ = label @Noname_6433 offset 
+0A8C: write_memory 2@ size 4 value 3@ virtual_protect 0 
+2@ += 5 
+0A8E: 3@ = 2@ + 4 // int 
+0A8F: 3@ = 5742952 - 3@ // int 
+0A8C: write_memory 2@ size 4 value 3@ virtual_protect 0 
+2@ += 8 
+0A8E: 3@ = 2@ + 4 // int 
+0A8F: 3@ = 5742437 - 3@ // int 
+0A8C: write_memory 2@ size 4 value 3@ virtual_protect 0 
+2@ += 5 
+0AC6: 3@ = label @Noname_6447 offset 
+0A8C: write_memory 2@ size 4 value 3@ virtual_protect 0 
+2@ += 5 
+0A8E: 3@ = 2@ + 4 // int 
+0A8F: 3@ = 5742952 - 3@ // int 
+0A8C: write_memory 2@ size 4 value 3@ virtual_protect 0 
+2@ += 15 
+0AC6: 3@ = label @Noname_6225 offset 
+3@ += 4 
+0A8C: write_memory 2@ size 4 value 3@ virtual_protect 0 
+2@ += 5 
+0A8E: 3@ = 2@ + 4 // int 
+0A8F: 3@ = 5827610 - 3@ // int 
+0A8C: write_memory 2@ size 4 value 3@ virtual_protect 0 
+2@ += 6 
+0AC6: 3@ = label @Noname_6225 offset 
+0A8C: write_memory 2@ size 4 value 3@ virtual_protect 0 
+2@ += 5 
+0A8E: 3@ = 2@ + 4 // int 
+0A8F: 3@ = 5827610 - 3@ // int 
+0A8C: write_memory 2@ size 4 value 3@ virtual_protect 0 
+0A8C: write_memory 12235308 size 4 value -11981967 virtual_protect 0 
+0A8C: write_memory 12235312 size 4 value -9789345 virtual_protect 0 
+0A8C: write_memory 12235316 size 4 value -809088 virtual_protect 0 
+0A8C: write_memory 12235332 size 4 value -16601892 virtual_protect 0 
+0A8C: write_memory 12235336 size 4 value -233816 virtual_protect 0 
+0A8C: write_memory 12235352 size 4 value -9780014 virtual_protect 0 
+0AC6: 2@ = label @Noname_6213 offset 
+0A8C: write_memory 5827377 size 4 value 2@ virtual_protect 1 
+0AC6: 2@ = label @Noname_6213 offset 
+2@ += 4 
+0A8C: write_memory 5827399 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5827440 size 1 value 1 virtual_protect 1 
+0A8C: write_memory 5827442 size 4 value 1616378 virtual_protect 1 
+0A8C: write_memory 5827537 size 4 value 1@ virtual_protect 1 
+0AC6: 2@ = label @Noname_6213 offset 
+2@ += 8 
+0A8C: write_memory 5827588 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5802889 size 1 value 235 virtual_protect 1 
+0AC6: 2@ = label @Noname_6213 offset 
+0A8C: write_memory 5829966 size 4 value 2@ virtual_protect 1 
+0AC6: 2@ = label @Noname_6213 offset 
+2@ += 4 
+0A8C: write_memory 5829988 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5829785 size 4 value 1@ virtual_protect 1 
+0A8C: write_memory 5830022 size 1 value 1 virtual_protect 1 
+0A8C: write_memory 5830029 size 1 value 1 virtual_protect 1 
+0A8C: write_memory 5830031 size 4 value 1613661 virtual_protect 1 
+0AC6: 2@ = label @Noname_6237 offset 
+0A8C: write_memory 5830108 size 4 value 2@ virtual_protect 1 
+0AC6: 2@ = label @Noname_6225 offset 
+2@ += 8 
+0A8C: write_memory 5830140 size 4 value 2@ virtual_protect 1 
+0AC6: 2@ = label @Noname_6237 offset 
+2@ += 4 
+0A8C: write_memory 5830931 size 4 value 2@ virtual_protect 1 
+0AC6: 2@ = label @Noname_6237 offset 
+2@ += 8 
+0A8C: write_memory 5830951 size 4 value 2@ virtual_protect 1 
+0AC6: 2@ = label @Noname_6249 offset 
+0A8C: write_memory 5822614 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5822667 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5822773 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5822797 size 4 value 2@ virtual_protect 1 
+0AC6: 2@ = label @Noname_6253 offset 
+0A8C: write_memory 5805239 size 4 value 2@ virtual_protect 1 
+0AC6: 2@ = label @Noname_6257 offset 
+0A8C: write_memory 5805261 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5805317 size 1 value 0 virtual_protect 1 
+0A8C: write_memory 5805559 size 4 value 1@ virtual_protect 1 
+0A8C: write_memory 5805565 size 1 value 6 virtual_protect 1 
+0AC6: 2@ = label @Noname_6237 offset 
+2@ += 4 
+0A8C: write_memory 5831132 size 4 value 2@ virtual_protect 1 
+0AC6: 2@ = label @Noname_6261 offset 
+0A8C: write_memory 5831142 size 4 value 2@ virtual_protect 1 
+0AC6: 2@ = label @Noname_6237 offset 
+2@ += 8 
+0A8C: write_memory 5831170 size 4 value 2@ virtual_protect 1 
+0AC6: 2@ = label @Noname_6265 offset 
+0A8C: write_memory 5831186 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5823771 size 2 value 37008 virtual_protect 1 
+0A8C: write_memory 5823811 size 4 value 1620009 virtual_protect 1 
+0A8C: write_memory 5823945 size 1 value 4 virtual_protect 1 
+0A8C: write_memory 5823952 size 4 value 1@ virtual_protect 1 
+0A8C: write_memory 5824035 size 1 value 235 virtual_protect 1 
+0A8E: 2@ = 1@ + 18 // int 
+0A8C: write_memory 5824119 size 4 value 2@ virtual_protect 1 
+2@ -= 1 
+0A8C: write_memory 5824146 size 4 value 2@ virtual_protect 1 
+2@ -= 1 
+0A8C: write_memory 5824173 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5824132 size 6 value 144 virtual_protect 1 
+0A8C: write_memory 5824159 size 6 value 144 virtual_protect 1 
+0A8C: write_memory 5824186 size 6 value 144 virtual_protect 1 
+0A8C: write_memory 5824297 size 6 value 144 virtual_protect 1 
+0A8C: write_memory 5824353 size 6 value 144 virtual_protect 1 
+0A8C: write_memory 5824381 size 6 value 144 virtual_protect 1 
+0AC6: 2@ = label @Noname_6269 offset 
+0A8C: write_memory 5823996 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5824245 size 4 value 2@ virtual_protect 1 
+0AC6: 2@ = label @Noname_6273 offset 
+0A8C: write_memory 5824435 size 4 value 2@ virtual_protect 1 
+0AC6: 2@ = label @Noname_6277 offset 
+0A8C: write_memory 5823759 size 4 value 2@ virtual_protect 1 
+0AC6: 2@ = label @Noname_6281 offset 
+0A8C: write_memory 5823658 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5823856 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5824349 size 4 value 2@ virtual_protect 1 
+0AC6: 2@ = label @Noname_6285 offset 
+0A8C: write_memory 5823680 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5823878 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5824377 size 4 value 2@ virtual_protect 1 
+0AC6: 2@ = label @Noname_6289 offset 
+0A8C: write_memory 5824493 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5152505 size 1 value 3 virtual_protect 1 
+0A8C: write_memory 5152604 size 4 value 2291216 virtual_protect 1 
+0A8C: write_memory 5152657 size 1 value 5 virtual_protect 1 
+0A8C: write_memory 5152664 size 4 value 1@ virtual_protect 1 
+0A8C: write_memory 5152679 size 1 value 0 virtual_protect 1 
+0A8C: write_memory 5152686 size 4 value 1@ virtual_protect 1 
+0AC6: 2@ = label @Noname_6213 offset 
+0A8C: write_memory 5152546 size 4 value 2@ virtual_protect 1 
+0AC6: 2@ = label @Noname_6213 offset 
+2@ += 4 
+0A8C: write_memory 5152568 size 4 value 2@ virtual_protect 1 
+0AC6: 2@ = label @Noname_6305 offset 
+0A8C: write_memory 5812253 size 4 value 2@ virtual_protect 1 
+0AC6: 2@ = label @Noname_6293 offset 
+0A8C: write_memory 5812369 size 4 value 2@ virtual_protect 1 
+0AC6: 2@ = label @Noname_6461 offset 
+2@ -= 5812394 
+0A8C: write_memory 5812389 size 1 value 233 virtual_protect 1 
+0A8C: write_memory 5812390 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5812411 size 1 value 1 virtual_protect 1 
+0A8C: write_memory 5812418 size 1 value 1 virtual_protect 1 
+0A8C: write_memory 5812420 size 4 value 1631400 virtual_protect 1 
+0A8C: write_memory 5812445 size 4 value 1@ virtual_protect 1 
+0A8C: write_memory 5812451 size 1 value 4 virtual_protect 1 
+0AC6: 2@ = label @Noname_6301 offset 
+0A8C: write_memory 5812533 size 4 value 2@ virtual_protect 1 
+0AC6: 2@ = label @Noname_6325 offset 
+2@ += 28 
+0A8C: write_memory 5811888 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5811914 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5811952 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5811979 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5812113 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5812156 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5812201 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5812266 size 4 value 2@ virtual_protect 1 
+0AC6: 2@ = label @Noname_6305 offset 
+0A8C: write_memory 5811349 size 4 value 2@ virtual_protect 1 
+0AC6: 2@ = label @Noname_6293 offset 
+0A8C: write_memory 5811500 size 4 value 2@ virtual_protect 1 
+0AC6: 2@ = label @Noname_6297 offset 
+0A8C: write_memory 5811522 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5811535 size 1 value 1 virtual_protect 1 
+0A8C: write_memory 5811537 size 4 value 1632283 virtual_protect 1 
+0A8C: write_memory 5811572 size 5 value 144 virtual_protect 1 
+0AC6: 2@ = label @Noname_6480 offset 
+2@ -= 5811614 
+0A8C: write_memory 5811609 size 1 value 233 virtual_protect 1 
+0A8C: write_memory 5811610 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5811702 size 4 value 1@ virtual_protect 1 
+0AC6: 2@ = label @Noname_6309 offset 
+0A8C: write_memory 5811770 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5819498 size 5 value 144 virtual_protect 1 
+0A8C: write_memory 5498112 size 4 value 333269 virtual_protect 1 
+0AC6: 2@ = label @Noname_6526 offset 
+2@ -= 5828255 
+0A8C: write_memory 5828251 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5828459 size 5 value 144 virtual_protect 1 
+0A8C: write_memory 5828913 size 5 value 144 virtual_protect 1 
+0A8C: write_memory 5831385 size 2 value 1478 virtual_protect 1 
+0A8C: write_memory 5831387 size 4 value 4@ virtual_protect 1 
+0A8C: write_memory 5831391 size 1 value 0 virtual_protect 1 
+0AC6: 2@ = label @Noname_6313 offset 
+0A8C: write_memory 5780726 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5809277 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5809714 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5809835 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5809934 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5810177 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5810347 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5810465 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5810645 size 4 value 2@ virtual_protect 1 
+0AC6: 2@ = label @Noname_6317 offset 
+0A8C: write_memory 5780674 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5809225 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5810153 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5810240 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5810499 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5810589 size 4 value 2@ virtual_protect 1 
+0AC6: 2@ = label @Noname_6317 offset 
+2@ += 4 
+0A8C: write_memory 5780736 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5808551 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5808854 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5809305 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5809678 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5809950 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5810119 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5810280 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5810451 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5810631 size 4 value 2@ virtual_protect 1 
+0AC6: 2@ = label @Noname_6325 offset 
+0A8C: write_memory 5780692 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5809257 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5809634 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5809894 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5810075 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5810230 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5810409 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5810570 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5817020 size 5 value 144 virtual_protect 1 
+0A8C: write_memory 5817094 size 1 value 1 virtual_protect 1 
+0A8C: write_memory 5818451 size 1 value 216 virtual_protect 1 
+0AC6: 2@ = label @Noname_6325 offset 
+2@ += 44 
+0A8C: write_memory 5818453 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5818473 size 1 value 216 virtual_protect 1 
+0A8C: write_memory 5818475 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5818545 size 1 value 255 virtual_protect 1 
+0A8C: write_memory 5818547 size 4 value 1625273 virtual_protect 1 
+0A8C: write_memory 5818609 size 1 value 0 virtual_protect 1 
+0A8C: write_memory 5818612 size 4 value 1@ virtual_protect 1 
+0A8C: write_memory 5831885 size 2 value 37008 virtual_protect 1 
+0AC6: 2@ = label @Noname_6325 offset 
+2@ += 32 
+0A8C: write_memory 5821133 size 4 value 2@ virtual_protect 1 
+0AC6: 2@ = label @Noname_6492 offset 
+2@ -= 5821158 
+0A8C: write_memory 5821153 size 1 value 233 virtual_protect 1 
+0A8C: write_memory 5821154 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5821402 size 1 value 1 virtual_protect 1 
+0A8C: write_memory 5821404 size 4 value 1622416 virtual_protect 1 
+0AC6: 2@ = label @Noname_6325 offset 
+2@ += 40 
+0A8C: write_memory 5821519 size 4 value 2@ virtual_protect 1 
+0AC6: 2@ = label @Noname_6325 offset 
+2@ += 8 
+0A8C: write_memory 5820116 size 4 value 2@ virtual_protect 1 
+0AC6: 2@ = label @Noname_6325 offset 
+2@ += 12 
+0A8C: write_memory 5820138 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5820194 size 1 value 1 virtual_protect 1 
+0A8C: write_memory 5820201 size 1 value 1 virtual_protect 1 
+0A8C: write_memory 5820203 size 4 value 1623617 virtual_protect 1 
+0A8C: write_memory 5820242 size 1 value 1 virtual_protect 1 
+0A8C: write_memory 5820249 size 4 value 1@ virtual_protect 1 
+0AC6: 2@ = label @Noname_6325 offset 
+2@ += 4 
+0A8C: write_memory 5820291 size 4 value 2@ virtual_protect 1 
+0AC6: 2@ = label @Noname_6325 offset 
+2@ += 8 
+0A8C: write_memory 5819597 size 4 value 2@ virtual_protect 1 
+0AC6: 2@ = label @Noname_6325 offset 
+2@ += 12 
+0A8C: write_memory 5819619 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5819669 size 5 value 144 virtual_protect 1 
+0A8C: write_memory 5819675 size 1 value 1 virtual_protect 1 
+0A8C: write_memory 5819682 size 1 value 255 virtual_protect 1 
+0A8C: write_memory 5819684 size 4 value 1624136 virtual_protect 1 
+0A8C: write_memory 5819723 size 1 value 1 virtual_protect 1 
+0A8C: write_memory 5819730 size 4 value 1@ virtual_protect 1 
+0AC6: 2@ = label @Noname_6325 offset 
+2@ += 4 
+0A8C: write_memory 5819772 size 4 value 2@ virtual_protect 1 
+0AC6: 2@ = label @Noname_6325 offset 
+2@ += 20 
+0A8C: write_memory 5820750 size 4 value 2@ virtual_protect 1 
+0AC6: 2@ = label @Noname_6325 offset 
+2@ += 24 
+0A8C: write_memory 5820772 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5820828 size 1 value 1 virtual_protect 1 
+0A8C: write_memory 5820837 size 4 value 1622983 virtual_protect 1 
+0A8C: write_memory 5820876 size 1 value 2 virtual_protect 1 
+0A8C: write_memory 5820883 size 4 value 1@ virtual_protect 1 
+0AC6: 2@ = label @Noname_6325 offset 
+2@ += 16 
+0A8C: write_memory 5820925 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 5819936 size 1 value 1 virtual_protect 1 
+0A8C: write_memory 5819945 size 4 value 1623875 virtual_protect 1 
+0AC6: 2@ = label @Noname_6325 offset 
+2@ += 48 
+0A8C: write_memory 4487103 size 4 value 2@ virtual_protect 1 
+0AC6: 2@ = label @Noname_6325 offset 
+2@ += 52 
+0A8C: write_memory 4487125 size 4 value 2@ virtual_protect 1 
+0AC6: 2@ = label @Noname_6325 offset 
+2@ += 56 
+0A8C: write_memory 4487353 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 4487459 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 4487526 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 4487196 size 1 value 1 virtual_protect 1 
+0A8C: write_memory 4487206 size 1 value 1 virtual_protect 1 
+0A8C: write_memory 4487213 size 4 value 1@ virtual_protect 1 
+0A8C: write_memory 4487231 size 1 value 255 virtual_protect 1 
+0A8C: write_memory 4487233 size 4 value 2956587 virtual_protect 1 
+0A8D: 2@ = read_memory 4722912 size 1 virtual_protect 0 
+if 
+  2@ == 233 
+jf @Noname_4558 
+0A8D: 2@ = read_memory 4722913 size 4 virtual_protect 0 
+2@ += 4722917 
+jump @Noname_4568 
+
+:Noname_4558
+2@ = 4722912 
+
+:Noname_4568
+2@ += 43 
+0A8C: write_memory 2@ size 1 value 192 virtual_protect 1 
+2@ += 2 
+0A8C: write_memory 2@ size 1 value 84 virtual_protect 1 
+2@ += 2 
+0A8C: write_memory 2@ size 1 value 16 virtual_protect 1 
+0A8C: write_memory 5790923 size 1 value 192 virtual_protect 1 
+0A8C: write_memory 5790925 size 1 value 84 virtual_protect 1 
+0A8C: write_memory 5790927 size 1 value 16 virtual_protect 1 
+0A8C: write_memory 7392523 size 1 value 192 virtual_protect 1 
+0A8C: write_memory 7392525 size 1 value 84 virtual_protect 1 
+0A8C: write_memory 7392527 size 1 value 16 virtual_protect 1 
+0A8C: write_memory 7392600 size 1 value 192 virtual_protect 1 
+0A8C: write_memory 7392602 size 1 value 84 virtual_protect 1 
+0A8C: write_memory 7392604 size 1 value 16 virtual_protect 1 
+0A8C: write_memory 7392683 size 1 value 192 virtual_protect 1 
+0A8C: write_memory 7392685 size 1 value 84 virtual_protect 1 
+0A8C: write_memory 7392687 size 1 value 16 virtual_protect 1 
+0A8C: write_memory 4798024 size 1 value 16 virtual_protect 1 
+0AC6: 2@ = label @Noname_6511 offset 
+2@ -= 4798030 
+0A8C: write_memory 4798025 size 1 value 233 virtual_protect 1 
+0A8C: write_memory 4798026 size 4 value 2@ virtual_protect 1 
+0AC6: 2@ = label @Noname_6625 offset 
+2@ -= 5730443 
+0A8C: write_memory 5730438 size 1 value 233 virtual_protect 1 
+0A8C: write_memory 5730439 size 4 value 2@ virtual_protect 1 
+0AC6: 2@ = label @Noname_6643 offset 
+2@ -= 5742191 
+0A8C: write_memory 5742187 size 4 value 2@ virtual_protect 1 
+0AC6: 2@ = label @Noname_6534 offset 
+2@ -= 5827496 
+0A8C: write_memory 5827491 size 1 value 233 virtual_protect 1 
+0A8C: write_memory 5827492 size 4 value 2@ virtual_protect 1 
+0AC6: 2@ = label @Noname_6680 offset 
+2@ -= 5827609 
+0A8C: write_memory 5827604 size 1 value 233 virtual_protect 1 
+0A8C: write_memory 5827605 size 4 value 2@ virtual_protect 1 
+0ADF: add_dynamic_GXT_entry "III_HIC" text "?" 
+0ADF: add_dynamic_GXT_entry "III_AIC" text "<" 
+
+:Noname_5050
+wait 0 
+if 
+  31@ == 1 
+jf @Noname_5992 
+03F0: enable_text_draw 1 
+0A8D: 29@ = read_memory 12235228 size 2 virtual_protect 0 
+1@ = Actor.Health($PLAYER_ACTOR)
+gosub @Noname_6117 
+0340: set_text_draw_RGBA 186 101 50 255 
+if 
+  1@ > 999 
+jf @Noname_5144 
+1@ = 999 
+
+:Noname_5144
+if 
+88B7:   not test 30@ bit 3 
+jf @Noname_5273 
+if or
+  10 > 1@ 
+  29@ == 4 
+jf @Noname_5259 
+if 
+  32@ > 300 
+jf @Noname_5252 
+32@ = 0 
+if 
+08B7:   test 30@ bit 0 
+jf @Noname_5245 
+08C3: clear 30@ bit 0 
+jump @Noname_5252 
+
+:Noname_5245
+08BD: set 30@ bit 0 
+
+:Noname_5252
+jump @Noname_5273 
+
+:Noname_5259
+08BD: set 30@ bit 0 
+32@ = 0 
+
+:Noname_5273
+if 
+08B7:   test 30@ bit 0 
+jf @Noname_5381 
+0AD3: 2@v = format "%03d" 1@  
+0ADF: add_dynamic_GXT_entry "III_HEA" text 2@v 
+033E: set_draw_text_position 484.5 66.0 GXT "III_HEA" 
+gosub @Noname_6117 
+0340: set_text_draw_RGBA 186 101 50 255 
+033E: set_draw_text_position 459.7 66.0 GXT "III_HIC" 
+
+:Noname_5381
+if 
+gosub @Noname_6152 
+jf @Noname_5708 
+0652: 1@ = integer_stat 4080 
+0653: 2@ = float_stat 225 
+0653: 3@ = float_stat 22 
+005B: 2@ += 3@ // (float) 
+2@ *= 1.5 
+2@ += 1000.0 
+if 
+  1150.0 > 2@ 
+jf @Noname_5481 
+2@ = 1150.0 
+
+:Noname_5481
+0073: 1@ /= 2@ // (float) 
+1@ *= 100.0 
+0092: 1@ = float 1@ to_integer 
+gosub @Noname_6117 
+0340: set_text_draw_RGBA 142 187 204 255 
+if 
+  29@ == 10 
+jf @Noname_5618 
+if 
+  33@ > 300 
+jf @Noname_5611 
+33@ = 0 
+if 
+08B7:   test 30@ bit 2 
+jf @Noname_5604 
+08C3: clear 30@ bit 2 
+jump @Noname_5611 
+
+:Noname_5604
+08BD: set 30@ bit 2 
+
+:Noname_5611
+jump @Noname_5632 
+
+:Noname_5618
+08BD: set 30@ bit 2 
+33@ = 0 
+
+:Noname_5632
+if 
+08B7:   test 30@ bit 2 
+jf @Noname_5701 
+0AD3: 2@v = format "^%03d" 1@  
+0ADF: add_dynamic_GXT_entry "III_OXY" text 2@v 
+033E: set_draw_text_position 389.0 66.0 GXT "III_OXY" 
+
+:Noname_5701
+jump @Noname_5992 
+
+:Noname_5708
+04DD: 1@ = actor $PLAYER_ACTOR armour 
+if 
+  1@ > 0 
+jf @Noname_5992 
+gosub @Noname_6117 
+0340: set_text_draw_RGBA 124 140 95 255 
+if 
+  1@ > 999 
+jf @Noname_5780 
+1@ = 999 
+
+:Noname_5780
+if 
+  29@ == 3 
+jf @Noname_5870 
+if 
+  33@ > 300 
+jf @Noname_5863 
+33@ = 0 
+if 
+08B7:   test 30@ bit 1 
+jf @Noname_5856 
+08C3: clear 30@ bit 1 
+jump @Noname_5863 
+
+:Noname_5856
+08BD: set 30@ bit 1 
+
+:Noname_5863
+jump @Noname_5884 
+
+:Noname_5870
+08BD: set 30@ bit 1 
+33@ = 0 
+
+:Noname_5884
+if 
+08B7:   test 30@ bit 1 
+jf @Noname_5992 
+0AD3: 2@v = format "%03d" 1@  
+0ADF: add_dynamic_GXT_entry "III_ARM" text 2@v 
+033E: set_draw_text_position 411.0 66.0 GXT "III_ARM" 
+gosub @Noname_6117 
+0340: set_text_draw_RGBA 124 140 95 255 
+033E: set_draw_text_position 392.0 66.0 GXT "III_AIC" 
+
+:Noname_5992
+0A8D: 0@ = read_memory 12234176 size 1 virtual_protect 0 
+if 
+  0@ > 0 
+jf @Noname_6110 
+0ADF: add_dynamic_GXT_entry "EMUTXT3" text 12234176 
+03E0: draw_text_behind_textures 1 
+033F: set_text_draw_letter_size 2.0 3.9 
+03E4: set_text_draw_align_right 1 
+0349: set_text_draw_font 3 
+060D: draw_text_shadow 3 rgba 0 0 0 255 
+0340: set_text_draw_RGBA 170 123 87 255 
+033E: set_draw_text_position 616.0 367.0 GXT "EMUTXT3" 
+
+:Noname_6110
+jump @Noname_5050 
+
+:Noname_6117
+03E0: draw_text_behind_textures 1 
+033F: set_text_draw_letter_size 0.8 2.6 
+0349: set_text_draw_font 3 
+060D: draw_text_shadow 1 rgba 0 0 0 255 
+return 
+
+:Noname_6152
+if 
+8965:   not actor $PLAYER_ACTOR swimming 
+jf @Noname_6209 
+if and
+   Actor.Driving($PLAYER_ACTOR)
+84A7:   not actor $PLAYER_ACTOR driving_boat 
+jf @Noname_6202 
+0811: 1@ = actor $PLAYER_ACTOR used_car 
+02BF:   car 1@ sunk 
+
+:Noname_6202
+jump @Noname_6211 
+
+:Noname_6209
+0485:   return_true 
+
+:Noname_6211
+return 
+
+:Noname_6213
+851F:   not 
+hex
+ AB 3F CD CC 4C 3F 00 00 B4 41
+end
+
+:Noname_6225
+0000: NOP 
+hex
+ DE 42 00 00 EE 42 00 00 DC 42
+end
+
+:Noname_6237
+0000: NOP 
+hex
+ 2E 42 00 00 DC 41 00 00 48 C1
+end
+
+:Noname_6249
+0000: NOP 
+hex
+ 7E 42
+end
+
+:Noname_6253
+hex
+ 9A 99 19 3F
+end
+
+:Noname_6257
+hex
+ CD CC CC 3E
+end
+
+:Noname_6261
+0000: NOP 
+hex
+ 3A 42
+end
+
+:Noname_6265
+0000: NOP 
+hex
+ 82 42
+end
+
+:Noname_6269
+0000: NOP 
+hex
+ AE 42
+end
+
+:Noname_6273
+hex
+ 9A 99 B4 42
+end
+
+:Noname_6277
+hex
+ 33 33 51 42
+end
+
+:Noname_6281
+hex
+ 66 66 A6 3F
+end
+
+:Noname_6285
+hex
+ CD CC 4C 3F
+end
+
+:Noname_6289
+0000: NOP 
+hex
+ B8 41
+end
+
+:Noname_6293
+hex
+ 33 33 93 3F
+end
+
+:Noname_6297
+hex
+ 9A 99 99 3F
+end
+
+:Noname_6301
+0000: NOP 
+hex
+ 58 42
+end
+
+:Noname_6305
+hex
+ 00 40 1C 46
+end
+
+:Noname_6309
+0000: NOP 
+hex
+ BF 42
+end
+
+:Noname_6313
+0000: NOP 
+hex
+ 90 42
+end
+
+:Noname_6317
+0000: NOP 
+hex
+ B4 42 00 00 F2 42
+end
+
+:Noname_6325
+0000: NOP 
+hex
+ D8 41 00 00 27 43 9A 99 B9 3F 9A 99 99 3F 00 80
+ 4C 43 8F C2 95 3F 00 00 80 3F 00 00 00 00 C3 F5
+ C8 3F B8 1E 85 3F 00 00 B6 42 66 66 E6 3F 33 33
+ B3 3F 00 00 00 3F 00 00 1B 43
+end
+
+:Noname_6385
+hex
+ 66 85 8F FF 59 73 96 FF BA 65 32 FF 98 9A 52 FF
+ C2 A5 78 FF 8E BB CC FF 00 00 00 FF
+end
+
+:Noname_6413
+hex
+ 25 64 3A 25 30 32 64 41 4D 00
+end
+
+:Noname_6423
+hex
+ 25 64 3A 25 30 32 64 50 4D 00
+end
+
+:Noname_6433
+hex
+ 4F 4E 2C 20 32 34 48 20 43 4C 4F 43 4B 00
+end
+
+:Noname_6447
+hex
+ 4F 4E 2C 20 31 32 48 20 43 4C 4F 43 4B 00
+end
+
+:Noname_6461
+hex
+ D8 0D 00 00 00 00 D9 1C 24 E8 00 00 00 00 E9 00
+ 00 00 00 E8 00 00 00 00 6A 01 E9 00 00 00 00 D8
+end
+000D:  // Note: the incorrect math opcode was used here
+0000: NOP 
+hex
+ D9 1C 24 E8 00 00 00 00 E9 00 00 00 00 C6 44 24
+ 3C 54 C6 44 24 38 C0 E9 00 00 00 00
+end
+
+:Noname_6526
+05C6: NOP 
+0000: NOP 
+0000: NOP 
+hex
+ 01 C3
+end
+
+:Noname_6534
+hex
+ 80 3D 69 67 75 47 83 F9 00 75 07 B9
+end
+000C:  // Note: the incorrect math opcode was used here
+hex
+ 00 EB 0A 83 F9 0C 75 05 B9 18 00 00 00 83 F9 0C
+ 7E 07 83 E9 0C B2 00 EB 02 B2 01 50 51 80 FA 01
+ 75 0E 8D 54 24 1C
+end
+0068: // (int) 
+0000: NOP 
+00E9: 
+0000: NOP 
+hex
+ 00 8D 54 24 1C 68 00 00 00 00 E9 00 00 00 00 50
+ 51 8D 54 24 1C E9 00 00 00 00
+end
+
+:Noname_6625
+hex
+ 3C 02 74 07 FE C0 E9 00 00 00 00 B0 00 E9 00 00
+ 00 00
+end
+
+:Noname_6643
+hex
+ B9 40 B3 C1 00 3C 01 75 0A BE 00 00 00 00 E9 00
+ 00 00 00 3C 02 0F
+end
+0085: // (int) 
+0000: NOP 
+00BE: text_clear_all 
+0000: NOP 
+hex
+ 00 E9 00 00 00 00
+end
+
+:Noname_6680
+hex
+ 80 3D 69 67 75 0B D8 0D 00 00 00 00 E9 00 00 00
+ 00 D8
+end
+000D:  // Note: the incorrect math opcode was used here
+0000: NOP 
+00E9: 
+0000: NOP 
+hex
+ 00

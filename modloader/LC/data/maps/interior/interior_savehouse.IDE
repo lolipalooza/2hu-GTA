@@ -1,0 +1,16 @@
+#Item Definition File created by MapEditor
+objs
+18388, bigniceveghotel, vghotelnice, 299, 0
+18389, vegashotel_sv, vegassavesmal, 299, 0
+18390, hotelgen_sv, genhotelsave, 299, 0
+18391, lasmall1_sv, lasmallsave, 299, 0
+18392, newhouse1, svsfsm, 299, 0
+18393, midvegsavehouse, svvgmid, 299, 0
+18394, gen_doorext14, ext_doors2, 299, 0
+18395, lasmallfurn_sv, labits, 299, 0
+18396, kb_bed_test2_sv, vegassavesmal, 299, 0
+end
+tobj
+end
+2dfx
+end

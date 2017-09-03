@@ -1,0 +1,282 @@
+objs
+8116, iten_block07, inditaly1, 110, 0
+8117, iten_club01, Italynrth, 113, 0
+8118, iten_baker01, inditaly1, 100, 0
+8119, iten_singbuild02, Italynrth, 105, 0
+8120, indhibuild1, Italynrth, 200, 0
+8121, ind_mainten2, maindragn, 110, 0
+8122, ind_newbuilds07, inditaly1, 100, 0
+8123, ind_newbuilds06, inditaly1, 120, 0
+8124, ind_newbuilds03, inditaly1, 80, 0
+8125, ind_newbuilds02, Italynrth, 100, 0
+8126, ind_newtenement08, inditaly1, 115, 0
+8127, ind_newtenement05, inditaly1, 110, 0
+8128, ind_newtenement06, italymisc, 100, 0
+8129, building_fucked, italymisc, 125, 4
+8130, ind_land154, italyeast, 156, 0
+8131, ind_land120, gtaiii, 116, 0
+8132, ind_land116, inditaly1, 90, 0
+8133, ind_land111, gtaiii, 180, 0
+8134, ind_land100, Italynrth, 135, 0
+8135, ind_land097, italymisc, 125, 4
+8136, ind_land068, inditaly1, 113, 0
+8137, ind_land067, gtaiii, 133, 0
+8138, ind_land065, Italynrth, 150, 0
+8139, ind_land063i, italyeast, 150, 0
+8140, ind_land059, italyeast, 175, 0
+8141, ind_land058, indbeach, 179, 0
+8142, ind_land057, indbeach, 173, 0
+8143, ind_land054, indjunk, 171, 0
+8144, ind_land037, 8balls, 134, 132
+8145, ind_land033, beach, 161, 0
+8146, ind_land025, gtaiii, 156, 0
+8147, ind_land034, Italynrth, 130, 0
+8148, fire_platform, petrollc, 125, 0
+8149, firegrass, gtaiii, 123, 0
+8150, petrolstation, petrollc, 130, 0
+8151, ind_land155, italyeast, 180, 0
+8152, factoryf_walls1, petrollc, 100, 0
+8153, ind_mainten1, inditaly1, 87, 0
+8154, ind_mainten3, maindragn, 125, 4
+8155, junk_tyre_cubeteeny, indjunk, 100, 0
+8156, wire_shed, indjunk, 100, 0
+8157, back_box, indjunk, 120, 0
+8158, railtracks_join, 8balls, 112, 0
+8159, ind_newtenementx, inditaly1, 80, 4
+8160, ind_mainten2b, inditaly1, 90, 0
+8161, indbigbuild, inditaly1, 100, 0
+8162, iten_alleygun, indalley, 90, 0
+8163, iten3block, inditaly1, 200, 0
+8164, LOD_tendragblk2, indust2, 750, 0
+8165, LOD_newbuilds02, indust2, 750, 0
+8166, LOD_newbuilds01, indust2, 1800, 0
+8167, LOD_land037, indust2, 750, 0
+8168, LOD_land089c, indust2, 1000, 0
+8169, LOD_land111, indust2, 1800, 0
+8170, LOD_land025, indust2, 750, 0
+8171, LOD_land154, indust2, 1800, 0
+8172, LOD_land054, indust2, 1000, 0
+8173, LOD_land038, indust2, 1000, 0
+8174, LOD_newbuilds03, indust2, 750, 0
+8175, LOD_mainten3, indust2, 750, 0
+8176, LOD_mainten2, indust2, 750, 0
+8177, LOD_mainten1, indust2, 750, 0
+8178, LOD_newbuilds06, indust2, 1800, 0
+8179, LOD_newbuilds07, indust2, 750, 0
+8180, LOD_newtenement05, indust2, 750, 0
+8181, LOD_mainten2b, indust2, 750, 0
+8182, LODtoryf_walls1, indust2, 750, 0
+8183, crushertop, indjunk, 120, 68
+8184, crushercrush, indjunk, 120, 0
+8185, LOD_land063, indust2, 1800, 0
+8186, ind_land038, 8balls, 145, 0
+8187, LODn_baker01, indust2, 750, 0
+8188, ind_fuckedroad, gtaiii, 130, 0
+8189, LODrolstation, indust2, 750, 0
+8190, LOD_land069, indust2, 750, 0
+8191, indNcoast1, gtaiii, 143, 0
+8192, indNcoast2, gtaiii, 166, 0
+8193, indNcoast3, gtaiii, 134, 0
+8194, LODNcoast3, indust2, 1800, 0
+8195, LODNcoast2, indust2, 1800, 0
+8196, LODNcoast1, indust2, 1800, 0
+8197, LOD_land155, indust2, 1800, 0
+8198, LODnksclbase, indust2, 1800, 0
+8199, indhibuild4, Italynrth, 100, 0
+8200, indhibuild5, Italynrth, 100, 0
+8201, ser_firetower, petrollc, 100, 0
+8202, usdcrdlrbuild01, 8balls, 100, 0
+8203, LODlding_fucked, indust2, 750, 0
+8204, ind_land131, lighthouse, 200, 0
+8205, mak_semtech, 8balls, 100, 0
+8206, LOD_semtech, indust2, 755, 0
+8207, mak_bomb01, 8balls, 100, 0
+8208, LOD_bomb01, indust2, 755, 0
+8209, toplandit, italymisc, 150, 0
+8210, indbakland, italymisc, 130, 0
+8211, ind_newrizzos, tonys, 150, 4
+8212, cs8_door, 8balls, 50, 0
+8213, franksclbase, frankiesbase, 100, 0
+8214, swank_inside, sal_inside, 30, 0
+8215, franksclb02, frankiesbase, 100, 0
+8216, salvsdetail, sal_inside, 30, 4
+8217, SalvGarage, frankiesbase, 100, 0
+8218, trackshad07, trackshad, 200, 68
+8219, trackshad02, trackshad, 200, 68
+8220, trackshad03, trackshad, 200, 68
+8221, trackshad04, trackshad, 200, 68
+8222, trackshad05, trackshad, 200, 68
+8223, trackshad06, trackshad, 200, 68
+8224, trackshad01, trackshad, 200, 68
+8225, trackshad08, trackshad, 200, 68
+8226, trackshad09, trackshad, 200, 68
+8227, trackshad10, trackshad, 200, 68
+8228, trackshad11, trackshad, 200, 68
+8229, trackshad12, trackshad, 200, 68
+8230, trackshad13, trackshad, 200, 68
+8231, diortpass, dirtpass, 300, 68
+8232, LODhibuild1, indust2, 1800, 0
+8233, LOD_newtenement08, indust2, 700, 0
+8234, LODhibuild4, indust2, 1800, 0
+8235, LODhibuild5, indust2, 1800, 0
+8236, LOD_newtenementx, indust2, 750, 0
+8237, LOD_land131, indust2, 1800, 0
+8238, LODn_singbuild02, indust1, 700, 0
+8239, ind_land141, indbeach, 150, 0
+8240, ind_land030, indbeach, 140, 0
+8241, LOD_land141, indust2, 700, 0
+8242, ind_land049, indbeach, 170, 0
+8243, LOD_land049, indust2, 750, 0
+8244, LOD_land057, indust2, 750, 0
+8245, LOD_land058, indust2, 750, 0
+8246, LOD_land033, indust2, 750, 0
+8247, LOD_land030, indust2, 750, 0
+8248, ammupoly, gtaiii, 2, 0
+8249, LOD_firetower, indust1, 750, 0
+8250, LODe_platform, indust2, 750, 0
+8251, LODn_alleygun, indust1, 750, 0
+8252, LODbakland, indust2, 750, 0
+8253, LODn_block07, indust2, 750, 0
+8254, LOD_land068, indust2, 750, 0
+8255, LOD_land116, indust2, 750, 0
+8256, ind_newbuilds01, Italynrth, 120, 0
+8257, LODn3block, indust2, 750, 0
+8258, LOD_land034, indust2, 750, 0
+8259, LODbigbuild, indust2, 1800, 0
+8260, treeshads05, trackshad, 200, 68
+8261, treeshads01, trackshad, 200, 68
+8262, treeshads02, trackshad, 200, 68
+8263, treeshads03, trackshad, 200, 68
+8264, treeshads04, trackshad, 200, 68
+8265, LOD_newrizzos, indust2, 750, 0
+8266, LOD_newtenement06, indust2, 750, 0
+8267, trackshad06b, trackshad, 200, 68
+8268, trackshad04b, trackshad, 200, 68
+8269, trackshad05a, trackshad, 200, 68
+8270, trackshad05b, trackshad, 200, 68
+8271, trackshad05cc, trackshad, 200, 68
+8272, LOD_land063i, indust1, 800, 0
+8273, LOD_land100, indust1, 700, 0
+8274, LODn_club01, indust1, 780, 0
+8275, ind_land089a, gtaiii, 165, 0
+8276, ind_land089b, 8balls, 150, 0
+8277, ind_land089c, 8balls, 165, 0
+8278, LOD_land089a, indust2, 1000, 0
+8279, LOD_land089b, indust2, 1000, 0
+8280, LODcrdlrbuild01, indust2, 1000, 0
+8281, trackshad14, trackshad, 250, 68
+8282, LOD_land097, indust2, 750, 0
+8283, salvstrans, sal_inside, 65, 4
+8284, ind_maintglas, maindragn, 110, 4
+8285, indalleytransd, indalley, 90, 68
+10032, ind_newfix21, inditaly1, 300, 0
+10046, ind_newfix07, inditaly1, 300, 0
+10042, ind_newfix15, italymisc, 300, 0
+10034, ind_newfix23, inditaly1, 300, 0
+10020, LOD_newfix07, indust2, 2000, 0
+10006, LOD_newfix21, indust1, 2000, 0
+10001, LOD_newfix23, indust1, 2000, 0
+10012, LOD_newfix15, indust1, 2000, 0
+10048, ind_newfix09, italysht, 300, 0
+10053, ind_newfix04, italysht, 300, 0
+10047, ind_newfix08, italysht, 300, 0
+10036, ind_newfix26, italysht, 300, 0
+10035, ind_newfix25, italysht, 300, 0
+10030, ind_newfix14, italysht, 300, 0
+10051, ind_newfix05, italysht, 300, 0
+10045, ind_newfix12, italysht, 300, 0
+10044, ind_newfix11, italysht, 300, 0
+10041, ind_newfix19, italysht, 300, 0
+10040, ind_newfix18, italysht, 300, 0
+10033, ind_newfix22, italysht, 300, 0
+10029, ind_newfix13, italysht, 300, 0
+10049, ind_newfix10, italysht, 300, 0
+10052, ind_newfix03, italysht, 300, 0
+10050, ind_newfix06, italysht, 300, 0
+10039, ind_newfix17, italysht, 300, 0
+10043, ind_newfix16, italysht, 300, 0
+10037, ind_newfix27, italysht, 300, 0
+10038, ind_newfix24, italysht, 300, 0
+10027, ind_newfix01, italysht, 300, 0
+10031, ind_newfix20, italysht, 300, 0
+10021, LOD_newfix06, indust1, 2000, 0
+10025, LOD_newfix03, indust1, 2000, 0
+10026, LOD_newfix04, indust1, 2000, 0
+10019, LOD_newfix08, indust1, 2000, 0
+10018, LOD_newfix09, indust1, 2000, 0
+10004, LOD_newfix26, indust1, 2000, 0
+10005, LOD_newfix27, indust1, 2000, 0
+10009, LOD_newfix18, indust1, 2000, 0
+10008, LOD_newfix17, indust1, 2000, 0
+10010, LOD_newfix19, indust1, 2000, 0
+10016, LOD_newfix11, indust1, 2000, 0
+10017, LOD_newfix10, indust1, 2000, 0
+10011, LOD_newfix16, indust1, 2000, 0
+10015, LOD_newfix12, indust1, 2000, 0
+10014, LOD_newfix13, indust1, 2000, 0
+10002, LOD_newfix22, indust1, 2000, 0
+10024, LOD_newfix02, indust1, 2000, 0
+10023, LOD_newfix01, indust1, 2000, 0
+10013, LOD_newfix14, indust1, 2000, 0
+10000, LOD_newfix25, indust1, 2000, 0
+10003, LOD_newfix24, indust1, 2000, 0
+10022, LOD_newfix05, indust1, 2000, 0
+10028, ind_newfix02, italysht, 300, 0
+10007, LOD_newfix20, italysht, 2000, 0
+10060, salcPLNEfix01, italysht, 300, 0
+10066, salcPLNEfix07, italysht, 300, 0
+10064, salcPLNEfix05, italysht, 300, 0
+10061, salcPLNEfix02, italysht, 300, 0
+10065, salcPLNEfix06, italysht, 300, 0
+10068, salcPLNEfix09, italysht, 300, 0
+10067, salcPLNEfix08, italysht, 300, 0
+10063, salcPLNEfix04, italysht, 300, 0
+10062, salcPLNEfix03, italysht, 300, 0
+10069, salcPLNEfix10, italysht, 300, 0
+10074, LODcPLNEfix05, indust1, 2000, 0
+10075, LODcPLNEfix06, indust1, 2000, 0
+10073, LODcPLNEfix04, indust1, 2000, 0
+10072, LODcPLNEfix03, indust1, 2000, 0
+10071, LODcPLNEfix02, indust1, 2000, 0
+10076, LODcPLNEfix07, indust1, 2000, 0
+10077, LODcPLNEfix08, indust1, 2000, 0
+10078, LODcPLNEfix09, indust1, 2000, 0
+10079, LODcPLNEfix10, indust1, 2000, 0
+10070, LODcPLNEfix01, indust1, 2000, 0
+18409, bistro_kitchen, bistro_kitchen, 299, 0
+18410, bistro_stairs, bistro_stairs, 299, 0
+18411, bistro_bar, bistro_bar, 299, 0
+18412, bistro_top, bistro_top, 299, 0
+18413, bistro_boxes, bistro_boxes, 299, 0
+18414, mob_mobroom2, hot_mobint, 299, 0
+18415, mob_detailsb, hot_mobint, 299, 0
+18594, bistro_kitchenext, bistro_kitchen, 150, 0
+end
+tobj
+8286, inwindows11, windowlit, 299, 12, 19, 4
+8287, indwindows2, windowlit, 299, 12, 19, 3
+end
+path
+end
+2dfx
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
