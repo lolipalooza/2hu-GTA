@@ -29,10 +29,18 @@ stream.ini
 modloader/*
 !modloader/2hu GTA/
 !modloader/LC/
+modloader/LC/models/
+modloader/LC/radio/
+modloader/LC/script/2hu GTAIII script/
 !modloader/LCS/
+modloader/LCS/models/
+modloader/LCS/radio/
 !modloader/scripts/
 modloader/scripts/old script \[deprecated\]/
+modloader/scripts/constants.inc
 !modloader/VCS/
+modloader/VCS/models/
+modloader/VCS/radio/
 !modloader/skins/
 modloader/skins/*.dff
 modloader/skins/*.txd
