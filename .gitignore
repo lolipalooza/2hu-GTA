@@ -30,7 +30,7 @@ models/
 
 !modloader/
 modloader/*
-# !modloader/2hu GTA/
+!modloader/2hu GTA/
 !modloader/LC/
 !modloader/LCS/
 !modloader/scripts/
