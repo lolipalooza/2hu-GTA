@@ -38,9 +38,8 @@ end // var
 03E6: remove_text_box 
 
 wait 1000 ms
-016A: fade 1 time 500
+//016A: fade 1 time 500
 01B4: toggle_player $PLAYER_CHAR can_move 1
-
 
 
 // put your create_thread commands here
