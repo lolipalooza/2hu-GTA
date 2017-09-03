@@ -36,7 +36,6 @@ modloader/*
 !modloader/scripts/
 modloader/scripts/old script [deprecated]/
 !modloader/VCS/
-!modloader/2hu GTA/
 !modloader/skins/
 modloader/skins/*.dff
 modloader/skins/*.txd
