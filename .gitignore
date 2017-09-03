@@ -17,8 +17,7 @@
 
 stream.ini
 
-!anim/
-anim/*
+anim/
 
 audio/CONFIG
 audio/SFX
