@@ -54,14 +54,18 @@ wait 1000 ms
 
 // put your mods (threads) here
 :DeleteThis
-{0ADF: add_dynamic_GXT_entry "CMSEX" text "~b~Press ~s~F/ENTER ~b~to start ~s~Sex~b~."
+0ADF: add_dynamic_GXT_entry "CMSEX" text "~b~Press ~s~F/ENTER ~b~to start ~s~Sex~b~."
 while true
 wait 0
     if $ONMISSION == 0
     then
-        if 00FE:   actor $PLAYER_ACTOR sphere 0 in_sphere 2486.4021 -1645.634 14.0772 radius 50.0 50.0 50.0
+        if or
+        00FE:   actor $PLAYER_ACTOR sphere 0 in_sphere 2486.4021 -1645.634 14.0772 radius 50.0 50.0 50.0
+        00FE:   actor $PLAYER_ACTOR sphere 0 in_sphere 2368.5999 -1134.7006 1050.875 radius 50.0 50.0 50.0
         then
-            if 00FF:   actor $PLAYER_ACTOR sphere 1 in_sphere 2486.4021 -1645.634 14.0772 radius 2.0 2.0 2.0 on_foot
+            if or
+            00FF:   actor $PLAYER_ACTOR sphere 1 in_sphere 2486.4021 -1645.634 14.0772 radius 2.0 2.0 2.0 on_foot
+            00FF:   actor $PLAYER_ACTOR sphere 1 in_sphere 2368.5999 -1134.7006 1050.875 radius 2.0 2.0 2.0 on_foot
             then
                 if 0@ == 0
                 then
@@ -83,7 +87,7 @@ wait 0
             end
         end
     end
-end}
+end
 004E: end_thread 
 
 //-------------Mission 0---------------
