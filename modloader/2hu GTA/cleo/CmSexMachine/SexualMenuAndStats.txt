@@ -113,7 +113,8 @@ for SmGc_Index = 0 to 28@ // 28@ : SmGc_MaxOpts
     05AA: SmGc_AuxStr = 6@(SmGc_Index,12s) // @s = 'short'
     if SmGc_LftOrRghtFlag == FLAG_SX_MENU_LEFT
     then 0AB1: @SetDrawText 8 2 600.0 size 0.2 1.2 pos 10.0 SmGc_PosY GXT SmGc_Aux1 SmGc_Aux2
-    else 0AB1: @SetDrawText 8 2 600.0 size 0.2 1.2 pos 492.0 SmGc_PosY GXT SmGc_Aux1 SmGc_Aux2
+    else
+        0AB1: @SetDrawText 8 2 600.0 size 0.2 1.2 pos 492.0 SmGc_PosY GXT SmGc_Aux1 SmGc_Aux2
     end
     SmGc_PosY += 20.0
 end
@@ -142,22 +143,22 @@ then
     14@s = 'S_PL_5' // Piso
     16@s = 'S_PL_6' // Baño
     18@s = 'S_PL_7' // Cocina
-    1@ = 6 // 7 gxt sin incluir título - disminuir en 1 para el ciclo "for"
+    20@s = 'S_PL_8' // Pared
+    22@s = 'S_PL_9' // De pié
+    1@ = 8 // 9 gxt sin incluir título - disminuir en 1 para el ciclo "for"
 end
 if 0@ == SX_MENU_OPT2_POSITIONS_FIRST_ELEM
 then
     4@s = 'S_MENU2' // Posiciones
     6@s = 'S_CN_1' // Cunnilingus
-    8@s = 'S_69_1' // Oral in 69
+    8@s = 'S_69_1' // Oral 69
     10@s = 'S_BJ_1' // Blowjob
     12@s = 'S_HJ_1' // Handjob
-    14@s = 'S_FK_1' // Fucking
-    16@s = 'S_AN_1' // Anal
+    14@s = 'S_FK_1' // Sex
+    16@s = 'S_AN_1' // Reverse Sex
     18@s = 'S_TJ_1' // Titjob
     20@s = 'S_FJ_1' // Footjob
-    22@s = 'S_KS_1' // Kissing
-    24@s = 'S_TC_1' // Touching
-    1@ = 9 // 10 gxt sin incluir título - disminuir en 1 para el ciclo "for"
+    1@ = 7 // 8 gxt sin incluir título - disminuir en 1 para el ciclo "for"
 end
 {if 0@ == SX_MENU_OPT3_CAMERAS_FIRST_ELEM
 then

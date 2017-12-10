@@ -207,12 +207,15 @@ const
     
     FLAG_SX_MENU_LEFT = 0
     FLAG_SX_MENU_RIGHT = 1
-        
+    
     SEX_FUCKING = 0
     SEX_BJ = 1
     SEX_ANAL = 2
     SEX_HJ = 3
     SEX_CUNNI = 4
+    SEX_69 = 5
+    SEX_TJ = 6
+    SEX_FJ = 7
     
     PL_BED = 0
     PL_SOFA = 1
@@ -221,6 +224,8 @@ const
     PL_FLOOR = 4
     PL_BATH = 5
     PL_KITCHEN = 6
+    PL_WALL = 7
+    PL_FOOT = 8
 
     SPD_IDLE   = 0
     SPD_SLOW   = 1
@@ -329,6 +334,14 @@ end
 033E: set_draw_text_position DwTx_PosX DwTx_PosY GXT DwTx_Gxt
 0AB2: ret 0
 
+:SetDrawTextRGB
+0340: set_text_draw_RGBA 8@ 9@ 10@ 255
+0349: set_text_draw_font DwTx_Font
+0343: set_text_draw_linewidth DwTx_Linewidth
+033F: set_text_draw_letter_size DwTx_SizeX DwTx_SizeY
+033E: set_draw_text_position DwTx_PosX DwTx_PosY GXT DwTx_Gxt
+0AB2: ret 0
+
 {======================================================================
 ======================================================================}
 :IncOrDecIntVariable
@@ -378,10 +391,10 @@ then
     SexPoseInt = SEX_FUCKING
     //0209: SexPoseInt = random_int_in_ranges ? ?
     0AB1: call_scm_func @GenerateSexFiles 1 SexPoseInt
-    0AB1: call_scm_func @GetActorsCoordinates 2 SexPoseInt 0 ret FemX FemY FemZ FemA MaleX MaleY MaleZ MaleA
+    0AB1: call_scm_func @GetActorsCoordinates 2 SexPoseInt SexPlace ret FemX FemY FemZ FemA MaleX MaleY MaleZ MaleA
     0AB1: call_scm_func @GenerateActors 8 FemX FemY FemZ FemA MaleX MaleY MaleZ MaleA ret PornActress PornActor
     0AB1: call_scm_func @LoadSexualPose 4 PornActress PornActor SexPoseInt SPD_SLOW
-    0AB1: call_scm_func @ToggleSexualCamera 3 SexCameraState SexPoseInt PornActress
+    0AB1: call_scm_func @ToggleSexualCamera 3 SexCameraState SexPoseInt SexPlace
     0AB1: call_scm_func @IncOrDecIntVariable 4 SexCameraState 0 11 FLAG_INCREASE SexCameraState
     OnSexActivity = true
     SexState = 0
@@ -433,7 +446,7 @@ if SexState == 0
 then
     if 00E1:   player 0 pressed_key PAD_CHANGE_CAMERA_VIEW // V
     then SexState=1
-        0AB1: call_scm_func @ToggleSexualCamera 3 SexCameraState SexPoseInt PornActress
+        0AB1: call_scm_func @ToggleSexualCamera 3 SexCameraState SexPoseInt SexPlace
         0AB1: call_scm_func @IncOrDecIntVariable 4 SexCameraState 0 11 FLAG_INCREASE SexCameraState
     end
     if 00E1:   player 0 pressed_key PAD_ANSWER_PHONE // TAB
@@ -708,25 +721,21 @@ then
         0AB1: @GetRightMenuElements 1 SX_MENU_OPT2_POSITIONS_FIRST_ELEM ret Dummy2 100@ 101@ 102@ 103@ 104@ 105@ 106@ 107@ 108@ 109@ 110@ 111@ 112@ 113@ 114@ 115@ 116@ 117@ 118@ 119@ 120@ 121@
         05AA: 100@s = 102@(Dummy1,10s) // @s = 'short'
         0AB1: call_scm_func @GetPoseFromString 2 100@ 101@ ret Dummy1
-        if Dummy1 == 404
-        then 0ACC: show_text_lowpriority "~r~Not done yet. Wait for future releases of Sex Machine." time 4000
-        else
-            if 803B:   not Dummy1 == SexPoseInt  // (int)
-            then
-                0085: SexPoseInt = Dummy1 // (int)
-                fade 0 time 800
-                wait 800 ms
-                009B: destroy_actor PornActress
-                009B: destroy_actor PornActor
-                0AB1: call_scm_func @GenerateSexFiles 1 SexPoseInt
-                0AB1: call_scm_func @GetActorsCoordinates 2 SexPoseInt 0 ret FemX FemY FemZ FemA MaleX MaleY MaleZ MaleA
-                0AB1: call_scm_func @GenerateActors 8 FemX FemY FemZ FemA MaleX MaleY MaleZ MaleA ret PornActress PornActor
-                0AB1: call_scm_func @LoadSexualPose 4 PornActress PornActor SexPoseInt SPD_SLOW
-                0AB1: call_scm_func @ToggleSexualCamera 3 SexCameraState SexPoseInt PornActress
-                0AB1: call_scm_func @IncOrDecIntVariable 4 SexCameraState 0 11 FLAG_INCREASE SexCameraState
-                wait 500
-                fade 1 time 800
-            end
+        if 803B:   not Dummy1 == SexPoseInt  // (int)
+        then
+            0085: SexPoseInt = Dummy1 // (int)
+            fade 0 time 800
+            wait 800 ms
+            009B: destroy_actor PornActress
+            009B: destroy_actor PornActor
+            0AB1: call_scm_func @GenerateSexFiles 1 SexPoseInt
+            0AB1: call_scm_func @GetActorsCoordinates 2 SexPoseInt SexPlace ret FemX FemY FemZ FemA MaleX MaleY MaleZ MaleA
+            0AB1: call_scm_func @GenerateActors 8 FemX FemY FemZ FemA MaleX MaleY MaleZ MaleA ret PornActress PornActor
+            0AB1: call_scm_func @LoadSexualPose 4 PornActress PornActor SexPoseInt SPD_SLOW
+            0AB1: call_scm_func @ToggleSexualCamera 3 SexCameraState SexPoseInt SexPlace
+            0AB1: call_scm_func @IncOrDecIntVariable 4 SexCameraState 0 11 FLAG_INCREASE SexCameraState
+            wait 500
+            fade 1 time 800
         end
     end
     if PulseButtonState == PULSED_ENTER_VEH
