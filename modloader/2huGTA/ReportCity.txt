@@ -1,0 +1,6 @@
+{$CLEO .cs}
+thread 'City'
+0A9A: 0@ = openfile "cleo/__2hugta__" mode "wb+"  // IF and SET
+0AD9: write_formatted_text "%s" in_file 0@ "SanAndr"
+0A9B: closefile 0@
+0A93: end_custom_thread

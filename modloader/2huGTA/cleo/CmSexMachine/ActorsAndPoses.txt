@@ -1,0 +1,394 @@
+{======================================================================
+======================================================================}
+:GenerateActors
+const
+    GenAct_f_X = 0@
+    GenAct_f_Y = 1@
+    GenAct_f_Z = 2@
+    GenAct_f_A = 3@
+    GenAct_m_X = 4@
+    GenAct_m_Y = 5@
+    GenAct_m_Z = 6@
+    GenAct_m_A = 7@
+    GenAct_Actor = 8@
+    GenAct_Actress = 9@
+end
+023C: load_special_actor 'bdoll' as 1
+023C: load_special_actor 'tumi' as 2
+038B: load_requested_models
+repeat
+wait 0
+until 023D:   special_actor 1 loaded and 023D:   special_actor 2 loaded
+
+// Actress
+009A: GenAct_Actress = create_actor_pedtype 5 model #SPECIAL01 at GenAct_f_X GenAct_f_Y GenAct_f_Z
+0173: set_actor GenAct_Actress Z_angle_to GenAct_f_A
+0619: enable_actor GenAct_Actress collision_detection 0
+
+// Actor
+009A: GenAct_Actor = create_actor_pedtype 4 model #SPECIAL02 at GenAct_m_X GenAct_m_Y GenAct_m_Z
+0173: set_actor GenAct_Actor Z_angle_to GenAct_m_A
+0619: enable_actor GenAct_Actor collision_detection 0
+
+0296: unload_special_actor 1
+0296: unload_special_actor 2
+0AB2: ret 2 GenAct_Actress GenAct_Actor
+
+{======================================================================
+======================================================================}
+:GenerateSexFiles
+// 0@: pose, 1@: place
+
+0A9A: 2@ = openfile LOG_FILE mode "wb+"
+
+if 0AE4:   directory_exists IFP_DEST_DIRECTORY
+then 0B01: delete_directory IFP_DEST_DIRECTORY include_subdirs 1
+end
+0AE5: create_directory IFP_DEST_DIRECTORY //IF and SET
+
+if 0@ == SEX_FUCKING
+then
+    if 1@ == PL_BED
+    then 0B04: copy_file "models\files\sex\Sex Bed.ifp" to IFP_DEST_FILE //IF and SET
+        0AD9: write_formatted_text "Copying file: %s" in_file 2@ vars "models\files\sex\Sex Bed.ifp"
+    end
+    if 1@ == PL_SOFA
+    then 0B04: copy_file "models\files\sex\Sex Sofa.ifp" to IFP_DEST_FILE //IF and SET
+        0AD9: write_formatted_text "Copying file: %s" in_file 2@ vars "models\files\sex\Sex Sofa.ifp"
+    end
+    if 1@ == PL_TABLE
+    then 0B04: copy_file "models\files\sex\Sex Table.ifp" to IFP_DEST_FILE //IF and SET
+        0AD9: write_formatted_text "Copying file: %s" in_file 2@ vars "models\files\sex\Sex Table.ifp"
+    end
+    if 1@ == PL_CHAIR
+    then
+    end
+    if 1@ == PL_FLOOR
+    then 0B04: copy_file "models\files\sex\Sex on Floor.ifp" to IFP_DEST_FILE //IF and SET
+        0AD9: write_formatted_text "Copying file: %s" in_file 2@ vars "models\files\sex\Sex on Floor.ifp"
+    end
+    if 1@ == PL_BATH
+    then
+    end
+    if 1@ == PL_KITCHEN
+    then 0B04: copy_file "models\files\sex\Sex Kitchen.ifp" to IFP_DEST_FILE //IF and SET
+        0AD9: write_formatted_text "Copying file: %s" in_file 2@ vars "models\files\sex\Sex Kitchen.ifp"
+    end
+    if 1@ == PL_WALL
+    then 0B04: copy_file "models\files\sex\Sex on Foot.ifp" to IFP_DEST_FILE //IF and SET
+        0AD9: write_formatted_text "Copying file: %s" in_file 2@ vars "models\files\sex\Sex on Foot.ifp"
+    end
+    if 1@ == PL_FOOT
+    then
+    end
+end
+if 0@ == SEX_ANAL
+then
+    if 1@ == PL_BED
+    then 0B04: copy_file "models\files\sex\Reverse on Bed.ifp" to IFP_DEST_FILE //IF and SET
+    end
+    if 1@ == PL_SOFA
+    then 0B04: copy_file "models\files\sex\Reverse on Sofa.ifp" to IFP_DEST_FILE //IF and SET
+    end
+    if 1@ == PL_TABLE
+    then 0B04: copy_file "models\files\sex\Reverse Table.ifp" to IFP_DEST_FILE //IF and SET
+    end
+    if 1@ == PL_FLOOR
+    then 0B04: copy_file "models\files\sex\Reverse on Floor.ifp" to IFP_DEST_FILE //IF and SET
+    end
+    if 1@ == PL_BATH
+    then 0B04: copy_file "models\files\sex\Reverse on Knees.ifp" to IFP_DEST_FILE //IF and SET
+    end
+    if 1@ == PL_WALL
+    then 0B04: copy_file "models\files\sex\Reverse on Foot.ifp" to IFP_DEST_FILE //IF and SET
+    end
+end
+if 0@ == SEX_HJ
+then
+    if 1@ == PL_BED
+    then 0B04: copy_file "models\files\sex\Handjob on Bed.ifp" to IFP_DEST_FILE //IF and SET
+    end
+    if 1@ == PL_SOFA
+    then 0B04: copy_file "models\files\sex\Handjob Sit down.ifp" to IFP_DEST_FILE //IF and SET
+    end
+    if 1@ == PL_FOOT
+    then 0B04: copy_file "models\files\sex\Handjob on Foot.ifp" to IFP_DEST_FILE //IF and SET
+    end
+end
+if 0@ == SEX_BJ
+then
+    if 1@ == PL_BED
+    then 0B04: copy_file "models\files\sex\Blowjob on Bed.ifp" to IFP_DEST_FILE //IF and SET
+    end
+    if 1@ == PL_SOFA
+    then 0B04: copy_file "models\files\sex\Blowjob Sofa.ifp" to IFP_DEST_FILE //IF and SET
+    end
+    if 1@ == PL_CHAIR
+    then 0B04: copy_file "models\files\sex\Blowjob Sit down.ifp" to IFP_DEST_FILE //IF and SET
+    end
+    if 1@ == PL_FLOOR
+    then 0B04: copy_file "models\files\sex\Blowjob on Knees.ifp" to IFP_DEST_FILE //IF and SET
+    end
+    if 1@ == PL_KITCHEN
+    then 0B04: copy_file "models\files\sex\Blowjob Kitchen.ifp" to IFP_DEST_FILE //IF and SET
+    end
+end
+if 0@ == SEX_CUNNI
+then
+    if 1@ == PL_SOFA
+    then 0B04: copy_file "models\files\sex\Cunnilingus Sofa.ifp" to IFP_DEST_FILE //IF and SET
+    end
+    if 1@ == PL_FLOOR
+    then 0B04: copy_file "models\files\sex\Cunnilingus Floor.ifp" to IFP_DEST_FILE //IF and SET
+    end
+end
+if 0@ == SEX_69
+then
+    if 1@ == PL_SOFA
+    then 0B04: copy_file "models\files\sex\Oral69 Sofa.ifp" to IFP_DEST_FILE //IF and SET
+    end
+end
+if 0@ == SEX_TJ
+then
+    if 1@ == PL_BED
+    then 0B04: copy_file "models\files\sex\Titjob on Bed 2.ifp" to IFP_DEST_FILE //IF and SET
+    end
+end
+if 0@ == SEX_FJ
+then
+    if 1@ == PL_SOFA
+    then 0B04: copy_file "models\files\sex\Footjob on Sofa.ifp" to IFP_DEST_FILE //IF and SET
+    end
+end
+0A9B: closefile 2@
+wait 2000
+0AB2: ret 0
+
+{======================================================================
+======================================================================}
+:LoadSexualPose
+const
+    An_Actress = 0@
+    An_Actor = 1@
+    An_SexPoseInt = 2@
+    An_SexPlace = 3@
+    An_SpeedInt = 4@
+    An_Animation = 5@
+    An_Str1 = 6@
+    An_Str2 = 7@
+    An_MaxAnim = 8@
+    AnimIfpFem = 10@v
+    AnimIfpMale = 14@v
+    
+    IFP_FILE = "sex_event"
+end
+
+0AB1: call_scm_func @ReadSexPosesInfo 3 An_SpeedInt An_SexPoseInt An_SexPlace out An_Str1 An_Str2 An_MaxAnim
+0AB1: @GetCurrentAnimation 0 An_Animation
+if 001D:   An_Animation > An_MaxAnim  // (int)
+then An_Animation = 1
+end
+if 001B:   1 > An_Animation
+then 0085: An_Animation = An_MaxAnim // (int)
+end
+0AB1: @StoreCurrentAnimation 1 An_Animation
+0AB1: call_scm_func @GetAnimationNames 3 An_Str1 An_Str2 An_Animation out 10@ 11@ 12@ 13@ 14@ 15@ 16@ 17@
+
+04ED: load_animation IFP_FILE
+038B: load_requested_models
+repeat
+wait 0
+until 04EE:   animation IFP_FILE loaded
+0605: actor An_Actress perform_animation AnimIfpFem IFP IFP_FILE framedelta 4.0 loop 1 lockX 0 lockY 0 lockF 0 time -1
+0605: actor An_Actor perform_animation AnimIfpMale IFP IFP_FILE framedelta 4.0 loop 1 lockX 0 lockY 0 lockF 0 time -1
+04EF: release_animation IFP_FILE
+0AB2: ret 0
+
+
+{======================================================================
+======================================================================}
+:CurrentAnimation
+hex
+    1
+end
+
+:GetCurrentAnimation
+0AC6: 0@ = label @CurrentAnimation offset
+0A8D: 1@ = read_memory 0@ size 1 virtual_protect 0
+0AB2: ret 1 1@
+
+:StoreCurrentAnimation
+0AC6: 1@ = label @CurrentAnimation offset
+0A8C: write_memory 1@ size 1 value 0@ virtual_protect 0
+0AB2: ret 0
+
+{======================================================================
+======================================================================}
+:SexPoses
+hex
+    // Sex coitus
+    "idle__" 1 "slow__" 1 "normal" 1 "fast__" 1 // Bed
+    "idle__" 1 "slow__" 1 "slow__" 1 "fast__" 1 // Sofa
+    "idle__" 1 "slow__" 1 "slow__" 1 "fast__" 1 // Table
+    "______" 0 "______" 0 "______" 0 "______" 0 // Sit down
+    "slow__" 1 "slow__" 1 "normal" 1 "fast__" 1 // Floor
+    "______" 0 "______" 0 "______" 0 "______" 0 // Bath
+    "idle__" 2 "slow__" 1 "slow__" 1 "fast__" 1 // Kitchen
+    "slow__" 1 "slow__" 2 "normal" 2 "fast__" 2 // Wall
+    "______" 0 "______" 0 "______" 0 "______" 0 // Foot
+
+    // Blowjob
+    "slow__" 1 "slow__" 2 "normal" 3 "normal" 3 // Bed
+    "slow__" 1 "slow__" 1 "normal" 1 "fast__" 1 // Sofa
+    "______" 0 "______" 0 "______" 0 "______" 0 // Table
+    "slow__" 1 "slow__" 3 "normal" 2 "fast__" 4 // Sit down
+    "slow__" 1 "slow__" 3 "normal" 3 "fast__" 3 // Floor
+    "______" 0 "______" 0 "______" 0 "______" 0 // Bath
+    "slow__" 1 "slow__" 2 "normal" 3 "fast__" 1 // Kitchen
+    "______" 0 "______" 0 "______" 0 "______" 0 // Wall
+    "______" 0 "______" 0 "______" 0 "______" 0 // Foot
+
+    // Reverse Sex
+    "slow__" 2 "slow__" 2 "normal" 2 "fast__" 2 // Bed
+    "slow__" 1 "slow__" 3 "normal" 3 "fast__" 3 // Sofa
+    "slow__" 1 "slow__" 1 "slow__" 1 "fast__" 1 // Table
+    "______" 0 "______" 0 "______" 0 "______" 0 // Sit down
+    "slow__" 1 "slow__" 1 "normal" 1 "fast__" 1 // Floor
+    "slow__" 1 "slow__" 2 "normal" 2 "fast__" 2 // Bath
+    "______" 0 "______" 0 "______" 0 "______" 0 // Kitchen
+    "slow__" 1 "slow__" 3 "normal" 3 "fast__" 3 // Wall
+    "______" 0 "______" 0 "______" 0 "______" 0 // Foot
+
+    // Handjob
+    "slow__" 1 "slow__" 3 "slow__" 3 "fast__" 2 // Bed
+    "______" 0 "______" 0 "______" 0 "______" 0 // Sofa
+    "______" 0 "______" 0 "______" 0 "______" 0 // Table
+    "slow__" 1 "slow__" 1 "slow__" 1 "fast__" 1 // Sit down
+    "______" 0 "______" 0 "______" 0 "______" 0 // Floor
+    "______" 0 "______" 0 "______" 0 "______" 0 // Bath
+    "______" 0 "______" 0 "______" 0 "______" 0 // Kitchen
+    "______" 0 "______" 0 "______" 0 "______" 0 // Wall
+    "idle__" 1 "slow__" 1 "slow__" 1 "fast__" 1 // Foot
+
+    // Cunnilingus
+    "______" 0 "______" 0 "______" 0 "______" 0 // Bed
+    "slow__" 1 "slow__" 1 "slow__" 1 "slow__" 1 // Sofa
+    "______" 0 "______" 0 "______" 0 "______" 0 // Table
+    "______" 0 "______" 0 "______" 0 "______" 0 // Sit down
+    "slow__" 1 "slow__" 2 "normal" 2 "normal" 2 // Floor
+    "______" 0 "______" 0 "______" 0 "______" 0 // Bath
+    "______" 0 "______" 0 "______" 0 "______" 0 // Kitchen
+    "______" 0 "______" 0 "______" 0 "______" 0 // Wall
+    "______" 0 "______" 0 "______" 0 "______" 0 // Foot
+
+    // Oral 69
+    "______" 0 "______" 0 "______" 0 "______" 0 // Bed
+    "slow__" 1 "slow__" 1 "slow__" 1 "fast__" 1 // Sofa
+    "______" 0 "______" 0 "______" 0 "______" 0 // Table
+    "______" 0 "______" 0 "______" 0 "______" 0 // Sit down
+    "______" 0 "______" 0 "______" 0 "______" 0 // Floor
+    "______" 0 "______" 0 "______" 0 "______" 0 // Bath
+    "______" 0 "______" 0 "______" 0 "______" 0 // Kitchen
+    "______" 0 "______" 0 "______" 0 "______" 0 // Wall
+    "______" 0 "______" 0 "______" 0 "______" 0 // Foot
+
+    // Titjob
+    "slow__" 1 "slow__" 1 "normal" 1 "fast__" 1 // Bed
+    "______" 0 "______" 0 "______" 0 "______" 0 // Sofa
+    "______" 0 "______" 0 "______" 0 "______" 0 // Table
+    "______" 0 "______" 0 "______" 0 "______" 0 // Sit down
+    "______" 0 "______" 0 "______" 0 "______" 0 // Floor
+    "______" 0 "______" 0 "______" 0 "______" 0 // Bath
+    "______" 0 "______" 0 "______" 0 "______" 0 // Kitchen
+    "______" 0 "______" 0 "______" 0 "______" 0 // Wall
+    "______" 0 "______" 0 "______" 0 "______" 0 // Foot
+
+    // Footjob
+    "______" 0 "______" 0 "______" 0 "______" 0 // Bed
+    "slow__" 1 "slow__" 1 "normal" 1 "fast__" 1 // Sofa
+    "______" 0 "______" 0 "______" 0 "______" 0 // Table
+    "______" 0 "______" 0 "______" 0 "______" 0 // Sit down
+    "______" 0 "______" 0 "______" 0 "______" 0 // Floor
+    "______" 0 "______" 0 "______" 0 "______" 0 // Bath
+    "______" 0 "______" 0 "______" 0 "______" 0 // Kitchen
+    "______" 0 "______" 0 "______" 0 "______" 0 // Wall
+    "______" 0 "______" 0 "______" 0 "______" 0 // Foot
+end
+
+{======================================================================
+======================================================================}
+:ReadSexPosesInfo
+const
+    Rsp_Speed = 0@
+    Rsp_Pose = 1@
+    Rsp_Place = 2@
+    Rsp_Addr = 3@
+    Rsp_Offset1 = 4@
+    Rsp_Offset2 = 5@
+    Rsp_Offset3 = 6@
+    Rsp_Str1 = 7@
+    Rsp_Str2 = 8@
+    Rsp_MaxAnim = 9@
+end
+0AC6: Rsp_Addr = label @SexPoses offset
+
+0006: Rsp_Offset1 = 6  // short string representing speed
+0012: Rsp_Offset1 *= 4 // 4 of them
+000A: Rsp_Offset1 += 4 // 4 numbers corresponding to max animations per speed pose
+0012: Rsp_Offset1 *= 9 // number of places per pose
+006A: Rsp_Offset1 *= Rsp_Pose  // (int)
+
+0006: Rsp_Offset2 = 6  // short string representing speed
+0012: Rsp_Offset2 *= 4 // 4 of them
+000A: Rsp_Offset2 += 4 // 4 numbers corresponding to max animations per speed pose
+006A: Rsp_Offset2 *= Rsp_Place  // (int)
+
+0006: Rsp_Offset3 = 7  // short string: 6, number: 1, 6+1=7
+006A: Rsp_Offset3 *= Rsp_Speed  // (int)
+
+005A: Rsp_Addr += Rsp_Offset1  // (int)
+005A: Rsp_Addr += Rsp_Offset2  // (int)
+005A: Rsp_Addr += Rsp_Offset3  // (int)
+0A8D: Rsp_Str1 = read_memory Rsp_Addr size 4 virtual_protect 0
+000A: Rsp_Addr += 4
+0A8D: Rsp_Str2 = read_memory Rsp_Addr size 2 virtual_protect 0
+000A: Rsp_Addr += 2
+0A8D: Rsp_MaxAnim = read_memory Rsp_Addr size 1 virtual_protect 0
+
+0A9A: 30@ = openfile LOG_FILE mode "ab+"
+0AD9: write_formatted_text "%c%cPose: %d, Place: %d, Speed: %s%c%cOffsets: %d %d %d" in_file 30@ vars 0xd 0xa Rsp_Pose Rsp_Place 7@s 0xd 0xa Rsp_Offset1 Rsp_Offset2 Rsp_Offset3
+0A9B: closefile 30@
+
+0AB2: ret 3 Rsp_Str1 Rsp_Str2 Rsp_MaxAnim
+
+{======================================================================
+======================================================================}
+:GetAnimationNames
+const
+    Gan_Str1 = 0@
+    Gan_Str2 = 1@
+    Gan_StrSpeed = 0@s
+    Gan_Animation = 2@
+end
+
+if 05AE:   Gan_StrSpeed == "idle__" // @s == 'short'
+then
+    0AD3: 10@v = format "idle%d_f" Gan_Animation
+    0AD3: 14@v = format "idle%d_m" Gan_Animation
+end
+if 05AE:   Gan_StrSpeed == "slow__" // @s == 'short'
+then
+    0AD3: 10@v = format "slow%d_f" Gan_Animation
+    0AD3: 14@v = format "slow%d_m" Gan_Animation
+end
+if 05AE:   Gan_StrSpeed == "normal" // @s == 'short'
+then
+    0AD3: 10@v = format "normal%d_f" Gan_Animation
+    0AD3: 14@v = format "normal%d_m" Gan_Animation
+end
+if 05AE:   Gan_StrSpeed == "fast__" // @s == 'short'
+then
+    0AD3: 10@v = format "fast%d_f" Gan_Animation
+    0AD3: 14@v = format "fast%d_m" Gan_Animation
+end
+0AB2: ret 8 10@ 11@ 12@ 13@ 14@ 15@ 16@ 17@

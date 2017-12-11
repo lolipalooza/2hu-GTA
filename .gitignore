@@ -27,7 +27,7 @@ stream.ini
 
 !modloader/
 modloader/*
-!modloader/2hu GTA/
+!modloader/2huGTA/
 !modloader/LC/
 modloader/LC/models/
 modloader/LC/radio/
