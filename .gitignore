@@ -28,6 +28,7 @@ stream.ini
 !modloader/
 modloader/*
 !modloader/2huGTA/
+modloader/2huGTA/sex/
 !modloader/LC/
 modloader/LC/models/
 modloader/LC/radio/
