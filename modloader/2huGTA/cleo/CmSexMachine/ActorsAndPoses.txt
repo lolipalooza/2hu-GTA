@@ -36,136 +36,6 @@ until 023D:   special_actor 1 loaded and 023D:   special_actor 2 loaded
 
 {======================================================================
 ======================================================================}
-:GenerateSexFiles
-// 0@: pose, 1@: place
-
-0A9A: 2@ = openfile LOG_FILE mode "wb+"
-
-if 0AE4:   directory_exists IFP_DEST_DIRECTORY
-then 0B01: delete_directory IFP_DEST_DIRECTORY include_subdirs 1
-end
-0AE5: create_directory IFP_DEST_DIRECTORY //IF and SET
-
-if 0@ == SEX_FUCKING
-then
-    if 1@ == PL_BED
-    then 0B04: copy_file "models\files\sex\Sex Bed.ifp" to IFP_DEST_FILE //IF and SET
-        0AD9: write_formatted_text "Copying file: %s" in_file 2@ vars "models\files\sex\Sex Bed.ifp"
-    end
-    if 1@ == PL_SOFA
-    then 0B04: copy_file "models\files\sex\Sex Sofa.ifp" to IFP_DEST_FILE //IF and SET
-        0AD9: write_formatted_text "Copying file: %s" in_file 2@ vars "models\files\sex\Sex Sofa.ifp"
-    end
-    if 1@ == PL_TABLE
-    then 0B04: copy_file "models\files\sex\Sex Table.ifp" to IFP_DEST_FILE //IF and SET
-        0AD9: write_formatted_text "Copying file: %s" in_file 2@ vars "models\files\sex\Sex Table.ifp"
-    end
-    if 1@ == PL_CHAIR
-    then
-    end
-    if 1@ == PL_FLOOR
-    then 0B04: copy_file "models\files\sex\Sex on Floor.ifp" to IFP_DEST_FILE //IF and SET
-        0AD9: write_formatted_text "Copying file: %s" in_file 2@ vars "models\files\sex\Sex on Floor.ifp"
-    end
-    if 1@ == PL_BATH
-    then
-    end
-    if 1@ == PL_KITCHEN
-    then 0B04: copy_file "models\files\sex\Sex Kitchen.ifp" to IFP_DEST_FILE //IF and SET
-        0AD9: write_formatted_text "Copying file: %s" in_file 2@ vars "models\files\sex\Sex Kitchen.ifp"
-    end
-    if 1@ == PL_WALL
-    then 0B04: copy_file "models\files\sex\Sex on Foot.ifp" to IFP_DEST_FILE //IF and SET
-        0AD9: write_formatted_text "Copying file: %s" in_file 2@ vars "models\files\sex\Sex on Foot.ifp"
-    end
-    if 1@ == PL_FOOT
-    then
-    end
-end
-if 0@ == SEX_ANAL
-then
-    if 1@ == PL_BED
-    then 0B04: copy_file "models\files\sex\Reverse on Bed.ifp" to IFP_DEST_FILE //IF and SET
-    end
-    if 1@ == PL_SOFA
-    then 0B04: copy_file "models\files\sex\Reverse on Sofa.ifp" to IFP_DEST_FILE //IF and SET
-    end
-    if 1@ == PL_TABLE
-    then 0B04: copy_file "models\files\sex\Reverse Table.ifp" to IFP_DEST_FILE //IF and SET
-    end
-    if 1@ == PL_FLOOR
-    then 0B04: copy_file "models\files\sex\Reverse on Floor.ifp" to IFP_DEST_FILE //IF and SET
-    end
-    if 1@ == PL_BATH
-    then 0B04: copy_file "models\files\sex\Reverse on Knees.ifp" to IFP_DEST_FILE //IF and SET
-    end
-    if 1@ == PL_WALL
-    then 0B04: copy_file "models\files\sex\Reverse on Foot.ifp" to IFP_DEST_FILE //IF and SET
-    end
-end
-if 0@ == SEX_HJ
-then
-    if 1@ == PL_BED
-    then 0B04: copy_file "models\files\sex\Handjob on Bed.ifp" to IFP_DEST_FILE //IF and SET
-    end
-    if 1@ == PL_SOFA
-    then 0B04: copy_file "models\files\sex\Handjob Sit down.ifp" to IFP_DEST_FILE //IF and SET
-    end
-    if 1@ == PL_FOOT
-    then 0B04: copy_file "models\files\sex\Handjob on Foot.ifp" to IFP_DEST_FILE //IF and SET
-    end
-end
-if 0@ == SEX_BJ
-then
-    if 1@ == PL_BED
-    then 0B04: copy_file "models\files\sex\Blowjob on Bed.ifp" to IFP_DEST_FILE //IF and SET
-    end
-    if 1@ == PL_SOFA
-    then 0B04: copy_file "models\files\sex\Blowjob Sofa.ifp" to IFP_DEST_FILE //IF and SET
-    end
-    if 1@ == PL_CHAIR
-    then 0B04: copy_file "models\files\sex\Blowjob Sit down.ifp" to IFP_DEST_FILE //IF and SET
-    end
-    if 1@ == PL_FLOOR
-    then 0B04: copy_file "models\files\sex\Blowjob on Knees.ifp" to IFP_DEST_FILE //IF and SET
-    end
-    if 1@ == PL_KITCHEN
-    then 0B04: copy_file "models\files\sex\Blowjob Kitchen.ifp" to IFP_DEST_FILE //IF and SET
-    end
-end
-if 0@ == SEX_CUNNI
-then
-    if 1@ == PL_SOFA
-    then 0B04: copy_file "models\files\sex\Cunnilingus Sofa.ifp" to IFP_DEST_FILE //IF and SET
-    end
-    if 1@ == PL_FLOOR
-    then 0B04: copy_file "models\files\sex\Cunnilingus Floor.ifp" to IFP_DEST_FILE //IF and SET
-    end
-end
-if 0@ == SEX_69
-then
-    if 1@ == PL_SOFA
-    then 0B04: copy_file "models\files\sex\Oral69 Sofa.ifp" to IFP_DEST_FILE //IF and SET
-    end
-end
-if 0@ == SEX_TJ
-then
-    if 1@ == PL_BED
-    then 0B04: copy_file "models\files\sex\Titjob on Bed 2.ifp" to IFP_DEST_FILE //IF and SET
-    end
-end
-if 0@ == SEX_FJ
-then
-    if 1@ == PL_SOFA
-    then 0B04: copy_file "models\files\sex\Footjob on Sofa.ifp" to IFP_DEST_FILE //IF and SET
-    end
-end
-0A9B: closefile 2@
-wait 2000
-0AB2: ret 0
-
-{======================================================================
-======================================================================}
 :LoadSexualPose
 const
     An_Actress = 0@
@@ -179,29 +49,34 @@ const
     An_MaxAnim = 8@
     AnimIfpFem = 10@v
     AnimIfpMale = 14@v
-    
-    IFP_FILE = "sex_event"
 end
 
+//0605: actor An_Actress perform_animation "IDLE_stance" IFP "ped" framedelta 4.0 loop 1 lockX 0 lockY 0 lockF 0 time -1
+//0605: actor An_Actor perform_animation "IDLE_stance" IFP "ped" framedelta 4.0 loop 1 lockX 0 lockY 0 lockF 0 time -1
+
 0AB1: call_scm_func @ReadSexPosesInfo 3 An_SpeedInt An_SexPoseInt An_SexPlace out An_Str1 An_Str2 An_MaxAnim
-0AB1: @GetCurrentAnimation 0 An_Animation
+0AB1: @GetInt 1 @CurrentAnimation An_Animation
 if 001D:   An_Animation > An_MaxAnim  // (int)
 then An_Animation = 1
 end
 if 001B:   1 > An_Animation
 then 0085: An_Animation = An_MaxAnim // (int)
 end
-0AB1: @StoreCurrentAnimation 1 An_Animation
+0AB1: @StoreInt 2 @CurrentAnimation An_Animation
 0AB1: call_scm_func @GetAnimationNames 3 An_Str1 An_Str2 An_Animation out 10@ 11@ 12@ 13@ 14@ 15@ 16@ 17@
+
+0AB1: call_scm_func @GenerateSexFiles 5 An_SexPoseInt An_SexPlace An_Str1 An_Str2 An_Animation
+wait 1000
 
 04ED: load_animation IFP_FILE
 038B: load_requested_models
 repeat
 wait 0
 until 04EE:   animation IFP_FILE loaded
-0605: actor An_Actress perform_animation AnimIfpFem IFP IFP_FILE framedelta 4.0 loop 1 lockX 0 lockY 0 lockF 0 time -1
-0605: actor An_Actor perform_animation AnimIfpMale IFP IFP_FILE framedelta 4.0 loop 1 lockX 0 lockY 0 lockF 0 time -1
+0605: actor An_Actress perform_animation "fem" IFP IFP_FILE framedelta 4.0 loop 1 lockX 0 lockY 0 lockF 0 time -1
+0605: actor An_Actor perform_animation "male" IFP IFP_FILE framedelta 4.0 loop 1 lockX 0 lockY 0 lockF 0 time -1
 04EF: release_animation IFP_FILE
+
 0AB2: ret 0
 
 
@@ -212,14 +87,14 @@ hex
     1
 end
 
-:GetCurrentAnimation
-0AC6: 0@ = label @CurrentAnimation offset
-0A8D: 1@ = read_memory 0@ size 1 virtual_protect 0
-0AB2: ret 1 1@
+:GetInt
+0AC6: 1@ = label 0@ offset
+0A8D: 2@ = read_memory 1@ size 1 virtual_protect 0
+0AB2: ret 1 2@
 
-:StoreCurrentAnimation
-0AC6: 1@ = label @CurrentAnimation offset
-0A8C: write_memory 1@ size 1 value 0@ virtual_protect 0
+:StoreInt
+0AC6: 2@ = label 0@ offset
+0A8C: write_memory 2@ size 1 value 1@ virtual_protect 0
 0AB2: ret 0
 
 {======================================================================

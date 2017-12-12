@@ -1,0 +1,206 @@
+{======================================================================
+======================================================================}
+:GenerateSexFiles
+// 0@: pose, 1@: place, 2@-3@: speed string, 4@: animation
+
+if 0@ == SEX_FUCKING
+then
+    if 1@ == PL_BED
+    then
+        if 2@s == 'idle__'
+        then 0B04: copy_file "models\files\sex\Sex Bed\idle1.ifp" to IFP_DEST_FILE //IF and SET
+        end
+        if 2@s == 'slow__'
+        then 0B04: copy_file "models\files\sex\Sex Bed\slow1.ifp" to IFP_DEST_FILE //IF and SET
+        end
+        if 2@s == 'normal'
+        then 0B04: copy_file "models\files\sex\Sex Bed\normal1.ifp" to IFP_DEST_FILE //IF and SET
+        end
+        if 2@s == 'fast__'
+        then 0B04: copy_file "models\files\sex\Sex Bed\fast1.ifp" to IFP_DEST_FILE //IF and SET
+        end
+    end
+    if 1@ == PL_SOFA
+    then
+        if 2@s == 'idle__'
+        then 0B04: copy_file "models\files\sex\Sex Sofa\idle1.ifp" to IFP_DEST_FILE //IF and SET
+        end
+        if 2@s == 'slow__'
+        then 0B04: copy_file "models\files\sex\Sex Sofa\slow1.ifp" to IFP_DEST_FILE //IF and SET
+        end
+        if 2@s == 'fast__'
+        then 0B04: copy_file "models\files\sex\Sex Sofa\fast1.ifp" to IFP_DEST_FILE //IF and SET
+        end
+    end
+    if 1@ == PL_TABLE
+    then
+        if 2@s == 'idle__'
+        then 0B04: copy_file "models\files\sex\Sex Table\idle1.ifp" to IFP_DEST_FILE //IF and SET
+        end
+        if 2@s == 'slow__'
+        then 0B04: copy_file "models\files\sex\Sex Table\slow1.ifp" to IFP_DEST_FILE //IF and SET
+        end
+        if 2@s == 'fast__'
+        then 0B04: copy_file "models\files\sex\Sex Table\fast1.ifp" to IFP_DEST_FILE //IF and SET
+        end
+    end
+    if 1@ == PL_CHAIR
+    then
+    end
+    if 1@ == PL_FLOOR
+    then
+        if 2@s == 'slow__'
+        then 0B04: copy_file "models\files\sex\Sex on Floor\slow1.ifp" to IFP_DEST_FILE //IF and SET
+        end
+        if 2@s == 'normal'
+        then 0B04: copy_file "models\files\sex\Sex on Floor\normal1.ifp" to IFP_DEST_FILE //IF and SET
+        end
+        if 2@s == 'fast__'
+        then 0B04: copy_file "models\files\sex\Sex on Floor\fast1.ifp" to IFP_DEST_FILE //IF and SET
+        end
+    end
+    if 1@ == PL_BATH
+    then
+    end
+    if 1@ == PL_KITCHEN
+    then
+        if 2@s == 'idle__'
+        then 0B04: copy_file "models\files\sex\Sex Kitchen\idle1.ifp" to IFP_DEST_FILE //IF and SET
+        end
+        if 2@s == 'slow__'
+        then 0B04: copy_file "models\files\sex\Sex Kitchen\slow1.ifp" to IFP_DEST_FILE //IF and SET
+        end
+        if 2@s == 'normal'
+        then 0B04: copy_file "models\files\sex\Sex Kitchen\normal1.ifp" to IFP_DEST_FILE //IF and SET
+        end
+        if 2@s == 'fast__'
+        then 0B04: copy_file "models\files\sex\Sex Kitchen\fast1.ifp" to IFP_DEST_FILE //IF and SET
+        end
+    end
+    if 1@ == PL_WALL
+    then
+        if 2@s == 'slow__'
+        then 0B04: copy_file "models\files\sex\Sex on Foot\slow1.ifp" to IFP_DEST_FILE //IF and SET
+        end
+        if 2@s == 'normal'
+        then 0B04: copy_file "models\files\sex\Sex on Foot\normal1.ifp" to IFP_DEST_FILE //IF and SET
+        end
+        if 2@s == 'fast__'
+        then 0B04: copy_file "models\files\sex\Sex on Foot\fast1.ifp" to IFP_DEST_FILE //IF and SET
+        end
+    end
+    if 1@ == PL_FOOT
+    then
+    end
+end
+
+{if 0@ == SEX_FUCKING
+then
+    if 1@ == PL_BED
+    then 0B04: copy_file "models\files\sex\Sex Bed.ifp" to IFP_DEST_FILE //IF and SET
+    end
+    if 1@ == PL_SOFA
+    then 0B04: copy_file "models\files\sex\Sex Sofa.ifp" to IFP_DEST_FILE //IF and SET
+    end
+    if 1@ == PL_TABLE
+    then 0B04: copy_file "models\files\sex\Sex Table.ifp" to IFP_DEST_FILE //IF and SET
+    end
+    if 1@ == PL_CHAIR
+    then
+    end
+    if 1@ == PL_FLOOR
+    then 0B04: copy_file "models\files\sex\Sex on Floor.ifp" to IFP_DEST_FILE //IF and SET
+    end
+    if 1@ == PL_BATH
+    then
+    end
+    if 1@ == PL_KITCHEN
+    then 0B04: copy_file "models\files\sex\Sex Kitchen.ifp" to IFP_DEST_FILE //IF and SET
+    end
+    if 1@ == PL_WALL
+    then 0B04: copy_file "models\files\sex\Sex on Foot.ifp" to IFP_DEST_FILE //IF and SET
+    end
+    if 1@ == PL_FOOT
+    then
+    end
+end
+if 0@ == SEX_ANAL
+then
+    if 1@ == PL_BED
+    then 0B04: copy_file "models\files\sex\Reverse on Bed.ifp" to IFP_DEST_FILE //IF and SET
+    end
+    if 1@ == PL_SOFA
+    then 0B04: copy_file "models\files\sex\Reverse on Sofa.ifp" to IFP_DEST_FILE //IF and SET
+    end
+    if 1@ == PL_TABLE
+    then 0B04: copy_file "models\files\sex\Reverse Table.ifp" to IFP_DEST_FILE //IF and SET
+    end
+    if 1@ == PL_FLOOR
+    then 0B04: copy_file "models\files\sex\Reverse on Floor.ifp" to IFP_DEST_FILE //IF and SET
+    end
+    if 1@ == PL_BATH
+    then 0B04: copy_file "models\files\sex\Reverse on Knees.ifp" to IFP_DEST_FILE //IF and SET
+    end
+    if 1@ == PL_WALL
+    then 0B04: copy_file "models\files\sex\Reverse on Foot.ifp" to IFP_DEST_FILE //IF and SET
+    end
+end
+if 0@ == SEX_HJ
+then
+    if 1@ == PL_BED
+    then 0B04: copy_file "models\files\sex\Handjob on Bed.ifp" to IFP_DEST_FILE //IF and SET
+    end
+    if 1@ == PL_SOFA
+    then 0B04: copy_file "models\files\sex\Handjob Sit down.ifp" to IFP_DEST_FILE //IF and SET
+    end
+    if 1@ == PL_FOOT
+    then 0B04: copy_file "models\files\sex\Handjob on Foot.ifp" to IFP_DEST_FILE //IF and SET
+    end
+end
+if 0@ == SEX_BJ
+then
+    if 1@ == PL_BED
+    then 0B04: copy_file "models\files\sex\Blowjob on Bed.ifp" to IFP_DEST_FILE //IF and SET
+    end
+    if 1@ == PL_SOFA
+    then 0B04: copy_file "models\files\sex\Blowjob Sofa.ifp" to IFP_DEST_FILE //IF and SET
+    end
+    if 1@ == PL_CHAIR
+    then 0B04: copy_file "models\files\sex\Blowjob Sit down.ifp" to IFP_DEST_FILE //IF and SET
+    end
+    if 1@ == PL_FLOOR
+    then 0B04: copy_file "models\files\sex\Blowjob on Knees.ifp" to IFP_DEST_FILE //IF and SET
+    end
+    if 1@ == PL_KITCHEN
+    then 0B04: copy_file "models\files\sex\Blowjob Kitchen.ifp" to IFP_DEST_FILE //IF and SET
+    end
+end
+if 0@ == SEX_CUNNI
+then
+    if 1@ == PL_SOFA
+    then 0B04: copy_file "models\files\sex\Cunnilingus Sofa.ifp" to IFP_DEST_FILE //IF and SET
+    end
+    if 1@ == PL_FLOOR
+    then 0B04: copy_file "models\files\sex\Cunnilingus Floor.ifp" to IFP_DEST_FILE //IF and SET
+    end
+end
+if 0@ == SEX_69
+then
+    if 1@ == PL_SOFA
+    then 0B04: copy_file "models\files\sex\Oral69 Sofa.ifp" to IFP_DEST_FILE //IF and SET
+    end
+end
+if 0@ == SEX_TJ
+then
+    if 1@ == PL_BED
+    then 0B04: copy_file "models\files\sex\Titjob on Bed 2.ifp" to IFP_DEST_FILE //IF and SET
+    end
+end
+if 0@ == SEX_FJ
+then
+    if 1@ == PL_SOFA
+    then 0B04: copy_file "models\files\sex\Footjob on Sofa.ifp" to IFP_DEST_FILE //IF and SET
+    end
+end}
+0AB2: ret 0
+

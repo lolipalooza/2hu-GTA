@@ -162,7 +162,7 @@ const
     PlyY = 7@
     PlyZ = 8@
     PlayerInterior = 9@
-    SexCameraState = 10@
+    //SexCameraState = 10@ // not used!
     SexState = 11@
     SexStat_Climax = 12@   // (Float) Min: 1.0 - Max 100.0
     SexStat_Speed = 13@    // (Int) Min: 1 - Max 100
@@ -236,10 +236,10 @@ const
     SPD_THRESHOLD2 = 52 // Threshold to pass from slow to normal
     SPD_THRESHOLD3 = 88 // Threshold to pass from normal to fast
     
-    IFP_DEST_DIRECTORY = "modloader/2hugta/sex"
+    IFP_FILE = "sex_event"
     IFP_DEST_FILE = "modloader/2hugta/sex/sex_event.ifp"
     LOG_FILE = "modloader/2hugta/cleo/SexMachine.log"
-    
+                   
     // Sex Menu States
     SX_MENU_LEFT_FIRST_ELEM = 1
     SX_MENU_LEFT_LAST_ELEM = 3
@@ -284,6 +284,7 @@ end
 {$I CmSexMachine/CamerasAndCoordinates.txt}
 {$I CmSexMachine/ActorsAndPoses.txt}
 {$I CmSexMachine/SexualMenuAndStats.txt}
+{$I CmSexMachine/GenerateSexFiles.txt}
 
 {======================================================================
 ======================================================================}
@@ -395,12 +396,10 @@ then
     SexPoseInt = SEX_FUCKING
     SexPlace = PL_TABLE
     //0209: SexPoseInt = random_int_in_ranges ? ?
-    0AB1: call_scm_func @GenerateSexFiles 2 SexPoseInt SexPlace
     0AB1: call_scm_func @GetActorsCoordinates 2 SexPoseInt SexPlace ret FemX FemY FemZ FemA MaleX MaleY MaleZ MaleA
     0AB1: call_scm_func @GenerateActors 8 FemX FemY FemZ FemA MaleX MaleY MaleZ MaleA ret PornActress PornActor
     0AB1: call_scm_func @LoadSexualPose 5 PornActress PornActor SexPoseInt SexPlace SPD_SLOW
-    0AB1: call_scm_func @ToggleSexualCamera 3 SexCameraState SexPoseInt SexPlace
-    0AB1: call_scm_func @IncOrDecIntVariable 4 SexCameraState 0 11 FLAG_INCREASE SexCameraState
+    0AB1: call_scm_func @ToggleSexualCamera 2 SexPoseInt SexPlace
     OnSexActivity = true
     SexState = 0
     ShowSexualStats = true
@@ -411,7 +410,6 @@ then
     PleasureState = 0
     PulseButtonState = NOT_PULSED
     //0209: SexCameraState = random_int_in_ranges 0 12
-    SexCameraState=0
     wait 500
     fade 1 time 800
     wait 500
@@ -451,8 +449,7 @@ if SexState == 0
 then
     if 00E1:   player 0 pressed_key PAD_CHANGE_CAMERA_VIEW // V
     then SexState=1
-        0AB1: call_scm_func @ToggleSexualCamera 3 SexCameraState SexPoseInt SexPlace
-        0AB1: call_scm_func @IncOrDecIntVariable 4 SexCameraState 0 11 FLAG_INCREASE SexCameraState
+        0AB1: call_scm_func @ToggleSexualCamera 2 SexPoseInt SexPlace
     end
     if 00E1:   player 0 pressed_key PAD_ANSWER_PHONE // TAB
     then SexState=2
@@ -626,7 +623,7 @@ end
 {======================================================================
 ======================================================================}
 :SpeedMachine
-if SpeedState == 0
+if SpeedState == 0 // IDLE State
 then
     if SexStat_Speed > SPD_THRESHOLD1
     then
@@ -634,34 +631,38 @@ then
         0AB1: @LoadSexualPose 5 PornActress PornActor SexPoseInt SexPlace SPD_SLOW
     end
 end
-if SpeedState == 1
+if SpeedState == 1 // SLOW state
 then
-    if SexStat_Speed > SPD_THRESHOLD2
-    then SpeedState=2
-    end
     if SexStat_Speed < SPD_THRESHOLD1
     then
         SpeedState=0
         0AB1: @LoadSexualPose 5 PornActress PornActor SexPoseInt SexPlace SPD_IDLE
     end
-end
-if SpeedState == 2
-then
-    if SexStat_Speed > SPD_THRESHOLD3
+    if SexStat_Speed > SPD_THRESHOLD2
     then
-        SpeedState=3
-        0AB1: @LoadSexualPose 5 PornActress PornActor SexPoseInt SexPlace SPD_FAST
+        SpeedState=2
+        0AB1: @LoadSexualPose 5 PornActress PornActor SexPoseInt SexPlace SPD_NORMAL
     end
+end
+if SpeedState == 2 // NORMAL state
+then
     if SexStat_Speed < SPD_THRESHOLD2
     then
         SpeedState=1
         0AB1: @LoadSexualPose 5 PornActress PornActor SexPoseInt SexPlace SPD_SLOW
     end
+    if SexStat_Speed > SPD_THRESHOLD3
+    then
+        SpeedState=3
+        0AB1: @LoadSexualPose 5 PornActress PornActor SexPoseInt SexPlace SPD_FAST
+    end
 end
-if SpeedState == 3
+if SpeedState == 3 // FAST state
 then
     if SexStat_Speed < SPD_THRESHOLD3
-    then SpeedState=2
+    then
+        SpeedState=2
+        0AB1: @LoadSexualPose 5 PornActress PornActor SexPoseInt SexPlace SPD_NORMAL
     end
 end
 return
@@ -716,12 +717,10 @@ then
                 wait 800 ms
                 009B: destroy_actor PornActress
                 009B: destroy_actor PornActor
-                0AB1: call_scm_func @GenerateSexFiles 2 SexPoseInt SexPlace
                 0AB1: call_scm_func @GetActorsCoordinates 2 SexPoseInt SexPlace ret FemX FemY FemZ FemA MaleX MaleY MaleZ MaleA
                 0AB1: call_scm_func @GenerateActors 8 FemX FemY FemZ FemA MaleX MaleY MaleZ MaleA ret PornActress PornActor
                 0AB1: call_scm_func @LoadSexualPose 5 PornActress PornActor SexPoseInt SexPlace SPD_SLOW
-                0AB1: call_scm_func @ToggleSexualCamera 3 SexCameraState SexPoseInt SexPlace
-                0AB1: call_scm_func @IncOrDecIntVariable 4 SexCameraState 0 11 FLAG_INCREASE SexCameraState
+                0AB1: call_scm_func @ToggleSexualCamera 2 SexPoseInt SexPlace
                 wait 500
                 fade 1 time 800
             end
@@ -759,12 +758,10 @@ then
                 wait 800 ms
                 009B: destroy_actor PornActress
                 009B: destroy_actor PornActor
-                0AB1: call_scm_func @GenerateSexFiles 2 SexPoseInt SexPlace
                 0AB1: call_scm_func @GetActorsCoordinates 2 SexPoseInt SexPlace ret FemX FemY FemZ FemA MaleX MaleY MaleZ MaleA
                 0AB1: call_scm_func @GenerateActors 8 FemX FemY FemZ FemA MaleX MaleY MaleZ MaleA ret PornActress PornActor
                 0AB1: call_scm_func @LoadSexualPose 5 PornActress PornActor SexPoseInt SexPlace SPD_SLOW
-                0AB1: call_scm_func @ToggleSexualCamera 3 SexCameraState SexPoseInt SexPlace
-                0AB1: call_scm_func @IncOrDecIntVariable 4 SexCameraState 0 11 FLAG_INCREASE SexCameraState
+                0AB1: call_scm_func @ToggleSexualCamera 2 SexPoseInt SexPlace
                 wait 500
                 fade 1 time 800
             end

@@ -1,11 +1,19 @@
 {======================================================================
 ======================================================================}
 :ToggleSexualCamera
-// 0@: Camera index, 1@: sexual pose, 2@: sex place
-0AB1: @GetCameraCoordinates 3 0@ 1@ 2@ ret 3@ 4@ 5@ 6@ 7@ 8@
+// 0@: sexual pose, 1@: sex place
+0AB1: @GetInt 1 @CurrentCamera 10@
+0AB1: @GetCameraCoordinates 3 10@ 0@ 1@ ret 3@ 4@ 5@ 6@ 7@ 8@
 015F: set_camera_position 3@ 4@ 5@ rotation 0.0 0.0 0.0
 0160: set_camera_point_at 6@ 7@ 8@ switchstyle 2
+0AB1: call_scm_func @IncOrDecIntVariable 4 10@ 0 11 FLAG_INCREASE 10@
+0AB1: @StoreInt 2 @CurrentCamera 10@
 0AB2: ret 0
+
+:CurrentCamera
+hex
+    0
+end
 
 {======================================================================
 ======================================================================}
@@ -341,10 +349,10 @@ then
         then 0AB2: ret 8 fem_xyz 2359.824 -1132.73 1049.635 angle 90.0 male_xyz 2359.758 -1132.749 1049.665 angle 90.0
         end
         if 1@ == PL_FLOOR
-        then 0AB2: ret 8 fem_xyz 0.0 0.0 0.0 angle 0.0 male_xyz 0.0 0.0 0.0 angle 0.0
+        then 0AB2: ret 8 fem_xyz 2374.494141 -1123.936768 1049.775269 angle 0.0 male_xyz 2374.494141 -1123.224121 1049.975220 angle 0.0
         end
         if 1@ == PL_BATH
-        then 0AB2: ret 8 fem_xyz 2374.494141 -1123.936768 1049.775269 angle 0.0 male_xyz 2374.494141 -1123.224121 1049.975220 angle 0.0
+        then 0AB2: ret 8 fem_xyz 0.0 0.0 0.0 angle 0.0 male_xyz 0.0 0.0 0.0 angle 0.0
         end
         if 1@ == PL_KITCHEN
         then 0AB2: ret 8 fem_xyz 2373.919434 -1131.388306 1049.325317 angle -90.0 male_xyz 2374.219727 -1131.390015 1049.895264 angle -90.0
