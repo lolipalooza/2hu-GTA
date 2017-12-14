@@ -238,6 +238,80 @@ wait 0
         0391: release_textures
     end
 end}
+
+const
+    TSET_SEX = "models\files\tset\sex\sex.ifp"
+    TSET_BLOWJ = "models\files\tset\blowjobz\sex.ifp"
+    DEST_FILE = "modloader\2huGTA\sex\sex.ifp"
+    IFP_FILE = "sex"
+end
+gosub @CreateActress
+
+while true
+    repeat
+    wait 0
+    until 0AB0:   key_pressed 80
+    repeat
+    wait 0
+    until 8AB0:   not key_pressed 80
+    
+    //0605: actor 0@ perform_animation "idle_stance" IFP "ped" framedelta 4.0 loop 1 lockX 0 lockY 0 lockF 0 time -1
+    gosub @DestroyActress
+    0B04: copy_file TSET_BLOWJ to DEST_FILE //IF and SET
+    wait 100
+    0B00: delete_file DEST_FILE  // IF and SET
+    0B04: copy_file TSET_SEX to DEST_FILE //IF and SET
+    wait 1000
+    gosub @CreateActress
+    0ACC: show_text_lowpriority "Sex" time 4000
+    04ED: load_animation IFP_FILE
+    repeat
+    wait 0
+    until 04EE:   animation IFP_FILE loaded
+    0605: actor 0@ perform_animation "fem" IFP IFP_FILE framedelta 4.0 loop 1 lockX 0 lockY 0 lockF 0 time -1
+    04EF: release_animation IFP_FILE
+    0B00: delete_file DEST_FILE  // IF and SET
+    
+    repeat
+    wait 0
+    until 0AB0:   key_pressed 80
+    repeat
+    wait 0
+    until 8AB0:   not key_pressed 80
+    
+    //0605: actor 0@ perform_animation "idle_stance" IFP "ped" framedelta 4.0 loop 1 lockX 0 lockY 0 lockF 0 time -1
+    gosub @DestroyActress
+    0B04: copy_file TSET_SEX to DEST_FILE //IF and SET
+    wait 100
+    0B00: delete_file DEST_FILE  // IF and SET
+    0B04: copy_file TSET_BLOWJ to DEST_FILE //IF and SET
+    wait 1000
+    gosub @CreateActress
+    0ACC: show_text_lowpriority "Blowjobz" time 4000
+    04ED: load_animation IFP_FILE
+    repeat
+    wait 0
+    until 04EE:   animation IFP_FILE loaded
+    0605: actor 0@ perform_animation "fem" IFP IFP_FILE framedelta 4.0 loop 1 lockX 0 lockY 0 lockF 0 time -1
+    04EF: release_animation IFP_FILE
+    0B00: delete_file DEST_FILE  // IF and SET
+end
+
+:CreateActress
+023C: load_special_actor 'bdoll' as 1
+038B: load_requested_models
+repeat
+wait 0
+until 023D:   special_actor 1 loaded
+009A: 0@ = create_actor_pedtype 5 model #SPECIAL01 at 2490.7441 -1664.4576 13.3437
+0619: enable_actor 0@ collision_detection 0
+0296: unload_special_actor 1
+return
+
+:DestroyActress
+009B: destroy_actor 0@
+return
+
 0A93: end_custom_thread
 
 {======================================================================

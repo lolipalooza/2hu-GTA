@@ -3,7 +3,7 @@
 :GenerateSexFiles
 // 0@: pose, 1@: place, 2@-3@: speed string, 4@: animation
 
-if 0@ == SEX_FUCKING
+{if 0@ == SEX_FUCKING
 then
     if 1@ == PL_BED
     then
@@ -92,9 +92,10 @@ then
     if 1@ == PL_FOOT
     then
     end
-end
+end}
 
-{if 0@ == SEX_FUCKING
+
+if 0@ == SEX_FUCKING
 then
     if 1@ == PL_BED
     then 0B04: copy_file "models\files\sex\Sex Bed.ifp" to IFP_DEST_FILE //IF and SET
@@ -201,6 +202,6 @@ then
     if 1@ == PL_SOFA
     then 0B04: copy_file "models\files\sex\Footjob on Sofa.ifp" to IFP_DEST_FILE //IF and SET
     end
-end}
+end
 0AB2: ret 0
 
