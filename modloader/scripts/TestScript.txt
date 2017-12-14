@@ -242,59 +242,87 @@ end}
 const
     TSET_SEX = "models\files\tset\sex\sex.ifp"
     TSET_BLOWJ = "models\files\tset\blowjobz\sex.ifp"
-    DEST_FILE = "modloader\2huGTA\sex\sex.ifp"
-    IFP_FILE = "sex"
+    
+    DEST_FILE = "modloader\2huGTA\sex\sex_event.ifp"
+    IFP_FILE = "sex_event"
+    
+    KEY_P = 80
+    KEY_UP =  38
+    KEY_DOWN = 40
+    KEY_LEFT = 37
+    KEY_RIGHT = 39
 end
-gosub @CreateActress
 
 while true
-    repeat
-    wait 0
-    until 0AB0:   key_pressed 80
-    repeat
-    wait 0
-    until 8AB0:   not key_pressed 80
+wait 0
+    if 10@==0
+    then
+        if 0AB0:   key_pressed KEY_P
+        then 10@=1
+        end
+    end
+    if 10@==1
+    then
+        if 8AB0:   not key_pressed KEY_P
+        then
+            10@=0
+            if 11@==0
+            then
+                11@=1
+                12@=0 //anim
+                13@=6 //speed
+                gosub @CreateActress
+                gosub @LoadAnim
+            else
+                11@=0
+                gosub @DestroyActress
+                04EF: release_animation IFP_FILE
+                0B00: delete_file DEST_FILE  // IF and SET
+            end
+        end
+    end
     
-    //0605: actor 0@ perform_animation "idle_stance" IFP "ped" framedelta 4.0 loop 1 lockX 0 lockY 0 lockF 0 time -1
-    gosub @DestroyActress
-    0B04: copy_file TSET_BLOWJ to DEST_FILE //IF and SET
-    wait 100
-    0B00: delete_file DEST_FILE  // IF and SET
-    0B04: copy_file TSET_SEX to DEST_FILE //IF and SET
-    wait 1000
-    gosub @CreateActress
-    0ACC: show_text_lowpriority "Sex" time 4000
-    04ED: load_animation IFP_FILE
-    repeat
-    wait 0
-    until 04EE:   animation IFP_FILE loaded
-    0605: actor 0@ perform_animation "fem" IFP IFP_FILE framedelta 4.0 loop 1 lockX 0 lockY 0 lockF 0 time -1
-    04EF: release_animation IFP_FILE
-    0B00: delete_file DEST_FILE  // IF and SET
-    
-    repeat
-    wait 0
-    until 0AB0:   key_pressed 80
-    repeat
-    wait 0
-    until 8AB0:   not key_pressed 80
-    
-    //0605: actor 0@ perform_animation "idle_stance" IFP "ped" framedelta 4.0 loop 1 lockX 0 lockY 0 lockF 0 time -1
-    gosub @DestroyActress
-    0B04: copy_file TSET_SEX to DEST_FILE //IF and SET
-    wait 100
-    0B00: delete_file DEST_FILE  // IF and SET
-    0B04: copy_file TSET_BLOWJ to DEST_FILE //IF and SET
-    wait 1000
-    gosub @CreateActress
-    0ACC: show_text_lowpriority "Blowjobz" time 4000
-    04ED: load_animation IFP_FILE
-    repeat
-    wait 0
-    until 04EE:   animation IFP_FILE loaded
-    0605: actor 0@ perform_animation "fem" IFP IFP_FILE framedelta 4.0 loop 1 lockX 0 lockY 0 lockF 0 time -1
-    04EF: release_animation IFP_FILE
-    0B00: delete_file DEST_FILE  // IF and SET
+    if 11@==1
+    then
+        if 0AB0:   key_pressed KEY_DOWN
+        then
+            repeat
+            wait 0
+            until 8AB0:   not key_pressed KEY_DOWN
+            if 13@==8
+            then 13@=0
+            else 13@+=1
+            end
+            gosub @ChangeAnim
+        end
+        if 0AB0:   key_pressed KEY_UP
+        then
+            repeat
+            wait 0
+            until 8AB0:   not key_pressed KEY_UP
+            if 13@==0
+            then 13@=8
+            else 13@-=1
+            end
+            gosub @ChangeAnim
+        end
+        if or
+        0AB0:   key_pressed KEY_LEFT
+        0AB0:   key_pressed KEY_RIGHT
+        then
+            repeat
+            wait 0
+            until 8AB0:   not key_pressed KEY_LEFT
+            repeat
+            wait 0
+            until 8AB0:   not key_pressed KEY_RIGHT
+            if 12@==0
+            then 12@=1
+            else 12@=0
+            end
+            gosub @LoadAnim
+        end
+    end
 end
 
 :CreateActress
@@ -310,6 +338,128 @@ return
 
 :DestroyActress
 009B: destroy_actor 0@
+return
+
+:LoadAnim
+04EF: release_animation IFP_FILE
+0B00: delete_file DEST_FILE  // IF and SET
+wait 100 ms
+//0605: actor 0@ perform_animation "idle_stance" IFP "ped" framedelta 4.0 loop 1 lockX 0 lockY 0 lockF 0 time -1
+gosub @DestroyActress
+gosub @GenerateAnimFile
+0B00: delete_file DEST_FILE  // IF and SET
+gosub @GenerateAnimFile
+wait 1000
+gosub @CreateActress
+04ED: load_animation IFP_FILE
+repeat
+wait 0
+until 04EE:   animation IFP_FILE loaded
+gosub @ChangeAnim
+return
+
+:GenerateAnimFile
+if 12@==0
+then 0B04: copy_file "models\files\sex\Sex Table.ifp" to DEST_FILE //IF and SET
+end
+if 12@==1
+then 0B04: copy_file "models\files\sex\Blowjob on Knees2.ifp" to DEST_FILE //IF and SET
+end
+return
+
+:ChangeAnim
+gosub @CheckSpeed
+if 12@==0
+then //0ACC: show_text_lowpriority "Sex" time 3000 //0AD0: show_formatted_text_lowpriority "Sex - %s" time 3000 14@v
+    if 13@==0
+    then 0ACC: show_text_lowpriority "Sex - fast1_f" time 2000
+    end
+    if 13@==1
+    then 0ACC: show_text_lowpriority "Sex - fast2_f" time 2000
+    end
+    if 13@==2
+    then 0ACC: show_text_lowpriority "Sex - fast3_f" time 2000
+    end
+    if 13@==3
+    then 0ACC: show_text_lowpriority "Sex - normal1_f" time 2000
+    end
+    if 13@==4
+    then 0ACC: show_text_lowpriority "Sex - normal2_f" time 2000
+    end
+    if 13@==5
+    then 0ACC: show_text_lowpriority "Sex - normal3_f" time 2000
+    end
+    if 13@==6
+    then 0ACC: show_text_lowpriority "Sex - slow1_f" time 2000
+    end
+    if 13@==7
+    then 0ACC: show_text_lowpriority "Sex - slow2_f" time 2000
+    end
+    if 13@==8
+    then 0ACC: show_text_lowpriority "Sex - slow3_f" time 2000
+    end
+end
+if 12@==1
+then //0ACC: show_text_lowpriority "Blowjob" time 3000 //0AD0: show_formatted_text_lowpriority "Blowjob - %s" time 3000 14@v
+    if 13@==0
+    then 0ACC: show_text_lowpriority "Blowjob - fast1_f" time 2000
+    end
+    if 13@==1
+    then 0ACC: show_text_lowpriority "Blowjob - fast2_f" time 2000
+    end
+    if 13@==2
+    then 0ACC: show_text_lowpriority "Blowjob - fast3_f" time 2000
+    end
+    if 13@==3
+    then 0ACC: show_text_lowpriority "Blowjob - normal1_f" time 2000
+    end
+    if 13@==4
+    then 0ACC: show_text_lowpriority "Blowjob - normal2_f" time 2000
+    end
+    if 13@==5
+    then 0ACC: show_text_lowpriority "Blowjob - normal3_f" time 2000
+    end
+    if 13@==6
+    then 0ACC: show_text_lowpriority "Blowjob - slow1_f" time 2000
+    end
+    if 13@==7
+    then 0ACC: show_text_lowpriority "Blowjob - slow2_f" time 2000
+    end
+    if 13@==8
+    then 0ACC: show_text_lowpriority "Blowjob - slow3_f" time 2000
+    end
+end
+0605: actor 0@ perform_animation 14@v IFP IFP_FILE framedelta 4.0 loop 1 lockX 0 lockY 0 lockF 0 time -1
+return
+
+:CheckSpeed
+if 13@==0
+then 14@v="fast1_f"
+end
+if 13@==1
+then 14@v="fast2_f"
+end
+if 13@==2
+then 14@v="fast3_f"
+end
+if 13@==3
+then 14@v="normal1_f"
+end
+if 13@==4
+then 14@v="normal2_f"
+end
+if 13@==5
+then 14@v="normal3_f"
+end
+if 13@==6
+then 14@v="slow1_f"
+end
+if 13@==7
+then 14@v="slow2_f"
+end
+if 13@==8
+then 14@v="slow3_f"
+end
 return
 
 0A93: end_custom_thread
