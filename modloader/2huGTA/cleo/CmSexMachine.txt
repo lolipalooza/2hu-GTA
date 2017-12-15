@@ -1,6 +1,10 @@
 {$CLEO .cm}
 thread 'CmSexMachine'
 
+0A9A: 100@ = openfile "modloader/2hugta/cleo/SexMachine.log" mode "wb+"
+0AD9: write_formatted_text "%s" in_file 100@ vars "asdf"
+0A9B: closefile 100@
+
 gosub @CmSexStart
 if wasted_or_busted 
 then gosub @CmSexEnd
@@ -236,8 +240,8 @@ const
     SPD_THRESHOLD2 = 52 // Threshold to pass from slow to normal
     SPD_THRESHOLD3 = 88 // Threshold to pass from normal to fast
     
-    IFP_FILE = "sex_event"
-    IFP_DEST_FILE = "modloader/2hugta/sex/sex_event.ifp"
+    //IFP_FILE = "sex_event"
+    //IFP_DEST_FILE = "modloader/2hugta/sex/sex_event.ifp"
     LOG_FILE = "modloader/2hugta/cleo/SexMachine.log"
                    
     // Sex Menu States
@@ -398,6 +402,7 @@ then
     //0209: SexPoseInt = random_int_in_ranges ? ?
     0AB1: call_scm_func @GetActorsCoordinates 2 SexPoseInt SexPlace ret FemX FemY FemZ FemA MaleX MaleY MaleZ MaleA
     0AB1: call_scm_func @GenerateActors 8 FemX FemY FemZ FemA MaleX MaleY MaleZ MaleA ret PornActress PornActor
+    0AB1: call_scm_func @GenerateSexFiles 2 SexPoseInt SexPlace
     0AB1: call_scm_func @LoadSexualPose 5 PornActress PornActor SexPoseInt SexPlace SPD_SLOW
     0AB1: call_scm_func @ToggleSexualCamera 2 SexPoseInt SexPlace
     OnSexActivity = true
@@ -719,6 +724,7 @@ then
                 009B: destroy_actor PornActor
                 0AB1: call_scm_func @GetActorsCoordinates 2 SexPoseInt SexPlace ret FemX FemY FemZ FemA MaleX MaleY MaleZ MaleA
                 0AB1: call_scm_func @GenerateActors 8 FemX FemY FemZ FemA MaleX MaleY MaleZ MaleA ret PornActress PornActor
+                0AB1: call_scm_func @GenerateSexFiles 2 SexPoseInt SexPlace
                 0AB1: call_scm_func @LoadSexualPose 5 PornActress PornActor SexPoseInt SexPlace SPD_SLOW
                 0AB1: call_scm_func @ToggleSexualCamera 2 SexPoseInt SexPlace
                 wait 500
@@ -760,6 +766,7 @@ then
                 009B: destroy_actor PornActor
                 0AB1: call_scm_func @GetActorsCoordinates 2 SexPoseInt SexPlace ret FemX FemY FemZ FemA MaleX MaleY MaleZ MaleA
                 0AB1: call_scm_func @GenerateActors 8 FemX FemY FemZ FemA MaleX MaleY MaleZ MaleA ret PornActress PornActor
+                0AB1: call_scm_func @GenerateSexFiles 2 SexPoseInt SexPlace
                 0AB1: call_scm_func @LoadSexualPose 5 PornActress PornActor SexPoseInt SexPlace SPD_SLOW
                 0AB1: call_scm_func @ToggleSexualCamera 2 SexPoseInt SexPlace
                 wait 500

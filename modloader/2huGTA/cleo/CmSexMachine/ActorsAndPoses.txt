@@ -49,6 +49,7 @@ const
     An_MaxAnim = 8@
     AnimIfpFem = 10@v
     AnimIfpMale = 14@v
+    An_IfpFile = 18@v
 end
 
 //0605: actor An_Actress perform_animation "IDLE_stance" IFP "ped" framedelta 4.0 loop 1 lockX 0 lockY 0 lockF 0 time -1
@@ -63,19 +64,22 @@ if 001B:   1 > An_Animation
 then 0085: An_Animation = An_MaxAnim // (int)
 end
 0AB1: @StoreInt 2 @CurrentAnimation An_Animation
-0AB1: call_scm_func @GetAnimationNames 3 An_Str1 An_Str2 An_Animation out 10@ 11@ 12@ 13@ 14@ 15@ 16@ 17@
+0AB1: call_scm_func @GetAnimationNames 3 An_Str1 An_Str2 An_Animation out ifp_fem 10@ 11@ 12@ 13@ ifp_male 14@ 15@ 16@ 17@ ifp_file 18@ 19@ 20@ 21@
 
-0AB1: call_scm_func @GenerateSexFiles 5 An_SexPoseInt An_SexPlace An_Str1 An_Str2 An_Animation
-wait 1000
-
-04ED: load_animation IFP_FILE
+04ED: load_animation "idle"
+04ED: load_animation "slow"
+04ED: load_animation "normal"
+04ED: load_animation "fast"
 038B: load_requested_models
 repeat
 wait 0
-until 04EE:   animation IFP_FILE loaded
-0605: actor An_Actress perform_animation "fem" IFP IFP_FILE framedelta 4.0 loop 1 lockX 0 lockY 0 lockF 0 time -1
-0605: actor An_Actor perform_animation "male" IFP IFP_FILE framedelta 4.0 loop 1 lockX 0 lockY 0 lockF 0 time -1
-04EF: release_animation IFP_FILE
+until 04EE:   animation "idle" loaded and 04EE:   animation "slow" loaded and 04EE:   animation "normal" loaded and 04EE:   animation "fast" loaded
+0605: actor An_Actress perform_animation AnimIfpFem IFP An_IfpFile framedelta 4.0 loop 1 lockX 0 lockY 0 lockF 0 time -1
+0605: actor An_Actor perform_animation AnimIfpMale IFP An_IfpFile framedelta 4.0 loop 1 lockX 0 lockY 0 lockF 0 time -1
+04EF: release_animation "idle"
+04EF: release_animation "slow"
+04EF: release_animation "normal"
+04EF: release_animation "fast"
 
 0AB2: ret 0
 
@@ -250,20 +254,24 @@ if 05AE:   Gan_StrSpeed == "idle__" // @s == 'short'
 then
     0AD3: 10@v = format "idle%d_f" Gan_Animation
     0AD3: 14@v = format "idle%d_m" Gan_Animation
+    06D2: 18@v = "idle" // @v = string
 end
 if 05AE:   Gan_StrSpeed == "slow__" // @s == 'short'
 then
     0AD3: 10@v = format "slow%d_f" Gan_Animation
     0AD3: 14@v = format "slow%d_m" Gan_Animation
+    06D2: 18@v = "slow" // @v = string
 end
 if 05AE:   Gan_StrSpeed == "normal" // @s == 'short'
 then
     0AD3: 10@v = format "normal%d_f" Gan_Animation
     0AD3: 14@v = format "normal%d_m" Gan_Animation
+    06D2: 18@v = "normal" // @v = string
 end
 if 05AE:   Gan_StrSpeed == "fast__" // @s == 'short'
 then
     0AD3: 10@v = format "fast%d_f" Gan_Animation
     0AD3: 14@v = format "fast%d_m" Gan_Animation
+    06D2: 18@v = "fast" // @v = string
 end
-0AB2: ret 8 10@ 11@ 12@ 13@ 14@ 15@ 16@ 17@
+0AB2: ret 8 ifp_fem 10@ 11@ 12@ 13@ ifp_male 14@ 15@ 16@ 17@ ifp_file 18@ 19@ 20@ 21@
