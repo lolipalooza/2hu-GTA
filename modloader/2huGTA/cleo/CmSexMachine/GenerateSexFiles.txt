@@ -7,61 +7,43 @@ const
     DEST_SLOW   = "modloader/2hugta/sex/slow.ifp"
     DEST_NORMAL = "modloader/2hugta/sex/normal.ifp"
     DEST_FAST   = "modloader/2hugta/sex/fast.ifp"
+    
+    DEST_DIR    = "modloader/2hugta/sex"
 end
 
-0A9A: 30@ = openfile LOG_FILE mode "wb+"
+{0A9A: 30@ = openfile LOG_FILE mode "wb+"
 0AD9: write_formatted_text "%s" in_file 30@ vars "asdf"
-0A9B: closefile 30@
+0A9B: closefile 30@}
+
+if 0AE4:   directory_exists DEST_DIR
+then 0B01: delete_directory DEST_DIR include_subdirs 1
+end
 
 if 0@ == SEX_FUCKING
 then
     if 1@ == PL_BED
-    then
-        0B04: copy_file "models\files\sex\Sex Bed\idle.ifp" to DEST_IDLE //IF and SET
-        0B04: copy_file "models\files\sex\Sex Bed\slow.ifp" to DEST_SLOW //IF and SET
-        0B04: copy_file "models\files\sex\Sex Bed\normal.ifp" to DEST_NORMAL //IF and SET
-        0B04: copy_file "models\files\sex\Sex Bed\fast.ifp" to DEST_FAST //IF and SET
+    then 0B05: copy_directory "models\files\sex\Sex Bed" to DEST_DIR //IF and SET
     end
     if 1@ == PL_SOFA
-    then
-        0B04: copy_file "models\files\sex\Sex Sofa\idle.ifp" to DEST_IDLE //IF and SET
-        0B04: copy_file "models\files\sex\Sex Sofa\slow.ifp" to DEST_SLOW //IF and SET
-        0B04: copy_file "models\files\sex\Sex Sofa\normal.ifp" to DEST_NORMAL //IF and SET
-        0B04: copy_file "models\files\sex\Sex Sofa\fast.ifp" to DEST_FAST //IF and SET
+    then 0B05: copy_directory "models\files\sex\Sex Sofa" to DEST_DIR //IF and SET
     end
     if 1@ == PL_TABLE
-    then
-        0B04: copy_file "models\files\sex\Sex Table\idle.ifp" to DEST_IDLE //IF and SET
-        0B04: copy_file "models\files\sex\Sex Table\slow.ifp" to DEST_SLOW //IF and SET
-        0B04: copy_file "models\files\sex\Sex Table\normal.ifp" to DEST_NORMAL //IF and SET
-        0B04: copy_file "models\files\sex\Sex Table\fast.ifp" to DEST_FAST //IF and SET
+    then 0B05: copy_directory "models\files\sex\Sex Table" to DEST_DIR //IF and SET
     end
     if 1@ == PL_CHAIR
     then
     end
     if 1@ == PL_FLOOR
-    then
-        0B04: copy_file "models\files\sex\Sex on Floor\idle.ifp" to DEST_IDLE //IF and SET
-        0B04: copy_file "models\files\sex\Sex on Floor\slow.ifp" to DEST_SLOW //IF and SET
-        0B04: copy_file "models\files\sex\Sex on Floor\normal.ifp" to DEST_NORMAL //IF and SET
-        0B04: copy_file "models\files\sex\Sex on Floor\fast.ifp" to DEST_FAST //IF and SET
+    then 0B05: copy_directory "models\files\sex\Sex on Floor" to DEST_DIR //IF and SET
     end
     if 1@ == PL_BATH
     then
     end
     if 1@ == PL_KITCHEN
-    then
-        0B04: copy_file "models\files\sex\Sex Kitchen\idle.ifp" to DEST_IDLE //IF and SET
-        0B04: copy_file "models\files\sex\Sex Kitchen\slow.ifp" to DEST_SLOW //IF and SET
-        0B04: copy_file "models\files\sex\Sex Kitchen\normal.ifp" to DEST_NORMAL //IF and SET
-        0B04: copy_file "models\files\sex\Sex Kitchen\fast.ifp" to DEST_FAST //IF and SET
+    then 0B05: copy_directory "models\files\sex\Sex Kitchen" to DEST_DIR //IF and SET
     end
     if 1@ == PL_WALL
-    then
-        0B04: copy_file "models\files\sex\Sex on Foot\idle.ifp" to DEST_IDLE //IF and SET
-        0B04: copy_file "models\files\sex\Sex on Foot\slow.ifp" to DEST_SLOW //IF and SET
-        0B04: copy_file "models\files\sex\Sex on Foot\normal.ifp" to DEST_NORMAL //IF and SET
-        0B04: copy_file "models\files\sex\Sex on Foot\fast.ifp" to DEST_FAST //IF and SET
+    then 0B05: copy_directory "models\files\sex\Sex on Foot" to DEST_DIR //IF and SET
     end
     if 1@ == PL_FOOT
     then
@@ -70,159 +52,80 @@ end
 if 0@ == SEX_ANAL
 then
     if 1@ == PL_BED
-    then
-        0B04: copy_file "models\files\sex\Reverse on Bed\idle.ifp" to DEST_IDLE //IF and SET
-        0B04: copy_file "models\files\sex\Reverse on Bed\slow.ifp" to DEST_SLOW //IF and SET
-        0B04: copy_file "models\files\sex\Reverse on Bed\normal.ifp" to DEST_NORMAL //IF and SET
-        0B04: copy_file "models\files\sex\Reverse on Bed\fast.ifp" to DEST_FAST //IF and SET
+    then 0B05: copy_directory "models\files\sex\Reverse on Bed" to DEST_DIR //IF and SET
     end
     if 1@ == PL_SOFA
-    then
-        0B04: copy_file "models\files\sex\Reverse on Sofa\idle.ifp" to DEST_IDLE //IF and SET
-        0B04: copy_file "models\files\sex\Reverse on Sofa\slow.ifp" to DEST_SLOW //IF and SET
-        0B04: copy_file "models\files\sex\Reverse on Sofa\normal.ifp" to DEST_NORMAL //IF and SET
-        0B04: copy_file "models\files\sex\Reverse on Sofa\fast.ifp" to DEST_FAST //IF and SET
+    then 0B05: copy_directory "models\files\sex\Reverse on Sofa" to DEST_DIR //IF and SET
     end
     if 1@ == PL_TABLE
-    then
-        0B04: copy_file "models\files\sex\Reverse Table\idle.ifp" to DEST_IDLE //IF and SET
-        0B04: copy_file "models\files\sex\Reverse Table\slow.ifp" to DEST_SLOW //IF and SET
-        0B04: copy_file "models\files\sex\Reverse Table\normal.ifp" to DEST_NORMAL //IF and SET
-        0B04: copy_file "models\files\sex\Reverse Table\fast.ifp" to DEST_FAST //IF and SET
+    then 0B05: copy_directory "models\files\sex\Reverse Table" to DEST_DIR //IF and SET
     end
     if 1@ == PL_FLOOR
-    then
-        0B04: copy_file "models\files\sex\Reverse on Floor\idle.ifp" to DEST_IDLE //IF and SET
-        0B04: copy_file "models\files\sex\Reverse on Floor\slow.ifp" to DEST_SLOW //IF and SET
-        0B04: copy_file "models\files\sex\Reverse on Floor\normal.ifp" to DEST_NORMAL //IF and SET
-        0B04: copy_file "models\files\sex\Reverse on Floor\fast.ifp" to DEST_FAST //IF and SET
+    then 0B05: copy_directory "models\files\sex\Reverse on Floor" to DEST_DIR //IF and SET
     end
     if 1@ == PL_BATH
-    then
-        0B04: copy_file "models\files\sex\Reverse on Knees\idle.ifp" to DEST_IDLE //IF and SET
-        0B04: copy_file "models\files\sex\Reverse on Knees\slow.ifp" to DEST_SLOW //IF and SET
-        0B04: copy_file "models\files\sex\Reverse on Knees\normal.ifp" to DEST_NORMAL //IF and SET
-        0B04: copy_file "models\files\sex\Reverse on Knees\fast.ifp" to DEST_FAST //IF and SET
+    then 0B05: copy_directory "models\files\sex\Reverse on Knees" to DEST_DIR //IF and SET
     end
     if 1@ == PL_WALL
-    then
-        0B04: copy_file "models\files\sex\Reverse on Foot\idle.ifp" to DEST_IDLE //IF and SET
-        0B04: copy_file "models\files\sex\Reverse on Foot\slow.ifp" to DEST_SLOW //IF and SET
-        0B04: copy_file "models\files\sex\Reverse on Foot\normal.ifp" to DEST_NORMAL //IF and SET
-        0B04: copy_file "models\files\sex\Reverse on Foot\fast.ifp" to DEST_FAST //IF and SET
+    then 0B05: copy_directory "models\files\sex\Reverse on Foot" to DEST_DIR //IF and SET
     end
 end
 if 0@ == SEX_HJ
 then
     if 1@ == PL_BED
-    then
-        0B04: copy_file "models\files\sex\Handjob on Bed\idle.ifp" to DEST_IDLE //IF and SET
-        0B04: copy_file "models\files\sex\Handjob on Bed\slow.ifp" to DEST_SLOW //IF and SET
-        0B04: copy_file "models\files\sex\Handjob on Bed\normal.ifp" to DEST_NORMAL //IF and SET
-        0B04: copy_file "models\files\sex\Handjob on Bed\fast.ifp" to DEST_FAST //IF and SET
+    then 0B05: copy_directory "models\files\sex\Handjob on Bed" to DEST_DIR //IF and SET
     end
     if 1@ == PL_SOFA
-    then
-        0B04: copy_file "models\files\sex\Handjob Sit down\idle.ifp" to DEST_IDLE //IF and SET
-        0B04: copy_file "models\files\sex\Handjob Sit down\slow.ifp" to DEST_SLOW //IF and SET
-        0B04: copy_file "models\files\sex\Handjob Sit down\normal.ifp" to DEST_NORMAL //IF and SET
-        0B04: copy_file "models\files\sex\Handjob Sit down\fast.ifp" to DEST_FAST //IF and SET
+    then 0B05: copy_directory "models\files\sex\Handjob Sit down" to DEST_DIR //IF and SET
     end
     if 1@ == PL_FOOT
-    then
-        0B04: copy_file "models\files\sex\Handjob on Foot\idle.ifp" to DEST_IDLE //IF and SET
-        0B04: copy_file "models\files\sex\Handjob on Foot\slow.ifp" to DEST_SLOW //IF and SET
-        0B04: copy_file "models\files\sex\Handjob on Foot\normal.ifp" to DEST_NORMAL //IF and SET
-        0B04: copy_file "models\files\sex\Handjob on Foot\fast.ifp" to DEST_FAST //IF and SET
+    then 0B05: copy_directory "models\files\sex\Handjob on Foot" to DEST_DIR //IF and SET
     end
 end
 if 0@ == SEX_BJ
 then
     if 1@ == PL_BED
-    then
-        0B04: copy_file "models\files\sex\Blowjob on Bed\idle.ifp" to DEST_IDLE //IF and SET
-        0B04: copy_file "models\files\sex\Blowjob on Bed\slow.ifp" to DEST_SLOW //IF and SET
-        0B04: copy_file "models\files\sex\Blowjob on Bed\normal.ifp" to DEST_NORMAL //IF and SET
-        0B04: copy_file "models\files\sex\Blowjob on Bed\fast.ifp" to DEST_FAST //IF and SET
+    then 0B05: copy_directory "models\files\sex\Blowjob on Bed" to DEST_DIR //IF and SET
     end
     if 1@ == PL_SOFA
-    then
-        0B04: copy_file "models\files\sex\Blowjob Sofa\idle.ifp" to DEST_IDLE //IF and SET
-        0B04: copy_file "models\files\sex\Blowjob Sofa\slow.ifp" to DEST_SLOW //IF and SET
-        0B04: copy_file "models\files\sex\Blowjob Sofa\normal.ifp" to DEST_NORMAL //IF and SET
-        0B04: copy_file "models\files\sex\Blowjob Sofa\fast.ifp" to DEST_FAST //IF and SET
+    then 0B05: copy_directory "models\files\sex\Blowjob Sofa" to DEST_DIR //IF and SET
     end
     if 1@ == PL_CHAIR
-    then
-        0B04: copy_file "models\files\sex\Blowjob Sit down\idle.ifp" to DEST_IDLE //IF and SET
-        0B04: copy_file "models\files\sex\Blowjob Sit down\slow.ifp" to DEST_SLOW //IF and SET
-        0B04: copy_file "models\files\sex\Blowjob Sit down\normal.ifp" to DEST_NORMAL //IF and SET
-        0B04: copy_file "models\files\sex\Blowjob Sit down\fast.ifp" to DEST_FAST //IF and SET
+    then 0B05: copy_directory "models\files\sex\Blowjob Sit down" to DEST_DIR //IF and SET
     end
     if 1@ == PL_FLOOR
-    then
-        0B04: copy_file "models\files\sex\Blowjob on Knees\idle.ifp" to DEST_IDLE //IF and SET
-        0B04: copy_file "models\files\sex\Blowjob on Knees\slow.ifp" to DEST_SLOW //IF and SET
-        0B04: copy_file "models\files\sex\Blowjob on Knees\normal.ifp" to DEST_NORMAL //IF and SET
-        0B04: copy_file "models\files\sex\Blowjob on Knees\fast.ifp" to DEST_FAST //IF and SET
+    then 0B05: copy_directory "models\files\sex\Blowjob on Knees" to DEST_DIR //IF and SET
     end
     if 1@ == PL_KITCHEN
-    then
-        0B04: copy_file "models\files\sex\Blowjob Kitchen\idle.ifp" to DEST_IDLE //IF and SET
-        0B04: copy_file "models\files\sex\Blowjob Kitchen\slow.ifp" to DEST_SLOW //IF and SET
-        0B04: copy_file "models\files\sex\Blowjob Kitchen\normal.ifp" to DEST_NORMAL //IF and SET
-        0B04: copy_file "models\files\sex\Blowjob Kitchen\fast.ifp" to DEST_FAST //IF and SET
+    then 0B05: copy_directory "models\files\sex\Blowjob Kitchen" to DEST_DIR //IF and SET
     end
 end
 if 0@ == SEX_CUNNI
 then
     if 1@ == PL_SOFA
-    then
-        0B04: copy_file "models\files\sex\Cunnilingus Sofa\idle.ifp" to DEST_IDLE //IF and SET
-        0B04: copy_file "models\files\sex\Cunnilingus Sofa\slow.ifp" to DEST_SLOW //IF and SET
-        0B04: copy_file "models\files\sex\Cunnilingus Sofa\normal.ifp" to DEST_NORMAL //IF and SET
-        0B04: copy_file "models\files\sex\Cunnilingus Sofa\fast.ifp" to DEST_FAST //IF and SET
+    then 0B05: copy_directory "models\files\sex\Cunnilingus Sofa" to DEST_DIR //IF and SET
     end
     if 1@ == PL_FLOOR
-    then
-        0B04: copy_file "models\files\sex\Cunnilingus Floor\idle.ifp" to DEST_IDLE //IF and SET
-        0B04: copy_file "models\files\sex\Cunnilingus Floor\slow.ifp" to DEST_SLOW //IF and SET
-        0B04: copy_file "models\files\sex\Cunnilingus Floor\normal.ifp" to DEST_NORMAL //IF and SET
-        0B04: copy_file "models\files\sex\Cunnilingus Floor\fast.ifp" to DEST_FAST //IF and SET
+    then 0B05: copy_directory "models\files\sex\Cunnilingus Floor" to DEST_DIR //IF and SET
     end
 end
 if 0@ == SEX_69
 then
     if 1@ == PL_SOFA
-    then
-        0B04: copy_file "models\files\sex\Oral69 Sofa\idle.ifp" to DEST_IDLE //IF and SET
-        0B04: copy_file "models\files\sex\Oral69 Sofa\slow.ifp" to DEST_SLOW //IF and SET
-        0B04: copy_file "models\files\sex\Oral69 Sofa\normal.ifp" to DEST_NORMAL //IF and SET
-        0B04: copy_file "models\files\sex\Oral69 Sofa\fast.ifp" to DEST_FAST //IF and SET
+    then 0B05: copy_directory "models\files\sex\Oral69 Sofa" to DEST_DIR //IF and SET
     end
 end
 if 0@ == SEX_TJ
 then
     if 1@ == PL_BED
-    then
-        0B04: copy_file "models\files\sex\Titjob on Bed 2\idle.ifp" to DEST_IDLE //IF and SET
-        0B04: copy_file "models\files\sex\Titjob on Bed 2\slow.ifp" to DEST_SLOW //IF and SET
-        0B04: copy_file "models\files\sex\Titjob on Bed 2\normal.ifp" to DEST_NORMAL //IF and SET
-        0B04: copy_file "models\files\sex\Titjob on Bed 2\fast.ifp" to DEST_FAST //IF and SET
+    then 0B05: copy_directory "models\files\sex\Titjob on Bed 2" to DEST_DIR //IF and SET
     end
 end
 if 0@ == SEX_FJ
 then
     if 1@ == PL_SOFA
-    then
-        0B04: copy_file "models\files\sex\Footjob on Sofa\idle.ifp" to DEST_IDLE //IF and SET
-        0B04: copy_file "models\files\sex\Footjob on Sofa\slow.ifp" to DEST_SLOW //IF and SET
-        0B04: copy_file "models\files\sex\Footjob on Sofa\normal.ifp" to DEST_NORMAL //IF and SET
-        0B04: copy_file "models\files\sex\Footjob on Sofa\fast.ifp" to DEST_FAST //IF and SET
+    then 0B05: copy_directory "models\files\sex\Footjob on Sofa" to DEST_DIR //IF and SET
     end
 end
-
-
 wait 1000
 0AB2: ret 0
-

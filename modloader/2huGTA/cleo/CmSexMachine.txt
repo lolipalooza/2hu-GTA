@@ -1,16 +1,18 @@
 {$CLEO .cm}
 thread 'CmSexMachine'
 
-0A9A: 100@ = openfile "modloader/2hugta/cleo/SexMachine.log" mode "wb+"
-0AD9: write_formatted_text "%s" in_file 100@ vars "asdf"
-0A9B: closefile 100@
-
 gosub @CmSexStart
 if wasted_or_busted 
 then gosub @CmSexEnd
 end
 gosub @CmSexCleanUp
 end_thread 
+
+:CmSexStart2
+:CmSexEnd2
+return
+:CmSexCleanUp2
+return
 
 {======================================================================
 Sexual positions, actors and cameras

@@ -66,6 +66,10 @@ end
 0AB1: @StoreInt 2 @CurrentAnimation An_Animation
 0AB1: call_scm_func @GetAnimationNames 3 An_Str1 An_Str2 An_Animation out ifp_fem 10@ 11@ 12@ 13@ ifp_male 14@ 15@ 16@ 17@ ifp_file 18@ 19@ 20@ 21@
 
+0A9A: 30@ = openfile LOG_FILE mode "wb+"
+0AD9: write_formatted_text "%c%cFem executing animation %s, Male execting animation %s (file %s)" in_file 30@ vars 0xd 0xa AnimIfpFem AnimIfpMale An_IfpFile
+0A9B: closefile 30@
+
 04ED: load_animation "idle"
 04ED: load_animation "slow"
 04ED: load_animation "normal"
@@ -140,9 +144,9 @@ hex
 
     // Handjob
     "slow__" 1 "slow__" 3 "slow__" 3 "fast__" 2 // Bed
-    "______" 0 "______" 0 "______" 0 "______" 0 // Sofa
+    "slow__" 1 "slow__" 1 "slow__" 1 "fast__" 1 // Sofa
     "______" 0 "______" 0 "______" 0 "______" 0 // Table
-    "slow__" 1 "slow__" 1 "slow__" 1 "fast__" 1 // Sit down
+    "______" 0 "______" 0 "______" 0 "______" 0 // Sit down
     "______" 0 "______" 0 "______" 0 "______" 0 // Floor
     "______" 0 "______" 0 "______" 0 "______" 0 // Bath
     "______" 0 "______" 0 "______" 0 "______" 0 // Kitchen
@@ -274,4 +278,4 @@ then
     0AD3: 14@v = format "fast%d_m" Gan_Animation
     06D2: 18@v = "fast" // @v = string
 end
-0AB2: ret 8 ifp_fem 10@ 11@ 12@ 13@ ifp_male 14@ 15@ 16@ 17@ ifp_file 18@ 19@ 20@ 21@
+0AB2: ret 12 ifp_fem 10@ 11@ 12@ 13@ ifp_male 14@ 15@ 16@ 17@ ifp_file 18@ 19@ 20@ 21@
