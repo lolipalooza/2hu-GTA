@@ -2,13 +2,31 @@
 ======================================================================}
 :ToggleSexualCamera
 // 0@: sexual pose, 1@: sex place
-0AB1: @GetInt 1 @CurrentCamera 10@
-0AB1: @GetCameraCoordinates 3 10@ 0@ 1@ ret 3@ 4@ 5@ 6@ 7@ 8@
-015F: set_camera_position 3@ 4@ 5@ rotation 0.0 0.0 0.0
-0160: set_camera_point_at 6@ 7@ 8@ switchstyle 2
-0AB1: call_scm_func @IncOrDecIntVariable 4 10@ 0 11 FLAG_INCREASE 10@
-0AB1: @StoreInt 2 @CurrentCamera 10@
+0AB1: @GetInt 1 @CameraMode 11@
+if 11@ == 0 // Free mode
+then
+    0619: enable_actor $PLAYER_ACTOR collision_detection 0
+    0AB1: @GetCenterCoordinates 2 0@ 1@ ret 3@ 4@ 5@
+    00A1: put_actor $PLAYER_ACTOR at 3@ 4@ 5@
+end
+if 11@ == 1 // Fixed mode
+then
+    0AB1: @GetInt 1 @CurrentCamera 10@
+    0AB1: @GetCameraCoordinates 3 10@ 0@ 1@ ret 3@ 4@ 5@ 6@ 7@ 8@
+    015F: set_camera_position 3@ 4@ 5@ rotation 0.0 0.0 0.0
+    0160: set_camera_point_at 6@ 7@ 8@ switchstyle 2
+    0AB1: call_scm_func @IncOrDecIntVariable 4 10@ 0 11 FLAG_INCREASE 10@
+    0AB1: @StoreInt 2 @CurrentCamera 10@
+end
+if 11@ == 2 // First person mode
+then
+end
 0AB2: ret 0
+
+:CameraMode
+hex
+    0
+end
 
 :CurrentCamera
 hex
@@ -19,6 +37,126 @@ end
 ======================================================================}
 :Set6numbers
 0AB2: ret 6 0@ 1@ 2@ 3@ 4@ 5@
+
+{======================================================================
+======================================================================}
+:Set3numbers
+0AB2: ret 3 0@ 1@ 2@
+
+{======================================================================
+======================================================================}
+:GetCenterCoordinates
+094B: 10@v = get_active_interior_name_from_actor $PLAYER_ACTOR // 16-byte string
+if or
+10@v == "SVLAMD"
+PlayerInterior == 0
+then 0AB1: @GetCenterCoordinates2 2 0@ 1@ ret 4@ 5@ 6@
+end
+0AB2: ret 3 4@ 5@ 6@
+
+{======================================================================
+======================================================================}
+:GetCenterCoordinates2
+    if 0@ == SEX_FUCKING
+    then
+        if 1@ == PL_BED
+        then 0AB1: @Set3numbers 3 set_center_pos 2358.99 -1132.7687 1050.579 store_in 4@ 5@ 6@
+        end
+        if 1@ == PL_SOFA
+        then 0AB1: @Set3numbers 3 set_center_pos 2374.2893 -1123.5206 1050.381 store_in 4@ 5@ 6@
+        end
+        if 1@ == PL_TABLE
+        then 0AB1: @Set3numbers 3 set_center_pos 2371.7969 -1132.8502 1050.4785 store_in 4@ 5@ 6@
+        end
+        if 1@ == PL_FLOOR
+        then 0AB1: @Set3numbers 3 set_center_pos 2373.4448 -1126.0282 1049.8816 store_in 4@ 5@ 6@
+        end
+        if 1@ == PL_KITCHEN
+        then 0AB1: @Set3numbers 3 set_center_pos 2374.1855 -1131.6512 1050.9828 store_in 4@ 5@ 6@
+        end
+        if 1@ == PL_WALL
+        then 0AB1: @Set3numbers 3 set_center_pos 2369.8174 -1129.0562 1050.4834 store_in 4@ 5@ 6@
+        end
+    end
+    {if 0@ == SEX_BJ
+    then
+        if 1@ == PL_BED
+        then 0AB1: @Set3numbers 3 set_center_pos 2362.2092 -1122.4932 1050.3805 store_in 4@ 5@ 6@
+        end
+        if 1@ == PL_SOFA
+        then 0AB1: @Set3numbers 3 set_center_pos 2374.5054 -1123.332 1050.0811 store_in 4@ 5@ 6@
+        end
+        if 1@ == PL_CHAIR
+        then 0AB1: @Set3numbers 3 set_center_pos 2359.7014 -1132.7325 1050.2815 store_in 4@ 5@ 6@
+        end
+        if 1@ == PL_FLOOR
+        then 0AB1: @Set3numbers 3 set_center_pos 2374.4753 -1123.4691 1050.5 store_in 4@ 5@ 6@
+        end
+        if 1@ == PL_KITCHEN
+        then 0AB1: @Set3numbers 3 set_center_pos 2373.8 -1131.4 1050.4 store_in 4@ 5@ 6@
+        end
+    end
+    if 0@ == SEX_ANAL
+    then
+        if 1@ == PL_BED
+        then 0AB1: @Set3numbers 3 set_center_pos 2359.1401 -1132.9093 1050.577 store_in 4@ 5@ 6@
+        end
+        if 1@ == PL_SOFA
+        then 0AB1: @Set3numbers 3 set_center_pos 2372.5667 -1121.9469 1050.1776 store_in 4@ 5@ 6@
+        end
+        if 1@ == PL_TABLE
+        then 0AB1: @Set3numbers 3 set_center_pos 2372.2219 -1132.9757 1050.4785 store_in 4@ 5@ 6@
+        end
+        if 1@ == PL_FLOOR
+        then 0AB1: @Set3numbers 3 set_center_pos 2372.5811 -1125.9805 1049.8792 store_in 4@ 5@ 6@
+        end
+        if 1@ == PL_BATH
+        then 0AB1: @Set3numbers 3 set_center_pos 2362.7004 -1122.2124 1050.4795 store_in 4@ 5@ 6@
+        end
+        if 1@ == PL_WALL
+        then 0AB1: @Set3numbers 3 set_center_pos 2369.8132 -1128.7932 1050.4814 store_in 4@ 5@ 6@
+        end
+    end
+    if 0@ == SEX_HJ
+    then
+        if 1@ == PL_BED
+        then 0AB1: @Set3numbers 3 set_center_pos 2361.9197 -1122.5356 1050.4824 store_in 4@ 5@ 6@
+        end
+        if 1@ == PL_SOFA
+        then 0AB1: @Set3numbers 3 set_center_pos 2372.2788 -1121.979 1050.083 store_in 4@ 5@ 6@
+        end
+        if 1@ == PL_FOOT
+        then 0AB1: @Set3numbers 3 set_center_pos 2372.6919 -1122.257 1050.2834 store_in 4@ 5@ 6@
+        end
+    end
+    if 0@ == SEX_CUNNI
+    then
+        if 1@ == PL_SOFA
+        then 0AB1: @Set3numbers 3 set_center_pos 2374.3625 -1123.5858 1050.1796 store_in 4@ 5@ 6@
+        end
+        if 1@ == PL_FLOOR
+        then 0AB1: @Set3numbers 3 set_center_pos 2372.3486 -1126.4558 1049.6802 store_in 4@ 5@ 6@
+        end
+    end
+    if 0@ == SEX_69
+    then
+        if 1@ == PL_SOFA
+        then 0AB1: @Set3numbers 3 set_center_pos 2370.5925 -1123.4781 1050.084 store_in 4@ 5@ 6@
+        end
+    end
+    if 0@ == SEX_TJ
+    then
+        if 1@ == PL_CHAIR
+        then 0AB1: @Set3numbers 3 set_center_pos 2363.5767 -1122.5115 1050.577 store_in 4@ 5@ 6@
+        end
+    end
+    if 0@ == SEX_FJ
+    then
+        if 1@ == PL_SOFA
+        then 0AB1: @Set3numbers 3 set_center_pos 2372.6287 -1121.7363 1050.3785 store_in 4@ 5@ 6@
+        end
+    end}
+0AB2: ret 3 4@ 5@ 6@
 
 {======================================================================
 ======================================================================}

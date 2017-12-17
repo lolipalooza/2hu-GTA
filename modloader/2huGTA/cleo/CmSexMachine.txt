@@ -1,11 +1,11 @@
 {$CLEO .cm}
 thread 'CmSexMachine'
 
-gosub @CmSexStart
+gosub @CmSexStart2
 if wasted_or_busted 
-then gosub @CmSexEnd
+then gosub @CmSexEnd2
 end
-gosub @CmSexCleanUp
+gosub @CmSexCleanUp2
 end_thread 
 
 :CmSexStart2
