@@ -117,7 +117,7 @@ then
 end
 if 0@ == SEX_TJ
 then
-    if 1@ == PL_BED
+    if 1@ == PL_CHAIR
     then 0B05: copy_directory "models\files\sex\Titjob on Bed 2" to DEST_DIR //IF and SET
     end
 end
