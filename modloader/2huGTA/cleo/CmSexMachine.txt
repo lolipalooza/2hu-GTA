@@ -1,18 +1,16 @@
-{$CLEO .cm}
-thread 'CmSexMachine'
+{$CLEO .s}
+thread 'SexMachine'
 
-gosub @CmSexStart2
+{gosub @CmSexStart
 if wasted_or_busted 
-then gosub @CmSexEnd2
+then gosub @CmSexEnd
 end
-gosub @CmSexCleanUp2
-end_thread 
+gosub @CmSexCleanUp
+end_thread}
 
-:CmSexStart2
-:CmSexEnd2
-return
-:CmSexCleanUp2
-return
+gosub @CmSexStart
+gosub @CmSexCleanUp
+0A93: end_custom_thread
 
 {======================================================================
 Sexual positions, actors and cameras
@@ -158,45 +156,39 @@ Male: xyz 2363.566162 -1122.478760 1049.775269 angle 90.000000
 {======================================================================
 ======================================================================}
 const
-    GeneralState = 0@
-    SexMenuState = 1@
-    ShowSexualStats = 2@
-    OnSexActivity = 3@
-    PornActress = 4@
-    PornActor = 5@
-    PlyX = 6@
-    PlyY = 7@
-    PlyZ = 8@
-    PlayerInterior = 9@
-    //SexCameraState = 10@ // not used!
-    SexState = 11@
-    SexStat_Climax = 12@   // (Float) Min: 1.0 - Max 100.0
-    SexStat_Speed = 13@    // (Int) Min: 1 - Max 100
-    SexStat_Pleasure = 14@ // (Int) From 1 to unlimited
-    ClimaxState = 15@
-    PleasureState = 16@
-    SpeedState = 17@
-    Dummy1 = 18@
-    Dummy2 = 19@
-    Dummy3 = 20@
-    Dummy4 = 21@
-    DummyString = 18@s
-    Clmx_LstEvntTime = 22@
-    Clmx_CurrEvntTime = 23@
-    Plsr_LstEvntTime = 24@
-    Plsr_CurrEvntTime = 25@
-    Plsr_Gain = 26@
-    SexPoseInt = 27@
-    SexPlace = 28@
-    PulseButtonState = 29@
-    FemX = 34@
-    FemY = 35@
-    FemZ = 36@
-    FemA = 37@
-    MaleX = 38@
-    MaleY = 39@
-    MaleZ = 40@
-    MaleA = 41@
+    SexMenuState = 0@
+    ShowSexualStats = 1@
+    OnSexActivity = 2@
+    PornActress = 3@
+    PornActor = 4@
+    SexState = 5@
+    SexStat_Climax = 6@   // (Float) Min: 1.0 - Max 100.0
+    SexStat_Speed = 7@    // (Int) Min: 1 - Max 100
+    SexStat_Pleasure = 8@ // (Int) From 1 to unlimited
+    ClimaxState = 9@
+    PleasureState = 10@
+    SpeedState = 11@
+    Dummy1 = 12@
+    Dummy2 = 13@
+    Dummy3 = 14@
+    Dummy4 = 15@
+    DummyString = 12@s
+    Clmx_LstEvntTime = 16@
+    Clmx_CurrEvntTime = 17@
+    Plsr_LstEvntTime = 18@
+    Plsr_CurrEvntTime = 19@
+    Plsr_Gain = 20@
+    SexPoseInt = 21@
+    SexPlace = 22@
+    PulseButtonState = 23@
+    FemX = 24@
+    FemY = 25@
+    FemZ = 26@
+    FemA = 27@
+    MaleX = 28@
+    MaleY = 29@
+    MaleZ = 30@
+    MaleA = 31@
     
     {===================================
     ====================================}
@@ -387,9 +379,9 @@ then
     0581: enable_radar 0
     0826: enable_hud 0
     03F0: enable_text_draw 1
-    00A0: store_actor $PLAYER_ACTOR position_to PlyX PlyY PlyZ
-    077E: get_active_interior_to PlayerInterior
-    if PlayerInterior == 0
+    0AB1: @StorePlayerData 0
+    077E: get_active_interior_to Dummy1
+    if Dummy1 == 0
     then
         04BB: select_interior 8
         0860: link_actor $PLAYER_ACTOR to_interior 8
@@ -416,7 +408,6 @@ then
     ClimaxState = 0
     PleasureState = 0
     PulseButtonState = NOT_PULSED
-    //0209: SexCameraState = random_int_in_ranges 0 12
     wait 500
     fade 1 time 800
     wait 500
@@ -432,10 +423,12 @@ else
     0581: enable_radar 1
     0826: enable_hud 1
     03F0: enable_text_draw 0
-    04BB: select_interior PlayerInterior
+    0AB1: @RecoverPlayerPosition 0 Dummy1 Dummy2 Dummy3
+    0AB1: @RecoverPlayerInterior 0 Dummy4
+    04BB: select_interior Dummy4
     0619: enable_actor $PLAYER_ACTOR collision_detection 1
-    0860: link_actor $PLAYER_ACTOR to_interior PlayerInterior
-    00A1: put_actor $PLAYER_ACTOR at PlyX PlyY PlyZ
+    0860: link_actor $PLAYER_ACTOR to_interior Dummy4
+    00A1: put_actor $PLAYER_ACTOR at Dummy1 Dummy2 Dummy3
     0373: set_camera_directly_behind_player
     02EB: restore_camera_with_jumpcut
     009B: destroy_actor PornActress
@@ -712,9 +705,8 @@ then
     then
         0085: Dummy1 = SexMenuState // (int)
         Dummy1 -= SX_MENU_OPT1_PLACES_FIRST_ELEM
-        0AB1: @GetRightMenuElements 1 SX_MENU_OPT1_PLACES_FIRST_ELEM ret Dummy2 100@ 101@ 102@ 103@ 104@ 105@ 106@ 107@ 108@ 109@ 110@ 111@ 112@ 113@ 114@ 115@ 116@ 117@ 118@ 119@ 120@ 121@
-        05AA: 100@s = 102@(Dummy1,10s) // @s = 'short'
-        0AB1: call_scm_func @GetPlaceFromString 2 100@ 101@ ret Dummy1
+        0AB1: @GetRightSelectedElement 2 SX_MENU_OPT1_PLACES_FIRST_ELEM Dummy1 ret Dummy3 Dummy4
+        0AB1: call_scm_func @GetPlaceFromString 2 Dummy3 Dummy4 ret Dummy1
         if 0AB1: @CheckPoseAndPlaceAvailability 2 SexPoseInt Dummy1
         then
             if 803B:   not Dummy1 == SexPlace  // (int)
@@ -754,9 +746,8 @@ then
     then
         0085: Dummy1 = SexMenuState // (int)
         Dummy1 -= SX_MENU_OPT2_POSITIONS_FIRST_ELEM
-        0AB1: @GetRightMenuElements 1 SX_MENU_OPT2_POSITIONS_FIRST_ELEM ret Dummy2 100@ 101@ 102@ 103@ 104@ 105@ 106@ 107@ 108@ 109@ 110@ 111@ 112@ 113@ 114@ 115@ 116@ 117@ 118@ 119@ 120@ 121@
-        05AA: 100@s = 102@(Dummy1,10s) // @s = 'short'
-        0AB1: call_scm_func @GetPoseFromString 2 100@ 101@ ret Dummy1
+        0AB1: @GetRightSelectedElement 2 SX_MENU_OPT2_POSITIONS_FIRST_ELEM Dummy1 ret Dummy3 Dummy4
+        0AB1: call_scm_func @GetPoseFromString 2 Dummy3 Dummy4 ret Dummy1
         if 0AB1: @CheckPoseAndPlaceAvailability 2 Dummy1 SexPlace
         then
             if 803B:   not Dummy1 == SexPoseInt  // (int)

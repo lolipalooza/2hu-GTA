@@ -1,0 +1,48 @@
+{$CLEO .cs}
+thread 'SexTriggerer'
+
+0ADF: add_dynamic_GXT_entry "CMSEX" text "~b~Press ~s~F/ENTER ~b~to start ~s~Sex~b~."
+while true
+wait 0
+    {if 0AB0:   key_pressed 76 // L
+    then
+        repeat
+        wait 0
+        until 8AB0:   not key_pressed 76 // L
+        0605: actor $PLAYER_ACTOR perform_animation "sex_pose" IFP "ped" framedelta 4.0 loop 1 lockX 0 lockY 0 lockF 0 time -1
+    end}
+    
+    if $ONMISSION == 0
+    then
+        if or
+        00FE:   actor $PLAYER_ACTOR sphere 0 in_sphere 2486.4021 -1645.634 14.0772 radius 50.0 50.0 50.0
+        00FE:   actor $PLAYER_ACTOR sphere 0 in_sphere 2368.5999 -1134.7006 1050.875 radius 50.0 50.0 50.0
+        then
+            if or
+            00FF:   actor $PLAYER_ACTOR sphere 1 in_sphere 2486.4021 -1645.634 14.0772 radius 2.0 2.0 2.0 on_foot
+            00FF:   actor $PLAYER_ACTOR sphere 1 in_sphere 2368.5999 -1134.7006 1050.875 radius 2.0 2.0 2.0 on_foot
+            then
+                if 0@ == 0
+                then
+                    0512: show_permanent_text_box 'CMSEX'
+                    0@ = 1
+                end
+                if 00E1:   player 0 pressed_key 15
+                then
+                    03E6: remove_text_box
+                    0@ = 0
+                    //0A94: start_custom_mission "CmSexMachine"
+                    0A92: create_custom_thread "SexMachine.s" 0
+                end
+            else
+                if 0@ == 1
+                then
+                    03E6: remove_text_box
+                    0@ = 0
+                end
+            end
+        end
+    end
+end
+0A93: end_custom_thread
+

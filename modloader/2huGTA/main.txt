@@ -54,7 +54,7 @@ wait 1000 ms
 
 // put your mods (threads) here
 :DeleteThis
-0ADF: add_dynamic_GXT_entry "CMSEX" text "~b~Press ~s~F/ENTER ~b~to start ~s~Sex~b~."
+{0ADF: add_dynamic_GXT_entry "CMSEX" text "~b~Press ~s~F/ENTER ~b~to start ~s~Sex~b~."
 while true
 wait 0
     if $ONMISSION == 0
@@ -87,8 +87,8 @@ wait 0
             end
         end
     end
-end
-004E: end_thread 
+end}
+004E: end_thread
 
 //-------------Mission 0---------------
 // put your missions here
