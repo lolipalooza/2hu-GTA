@@ -249,24 +249,24 @@ if 05AE:   Gan_StrSpeed == "idle__" // @s == 'short'
 then
     0AD3: 10@v = format "idle%d_f" Gan_Animation
     0AD3: 14@v = format "idle%d_m" Gan_Animation
-    06D2: 18@v = "idle" // @v = string
+    0AD3: 18@v = format "idle%d" Gan_Animation
 end
 if 05AE:   Gan_StrSpeed == "slow__" // @s == 'short'
 then
     0AD3: 10@v = format "slow%d_f" Gan_Animation
     0AD3: 14@v = format "slow%d_m" Gan_Animation
-    06D2: 18@v = "slow" // @v = string
+    0AD3: 18@v = format "slow%d" Gan_Animation
 end
 if 05AE:   Gan_StrSpeed == "normal" // @s == 'short'
 then
     0AD3: 10@v = format "normal%d_f" Gan_Animation
     0AD3: 14@v = format "normal%d_m" Gan_Animation
-    06D2: 18@v = "normal" // @v = string
+    0AD3: 18@v = format "normal%d" Gan_Animation
 end
 if 05AE:   Gan_StrSpeed == "fast__" // @s == 'short'
 then
     0AD3: 10@v = format "fast%d_f" Gan_Animation
     0AD3: 14@v = format "fast%d_m" Gan_Animation
-    06D2: 18@v = "fast" // @v = string
+    0AD3: 18@v = format "fast%d" Gan_Animation
 end
 0AB2: ret 12 ifp_fem 10@ 11@ 12@ 13@ ifp_male 14@ 15@ 16@ 17@ ifp_file 18@ 19@ 20@ 21@
