@@ -122,9 +122,9 @@ const
     PAD_ANSWER_PHONE = 4
     PAD_PREV_WEP_ZOOM_IN = 5
     PAD_NEXT_WEP_ZOOM_OUT = 7
-    PAD_ANSWER_PHONE = 4
     PAD_ENTER_VEHICLE = 15
     PAD_SPRINT = 16
+    PAD_FIREWEAPON = 17
     
     KEY_F6 = 117
     KEY_F3 = 114
@@ -161,7 +161,9 @@ wait 0
         end
     end
     if ShowSexualStats==true
-    then 0AB1: @ShowSexualStats 3 SexStat_Climax SexStat_Speed SexStat_Pleasure
+    then
+        0AB1: @ShowSexualStats 3 SexStat_Climax SexStat_Speed SexStat_Pleasure
+        0AB1: @ShowSettingTexts 4 SexMenuState SpeedState SexPoseInt SexPlace
     end
 end
 
@@ -200,6 +202,14 @@ end
 0343: set_text_draw_linewidth DwTx_Linewidth
 033F: set_text_draw_letter_size DwTx_SizeX DwTx_SizeY
 033E: set_draw_text_position DwTx_PosX DwTx_PosY GXT DwTx_Gxt
+0AB2: ret 0
+
+:SetDrawTextRGB_1Number
+0340: set_text_draw_RGBA 8@ 9@ 10@ 255
+0349: set_text_draw_font DwTx_Font
+0343: set_text_draw_linewidth DwTx_Linewidth
+033F: set_text_draw_letter_size DwTx_SizeX DwTx_SizeY
+045A: draw_text_1number DwTx_PosX DwTx_PosY GXT DwTx_Gxt number 11@
 0AB2: ret 0
 
 {======================================================================
@@ -272,8 +282,8 @@ then
     03E5: show_text_box 'I_CTRL1'  // Puedes cambiar la vista con ~b~~k~~CAMERA_CHANGE_VIEW_ALL_SITUATIONS~~w~. Ingresa al menu pulsando ~b~~k~~PED_ANSWER_PHONE~~w~ para ver las diferentes opciones.
     wait 7000
     03E5: show_text_box 'I_GNRL1'  // Puedes aumentar el ritmo de los movimientos con ~b~~k~~PED_CYCLE_WEAPON_LEFT~~w~ / ~b~~k~~PED_CYCLE_WEAPON_RIGHT~~w~. Tambien puedes parar totalmente disminuyendo el ritmo a su minimo valor.
-    }
     0ACA: show_text_box "~b~~k~~PED_ANSWER_PHONE~: ~s~ingresar al menu. ~b~~k~~VEHICLE_ENTER_EXIT~: ~s~salir."
+    }
 else
     fade 0 time 800
     wait 800 ms
@@ -312,6 +322,14 @@ then
     then SexState=2
         gosub @ToggleSexualMenu
     end
+    if 00E1:   player 0 pressed_key PAD_FIREWEAPON // CLICK
+    then SexState=3
+        0AB1: @GetInt 1 @CurrentAnimation Dummy1
+        0AB1: call_scm_func @ReadSexPosesInfo 3 SpeedState SexPoseInt SexPlace out Dummy3 Dummy4 Dummy2
+        0AB1: @IncOrDecIntVariable 4 var_to_increase Dummy1 min_value 1 max_value Dummy2 flag FLAG_INCREASE store_into Dummy1
+        0AB1: @StoreInt 2 @CurrentAnimation Dummy1
+        0AB1: call_scm_func @LoadSexualPose 5 PornActress PornActor SexPoseInt SexPlace SpeedState
+    end
 end
 if SexState == 1
 then
@@ -322,6 +340,12 @@ end
 if SexState == 2
 then
     if 80E1:   not player 0 pressed_key PAD_ANSWER_PHONE
+    then SexState=0
+    end
+end
+if SexState == 3
+then
+    if 80E1:   not player 0 pressed_key PAD_FIREWEAPON
     then SexState=0
     end
 end

@@ -3,21 +3,29 @@
 :GenerateSexFiles
 // 0@: pose, 1@: place
 const
-    DEST_IDLE   = "modloader/2hugta/sex/idle.ifp"
-    DEST_SLOW   = "modloader/2hugta/sex/slow.ifp"
-    DEST_NORMAL = "modloader/2hugta/sex/normal.ifp"
-    DEST_FAST   = "modloader/2hugta/sex/fast.ifp"
+    DEST_IDLE1   = "modloader/2hugta/sex/idle1.ifp"
+    DEST_IDLE2   = "modloader/2hugta/sex/idle2.ifp"
+    DEST_IDLE3   = "modloader/2hugta/sex/idle3.ifp"
+    DEST_IDLE4   = "modloader/2hugta/sex/idle4.ifp"
+    DEST_SLOW1   = "modloader/2hugta/sex/slow1.ifp"
+    DEST_SLOW2   = "modloader/2hugta/sex/slow2.ifp"
+    DEST_SLOW3   = "modloader/2hugta/sex/slow3.ifp"
+    DEST_SLOW4   = "modloader/2hugta/sex/slow4.ifp"
+    DEST_NORMAL1 = "modloader/2hugta/sex/normal1.ifp"
+    DEST_NORMAL2 = "modloader/2hugta/sex/normal2.ifp"
+    DEST_NORMAL3 = "modloader/2hugta/sex/normal3.ifp"
+    DEST_NORMAL4 = "modloader/2hugta/sex/normal4.ifp"
+    DEST_FAST1   = "modloader/2hugta/sex/fast1.ifp"
+    DEST_FAST2   = "modloader/2hugta/sex/fast2.ifp"
+    DEST_FAST3   = "modloader/2hugta/sex/fast3.ifp"
+    DEST_FAST4   = "modloader/2hugta/sex/fast4.ifp"
     
     DEST_DIR    = "modloader/2hugta/sex"
 end
 
 {0A9A: 30@ = openfile LOG_FILE mode "wb+"
 0AD9: write_formatted_text "%s" in_file 30@ vars "asdf"
-0A9B: closefile 30@
-
-if 0AE4:   directory_exists DEST_DIR
-then 0B01: delete_directory DEST_DIR include_subdirs 1
-end}
+0A9B: closefile 30@}
 
 if 0@ == SEX_FUCKING
 then

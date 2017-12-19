@@ -1,6 +1,14 @@
 {$CLEO .cs}
 thread 'SexTriggerer'
 
+const
+    DEST_IDLE   = "modloader/2hugta/sex/idle.ifp"
+    DEST_SLOW   = "modloader/2hugta/sex/slow.ifp"
+    DEST_NORMAL = "modloader/2hugta/sex/normal.ifp"
+    DEST_FAST   = "modloader/2hugta/sex/fast.ifp"
+    
+    DEST_DIR    = "modloader/2hugta/sex"
+end
 0ADF: add_dynamic_GXT_entry "CMSEX" text "~b~Press ~s~F/ENTER ~b~to start ~s~Sex~b~."
 while true
 wait 0
@@ -9,7 +17,203 @@ wait 0
         repeat
         wait 0
         until 8AB0:   not key_pressed 76 // L
-        0605: actor $PLAYER_ACTOR perform_animation "sex_pose" IFP "ped" framedelta 4.0 loop 1 lockX 0 lockY 0 lockF 0 time -1
+        if 2@==1
+        then 2@=1
+        0B04: copy_file "models\files\sex\Sex on Foot\idle.ifp" to DEST_IDLE //IF and SET
+        0B04: copy_file "models\files\sex\Sex on Foot\slow.ifp" to DEST_SLOW //IF and SET
+        0B04: copy_file "models\files\sex\Sex on Foot\normal.ifp" to DEST_NORMAL //IF and SET
+        0B04: copy_file "models\files\sex\Sex on Foot\fast.ifp" to DEST_FAST //IF and SET
+        wait 2000
+        end
+        //0605: actor $PLAYER_ACTOR perform_animation "sex_pose" IFP "ped" framedelta 4.0 loop 1 lockX 0 lockY 0 lockF 0 time -1
+        if 1@ == 0
+        then 14@v="slow1_f"
+        end
+        if 1@ == 1
+        then 14@v="slow1_m"
+        end
+        if 1@ == 2
+        then 14@v="slow2_f"
+        end
+        if 1@ == 3
+        then 14@v="slow2_m"
+        end
+        if 1@ == 4
+        then 14@v="slow3_f"
+        end
+        if 1@ == 5
+        then 14@v="slow3_m"
+        end
+        if 1@ == 6
+        then 14@v="slow4_f"
+        end
+        if 1@ == 7
+        then 14@v="slow4_m"
+        end
+        if 1@ == 8
+        then 14@v="normal1_f"
+        end
+        if 1@ == 9
+        then 14@v="normal1_m"
+        end
+        if 1@ == 10
+        then 14@v="normal2_f"
+        end
+        if 1@ == 11
+        then 14@v="normal2_m"
+        end
+        if 1@ == 12
+        then 14@v="normal3_f"
+        end
+        if 1@ == 13
+        then 14@v="normal3_m"
+        end
+        if 1@ == 14
+        then 14@v="normal4_f"
+        end
+        if 1@ == 15
+        then 14@v="normal4_m"
+        end
+        if 1@ == 16
+        then 14@v="fast1_f"
+        end
+        if 1@ == 17
+        then 14@v="fast1_m"
+        end
+        if 1@ == 18
+        then 14@v="fast2_f"
+        end
+        if 1@ == 19
+        then 14@v="fast2_m"
+        end
+        if 1@ == 20
+        then 14@v="fast3_f"
+        end
+        if 1@ == 21
+        then 14@v="fast3_m"
+        end
+        if 1@ == 22
+        then 14@v="fast4_f"
+        end
+        if 1@ == 23
+        then 14@v="fast4_m"
+        end
+        if 1@ == 24
+        then 14@v="idle1_f"
+        end
+        if 1@ == 25
+        then 14@v="idle1_m"
+        end
+        if 1@ == 26
+        then 14@v="idle2_f"
+        end
+        if 1@ == 27
+        then 14@v="idle2_m"
+        end
+        if 1@ == 28
+        then 14@v="idle3_f"
+        end
+        if 1@ == 29
+        then 14@v="idle3_m"
+        end
+        if 1@ == 30
+        then 14@v="idle4_f"
+        end
+        if 1@ == 31
+        then 14@v="idle4_m"
+        end
+        if or
+        1@ == 0
+        1@ == 1
+        then 10@v="slow1"
+        end
+        if or
+        1@ == 2
+        1@ == 3
+        then 10@v="slow2"
+        end
+        if or
+        1@ == 4
+        1@ == 5
+        then 10@v="slow3"
+        end
+        if or
+        1@ == 6
+        1@ == 7
+        then 10@v="slow4"
+        end
+        if or
+        1@ == 8
+        1@ == 9
+        then 10@v="normal1"
+        end
+        if or
+        1@ == 10
+        1@ == 11
+        then 10@v="normal2"
+        end
+        if or
+        1@ == 12
+        1@ == 13
+        then 10@v="normal3"
+        end
+        if or
+        1@ == 14
+        1@ == 15
+        then 10@v="normal4"
+        end
+        if or
+        1@ == 16
+        1@ == 17
+        then 10@v="fast1"
+        end
+        if or
+        1@ == 18
+        1@ == 19
+        then 10@v="fast2"
+        end
+        if or
+        1@ == 20
+        1@ == 21
+        then 10@v="fast3"
+        end
+        if or
+        1@ == 22
+        1@ == 23
+        then 10@v="fast4"
+        end
+        if or
+        1@ == 24
+        1@ == 25
+        then 10@v="idle1"
+        end
+        if or
+        1@ == 26
+        1@ == 27
+        then 10@v="idle2"
+        end
+        if or
+        1@ == 28
+        1@ == 29
+        then 10@v="idle3"
+        end
+        if or
+        1@ == 30
+        1@ == 31
+        then 10@v="idle4"
+        end
+04ED: load_animation 10@v
+038B: load_requested_models
+repeat
+wait 0
+until 04EE:   animation 10@v loaded
+0605: actor $PLAYER_ACTOR perform_animation 14@v IFP 10@v framedelta 4.0 loop 1 lockX 0 lockY 0 lockF 0 time -1
+04EF: release_animation 10@v
+            0ACC: show_text_lowpriority 14@v time 2000
+        1@+=1
+        if 1@>31
+        then 1@=0
+        end
     end}
     
     if $ONMISSION == 0

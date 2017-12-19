@@ -52,9 +52,6 @@ const
     An_IfpFile = 18@v
 end
 
-//0605: actor An_Actress perform_animation "IDLE_stance" IFP "ped" framedelta 4.0 loop 1 lockX 0 lockY 0 lockF 0 time -1
-//0605: actor An_Actor perform_animation "IDLE_stance" IFP "ped" framedelta 4.0 loop 1 lockX 0 lockY 0 lockF 0 time -1
-
 0AB1: call_scm_func @ReadSexPosesInfo 3 An_SpeedInt An_SexPoseInt An_SexPlace out An_Str1 An_Str2 An_MaxAnim
 0AB1: @GetInt 1 @CurrentAnimation An_Animation
 if 001D:   An_Animation > An_MaxAnim  // (int)
@@ -67,23 +64,17 @@ end
 0AB1: call_scm_func @GetAnimationNames 3 An_Str1 An_Str2 An_Animation out ifp_fem 10@ 11@ 12@ 13@ ifp_male 14@ 15@ 16@ 17@ ifp_file 18@ 19@ 20@ 21@
 
 0A9A: 30@ = openfile LOG_FILE mode "wb+"
-0AD9: write_formatted_text "%c%cFem executing animation %s, Male execting animation %s (file %s)" in_file 30@ vars 0xd 0xa AnimIfpFem AnimIfpMale An_IfpFile
+0AD9: write_formatted_text "Fem executing animation %s, Male execting animation %s (file %s)" in_file 30@ vars AnimIfpFem AnimIfpMale An_IfpFile
 0A9B: closefile 30@
 
-04ED: load_animation "idle"
-04ED: load_animation "slow"
-04ED: load_animation "normal"
-04ED: load_animation "fast"
+04ED: load_animation An_IfpFile
 038B: load_requested_models
 repeat
 wait 0
-until 04EE:   animation "idle" loaded and 04EE:   animation "slow" loaded and 04EE:   animation "normal" loaded and 04EE:   animation "fast" loaded
+until 04EE:   animation An_IfpFile loaded
 0605: actor An_Actress perform_animation AnimIfpFem IFP An_IfpFile framedelta 4.0 loop 1 lockX 0 lockY 0 lockF 0 time -1
 0605: actor An_Actor perform_animation AnimIfpMale IFP An_IfpFile framedelta 4.0 loop 1 lockX 0 lockY 0 lockF 0 time -1
-04EF: release_animation "idle"
-04EF: release_animation "slow"
-04EF: release_animation "normal"
-04EF: release_animation "fast"
+04EF: release_animation An_IfpFile
 
 0AB2: ret 0
 
@@ -238,9 +229,9 @@ end
 000A: Rsp_Addr += 2
 0A8D: Rsp_MaxAnim = read_memory Rsp_Addr size 1 virtual_protect 0
 
-0A9A: 30@ = openfile LOG_FILE mode "ab+"
+{0A9A: 30@ = openfile LOG_FILE mode "ab+"
 0AD9: write_formatted_text "%c%cPose: %d, Place: %d, Speed: %s%c%cOffsets: %d %d %d" in_file 30@ vars 0xd 0xa Rsp_Pose Rsp_Place 7@s 0xd 0xa Rsp_Offset1 Rsp_Offset2 Rsp_Offset3
-0A9B: closefile 30@
+0A9B: closefile 30@}
 
 0AB2: ret 3 Rsp_Str1 Rsp_Str2 Rsp_MaxAnim
 
