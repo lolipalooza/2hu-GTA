@@ -37,7 +37,7 @@ end
 {======================================================================
 ======================================================================}
 :ToggleSexualCamera
-// 0@: sexual pose, 1@: sex place
+// 0@: sexual pose, 1@: sex place, 2@: actress, 3@: actor
 0AB1: @GetInt 1 @CameraMode 11@
 if 11@ == 0 // Free mode
 then
@@ -57,9 +57,45 @@ then
 end
 if 11@ == 2 // First person mode
 then
-    0AB1: @GetFirstPersonCamCoordinates 2 0@ 1@ ret cam_pos 3@ 4@ 5@ cam_target 6@ 7@ 8@
-    015F: set_camera_position 3@ 4@ 5@ rotation 0.0 0.0 0.0
-    0160: set_camera_point_at 6@ 7@ 8@ switchstyle 2
+    const
+        FPV_ROTATION = 4
+        FPV_MINROTATION = 8
+        FPV_MAXROTATION = 12
+        FPV_MINANGLE = 16
+        FPV_MAXANGLE = 20
+    end
+    0AB1: @GetFirstPersonCamCoordinates 2 0@ 1@ ret cam_pos 4@ 5@ 6@ cam_target 7@ 8@ 9@ rotation 14@ angle 15@ min_rotation 16@ max_rotation 17@ min_angle 18@ max_angle 19@
+    0AB1: @StoreData 3 @FirstPersonCameraVars 14@ FPV_ROTATION
+    0AB1: @StoreData 3 @FirstPersonCameraVars 16@ FPV_MINROTATION
+    0AB1: @StoreData 3 @FirstPersonCameraVars 17@ FPV_MAXROTATION
+    0AB1: @StoreData 3 @FirstPersonCameraVars 18@ FPV_MINANGLE
+    0AB1: @StoreData 3 @FirstPersonCameraVars 19@ FPV_MAXANGLE
+    
+    0AB1: @GetData 1 @FirstPersonCameraVars 10@
+    if 856D:   not actor 10@ defined
+    then
+        Model.Load(#NULL)
+        repeat
+        wait 0 
+        until Model.Available(#NULL)
+        10@ = Actor.Create(Mission1, #NULL, 4@, 5@, 6@)
+        Actor.Health(10@) = 2000
+        Actor.SetImmunities(10@, 1, 1, 1, 1, 1)
+        Actor.Angle(10@) = 15@
+        0337: set_actor 10@ visibility 0 
+        0619: enable_actor 10@ collision_detection 0 
+        Model.Destroy(#NULL)
+    else
+        00A1: put_actor 10@ at 4@ 5@ 6@
+        Actor.Angle(10@) = 7@
+    end
+    0AB1: @StoreData 2 @FirstPersonCameraVars 10@
+else
+    0AB1: @GetData 1 @FirstPersonCameraVars 10@
+    if 056D:   actor 10@ defined
+    then 009B: destroy_actor 10@
+    end
+    0AB1: @StoreData 2 @FirstPersonCameraVars 10@
 end
 0AB2: ret 0
 
@@ -95,100 +131,100 @@ then
     if 0@ == SEX_FUCKING
     then
         if 1@ == PL_BED
-        then 0AB2: ret 6 cam_pos 2358.030762 -1132.863403 1050.875610 cam_target 2359.010498 -1132.822632 1051.072021
+        then 0AB2: ret 12 cam_pos 2358.030762 -1132.863403 1050.875610 cam_target 2359.010498 -1132.822632 1051.072021 rotation -0.885 angle 275.0 min_rotation -1.06 max_rotation -0.75 min_angle 245.0 max_angle 300.0
         end
         if 1@ == PL_SOFA
-        then 0AB2: ret 6 cam_pos 2374.843506 -1123.512085 1051.375488 cam_target 2373.873535 -1123.518555 1051.132690
+        then 0AB2: ret 12 cam_pos 2374.843506 -1123.512085 1051.375488 cam_target 2373.873535 -1123.518555 1051.132690 rotation -1.12 angle 91.87 min_rotation -1.39 max_rotation -0.98 min_angle 58.0 max_angle 125.0
         end
         if 1@ == PL_TABLE
-        then 0AB2: ret 6 cam_pos 2372.027587 -1132.840576 1051.573439 cam_target 2371.727294 -1132.847900 1050.621382
+        then 0AB2: ret 12 cam_pos 2372.027587 -1132.840576 1051.573439 cam_target 2371.727294 -1132.847900 1050.621382 rotation -2.17 angle 92.0 min_rotation -5.0 max_rotation -1.3 min_angle 40.0 max_angle 140.0
         end
         if 1@ == PL_FLOOR
-        then 0AB2: ret 6 cam_pos 2373.076172 -1126.029785 1051.475464 cam_target 2373.399658 -1126.038818 1050.529297
+        then 0AB2: ret 12 cam_pos 2373.076172 -1126.029785 1051.475464 cam_target 2373.399658 -1126.038818 1050.529297 rotation -2.28 angle 272.0 min_rotation -1.3 max_rotation -2.70 min_angle 208.0 max_angle 328.0
         end
         if 1@ == PL_KITCHEN
-        then 0AB2: ret 6 cam_pos 2373.919922 -1131.595703 1051.682983 cam_target 2374.739014 -1131.590210 1051.109375
+        then 0AB2: ret 12 cam_pos 2373.919922 -1131.595703 1051.682983 cam_target 2374.739014 -1131.590210 1051.109375 rotation -1.12 angle 272.0 min_rotation -1.85 max_rotation -1.0 min_angle 240.0 max_angle 300.0
         end
         if 1@ == PL_WALL
-        then 0AB2: ret 6 cam_pos 2369.943359 -1129.149048 1051.583008 cam_target 2369.067139 -1129.154907 1051.101074
+        then 0AB2: ret 12 cam_pos 2369.943359 -1129.149048 1051.583008 cam_target 2369.067139 -1129.154907 1051.101074 rotation -1.2 angle 90.0 min_rotation -1.7 max_rotation -1.1 min_angle 60.0 max_angle 120.0
         end
     end
     if 0@ == SEX_BJ
     then
         if 1@ == PL_BED
-        then 0AB2: ret 6 cam_pos 2361.426270 -1122.499268 1050.875610 cam_target 2362.423584 -1122.499268 1050.950439
+        then 0AB2: ret 12 cam_pos 2361.426270 -1122.499268 1050.875610 cam_target 2362.423584 -1122.499268 1050.950439 rotation -0.85 angle 270.0 min_rotation -0.92 max_rotation -0.64 min_angle 245.0 max_angle 295.0
         end
         if 1@ == PL_SOFA
-        then 0AB2: ret 6 cam_pos 2374.802979 -1123.241455 1051.275513 cam_target 2374.391602 -1123.518921 1050.407227
+        then 0AB2: ret 12 cam_pos 2374.802979 -1123.241455 1051.275513 cam_target 2374.391602 -1123.518921 1050.407227 rotation -1.68 angle 90.0 min_rotation -2.0 max_rotation -1.32 min_angle 60.0 max_angle 120.0
         end
         if 1@ == PL_CHAIR
-        then 0AB2: ret 6 cam_pos 2359.497803 -1132.797852 1051.375488 cam_target 2360.186523 -1132.759155 1050.651489
+        then 0AB2: ret 12 cam_pos 2359.497803 -1132.797852 1051.375488 cam_target 2360.186523 -1132.759155 1050.651489 rotation -1.42 angle 270.0 min_rotation -1.8 max_rotation -1.2 min_angle 240.0 max_angle 300.0
         end
         if 1@ == PL_FLOOR
-        then 0AB2: ret 6 cam_pos 2374.467529 -1123.176392 1051.975342 cam_target 2374.461670 -1123.606445 1051.072510
+        then 0AB2: ret 12 cam_pos 2374.467529 -1123.176392 1051.975342 cam_target 2374.461670 -1123.606445 1051.072510 rotation -1.92 angle 180.0 min_rotation -2.2 max_rotation -1.35 min_angle 140.0 max_angle 220.0
         end
         if 1@ == PL_KITCHEN
-        then 0AB2: ret 6 cam_pos 2374.285889 -1131.329224 1051.775391 cam_target 2374.108154 -1131.341675 1050.791382
+        then 0AB2: ret 12 cam_pos 2374.285889 -1131.329224 1051.775391 cam_target 2374.108154 -1131.341675 1050.791382 rotation -1.9 angle 90.0 min_rotation -2.7 max_rotation -1.5 min_angle 55.0 max_angle 125.0
         end
     end
     if 0@ == SEX_ANAL
     then
         if 1@ == PL_BED
-        then 0AB2: ret 6 cam_pos 2358.014160 -1132.857544 1050.775635 cam_target 2358.971924 -1132.851074 1051.063354
+        then 0AB2: ret 12 cam_pos 2358.014160 -1132.857544 1050.775635 cam_target 2358.971924 -1132.851074 1051.063354 rotation -0.82 angle 270.0 min_rotation -0.9 max_rotation -0.68 min_angle 245.0 max_angle 295.0
         end
         if 1@ == PL_SOFA
-        then 0AB2: ret 6 cam_pos 2372.532959 -1121.391113 1051.383057 cam_target 2372.562256 -1122.311035 1050.992188
+        then 0AB2: ret 12 cam_pos 2372.532959 -1121.391113 1051.383057 cam_target 2372.562256 -1122.311035 1050.992188 rotation -1.125 angle 180.0 min_rotation -1.35 max_rotation -1.04 min_angle 160.0 max_angle 210.0
         end
         if 1@ == PL_TABLE
-        then 0AB2: ret 6 cam_pos 2372.608154 -1132.990723 1051.675415 cam_target 2372.060059 -1133.007813 1050.839233
+        then 0AB2: ret 12 cam_pos 2372.608154 -1132.990723 1051.675415 cam_target 2372.060059 -1133.007813 1050.839233 rotation -1.68 angle 90.0 min_rotation -2.0 max_rotation -1.2 min_angle 55.0 max_angle 125.0
         end
         if 1@ == PL_FLOOR
-        then 0AB2: ret 6 cam_pos 2372.690918 -1126.013550 1051.283081 cam_target 2372.594238 -1126.014893 1050.287720
+        then 0AB2: ret 12 cam_pos 2372.690918 -1126.013550 1051.283081 cam_target 2372.594238 -1126.014893 1050.287720 rotation -2.7 angle 90.0 min_rotation -4.0 max_rotation -1.6 min_angle 60.0 max_angle 120.0
         end
         if 1@ == PL_BATH
-        then 0AB2: ret 6 cam_pos 2362.470703 -1122.248413 1051.875366 cam_target 2362.773193 -1122.249512 1050.922241
+        then 0AB2: ret 12 cam_pos 2362.470703 -1122.248413 1051.875366 cam_target 2362.773193 -1122.249512 1050.922241 rotation -1.9 angle 270.0 min_rotation -2.8 max_rotation -1.3 min_angle 240.0 max_angle 300.0
         end
         if 1@ == PL_WALL
-        then 0AB2: ret 6 cam_pos 2370.231934 -1128.780396 1051.675415 cam_target 2369.524902 -1128.789917 1050.968384
+        then 0AB2: ret 12 cam_pos 2370.231934 -1128.780396 1051.675415 cam_target 2369.524902 -1128.789917 1050.968384 rotation -1.45 angle 90.0 min_rotation -1.8 max_rotation -1.3 min_angle 60.0 max_angle 120.0
         end
     end
     if 0@ == SEX_HJ
     then
         if 1@ == PL_BED
-        then 0AB2: ret 6 cam_pos 2361.075928 -1122.571289 1051.183105 cam_target 2362.064209 -1122.536865 1051.034668
+        then 0AB2: ret 12 cam_pos 2361.075928 -1122.571289 1051.183105 cam_target 2362.064209 -1122.536865 1051.034668 rotation -1.02 angle 270.0 min_rotation -1.15 max_rotation -0.9 min_angle 240.0 max_angle 300.0
         end
         if 1@ == PL_SOFA
-        then 0AB2: ret 6 cam_pos 2372.268066 -1121.426758 1051.175537 cam_target 2372.236084 -1122.274170 1050.645508
+        then 0AB2: ret 12 cam_pos 2372.268066 -1121.426758 1051.175537 cam_target 2372.236084 -1122.274170 1050.645508 rotation -1.26 angle 180.0 min_rotation -140.0 max_rotation -1.02 min_angle 150.0 max_angle 210.0
         end
         if 1@ == PL_FOOT
-        then 0AB2: ret 6 cam_pos 2372.711426 -1122.291626 1051.782959 cam_target 2372.711670 -1122.146118 1050.793579
+        then 0AB2: ret 12 cam_pos 2372.711426 -1122.291626 1051.782959 cam_target 2372.711670 -1122.146118 1050.793579 rotation -2.20 angle 0.0 min_rotation -2.8 max_rotation -1.45 min_angle -25.0 max_angle 25.0
         end
     end
     if 0@ == SEX_CUNNI
     then
         if 1@ == PL_SOFA
-        then 0AB2: ret 6 cam_pos 0.0 0.0 0.0 cam_target 0.0 0.0 0.0
+        then 0AB2: ret 12 cam_pos 0.0 0.0 0.0 cam_target 0.0 0.0 0.0 rotation 0.0 angle 0.0 min_rotation 0.0 max_rotation 0.0 min_angle 0.0 max_angle 0.0
         end
         if 1@ == PL_FLOOR
-        then 0AB2: ret 6 cam_pos 2372.750244 -1126.475342 1050.383301 cam_target 2371.786133 -1126.491821 1050.117920
+        then 0AB2: ret 12 cam_pos 2372.750244 -1126.475342 1050.383301 cam_target 2371.786133 -1126.491821 1050.117920 rotation -1.25 angle 90.0 min_rotation -1.37 max_rotation -1.05 min_angle 75.0 max_angle 105.0
         end
     end
     if 0@ == SEX_69
     then
         if 1@ == PL_SOFA
-        then 0AB2: ret 6 cam_pos 0.0 0.0 0.0 cam_target 0.0 0.0 0.0
+        then 0AB2: ret 12 cam_pos 0.0 0.0 0.0 cam_target 0.0 0.0 0.0 rotation 0.0 angle 0.0 min_rotation 0.0 max_rotation 0.0 min_angle 0.0 max_angle 0.0
         end
     end
     if 0@ == SEX_TJ
     then
         if 1@ == PL_CHAIR
-        then 0AB2: ret 6 cam_pos 2362.908691 -1122.515747 1051.175537 cam_target 2363.905762 -1122.528564 1051.100708
+        then 0AB2: ret 12 cam_pos 2362.908691 -1122.515747 1051.175537 cam_target 2363.905762 -1122.528564 1051.100708 rotation -1.14 angle 270.0 min_rotation -1.3 max_rotation -0.98 min_angle 240.0 max_angle 300.0
         end
     end
     if 0@ == SEX_FJ
     then
         if 1@ == PL_SOFA
-        then 0AB2: ret 6 cam_pos 2373.126221 -1121.527222 1051.275513 cam_target 2372.339600 -1121.844360 1050.745605
+        then 0AB2: ret 12 cam_pos 2373.126221 -1121.527222 1051.275513 cam_target 2372.339600 -1121.844360 1050.745605 rotation -1.34 angle 115.0 min_rotation -1.63 max_rotation -1.13 min_angle 100.0 max_angle 180.0
         end
     end
 end
@@ -1643,5 +1679,53 @@ if and
 then 059A: return_false
 else 0485: return_true
 end
+0AB2: ret 0
+
+{======================================================================
+======================================================================}
+:FirstPersonCameraControl
+0AB1: @GetData 1 @FirstPersonCameraVars 0@
+if 056D:   actor 0@ defined
+then
+    0AB1: @GetInt 1 @CameraMode 11@
+    if 11@ == 2 // First person mode
+    then
+        0AB1: @GetData 2 @FirstPersonCameraVars FPV_ROTATION 30@
+        
+        0A4A: store_joystick_X_offset_to 4@ Y_offset_to 5@ 
+        0172: 9@ = actor 0@ Z_angle
+        0063: 9@ -= 4@ // (float) 
+        0173: set_actor 0@ Z_angle_to 9@
+        5@ /= 200.0 
+        005B: 30@ += 5@ // (float) 
+        067C: put_camera_on_actor 0@ offset 0.0 0.0 -1.0 rotation 0.0 0.5 30@ tilt 0.0 switchstyle 2 
+        
+        0AB1: @StoreData 3 @FirstPersonCameraVars 30@ FPV_ROTATION
+    end
+end
+0AB2: ret 0
+
+:FirstPersonCameraVars
+hex
+    00 00 00 00 // Actor           offset: 0
+    00 00 00 00 // Rotation        offset: 4
+    00 00 00 00 // Min rotation    offset: 8
+    00 00 00 00 // Max rotation    offset: 12
+    00 00 00 00 // Min angle       offset: 16
+    00 00 00 00 // Max angle       offset: 20
+end
+
+:GetData
+// 0@: label, 1@: offset for address
+0AC6: 10@ = label 0@ offset
+005A: 10@ += 1@  // (int)
+0A8D: 11@ = read_memory 10@ size 4 virtual_protect 0
+0AB2: ret 1 11@
+
+:StoreData
+// 0@: label, 1@: value, 2@: offset for address
+0AC6: 10@ = label 0@ offset
+005A: 10@ += 2@  // (int)
+0A8C: write_memory 10@ size 4 value 1@ virtual_protect 0
 0AB2: ret 0
 

@@ -270,7 +270,7 @@ then
     0AB1: call_scm_func @GenerateActors 8 FemX FemY FemZ FemA MaleX MaleY MaleZ MaleA ret PornActress PornActor
     0AB1: call_scm_func @GenerateSexFiles 2 SexPoseInt SexPlace
     0AB1: call_scm_func @LoadSexualPose 5 PornActress PornActor SexPoseInt SexPlace SPD_SLOW
-    0AB1: call_scm_func @ToggleSexualCamera 2 SexPoseInt SexPlace
+    0AB1: call_scm_func @ToggleSexualCamera 4 SexPoseInt SexPlace PornActress PornActor
     OnSexActivity = true
     SexState = 0
     ShowSexualStats = true
@@ -324,7 +324,7 @@ then
         0AB1: @GetInt 1 @CameraMode Dummy1
         0AB1: @IncOrDecIntVariable 4 var_to_increase Dummy1 min_value 0 max_value 2 flag FLAG_INCREASE store_into Dummy1
         0AB1: @StoreInt 2 @CameraMode Dummy1
-        0AB1: call_scm_func @ToggleSexualCamera 2 SexPoseInt SexPlace
+        0AB1: call_scm_func @ToggleSexualCamera 4 SexPoseInt SexPlace PornActress PornActor
     end
     if 00E1:   player 0 pressed_key PAD_ANSWER_PHONE // TAB
     then SexState=2
@@ -345,14 +345,14 @@ then
         0AB1: @GetInt 1 @CurrentCamera MoveAxisY
         0AB1: call_scm_func @IncOrDecIntVariable 4 MoveAxisY 0 11 FLAG_INCREASE MoveAxisY
         0AB1: @StoreInt 2 @CurrentCamera MoveAxisY
-        0AB1: call_scm_func @ToggleSexualCamera 2 SexPoseInt SexPlace
+        0AB1: call_scm_func @ToggleSexualCamera 4 SexPoseInt SexPlace PornActress PornActor
     end
     if 001A:   -100 > MoveAxisX // LEFT
     then SexState = 5
         0AB1: @GetInt 1 @CurrentCamera MoveAxisY
         0AB1: @IncOrDecIntVariable 4 var_to_increase MoveAxisY min_value 0 max_value 11 flag FLAG_DECREASE store_into MoveAxisY
         0AB1: @StoreInt 2 @CurrentCamera MoveAxisY
-        0AB1: call_scm_func @ToggleSexualCamera 2 SexPoseInt SexPlace
+        0AB1: call_scm_func @ToggleSexualCamera 4 SexPoseInt SexPlace PornActress PornActor
     end
 end
 if SexState == 1
@@ -406,6 +406,9 @@ gosub @SpeedMachine
 
 // Buttons UP - DOWN - ACCEPT - CANCEL acknowledge
 gosub @PulseButtonMachine
+
+// First Person Camera control
+0AB1: @FirstPersonCameraControl 0
 return
 
 {======================================================================
@@ -632,13 +635,15 @@ then
                 0085: SexPlace = Dummy1 // (int)
                 fade 0 time 800
                 wait 800 ms
+                015F: set_camera_position 0.0 0.0 0.0 rotation 0.0 0.0 0.0
+                0160: set_camera_point_at 0.0 0.0 0.0 switchstyle 2
                 009B: destroy_actor PornActress
                 009B: destroy_actor PornActor
                 0AB1: call_scm_func @GetActorsCoordinates 2 SexPoseInt SexPlace ret FemX FemY FemZ FemA MaleX MaleY MaleZ MaleA
                 0AB1: call_scm_func @GenerateActors 8 FemX FemY FemZ FemA MaleX MaleY MaleZ MaleA ret PornActress PornActor
                 0AB1: call_scm_func @GenerateSexFiles 2 SexPoseInt SexPlace
                 0AB1: call_scm_func @LoadSexualPose 5 PornActress PornActor SexPoseInt SexPlace SPD_SLOW
-                0AB1: call_scm_func @ToggleSexualCamera 2 SexPoseInt SexPlace
+                0AB1: call_scm_func @ToggleSexualCamera 4 SexPoseInt SexPlace PornActress PornActor
                 wait 500
                 fade 1 time 800
             end
@@ -673,13 +678,15 @@ then
                 0085: SexPoseInt = Dummy1 // (int)
                 fade 0 time 800
                 wait 800 ms
+                015F: set_camera_position 0.0 0.0 0.0 rotation 0.0 0.0 0.0
+                0160: set_camera_point_at 0.0 0.0 0.0 switchstyle 2
                 009B: destroy_actor PornActress
                 009B: destroy_actor PornActor
                 0AB1: call_scm_func @GetActorsCoordinates 2 SexPoseInt SexPlace ret FemX FemY FemZ FemA MaleX MaleY MaleZ MaleA
                 0AB1: call_scm_func @GenerateActors 8 FemX FemY FemZ FemA MaleX MaleY MaleZ MaleA ret PornActress PornActor
                 0AB1: call_scm_func @GenerateSexFiles 2 SexPoseInt SexPlace
                 0AB1: call_scm_func @LoadSexualPose 5 PornActress PornActor SexPoseInt SexPlace SPD_SLOW
-                0AB1: call_scm_func @ToggleSexualCamera 2 SexPoseInt SexPlace
+                0AB1: call_scm_func @ToggleSexualCamera 4 SexPoseInt SexPlace PornActress PornActor
                 wait 500
                 fade 1 time 800
             end

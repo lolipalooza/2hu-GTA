@@ -90,13 +90,17 @@ hex
 end
 
 :GetInt
-0AC6: 1@ = label 0@ offset
-0A8D: 2@ = read_memory 1@ size 1 virtual_protect 0
-0AB2: ret 1 2@
+// 0@: label, 1@: offset for address
+0AC6: 10@ = label 0@ offset
+005A: 10@ += 1@  // (int)
+0A8D: 11@ = read_memory 10@ size 1 virtual_protect 0
+0AB2: ret 1 11@
 
 :StoreInt
-0AC6: 2@ = label 0@ offset
-0A8C: write_memory 2@ size 1 value 1@ virtual_protect 0
+// 0@: label, 1@: value, 2@: offset for address
+0AC6: 10@ = label 0@ offset
+005A: 10@ += 2@  // (int)
+0A8C: write_memory 10@ size 1 value 1@ virtual_protect 0
 0AB2: ret 0
 
 {======================================================================

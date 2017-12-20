@@ -300,6 +300,15 @@ end
 10@s = 'CFG_T4' // ~b~~k~~CAMERA_CHANGE_VIEW_ALL_SITUATIONS~~s~: Change Camera mode. ~b~~k~~GO_LEFT~~s~/~b~~k~~GO_RIGHT~~s~: Change cam view (only in fixed mode).
 0AB1: @SetDrawText 8 font 2 linewidth 600.0 size 0.2 1.2 position 24.0 40.0 GXT 10@ 11@
 
+// Debug
+0AB1: @GetData 1 @FirstPersonCameraVars 29@
+if 056D:   actor 29@ defined
+then
+    0AB1: @GetData 2 @FirstPersonCameraVars 4 30@
+    0172: 31@ = actor 29@ Z_angle
+    0AD0: show_formatted_text_lowpriority "rotation: %f, angle: %f" time 1 30@ 31@
+end
+
 0AB1: @GetInt 1 @CameraMode 8@
 if 8@ == 0 // Free Camera
 then
