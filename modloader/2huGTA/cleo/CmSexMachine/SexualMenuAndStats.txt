@@ -297,9 +297,27 @@ end
 0AB1: @SetDrawText 8 font 2 linewidth 600.0 size 0.2 1.2 position 24.0 12.0 GXT 10@ 11@
 10@s = 'CFG_T1' // ~b~Mouse wheel~w~: Increase/decrease speed.
 0AB1: @SetDrawText 8 font 2 linewidth 600.0 size 0.2 1.2 position 24.0 26.0 GXT 10@ 11@
+10@s = 'CFG_T4' // ~b~~k~~CAMERA_CHANGE_VIEW_ALL_SITUATIONS~~s~: Change Camera mode. ~b~~k~~GO_LEFT~~s~/~b~~k~~GO_RIGHT~~s~: Change cam view (only in fixed mode).
+0AB1: @SetDrawText 8 font 2 linewidth 600.0 size 0.2 1.2 position 24.0 40.0 GXT 10@ 11@
 
-10@s = 'CFG_C4' // Free Camera
-0AB1: @SetDrawText 8 font 2 linewidth 600.0 size 0.2 1.0 position 169.0 390.0 GXT 10@ 11@
+0AB1: @GetInt 1 @CameraMode 8@
+if 8@ == 0 // Free Camera
+then
+    10@s = 'CFG_C4' // Free Camera
+    0AB1: @SetDrawText 8 font 2 linewidth 600.0 size 0.2 1.0 position 169.0 390.0 GXT 10@ 11@
+end
+if 8@ == 1 // Fixed Camera
+then
+    0AB1: @GetInt 1 @CurrentCamera 9@
+    9@+=1
+    10@s = 'CFG_C5' // Fixed Camera ~y~~1~
+    0AB1: @SetDrawTextRGB_1Number 12 font 2 linewidth 600.0 size 0.2 1.0 position 169.0 390.0 GXT 10@ 11@ rgb 255 255 255 number 9@
+end
+if 8@ == 2 // First Person Camera
+then
+    10@s = 'CFG_C6' // First Person
+    0AB1: @SetDrawText 8 font 2 linewidth 600.0 size 0.2 1.0 position 169.0 390.0 GXT 10@ 11@
+end
 
 // 8@: selected animation, 9@: max animations for current pose
 10@s = 'INT_1' // ~1~

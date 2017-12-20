@@ -30,6 +30,9 @@ until 023D:   special_actor 1 loaded and 023D:   special_actor 2 loaded
 0173: set_actor GenAct_Actor Z_angle_to GenAct_m_A
 0619: enable_actor GenAct_Actor collision_detection 0
 
+{0489: set_actor 2@ muted 0 
+0568: set_actor 2@ untargetable 0} 
+
 0296: unload_special_actor 1
 0296: unload_special_actor 2
 0AB2: ret 2 GenAct_Actress GenAct_Actor
@@ -63,9 +66,9 @@ end
 0AB1: @StoreInt 2 @CurrentAnimation An_Animation
 0AB1: call_scm_func @GetAnimationNames 3 An_Str1 An_Str2 An_Animation out ifp_fem 10@ 11@ 12@ 13@ ifp_male 14@ 15@ 16@ 17@ ifp_file 18@ 19@ 20@ 21@
 
-0A9A: 30@ = openfile LOG_FILE mode "wb+"
+{0A9A: 30@ = openfile LOG_FILE mode "wb+"
 0AD9: write_formatted_text "Fem executing animation %s, Male execting animation %s (file %s)" in_file 30@ vars AnimIfpFem AnimIfpMale An_IfpFile
-0A9B: closefile 30@
+0A9B: closefile 30@}
 
 04ED: load_animation An_IfpFile
 038B: load_requested_models
