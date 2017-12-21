@@ -140,7 +140,7 @@ then
         then 0AB2: ret 12 cam_pos 2372.027587 -1132.840576 1051.573439 cam_target 2371.727294 -1132.847900 1050.621382 rotation -2.17 angle 92.0 min_rotation -5.0 max_rotation -1.3 min_angle 40.0 max_angle 140.0
         end
         if 1@ == PL_FLOOR
-        then 0AB2: ret 12 cam_pos 2373.076172 -1126.029785 1051.475464 cam_target 2373.399658 -1126.038818 1050.529297 rotation -2.28 angle 272.0 min_rotation -1.3 max_rotation -2.70 min_angle 208.0 max_angle 328.0
+        then 0AB2: ret 12 cam_pos 2373.076172 -1126.029785 1051.475464 cam_target 2373.399658 -1126.038818 1050.529297 rotation -2.28 angle 272.0 min_rotation -2.7 max_rotation -1.3 min_angle 208.0 max_angle 328.0
         end
         if 1@ == PL_KITCHEN
         then 0AB2: ret 12 cam_pos 2373.919922 -1131.595703 1051.682983 cam_target 2374.739014 -1131.590210 1051.109375 rotation -1.12 angle 272.0 min_rotation -1.85 max_rotation -1.0 min_angle 240.0 max_angle 300.0
@@ -194,7 +194,7 @@ then
         then 0AB2: ret 12 cam_pos 2361.075928 -1122.571289 1051.183105 cam_target 2362.064209 -1122.536865 1051.034668 rotation -1.02 angle 270.0 min_rotation -1.15 max_rotation -0.9 min_angle 240.0 max_angle 300.0
         end
         if 1@ == PL_SOFA
-        then 0AB2: ret 12 cam_pos 2372.268066 -1121.426758 1051.175537 cam_target 2372.236084 -1122.274170 1050.645508 rotation -1.26 angle 180.0 min_rotation -140.0 max_rotation -1.02 min_angle 150.0 max_angle 210.0
+        then 0AB2: ret 12 cam_pos 2372.268066 -1121.426758 1051.175537 cam_target 2372.236084 -1122.274170 1050.645508 rotation -1.26 angle 180.0 min_rotation -1.4 max_rotation -1.02 min_angle 150.0 max_angle 210.0
         end
         if 1@ == PL_FOOT
         then 0AB2: ret 12 cam_pos 2372.711426 -1122.291626 1051.782959 cam_target 2372.711670 -1122.146118 1050.793579 rotation -2.20 angle 0.0 min_rotation -2.8 max_rotation -1.45 min_angle -25.0 max_angle 25.0
@@ -1690,14 +1690,33 @@ then
     0AB1: @GetInt 1 @CameraMode 11@
     if 11@ == 2 // First person mode
     then
+        0AB1: @GetData 2 @FirstPersonCameraVars FPV_MINROTATION 14@
+        0AB1: @GetData 2 @FirstPersonCameraVars FPV_MAXROTATION 15@
+        0AB1: @GetData 2 @FirstPersonCameraVars FPV_MINANGLE 16@
+        0AB1: @GetData 2 @FirstPersonCameraVars FPV_MAXANGLE 17@
+
         0AB1: @GetData 2 @FirstPersonCameraVars FPV_ROTATION 30@
         
         0A4A: store_joystick_X_offset_to 4@ Y_offset_to 5@ 
         0172: 9@ = actor 0@ Z_angle
         0063: 9@ -= 4@ // (float) 
-        0173: set_actor 0@ Z_angle_to 9@
+        
         5@ /= 200.0 
         005B: 30@ += 5@ // (float) 
+        
+        if 0025:   30@ > 15@  // (float)   MAX ROTATION
+        then 0087: 30@ = 15@ // (float)
+        end
+        if 0025:   14@ > 30@  // (float)   MIN ROTATION
+        then 0087: 30@ = 14@ // (float)
+        end
+        if 0025:   9@ > 17@  // (float)   MAX ROTATION
+        then 0087: 9@ = 17@ // (float)
+        end
+        if 0025:   16@ > 9@  // (float)   MIN ROTATION
+        then 0087: 9@ = 16@ // (float)
+        end
+        0173: set_actor 0@ Z_angle_to 9@
         067C: put_camera_on_actor 0@ offset 0.0 0.0 -1.0 rotation 0.0 0.5 30@ tilt 0.0 switchstyle 2 
         
         0AB1: @StoreData 3 @FirstPersonCameraVars 30@ FPV_ROTATION
