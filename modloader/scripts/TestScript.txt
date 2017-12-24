@@ -238,51 +238,6 @@ wait 0
         0391: release_textures
     end
 end}
-
-repeat
-wait 0
-until 0AB0:   key_pressed 76 // L or l
-
-04C4: store_coords_to 1@ 2@ 3@ from_actor $PLAYER_ACTOR with_offset 0.0 2.0 1.0 
-6@ = Actor.Angle($PLAYER_ACTOR)
-
-Model.Load(#NULL)
-repeat
-wait 0 
-until Model.Available(#NULL)
-0@ = Actor.Create(Mission1, #NULL, 1@, 2@, 3@)
-Actor.Health(0@) = 2000
-Actor.SetImmunities(0@, 1, 1, 1, 1, 1)
-Actor.Angle(0@) = 6@
-0337: set_actor 0@ visibility 0 
-0619: enable_actor 0@ collision_detection 0 
-Model.Destroy(#NULL)
-8@ = -1.0 
-30@ = 0.4 
-067C: put_camera_on_actor 0@ offset 0.0 0.3 0.5 rotation 0.0 0.5 30@ tilt 0.0 switchstyle 2
-
-{28@ = 0.0
-29@ = 0.5
-30@ = 0.4
-015F: set_camera_position 1@ 2@ 3@ rotation 28@ 29@ 30@
-0160: set_camera_point_at 0.0 0.0 0.0 switchstyle 2}
-
-while true
-wait 0
-    0A4A: store_joystick_X_offset_to 4@ Y_offset_to 5@
-    0A4A: store_joystick_X_offset_to 4@ Y_offset_to 5@ 
-    9@ = Actor.Angle(0@)
-    0063: 9@ -= 4@ // (float) 
-    Actor.Angle(0@) = 9@
-    4@ /= 200.0 
-    005B: 28@ += 4@ // (float) 
-    4@ /= 200.0 
-    005B: 29@ += 4@ // (float) 
-    5@ /= 200.0 
-    005B: 30@ += 5@ // (float) 
-    067C: put_camera_on_actor 0@ offset 0.0 0.3 0.5 rotation 0.0 0.5 30@ tilt 0.0 switchstyle 2 
-end
-
 0A93: end_custom_thread
 
 {======================================================================
