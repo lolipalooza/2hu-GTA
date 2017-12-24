@@ -1,0 +1,173 @@
+{======================================================================
+======================================================================}
+:Tset
+0A9A: 0@ = openfile "cleo/DELETETHIS" mode "wb+"  // IF and SET
+0AD9: write_formatted_text "%c%c" in_file 0@ vars 0xd 0xa
+0AD9: write_formatted_text "Temp: %s %s %s %d %s%c%c" in_file 0@ vars 'indiv' 'int' 'stat' 181 "Money" 0xd 0xa
+0AD9: write_formatted_text "%s %d %d %d %d %d %d %d%c%c%c"   in_file 0@ vars 'Gp00' 0 1 2 3 4 5 6 chars 9 9 9
+0AD9: write_formatted_text "%s %d %d %d %d %d %d %d%c"       in_file 0@ vars 'Gp01' 7 6 5 4 3 2 1 chars 9
+0AD9: write_formatted_text "%s %d %d %d %d %d %d %d%c%c%c"   in_file 0@ vars 'Gp02' 0 0 0 0 0 0 0 chars 0xd 0xa 9
+0AD9: write_formatted_text "%c%c%s %d %d %d %d %d %d %d"     in_file 0@ chars 9 9 vars 'Gp03' 3 3 3 3 3 3 3
+0AD9: write_formatted_text "%s %d %d %d %d %d %d %d%c%c%c%c" in_file 0@ vars 'Gp04' 4 4 4 4 4 4 4 chars 9 9 9 9
+0AD9: write_formatted_text "%s %d %d %d %d %d %d %d%c%c"     in_file 0@ vars 'Gp05' 5 5 5 5 5 5 5 chars 0xd 0xa
+0AD9: write_formatted_text "%cgroups %d %d %d %d %d %d %d %d %d %d %d %d %d %d%c%c" in_file 0@ chars 9 vars 1 2 3 4 5 6 7 8 9 10 11 12 13 14 chars 0xd 0xa
+0AD9: write_formatted_text "%s %s %s %f %s%c%c" in_file 0@ vars 'indiv' 'float' 'stat' 2.1 "Money" chars 0xd 0xa
+0AD9: write_formatted_text "%s %s %s %s %s %s %s %s %s %s %s %s %s%c%c" in_file 0@ vars "IndivData" '13' 'x' 'x' 'x' 'x' '10' 'x' 'x' '0' '0' '0' '0' 0xd 0xa
+0A9B: closefile 0@
+
+0A9A: 0@ = openfile "cleo/DELETETHIS" mode "rb"  // IF and SET
+0A9A: 30@ = openfile "cleo/Result.log" mode "wb+"  // IF and SET
+repeat
+    0ADA: 1@ = scan_file 0@ format "%s %s %s %s %d %s" 20@s 2@s 4@s 6@s 8@ 9@v
+    if 1@ == 6
+    then 0AD9: write_formatted_text "%s %s %s %s %d %s%c%c" in_file 30@ vars 20@s 2@s 4@s 6@s 8@ 9@v 0xd 0xa
+    else 0AD9: write_formatted_text "Linea no reconocida%c%c" in_file 30@ vars 0xd 0xa
+    end
+    0ADA: 1@ = scan_file 0@ format "%s %d %d %d %d %d %d %d" 2@s 4@ 5@ 6@ 7@ 8@ 9@ 10@
+    if 1@ == 8
+    then 0AD9: write_formatted_text "%s %d %d %d %d %d %d %d%c%c" in_file 30@ vars 2@s 4@ 5@ 6@ 7@ 8@ 9@ 10@ 0xd 0xa
+    else 0AD9: write_formatted_text "Linea no reconocida%c%c" in_file 30@ vars 0xd 0xa
+    end
+    0ADA: 1@ = scan_file 0@ format "%s %d %d %d %d %d %d %d" 2@s 4@ 5@ 6@ 7@ 8@ 9@ 10@
+    if 1@ == 8
+    then 0AD9: write_formatted_text "%s %d %d %d %d %d %d %d%c%c" in_file 30@ vars 2@s 4@ 5@ 6@ 7@ 8@ 9@ 10@ 0xd 0xa
+    else 0AD9: write_formatted_text "Linea no reconocida%c%c" in_file 30@ vars 0xd 0xa
+    end
+    0ADA: 1@ = scan_file 0@ format "%s %d %d %d %d %d %d %d" 2@s 4@ 5@ 6@ 7@ 8@ 9@ 10@
+    if 1@ == 8
+    then 0AD9: write_formatted_text "%s %d %d %d %d %d %d %d%c%c" in_file 30@ vars 2@s 4@ 5@ 6@ 7@ 8@ 9@ 10@ 0xd 0xa
+    else 0AD9: write_formatted_text "Linea no reconocida%c%c" in_file 30@ vars 0xd 0xa
+    end
+    0ADA: 1@ = scan_file 0@ format "%s %d %d %d %d %d %d %d" 2@s 4@ 5@ 6@ 7@ 8@ 9@ 10@
+    if 1@ == 8
+    then 0AD9: write_formatted_text "%s %d %d %d %d %d %d %d%c%c" in_file 30@ vars 2@s 4@ 5@ 6@ 7@ 8@ 9@ 10@ 0xd 0xa
+    else 0AD9: write_formatted_text "Linea no reconocida%c%c" in_file 30@ vars 0xd 0xa
+    end
+    0ADA: 1@ = scan_file 0@ format "%s %d %d %d %d %d %d %d" 2@s 4@ 5@ 6@ 7@ 8@ 9@ 10@
+    if 1@ == 8
+    then 0AD9: write_formatted_text "%s %d %d %d %d %d %d %d%c%c" in_file 30@ vars 2@s 4@ 5@ 6@ 7@ 8@ 9@ 10@ 0xd 0xa
+    else 0AD9: write_formatted_text "Linea no reconocida%c%c" in_file 30@ vars 0xd 0xa
+    end
+    0ADA: 1@ = scan_file 0@ format "%s %d %d %d %d %d %d %d" 2@s 4@ 5@ 6@ 7@ 8@ 9@ 10@
+    if 1@ == 8
+    then 0AD9: write_formatted_text "%s %d %d %d %d %d %d %d%c%c" in_file 30@ vars 2@s 4@ 5@ 6@ 7@ 8@ 9@ 10@ 0xd 0xa
+    else 0AD9: write_formatted_text "Linea no reconocida%c%c" in_file 30@ vars 0xd 0xa
+    end
+    0ADA: 1@ = scan_file 0@ format "%s %d %d %d %d %d %d %d %d %d %d %d %d %d %d" 20@s 2@ 3@ 4@ 5@ 6@ 7@ 8@ 9@ 10@ 11@ 12@ 13@ 14@ 15@
+    if 1@ == 15
+    then 0AD9: write_formatted_text "groups %d %d %d %d %d %d %d %d %d %d %d %d %d %d%c%c" in_file 30@ vars 2@ 3@ 4@ 5@ 6@ 7@ 8@ 9@ 10@ 11@ 12@ 13@ 14@ 15@ chars 0xd 0xa
+    else 0AD9: write_formatted_text "Linea no reconocida%c%c" in_file 30@ vars 0xd 0xa
+    end
+    0ADA: 1@ = scan_file 0@ format "%s %s %s %s %s" 2@s 4@s 6@s 8@v 12@v
+    if 1@ == 5
+    then
+        if 4@s == 'int'
+        then
+            0AD4: 29@ = scan_string 8@v format "%d" 31@ //IF and SET
+            0AD9: write_formatted_text "Temp: %s %s %s %d %s... num of data: %d%c%c" in_file 30@ vars 2@s 4@s 6@s 31@ 12@v 29@ chars 0xd 0xa
+        end
+        if 4@s == 'float'
+        then
+            0AD4: 29@ = scan_string 8@v format "%f" 31@ //IF and SET
+            0AD9: write_formatted_text "Temp: %s %s %s %f %s... num of data: %d%c%c" in_file 30@ vars 2@s 4@s 6@s 31@ 12@v 29@ chars 0xd 0xa
+        end
+    else 0AD9: write_formatted_text "Linea no reconocida%c%c" in_file 30@ vars 0xd 0xa
+    end
+    0ADA: 1@ = scan_file 0@ format "%s %s %s %s %s %s %s %s %s %s %s %s %s" 2@v 6@s 8@s 10@s 12@s 14@s 16@s 18@s 20@s 22@s 24@s 26@s 28@s
+    if 1@ == 13
+    then 0AD9: write_formatted_text "%s %s %s %s %s %s %s %s %s %s %s %s %s%c%c" in_file 30@ vars 2@v 6@s 8@s 10@s 12@s 14@s 16@s 18@s 20@s 22@s 24@s 26@s 28@s chars 0xd 0xa
+    else 0AD9: write_formatted_text "Linea no reconocida%c%c" in_file 30@ vars 0xd 0xa
+    end
+    break
+until 0AD6:   end_of_file 0@ reached
+0A9B: closefile 30@
+0A9B: closefile 0@
+
+0B00: delete_file "CLEO\DELETETHIS"  // IF and SET
+0AB2: ret 0
+
+{======================================================================
+======================================================================}
+:GetGroupFromIndex
+if and
+0@ >= 0
+3 >= 0@
+then 1@ = 0 // 0: 0 - 3
+end
+if and
+0@ >= 4
+8 >= 0@
+then 1@ = 1 // 1: 4 - 8
+end
+if and
+0@ >= 9
+14 >= 0@
+then 1@ = 2 // 2: 9 - 14
+end
+if and
+0@ >= 15
+17 >= 0@
+then 1@ = 3 // 3: 15 - 17
+end
+if and
+0@ >= 18
+24 >= 0@
+then 1@ = 4 // 4: 18 - 24
+end
+if and
+0@ >= 25
+28 >= 0@
+then 1@ = 5 // 5: 25 - 28
+end
+if and
+0@ >= 29
+35 >= 0@
+then 1@ = 6 // 6: 29 - 35
+end
+if and
+0@ >= 36
+42 >= 0@
+then 1@ = 7 // 7: 36 - 42
+end
+if and
+0@ >= 43
+48 >= 0@
+then 1@ = 8 // 8: 43 - 48
+end
+if and
+0@ >= 49
+54 >= 0@
+then 1@ = 9 // 9: 49 - 54
+end
+if and
+0@ >= 55
+58 >= 0@
+then 1@ = 10 // 10: 55 - 58
+end
+if and
+0@ >= 59
+65 >= 0@
+then 1@ = 11 // 11: 59 - 65
+end
+if and
+0@ >= 66
+72 >= 0@
+then 1@ = 12 // 12: 66 - 72
+end
+if and
+0@ >= 73
+79 >= 0@
+then 1@ = 13 // 13: 73 - 79
+end
+0AB2: ret 1 1@
+
+{======================================================================
+======================================================================}
+:WriteIndexIntoVar
+// 0@ 1@ 2@ 3@ 4@: long string, 5@: index
+0AC7: 10@ = var 0@ offset
+10@+=2
+0AD3: 16@s = format "%.2d" 5@
+0A8C: write_memory 10@ size 2 value 16@ virtual_protect 0
+0AB2: ret 5 0@ 1@ 2@ 3@ 4@
+

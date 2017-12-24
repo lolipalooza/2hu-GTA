@@ -1,0 +1,218 @@
+{======================================================================
+======================================================================}
+:GroupManager_loop
+if Gm_State == 0
+then 0AB1: @ActivityMachine_GenerateCharacters 8 team_actors 1@ 2@ 3@ 4@ 5@ 6@ 7@ use_as_selected ThSelect returned_actors 1@ 2@ 3@ 4@ 5@ 6@ 7@
+end
+if Gm_State == 1
+then
+    0A9A: Dummy1 = openfile LOG_FILE_PATH mode "ab+"
+    0AB1: @ActivityMachine_ChangePlayer 9 create_log_in Dummy1 destroy_team_actors 1@ 2@ 3@ 4@ 5@ 6@ 7@ use_as_selected CurrSelect
+    0A9B: closefile Dummy1
+    0085: ThSelect = CurrSelect // (int)
+    Gm_State=0
+end
+if 00E1:   player 0 pressed_key 4 //0AB0:   key_pressed 9 //00E1:   player 0 pressed_key 4
+then
+    0AB1: @LoadOrUnloadTextures 2 FLAG_TRUE TextureShown ret TextureShown
+    0AB1: @EnableTabMenu 1 FLAG_TRUE
+    0AB1: @StatScreen 1 CurrSelect
+    0AB1: @GetButtonFlanks 3 FLAG_PAD_PRESS PAD_LEFT_RIGHT AxisXPressState ret AxisXPressState FlankUp FlankDown AxisX
+    if FlankUp == 1
+    then
+        for Dummy1 = 0 to 6
+            if 13@(Dummy1,7i) == 0xff
+            then break
+            end
+        end
+        Dummy1--
+        if AxisX > 100
+        then 0AB1: @IncOrDecIntVariable 4 CurrSelect 0 Dummy1 FLAG_INCREASE ret CurrSelect
+        end
+        if -100 > AxisX
+        then 0AB1: @IncOrDecIntVariable 4 CurrSelect 0 Dummy1 FLAG_DECREASE ret CurrSelect
+        end
+    end
+else
+    0AB1: @EnableTabMenu 1 FLAG_FALSE
+    0AB1: @LoadOrUnloadTextures 2 FLAG_FALSE TextureShown ret TextureShown
+    if 803B:   not ThSelect == CurrSelect  // (int)
+    then Gm_State=1
+    end
+end
+return
+
+{======================================================================
+======================================================================}
+:ActivityMachine_GenerateCharacters
+const
+    At_TeamActor = 0@ // 0@ 1@ 2@ 3@ 4@ 5@ 6@
+    At_Select = 7@
+    At_index = 8@
+    At_pX = 9@
+    At_pY = 10@
+    At_pZ = 11@
+    At_pA = 12@
+    // 13@ 14@ 15@ 16@ 17@ 18@ 19@ 20@: Team in use
+    At_Dummy = 21@
+    At_Dummy2 = 22@
+    LONG_RADIUS = 45.0
+end
+0AB1: @GetTeamInUse 0 ret 13@ 14@ 15@ 16@ 17@ 18@ 19@ 20@
+for At_index = 0 to 6
+    if 856D:   not actor At_TeamActor(At_index,7i) defined
+    then
+        0AB1: @GetCoordinates 1 At_index ret At_pX At_pY At_pZ At_pA
+        if 00FE:   actor $PLAYER_ACTOR sphere 0 in_sphere At_pX At_pY At_pZ radius LONG_RADIUS LONG_RADIUS LONG_RADIUS
+        then
+            if and
+            803B:   not At_index == At_Select  // (int)
+            8039:   not 13@(At_index,8i) == 0xFF
+            then
+                0085: At_Dummy = At_index // (int)
+                At_Dummy += 290 // #SPECIALXX
+                0085: At_Dummy2 = At_index // (int)
+                At_Dummy2++
+                0AB1: @LoadModel 1 At_Dummy2
+                gosub @DEBUG_LogCreatedActors
+                009A: At_TeamActor(At_index,7i) = create_actor_pedtype 8 model At_Dummy at At_pX At_pY At_pZ
+                0173: set_actor At_TeamActor(At_index,7i) Z_angle_to At_pA
+                gosub @DEBUG_LogCreatedActorsDone
+                0296: unload_special_actor At_Dummy2
+            end
+        end
+    else //056D:   actor At_TeamActor(At_index,7i) defined
+        if and
+        8104:   not actor $PLAYER_ACTOR near_actor At_TeamActor(At_index,7i) radius LONG_RADIUS LONG_RADIUS LONG_RADIUS sphere 0
+        80FE:   not actor $PLAYER_ACTOR sphere 0 in_sphere At_pX At_pY At_pZ radius LONG_RADIUS LONG_RADIUS LONG_RADIUS
+        then
+            //gosub @GET_CLOSEST_LOCATION_TEAM_ACTOR // modifies 19@(0@,7i) and 16@ 17@ 18@ with 19@ information
+            009B: destroy_actor At_TeamActor(At_index,7i)
+        end
+    end
+end
+0AB2: ret 7 0@ 1@ 2@ 3@ 4@ 5@ 6@
+
+:DEBUG_LogCreatedActors
+0AB1: @DEBUG_GetModelName 1 13@(At_index,8i) ret 25@ 26@
+0A9A: 30@ = openfile LOG_FILE_PATH mode "ab+"
+0AD9: write_formatted_text "creating... idx: %d, skin: %s, offset: %d, model: %d, as: %d (SP%.2d.dff)" in_file 30@ vars At_index 25@s 13@(At_index,8i) At_Dummy At_Dummy2 At_Dummy2
+0AD9: write_formatted_text ", xyz %f %f %f angle %f" in_file 30@ vars At_pX At_pY At_pZ At_pA
+0A9B: closefile 30@
+return
+
+:DEBUG_LogCreatedActorsDone
+0A9A: 30@ = openfile LOG_FILE_PATH mode "ab+"
+0AD9: write_formatted_text " ...done%c%c" in_file 30@ vars 0xd 0xa
+0A9B: closefile 30@
+return
+
+{======================================================================
+======================================================================}
+:GetCoordinates
+0AB1: @Set4Numbers 4 2574.6206 -969.0294 81.6224 4.0 ret 1@ 8@ 15@ 22@
+0AB1: @Set4Numbers 4 2578.0574 -967.3101 81.3602 63.0 ret 2@ 9@ 16@ 23@
+0AB1: @Set4Numbers 4 2572.8013 -968.2211 81.8495 158.0 ret 3@ 10@ 17@ 24@
+0AB1: @Set4Numbers 4 2576.2988 -968.3019 81.4886 273.0 ret 4@ 11@ 18@ 25@
+0AB1: @Set4Numbers 4 2572.0461 -964.0752 82.0216 255.0 ret 5@ 12@ 19@ 26@
+0AB1: @Set4Numbers 4 2575.9158 -961.5757 81.3516 268.0 ret 6@ 13@ 20@ 27@
+0AB1: @Set4Numbers 4 2582.4094 -962.0638 81.3516 112.0 ret 7@ 14@ 21@ 28@
+0AB2: ret 4 1@(0@,7f) 8@(0@,7f) 15@(0@,7f) 22@(0@,7f)
+
+{======================================================================
+======================================================================}
+:InitializeTeamInUse
+const
+    It_TeamId = 0@
+    // 1@ ... 7@: group offsets
+    It_Index = 8@
+end
+0AB1: @ReadGroupOffsets 1 0@ ret 1@ 2@ 3@ 4@ 5@ 6@ 7@
+for 8@ = 0 to 6
+    0AB1: @InsertValueInTeamInUse 2 offset 8@ value 1@(8@,7i)
+end
+0AB1: @InsertValueInTeamInUse 2 offset 7 value 0@
+0AB2: ret 0
+
+{======================================================================
+======================================================================}
+:InsertValueInTeamInUse
+0AC6: 2@ = label @TeamInUse offset
+005A: 2@ += 0@  // (int)
+0A8C: write_memory 2@ size 1 value 1@ virtual_protect 0
+0AB2: ret 0
+
+{======================================================================
+======================================================================}
+:GetTeamInUse
+0AC6: 9@ = label @TeamInUse offset
+for 8@ = 0 to 7
+    0AC6: 9@ = label @TeamInUse offset
+    005A: 9@ += 8@  // (int)
+    0A8D: 0@(8@,8i) = read_memory 9@ size 1 virtual_protect 0
+end
+0AB2: ret 8 0@ 1@ 2@ 3@ 4@ 5@ 6@ 7@
+
+{======================================================================
+======================================================================}
+:GetFromArray
+// inputs: 0@: array address, 1@: row, 2@: element
+const
+    Ga_Addr = 0@
+    Ga_Row = 1@
+    Ga_Elem = 2@
+    Ga_Offset = 3@
+    Ga_Pointer = 4@
+    Ga_Value = 5@
+end
+0AC6: Ga_Pointer = label Ga_Addr offset
+0085: Ga_Offset = Ga_Row // (int)
+0012: Ga_Offset *= 7
+005A: Ga_Offset += Ga_Elem  // (int)
+005A: Ga_Pointer += Ga_Offset  // (int)
+0A8D: Ga_Value = read_memory Ga_Pointer size 1 virtual_protect 0
+0AB2: ret 1 Ga_Value
+
+{======================================================================
+======================================================================}
+:ActivityMachine_ChangePlayer
+// inputs: 0@: log file, 1@ ... 7@: team actors, 8@: CurrSelect
+const
+    Chp_LogFile = 0@
+    // 1@ ... 7@: actors
+    Chp_Select = 8@
+    Chp_CurrCity = 10@s // 10@ 11@
+    Chp_Index = 12@
+    // 13@ ... 20@: team data
+    Chp_X = 21@
+    Chp_Y = 22@
+    Chp_Z = 23@
+    Chp_A = 24@
+end
+0AB1: @GetTeamInUse 0 ret 13@ 14@ 15@ 16@ 17@ 18@ 19@ 20@
+if Chp_LogFile <> 0
+then 0AD9: write_formatted_text "Team in use: %.2d %.2d %.2d %.2d %.2d %.2d %.2d %.2d, selected: %d%c%c" in_file Chp_LogFile vars 13@ 14@ 15@ 16@ 17@ 18@ 19@ 20@ Chp_Select 0xd 0xa
+end
+0AB1: @GetLoadedCity 0 ret 10@ 11@
+if Chp_CurrCity == 'LibCity'
+then 0AB1: @IIIFade 2 0 800
+else fade 0 800
+end
+wait 800
+for Chp_Index = 0 to 6
+    if 056D:   actor 1@(Chp_Index,7i) defined
+    then 009B: destroy_actor 1@(Chp_Index,7i)
+    end
+end
+01B4: set_player $PLAYER_CHAR can_move 0
+0AB1: @ChangePlayerSkin 2 13@(Chp_Select,7i) Chp_Select
+0AB1: @GetCoordinates 1 Chp_Select ret Chp_X Chp_Y Chp_Z Chp_A
+0AB1: @MoveToInterior 5 xyz Chp_X Chp_Y Chp_Z angle Chp_A interior 0
+01B4: set_player $PLAYER_CHAR can_move 1
+wait 1000
+if 0@s == 'LibCity'
+then 0AB1: @IIIFade 2 1 1000
+else fade 1 1000
+end
+0AB2: ret 0
+

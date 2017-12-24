@@ -1,0 +1,133 @@
+const
+    // Teams Ids
+    ID_HAKUREI_SHRINE_TEAM = 0
+    ID_PERFECT_CHERRY_BLOSSOM_TEAM = 1
+    ID_SCARLET_DEVIL_MANSION_TEAM = 2
+    ID_MOUNTAIN_OF_FAITH_TEAM = 3
+    ID_BONBUNMARU_TEAM = 4
+    ID_SUBTERRANEAN_ANIMISM_TEAM = 5
+    ID_GREAT_FAIRY_WARS_1_TEAM = 6
+    ID_GREAT_FAIRY_WARS_2_TEAM = 7
+    ID_IMPERISHABLE_NIGHT_TEAM = 8
+    ID_PHANTASMAGORIA_OF_FLOWER_VIEW_TEAM = 9
+    ID_SUBTERRANEAN_ANIMISM_2_TEAM = 10
+    ID_UNDEFINED_FANTASTIC_OBJECT_TEAM = 11
+    ID_TEN_DESIRES_TEAM = 12
+    ID_CUSTOM_TEAM = 13
+
+    // Teams Offset
+    OFFS_HAKUREI_SHRINE_TEAM = 0
+    OFFS_PERFECT_CHERRY_BLOSSOM_TEAM = 4
+    OFFS_SCARLET_DEVIL_MANSION_TEAM = 9
+    OFFS_MOUNTAIN_OF_FAITH_TEAM = 15
+    OFFS_BONBUNMARU_TEAM = 18
+    OFFS_SUBTERRANEAN_ANIMISM_TEAM = 25
+    OFFS_GREAT_FAIRY_WARS_1_TEAM = 29
+    OFFS_GREAT_FAIRY_WARS_2_TEAM = 36
+    OFFS_IMPERISHABLE_NIGHT_TEAM = 43
+    OFFS_PHANTASMAGORIA_OF_FLOWER_VIEW_TEAM = 49
+    OFFS_SUBTERRANEAN_ANIMISM_2_TEAM = 55
+    OFFS_UNDEFINED_FANTASTIC_OBJECT_TEAM = 59
+    OFFS_TEN_DESIRES_TEAM = 66
+    OFFS_CUSTOM_TEAM = 73
+    
+    // team 1  (Hakurei Shrine Team)
+    MD_REIMU  = 0
+    MD_MARISA = 1
+    MD_ALICE  = 2
+    MD_SUIKA  = 3
+
+    // team 2  (Perfect Cherry Blossom Team)
+    MD_YOUMU  = 4
+    MD_YUYUKO = 5
+    MD_YUKARI = 6
+    MD_RAN    = 7
+    MD_CHEN   = 8
+
+    // team 3  (Scarlet Devil Mansion Team)
+    MD_SAKUYA    = 9
+    MD_MEILING   = 10
+    MD_PATCHOULI = 11
+    MD_KOAKUMA   = 12
+    MD_REMILIA   = 13
+    MD_FLANDRE   = 14
+
+    // team 4  (Mountain of Faith Team)
+    MD_SANAE  = 15
+    MD_KANAKO = 16
+    MD_SUWAKO = 17
+
+    // team 5  (Bonbunmaru Team)
+    MD_AYA      = 18
+    MD_HATATE   = 19
+    MD_MOMIJI   = 20
+    MD_MINORIKO = 21
+    MD_SHIZUHA  = 22
+    MD_HINA     = 23
+    MD_NITORI   = 24
+
+    // team 6  (Subterranean Animism Team)
+    MD_SATORI = 25
+    MD_KOISHI = 26
+    MD_RIN    = 27
+    MD_OKUU   = 28
+
+    // team 7  (Baka Team)
+    MD_CIRNO     = 29
+    MD_DAIYOUSEI = 30
+    MD_RUMIA     = 31
+    MD_LETTY     = 32
+    MD_WRIGGLE   = 33
+    MD_MYSTIA    = 34
+    MD_TOKIKO    = 35
+
+    // team 8  (Fairy Team)
+    MD_SUNNY  = 36
+    MD_LUNA   = 37
+    MD_STAR   = 38
+    MD_LILY   = 39
+    MD_LYRICA = 40
+    MD_LUNASA = 41
+    MD_MERLIN = 42
+
+    // team 9  (Imperishable Night Team)
+    MD_EIRIN  = 43
+    MD_KAGUYA = 44
+    MD_REISEN = 45
+    MD_TEWI   = 46
+    MD_MOKOU  = 47
+    MD_KEINE  = 48
+
+    // team 10 (Phantasmagoria of Flower View Team)
+    MD_TENSHI    = 49
+    MD_IKU       = 50
+    MD_SHIKIEIKI = 51
+    MD_KOMACHI   = 52
+    MD_YUUKA     = 53
+    MD_MEDICINE  = 54
+
+    // team 11 (Subterranean Animism 2 Team)
+    MD_YAMAME = 55
+    MD_KISUME = 56
+    MD_PARSEE = 57
+    MD_YUUGI  = 58
+
+    // team 12 (Undefined Fantastic Object Team)
+    MD_BYAKUREN = 59
+    MD_ICHIRIN  = 60
+    MD_NUE      = 61
+    MD_SHOU     = 62
+    MD_NAZRIN   = 63
+    MD_MURASA   = 64
+    MD_KOGASA   = 65
+
+    // team 13 (Ten Desires Team)
+    MD_SEIGA   = 66
+    MD_MIKO    = 67
+    MD_FUTO    = 68
+    MD_TOJIKO  = 69
+    MD_YOSHIKA = 70
+    MD_MAMIZOU = 71
+    MD_KYOUKO  = 72
+end
+

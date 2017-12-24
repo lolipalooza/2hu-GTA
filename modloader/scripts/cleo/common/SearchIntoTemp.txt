@@ -244,3 +244,16 @@ end
 0A9B: closefile Upd_UpdateFile
 0AB2: ret 0
 
+{======================================================================
+======================================================================}
+:GetEnergyAndMaxEnergy
+// inputs : 0@: group, 1@: char
+24@v = "Energy"
+0AB1: @SearchIntoTemp 6 variable_to_search 24@ 25@ 26@ 27@ group 0@ create_log_in_file 0 ret 10@ 11@ 12@ 13@ 14@ 15@ 16@ 17@ 18@ 19@ 20@ 21@ 22@ 23@
+0085: 28@ = 12@(1@,7i) // (int)
+
+24@v = "MaxEnergy"
+0AB1: @SearchIntoTemp 6 variable_to_search 24@ 25@ 26@ 27@ group 0@ create_log_in_file 0 ret 10@ 11@ 12@ 13@ 14@ 15@ 16@ 17@ 18@ 19@ 20@ 21@ 22@ 23@
+0085: 29@ = 12@(1@,7i) // (int)
+0AB2: ret 2 28@ 29@
+

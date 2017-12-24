@@ -1,0 +1,160 @@
+{======================================================================
+======================================================================}
+const
+    OFFSET_ORIG_DFF = 22
+    OFFSET_ORIG_TXD = 76
+    OFFSET_DEST_DFF = 53
+    OFFSET_DEST_TXD = 107
+end
+
+{======================================================================
+======================================================================}
+:LoadModel
+// inputs: 0@ = place holder
+0AD3: 2@s = format "SP%.2d" 0@
+023C: load_special_actor 2@s as 0@
+repeat
+wait 0 ms
+until 023D: special_actor 0@ loaded
+0AB2: ret 0
+
+{======================================================================
+======================================================================}
+:CopyModel
+0AB1: @ModifyPaths 4 model_offset 0@ orig_offset OFFSET_ORIG_DFF dest_offset OFFSET_DEST_DFF dest_place 1@
+0AB1: @ModifyPaths 4 model_offset 0@ orig_offset OFFSET_ORIG_TXD dest_offset OFFSET_DEST_TXD dest_place 1@
+if 0AB1: @CopySkinIntoFolder 0
+then 0485:  return_true
+else 059A:  return_false
+end
+0AB2: ret 0
+
+{======================================================================
+======================================================================}
+:CopyTeamModels
+0AB1: @GetTeamInUse 0 ret 13@ 14@ 15@ 16@ 17@ 18@ 19@ 20@
+for 0@ = 0 to 6
+    if 13@(0@,7i) <> 0xff
+    then
+        0085: 1@ = 0@ // (int)
+        000A: 1@ += 1
+        if 0AB1: @CopyModel 2 model_offset 13@(0@,7i) place_holder 1@
+        then
+        else
+            0AB1: @DEBUG_GetModelName 1 13@(0@,7i) ret 2@ 3@
+            0AD0: show_formatted_text_lowpriority "~r~ERROR~s~: Failed to copy skin file ~y~%s~s~ into ~y~modloader\skins" time 5000 2@s
+        end
+    end
+end
+0AB2: ret 0
+
+{======================================================================
+======================================================================}
+:ChangePlayerSkin
+0085: 2@ = 1@ // (int)
+2@ += 290 // #SPECIALXX
+0085: 3@ = 1@ // (int)
+3@++
+0AB1: @LoadModel 1 3@
+09C7: change_player $PLAYER_CHAR model_to 2@
+0296: unload_special_actor 3@
+0AB2: ret 0
+
+{======================================================================
+======================================================================}
+:CopyModelAndLoad
+const
+    Cml_ModelOffset = 0@
+    Cml_PlaceHolder = 1@
+    Cml_Addr = 2@
+    Cml_Str1 = 3@
+    Cml_Str2 = 4@
+    Cml_String = 3@s
+end
+0AB1: @ModifyPaths 4 model_offset 0@ orig_offset OFFSET_ORIG_DFF dest_offset OFFSET_DEST_DFF dest_place Cml_PlaceHolder
+0AB1: @ModifyPaths 4 model_offset 0@ orig_offset OFFSET_ORIG_TXD dest_offset OFFSET_DEST_TXD dest_place Cml_PlaceHolder
+        
+if 0AB1: @CopySkinIntoFolder 0
+then
+    0AC6: Cml_Addr = label @CopySkinIntoFolder offset
+    Cml_Addr += OFFSET_DEST_DFF
+    Cml_Addr -= 3
+    0A8D: Cml_Str1 = read_memory Cml_Addr size 4 virtual_protect 0
+    023C: load_special_actor Cml_String as Cml_PlaceHolder
+    repeat
+    wait 0 ms
+    until 023D: special_actor Cml_PlaceHolder loaded
+else
+    0AB1: @DEBUG_GetModelName 1 0@ ret Cml_Str1 Cml_Str2
+    0AD0: show_formatted_text_lowpriority "~r~ERROR~s~: Failed to copy skin file ~y~%s~s~ into ~y~modloader\skins" time 5000 Cml_String
+end
+0AB2: ret 0
+
+{======================================================================
+======================================================================}
+:ModifyPaths
+const
+    Mpth_ModelsOffset = 0@
+    Mpth_CopySkinOffset = 1@
+    Mpth_DestOffset = 2@
+    Mpth_DestPlace = 3@
+    
+    Mpth_CopySkinAddress = 4@
+    Mpth_ModelsAddress = 5@
+    Mpth_Value = 6@
+    Mpth_Counter = 7@
+end
+
+// Writing in "______" container
+0AC6: Mpth_CopySkinAddress = label @CopySkinIntoFolder offset
+0AC6: Mpth_ModelsAddress = label @ModelsList offset
+005A: Mpth_CopySkinAddress += Mpth_CopySkinOffset  // (int)
+Mpth_ModelsOffset*=6
+005A: Mpth_ModelsAddress += Mpth_ModelsOffset  // (int)
+Mpth_Counter = 1
+for Mpth_Counter = 1 to 6
+    0A8D: Mpth_Value = read_memory Mpth_ModelsAddress size 1 virtual_protect 0
+    0A8C: write_memory Mpth_CopySkinAddress size 1 value Mpth_Value virtual_protect 0
+    Mpth_ModelsAddress++
+    Mpth_CopySkinAddress++
+end
+
+// Writing in "SP01"
+0AC6: Mpth_CopySkinAddress = label @CopySkinIntoFolder offset
+005A: Mpth_CopySkinAddress += Mpth_DestOffset  // (int)
+if Mpth_DestPlace >= 10
+then
+    0A8C: write_memory Mpth_CopySkinAddress size 1 value 0x30 virtual_protect 0
+    Mpth_CopySkinAddress--
+    0A8C: write_memory Mpth_CopySkinAddress size 1 value 0x31 virtual_protect 0
+else
+    Mpth_DestPlace += 0x30
+    0A8C: write_memory Mpth_CopySkinAddress size 1 value Mpth_DestPlace virtual_protect 0
+    Mpth_CopySkinAddress--
+    0A8C: write_memory Mpth_CopySkinAddress size 1 value 0x30 virtual_protect 0
+end
+0AB2: ret 0
+
+{======================================================================
+======================================================================}
+:CopySkinIntoFolder
+if and
+0B04: copy_file "models/touhou/______.dff" to "modloader/skins/SP01.dff" //IF and SET
+0B04: copy_file "models/touhou/______.txd" to "modloader/skins/SP01.txd" //IF and SET
+then 0485:  return_true
+else 059A:  return_false
+end
+0AB2: ret 0
+
+{======================================================================
+======================================================================}
+:DEBUG_GetModelName
+0AC6: 29@ = label @ModelsList offset
+0085: 28@ = 0@ // (int)
+28@ *= 6
+005A: 29@ += 28@  // (int)
+0A8D: 25@ = read_memory 29@ size 4 virtual_protect 0
+29@+=4
+0A8D: 26@ = read_memory 29@ size 2 virtual_protect 0
+0AB2: ret 2 25@ 26@
+

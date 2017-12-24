@@ -1,0 +1,25 @@
+{======================================================================
+======================================================================}
+const
+    Fti_InputFloat = 0@
+    Fti_Presition = 1@
+    Fti_OutputIntegerPart = 2@
+    Fti_OutputDecimalPart = 3@
+    Fti_AuxVar = 4@
+end
+
+{======================================================================
+======================================================================}
+:FloatToInt
+// inputs: 0@: input float, 1@: presition number (must be INT and multiple of ten (10))
+0092: Fti_OutputIntegerPart = float 0@ to_integer
+0087: Fti_OutputDecimalPart = 0@ // (float)
+0097: make Fti_OutputDecimalPart absolute_float
+0093: Fti_AuxVar = integer Fti_OutputIntegerPart to_float
+0097: make Fti_AuxVar absolute_float
+0063: Fti_OutputDecimalPart -= Fti_AuxVar  // (float)
+0093: Fti_Presition = integer Fti_Presition to_float
+0011: Fti_OutputDecimalPart *= Fti_Presition
+0092: Fti_OutputDecimalPart = float Fti_OutputDecimalPart to_integer
+0AB2: ret 2 Fti_OutputIntegerPart Fti_OutputDecimalPart
+

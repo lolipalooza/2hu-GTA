@@ -1,0 +1,607 @@
+{======================================================================
+======================================================================}
+:StatScreen
+const
+    Sts_Selected = 0@
+    // 1@ 2@ ... 7@: team offsets
+    // 8@: dummy1, 9@: dummy2
+    // 10@ 11@ ... 23@: data read from save file
+    // 24@ 25@ 26@ 27@: label data to read
+    // 30@: player character, 31@: group
+end
+
+0AB1: @GetTeamInUse 0 ret 1@ 2@ 3@ 4@ 5@ 6@ 7@ 31@
+0AB1: @GetPlayerCharacterData 1 create_log_in_file 0 store_player_character_data_in 31@ 30@
+
+for 8@ = 0 to 6
+    03E3: set_texture_to_be_drawn_antialiased 1
+    if 1@(8@,7i) <> 0xff
+    then
+        0085: 9@ = 8@ // (int)
+        9@ += 101
+        if 003B:   1@(8@,7i) == 1@(Sts_Selected,7i)  // (int)
+        then 038D: draw_texture 9@ position 563.0 373.0 size 121.0 126.0 RGBA 255 255 255 255
+        else 038D: draw_texture 9@ position 563.0 373.0 size 121.0 126.0 RGBA 80 80 80 255
+        end
+    end
+end
+03E3: set_texture_to_be_drawn_antialiased 1
+if 1@(Sts_Selected,7i) == 0
+then 038D: draw_texture 100 position 563.0 373.0 size 97.0 102.0 RGBA 255 255 255 255
+else 038D: draw_texture 1@(Sts_Selected,7i) position 563.0 373.0 size 97.0 102.0 RGBA 255 255 255 255
+end
+
+038E: draw_box_position 563.0 157.0 size 103.0 299.0 RGBA 0 0 0 140 // Main box
+
+if 003B:   30@ == 0@  // (int)
+then 010B: 28@ = player $PLAYER_CHAR money
+else
+    24@v = "Money"
+    0AB1: @SearchIntoTemp 6 variable_to_search 24@ 25@ 26@ 27@ group 31@ create_log_in_file 0 ret 10@ 11@ 12@ 13@ 14@ 15@ 16@ 17@ 18@ 19@ 20@ 21@ 22@ 23@
+    0085: 28@ = 12@(0@,7i) // (int)
+end
+8@s = 'MONEY' // $~1~
+03E4: set_text_draw_align_right 1
+0AB1: @SetDrawText1num 10 font 3 linewidth 640.0 size 0.3 1.2 position 608.0 15.0 gxt 8@ 9@ int_value 28@
+
+0AB1: @GetEnergyAndMaxEnergy 2 group 31@ char 0@ ret 28@ 29@
+8@s = 'ST_HP' // Energy: ~1~/~1~
+0AB1: @SetDrawText2num 10 font 1 linewidth 640.0 size 0.2 0.9 position 516.0 26.0 gxt 8@ 9@ float_value 28@ 29@
+038E: draw_box_position 563.0 40.0 size 98.0 5.0 RGBA 0 0 0 140
+0093: 12@ = integer 28@ to_float
+0093: 29@ = integer 29@ to_float
+0073: 12@ /= 29@ // (float)
+0013: 12@ *= 1000.0
+0AB1: @GetBarPosition 1 12@ ret 28@
+0AB1: @GetBarSize 1 12@ ret 29@
+038E: draw_box_position 28@ 40.0 size 29@ 5.0 RGBA 255 255 255 255
+
+24@v = "Knowledge"
+0AB1: @SearchIntoTemp 6 variable_to_search 24@ 25@ 26@ 27@ group 31@ create_log_in_file 0 ret 10@ 11@ 12@ 13@ 14@ 15@ 16@ 17@ 18@ 19@ 20@ 21@ 22@ 23@
+0AB1: @FloatToInt 2 12@(0@,7i) 10 ret 28@ 29@
+10@s = 'ST_KNW' // Knowlegde: ~1~.~1~
+0AB1: @SetDrawText2num 10 font 1 linewidth 640.0 size 0.2 0.9 position 516.0 48.0 gxt 10@ 11@ float_value 28@ 29@
+038E: draw_box_position 563.0 62.0 size 98.0 5.0 RGBA 0 0 0 140
+0AB1: @GetBarPosition 1 12@(0@,7i) ret 28@
+0AB1: @GetBarSize 1 12@(0@,7i) ret 29@
+038E: draw_box_position 28@ 62.0 size 29@ 5.0 RGBA 255 255 255 255
+
+24@v = "Charm"
+0AB1: @SearchIntoTemp 6 variable_to_search 24@ 25@ 26@ 27@ group 31@ create_log_in_file 0 ret 10@ 11@ 12@ 13@ 14@ 15@ 16@ 17@ 18@ 19@ 20@ 21@ 22@ 23@
+0AB1: @FloatToInt 2 12@(0@,7i) 10 ret 28@ 29@
+10@s = 'ST_CHR' // Charm: ~1~.~1~
+0AB1: @SetDrawText2num 10 font 1 linewidth 640.0 size 0.2 0.9 position 516.0 70.0 gxt 10@ 11@ float_value 28@ 29@
+038E: draw_box_position 563.0 84.0 size 98.0 5.0 RGBA 0 0 0 140
+0AB1: @GetBarPosition 1 12@(0@,7i) ret 28@
+0AB1: @GetBarSize 1 12@(0@,7i) ret 29@
+038E: draw_box_position 28@ 84.0 size 29@ 5.0 RGBA 255 255 255 255
+
+24@v = "Reputation"
+0AB1: @SearchIntoTemp 6 variable_to_search 24@ 25@ 26@ 27@ group 31@ create_log_in_file 0 ret 10@ 11@ 12@ 13@ 14@ 15@ 16@ 17@ 18@ 19@ 20@ 21@ 22@ 23@
+10@s = 'ST_RP' // Reputation: ~1~
+0AB1: @SetDrawText1num 10 font 1 linewidth 640.0 size 0.2 0.9 position 516.0 92.0 gxt 10@ 11@ int_value 12@(0@,7i)
+038E: draw_box_position 563.0 106.0 size 98.0 5.0 RGBA 0 0 0 140
+0093: 10@ = integer 12@(0@,7i) to_float
+0097: make 10@ absolute_float
+0AB1: @GetBarPosition 1 10@ ret 28@
+0AB1: @GetBarSize 1 10@ ret 29@
+if 12@(0@,7i) >= 0
+then 038E: draw_box_position 28@ 106.0 size 29@ 5.0 RGBA 255 255 255 255
+else 038E: draw_box_position 28@ 106.0 size 29@ 5.0 RGBA 255 0 0 255
+end
+
+24@v = "Hunger"
+0AB1: @SearchIntoTemp 6 variable_to_search 24@ 25@ 26@ 27@ group 31@ create_log_in_file 0 ret 10@ 11@ 12@ 13@ 14@ 15@ 16@ 17@ 18@ 19@ 20@ 21@ 22@ 23@
+10@s = 'ST_HG' // Hunger: ~1~%
+0AB1: @SetDrawText1num 10 font 1 linewidth 640.0 size 0.2 0.9 position 516.0 114.0 gxt 10@ 11@ int_value 12@(0@,7i)
+038E: draw_box_position 563.0 128.0 size 98.0 5.0 RGBA 0 0 0 140
+0093: 12@(0@,7i) = integer 12@(0@,7i) to_float
+0AB1: @GetBarPosition 1 12@(0@,7i) ret 28@
+0AB1: @GetBarSize 1 12@(0@,7i) ret 29@
+038E: draw_box_position 28@ 128.0 size 29@ 5.0 RGBA 255 255 255 255
+
+24@v = "Stamina"
+0AB1: @SearchIntoTemp 6 variable_to_search 24@ 25@ 26@ 27@ group 31@ create_log_in_file 0 ret 10@ 11@ 12@ 13@ 14@ 15@ 16@ 17@ 18@ 19@ 20@ 21@ 22@ 23@
+10@s = 'ST_STMN' // Resistencia
+0AB1: @SetDrawText2num 10 font 1 linewidth 640.0 size 0.2 0.9 position 516.0 156.0 gxt 10@ 11@ float_value 28@ 29@
+038E: draw_box_position 563.0 170.0 size 98.0 5.0 RGBA 0 0 0 140
+if 003B:   30@ == 0@  // (int)
+then
+    0653: 10@ = float_stat 22
+    0AB1: @GetBarPosition 1 10@ ret 28@
+    0AB1: @GetBarSize 1 10@ ret 29@
+else
+    0AB1: @GetBarPosition 1 12@(0@,7i) ret 28@
+    0AB1: @GetBarSize 1 12@(0@,7i) ret 29@
+end
+038E: draw_box_position 28@ 170.0 size 29@ 5.0 RGBA 255 255 255 255
+
+24@v = "Muscle"
+0AB1: @SearchIntoTemp 6 variable_to_search 24@ 25@ 26@ 27@ group 31@ create_log_in_file 0 ret 10@ 11@ 12@ 13@ 14@ 15@ 16@ 17@ 18@ 19@ 20@ 21@ 22@ 23@
+10@s = 'ST_MSCL' // Musculatura
+0AB1: @SetDrawText2num 10 font 1 linewidth 640.0 size 0.2 0.9 position 516.0 178.0 gxt 10@ 11@ float_value 28@ 29@
+038E: draw_box_position 563.0 192.0 size 98.0 5.0 RGBA 0 0 0 140
+if 003B:   30@ == 0@  // (int)
+then
+    0653: 10@ = float_stat 23
+    0AB1: @GetBarPosition 1 10@ ret 28@
+    0AB1: @GetBarSize 1 10@ ret 29@
+else
+    0AB1: @GetBarPosition 1 12@(0@,7i) ret 28@
+    0AB1: @GetBarSize 1 12@(0@,7i) ret 29@
+end
+038E: draw_box_position 28@ 192.0 size 29@ 5.0 RGBA 255 255 255 255
+
+24@v = "Fat"
+0AB1: @SearchIntoTemp 6 variable_to_search 24@ 25@ 26@ 27@ group 31@ create_log_in_file 0 ret 10@ 11@ 12@ 13@ 14@ 15@ 16@ 17@ 18@ 19@ 20@ 21@ 22@ 23@
+10@s = 'ST_FAT' // Gordura
+0AB1: @SetDrawText2num 10 font 1 linewidth 640.0 size 0.2 0.9 position 516.0 200.0 gxt 10@ 11@ float_value 28@ 29@
+038E: draw_box_position 563.0 214.0 size 98.0 5.0 RGBA 0 0 0 140
+if 003B:   30@ == 0@  // (int)
+then
+    0653: 10@ = float_stat 21
+    0AB1: @GetBarPosition 1 10@ ret 28@
+    0AB1: @GetBarSize 1 10@ ret 29@
+else
+    0AB1: @GetBarPosition 1 12@(0@,7i) ret 28@
+    0AB1: @GetBarSize 1 12@(0@,7i) ret 29@
+end
+038E: draw_box_position 28@ 214.0 size 29@ 5.0 RGBA 255 255 255 255
+
+24@v = "SexAppeal"
+0AB1: @SearchIntoTemp 6 variable_to_search 24@ 25@ 26@ 27@ group 31@ create_log_in_file 0 ret 10@ 11@ 12@ 13@ 14@ 15@ 16@ 17@ 18@ 19@ 20@ 21@ 22@ 23@
+10@s = 'ST_SXAP' // Sex Appeal
+0AB1: @SetDrawText2num 10 font 1 linewidth 640.0 size 0.2 0.9 position 516.0 222.0 gxt 10@ 11@ float_value 28@ 29@
+038E: draw_box_position 563.0 236.0 size 98.0 5.0 RGBA 0 0 0 140
+if 003B:   30@ == 0@  // (int)
+then
+    0653: 10@ = float_stat 25
+    0AB1: @GetBarPosition 1 10@ ret 28@
+    0AB1: @GetBarSize 1 10@ ret 29@
+else
+    0AB1: @GetBarPosition 1 12@(0@,7i) ret 28@
+    0AB1: @GetBarSize 1 12@(0@,7i) ret 29@
+end
+038E: draw_box_position 28@ 236.0 size 29@ 5.0 RGBA 255 255 255 255
+
+{10@s = 'ST_DPS' // Dias transcurridos: ~1~
+0AB1: @SetDrawText1num 10 font 1 linewidth 640.0 size 0.2 0.9 position 516.0 264.0 gxt 10@ 11@ int_value -1
+10@s = 'ST_PLTM' // Tiempo de juego:
+0AB1: @SetDrawText 8 font 1 linewidth 640.0 size 0.2 0.9 position 516.0 276.0 gxt 10@ 11@}
+
+10@s = 'ST_CRR' // Profesión
+0AB1: @SetDrawText 8 font 1 linewidth 640.0 size 0.2 0.9 position 516.0 288.0 gxt 10@ 11@
+10@s = 'ST_CR00' // Ninguna
+0AB1: @SetDrawText 8 font 1 linewidth 640.0 size 0.2 0.9 position 554.0 288.0 gxt 10@ 11@
+
+// 2hu name display
+0AD3: 10@s = format "TH_%.2d" 1@(Sts_Selected,7i)
+03E4: set_text_draw_align_right 1
+0AB1: @SetDrawText 8 font 3 linewidth 640.0 size 0.3 1.2 position 620.0 432.0 gxt 10@ 11@
+0AB2: ret 0
+
+{======================================================================
+======================================================================}
+:EnableTabMenu
+if 0@ == 1
+then 1@ = 0.0
+    2@ = 0
+else 1@ = 1.0
+    2@ = 1
+end
+015D: set_gamespeed 1@
+0581: enable_radar 2@
+0826: enable_hud 2@
+//01B4: set_player $PLAYER_CHAR can_move 2@
+03F0: enable_text_draw 0@
+09BA: show_entered_zone_name 2@
+0AB2: ret 0
+
+{======================================================================
+======================================================================}
+:LoadOrUnloadTextures
+// inputs: 0@: load or unload flag, 1@: Texture shown
+const
+    Lut_Flag = 0@
+    Lut_TxdShown = 1@
+    Lut_Index = 2@
+    Lut_Aux = 3@
+    Lut_LongStr = 4@v // 4@ 5@ 6@ 7@
+end
+0AB1: @GetTeamInUse 0 ret 13@ 14@ 15@ 16@ 17@ 18@ 19@ 20@
+if Lut_Flag == 1
+then
+    if Lut_TxdShown == 0
+    then
+        for Lut_Index = 1 to 8
+            0AD3: Lut_LongStr = format "bar%d" Lut_Index
+            0390: load_txd_dictionary Lut_LongStr
+            0085: Lut_Aux = Lut_Index // (int)
+            Lut_Aux += 100
+            038F: load_texture Lut_LongStr as Lut_Aux // Load dictionary with 0390 first
+        end
+        for Lut_Index = 0 to 6
+            if 13@(Lut_Index,7i) <> 255
+            then
+                0AD3: Lut_LongStr = format "TH_%.2d" 13@(Lut_Index,7i)
+                0390: load_txd_dictionary Lut_LongStr
+                if 13@(Lut_Index,7i) == 0
+                then 038F: load_texture Lut_LongStr as 100 // Load dictionary with 0390 first
+                else 038F: load_texture Lut_LongStr as 13@(Lut_Index,7i) // Load dictionary with 0390 first
+                end
+            end
+        end
+        Lut_TxdShown = 1
+    end
+else
+    if Lut_TxdShown == 1
+    then
+        wait 0
+        Lut_TxdShown = 0
+        0391: release_textures
+    end
+end
+0AB2: ret 1 Lut_TxdShown
+
+{======================================================================
+======================================================================}
+:GetBarPosition
+0@*=0.048
+0@+=515.0
+0AB2: ret 1 0@
+
+:GetBarSize
+0@*=0.098
+0AB2: ret 1 0@
+
+{======================================================================
+======================================================================}
+:StatScreen2
+{2@, 3@, 4@: variables for calculation
+5@, 6@, 7: position for draw texts and boxes}
+038E: draw_box_position 320.0 250.0 size 600.0 380.0 RGBA 0 0 0 210
+
+10@s = 'STAT' // Player Status
+0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.6 2.2 pos 60.0 50.0 gxt 10@ 11@
+
+
+5@=80.0
+6@=300.0
+7@=80.0
+
+10@s = 'STAT04' // Hp:
+0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.4 1.2 pos 5@ 7@ gxt 10@ 11@
+10@s = 'STAT02' // ~1~/~1~
+0AB1: @SetDrawText2num 10 font 1 linewidth 600.0 size 0.4 1.2 pos 6@ 7@ gxt 10@ 11@ 0 0
+            
+000B: 7@ += 15.0
+10@s = 'STAT05' // Fat:
+0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.4 1.2 pos 5@ 7@ gxt 10@ 11@
+//0653: 2@ = float_stat 21 // Fat
+10@s = 'FLOAT_N' // ~1~.~1~
+0AB1: @SetDrawText2num 10 font 1 linewidth 600.0 size 0.4 1.2 pos 6@ 7@ gxt 10@ 11@ 0 0
+            
+000B: 7@ += 15.0
+10@s = 'STAT06' // Stamina:
+0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.4 1.2 pos 5@ 7@ gxt 10@ 11@
+//0653: 2@ = float_stat 22 // Stamina
+10@s = 'FLOAT_N' // ~1~.~1~
+0AB1: @SetDrawText2num 10 font 1 linewidth 600.0 size 0.4 1.2 pos 6@ 7@ gxt 10@ 11@ 0 0
+            
+000B: 7@ += 15.0
+10@s = 'STAT07' // Muscle:
+0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.4 1.2 pos 5@ 7@ gxt 10@ 11@
+//0653: 2@ = float_stat 23 // Muscle
+10@s = 'FLOAT_N' // ~1~.~1~
+0AB1: @SetDrawText2num 10 font 1 linewidth 600.0 size 0.4 1.2 pos 6@ 7@ gxt 10@ 11@ 0 0
+            
+000B: 7@ += 15.0
+10@s = 'STAT08' // Max Health:
+0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.4 1.2 pos 5@ 7@ gxt 10@ 11@
+//0653: 2@ = float_stat 24 // Max Health
+10@s = 'FLOAT_N' // ~1~.~1~
+0AB1: @SetDrawText2num 10 font 1 linewidth 600.0 size 0.4 1.2 pos 6@ 7@ gxt 10@ 11@ 0 0
+            
+000B: 7@ += 15.0
+10@s = 'STAT09' // Sex Appeal:
+0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.4 1.2 pos 5@ 7@ gxt 10@ 11@
+//0653: 2@ = float_stat 25 // Sex Appeal
+10@s = 'FLOAT_N' // ~1~.~1~
+0AB1: @SetDrawText2num 10 font 1 linewidth 600.0 size 0.4 1.2 pos 6@ 7@ gxt 10@ 11@ 0 0
+            
+000B: 7@ += 15.0
+10@s = 'STAT10' // Respect:
+0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.4 1.2 pos 5@ 7@ gxt 10@ 11@
+//0653: 2@ = float_stat 68 // Respect
+10@s = 'FLOAT_N' // ~1~.~1~
+0AB1: @SetDrawText2num 10 font 1 linewidth 600.0 size 0.4 1.2 pos 6@ 7@ gxt 10@ 11@ 0 0
+            
+000B: 7@ += 15.0
+10@s = 'STAT11' // Appearance:
+0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.4 1.2 pos 5@ 7@ gxt 10@ 11@
+//0653: 2@ = float_stat 80 // Appearance
+10@s = 'FLOAT_N' // ~1~.~1~
+0AB1: @SetDrawText2num 10 font 1 linewidth 600.0 size 0.4 1.2 pos 6@ 7@ gxt 10@ 11@ 0 0
+            
+000B: 7@ += 15.0
+10@s = 'STAT12'  // Days passed in game:
+0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.4 1.2 pos 5@ 7@ gxt 10@ 11@
+0652: 2@ = integer_stat 134 // Days Passed Ingame
+10@s = 'INT_N' // ~1~
+0AB1: @SetDrawText1num 9 font 1 linewidth 600.0 size 0.4 1.2 pos 6@ 7@ gxt 10@ 11@ 2@
+            
+000B: 7@ += 15.0
+10@s = 'STAT13' // Unlocked Cities:
+0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.4 1.2 pos 5@ 7@ gxt 10@ 11@
+0652: 2@ = integer_stat 181 // Unlocked Cities
+10@s = 'INT_N' // ~1~
+0AB1: @SetDrawText1num 9 font 1 linewidth 600.0 size 0.4 1.2 pos 6@ 7@ gxt 10@ 11@ 2@
+            
+000B: 7@ += 15.0
+10@s = 'STAT14'  // Current number of girlfriends:
+0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.4 1.2 pos 5@ 7@ gxt 10@ 11@
+0652: 2@ = integer_stat 184 // Current number of girlfriends
+10@s = 'INT_N' // ~1~
+0AB1: @SetDrawText1num 9 font 1 linewidth 600.0 size 0.4 1.2 pos 6@ 7@ gxt 10@ 11@ 2@
+            
+000B: 7@ += 15.0
+10@s = 'STAT36'  // Driving Skill:
+0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.4 1.2 pos 5@ 7@ gxt 10@ 11@
+//0653: 2@ = float_stat 160 // Driving Skill
+10@s = 'FLOAT_N' // ~1~.~1~
+0AB1: @SetDrawText2num 10 font 1 linewidth 600.0 size 0.4 1.2 pos 6@ 7@ gxt 10@ 11@ 0 0
+            
+000B: 7@ += 15.0
+10@s = 'STAT15'  // Flying skill:
+0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.4 1.2 pos 5@ 7@ gxt 10@ 11@
+//0653: 2@ = float_stat 223 // Flying skill
+10@s = 'FLOAT_N' // ~1~.~1~
+0AB1: @SetDrawText2num 10 font 1 linewidth 600.0 size 0.4 1.2 pos 6@ 7@ gxt 10@ 11@ 0 0
+            
+000B: 7@ += 15.0
+10@s = 'STAT16'  // Lung Capacity:
+0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.4 1.2 pos 5@ 7@ gxt 10@ 11@
+0652: 2@ = integer_stat 225 // Lung Capacity
+10@s = 'INT_N' // ~1~
+0AB1: @SetDrawText1num 9 font 1 linewidth 600.0 size 0.4 1.2 pos 6@ 7@ gxt 10@ 11@ 2@
+            
+000B: 7@ += 15.0
+10@s = 'STAT17'  // Bike Skill:
+0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.4 1.2 pos 5@ 7@ gxt 10@ 11@
+//0653: 2@ = float_stat 229 // Bike Skill
+10@s = 'FLOAT_N' // ~1~.~1~
+0AB1: @SetDrawText2num 10 font 1 linewidth 600.0 size 0.4 1.2 pos 6@ 7@ gxt 10@ 11@ 0 0
+            
+000B: 7@ += 15.0
+10@s = 'STAT18'  // Cycling Skill:
+0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.4 1.2 pos 5@ 7@ gxt 10@ 11@
+//0653: 2@ = float_stat 230 // Cycling Skill
+10@s = 'FLOAT_N' // ~1~.~1~
+0AB1: @SetDrawText2num 10 font 1 linewidth 600.0 size 0.4 1.2 pos 6@ 7@ gxt 10@ 11@ 0 0
+            
+000B: 7@ += 15.0
+10@s = 'STAT19'  // Luck:
+0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.4 1.2 pos 5@ 7@ gxt 10@ 11@
+0652: 2@ = integer_stat 233 // Luck
+10@s = 'INT_N' // ~1~
+0AB1: @SetDrawText1num 9 font 1 linewidth 600.0 size 0.4 1.2 pos 6@ 7@ gxt 10@ 11@ 2@
+            
+000B: 7@ += 15.0
+10@s = 'STAT22'  // Most Favorite Radio Station:
+0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.4 1.2 pos 5@ 7@ gxt 10@ 11@
+0652: 2@ = integer_stat 326 // Most Favorite Radio Station
+10@s = 'INT_N' // ~1~
+0AB1: @SetDrawText1num 9 font 1 linewidth 600.0 size 0.4 1.2 pos 6@ 7@ gxt 10@ 11@ 2@
+            
+000B: 7@ += 15.0
+10@s = 'STAT23'  // Least Favorite Radio Station:
+0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.4 1.2 pos 5@ 7@ gxt 10@ 11@
+0652: 2@ = integer_stat 327 // Least Favorite Radio Station
+10@s = 'INT_N' // ~1~
+0AB1: @SetDrawText1num 9 font 1 linewidth 600.0 size 0.4 1.2 pos 6@ 7@ gxt 10@ 11@ 2@
+            
+000B: 7@ += 15.0
+10@s = 'STAT24'  // Current weapon skill:
+0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.4 1.2 pos 5@ 7@ gxt 10@ 11@
+0652: 2@ = integer_stat 328 // Current weapon skill
+10@s = 'INT_N' // ~1~
+0AB1: @SetDrawText1num 9 font 1 linewidth 600.0 size 0.4 1.2 pos 6@ 7@ gxt 10@ 11@ 2@
+            
+000B: 7@ += 15.0
+10@s = 'STAT25'  // Your Career:
+0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.4 1.2 pos 5@ 7@ gxt 10@ 11@
+10@s = 'STAT26'  // None
+0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.4 1.2 pos 6@ 7@ gxt 10@ 11@
+
+000B: 7@ += 15.0
+10@s = 'STAT21'  // Playing Time:
+0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.4 1.2 pos 5@ 7@ gxt 10@ 11@
+
+//0652: 2@ = integer_stat 320 // Playing Time
+01BD: 2@ = current_time_in_ms       // Example: 120047000
+if 8029:   not 2@ >= 3602439000 // not playtime >= 999:99:99 (hhh:mm:ss)
+then
+    0016: 2@ /= 1000                    // 120047
+    0093: 2@ = integer 2@ to_float      // 120047.0
+    0017: 2@ /= 60.0                    // 2000.783333333
+    0092: 3@ = float 2@ to_integer      // 2000
+    0093: 4@ = integer 3@ to_float      // 2000.0
+    0063: 2@ -= 4@                      // 0.783333333
+    0013: 2@ *= 60.0                    // 47.0
+    0092: 2@ = float 2@ to_integer      // 47 <---- secs
+    0087: 3@ = 4@                       // 2000.0
+    0017: 3@ /= 60.0                    // 33.33333333333
+    0092: 4@ = float 3@ to_integer      // 33
+    0093: 4@ = integer 4@ to_float      // 33.0
+    0063: 3@ -= 4@                      // 0.333333333333
+    0013: 3@ *= 60.0                    // 20.0
+    0092: 3@ = float 3@ to_integer      // 20 <---- mins
+    0092: 4@ = float 4@ to_integer      // 33 <---- hours
+else // playtime >= 999:99:99
+    2@=99
+    3@=99
+    4@=999
+end
+033F: set_text_draw_letter_size 0.4 1.2
+0343: set_text_draw_linewidth 600.0
+if 0029:   4@ >= 100
+then 045A: draw_text_1number 6@ 7@ GXT 'STAT40' number 4@  // ~1~:
+end
+if and
+0029:   4@ >= 10
+001B:   100 > 4@ 
+then 045A: draw_text_1number 6@ 7@ GXT 'STAT42' number 4@  // 0~1~:
+end
+if and
+0029:   4@ >= 0
+001B:   10 > 4@ 
+then 045A: draw_text_1number 6@ 7@ GXT 'STAT43' number 4@  // 00~1~:
+end
+000B: 6@ += 34.0
+if 0029:   3@ >= 10
+then 045A: draw_text_1number 6@ 7@ GXT 'STAT40' number 3@  // ~1~:
+else 045A: draw_text_1number 6@ 7@ GXT 'STAT42' number 3@  // 0~1~:
+end
+6@=300.0
+000B: 6@ += 61.0
+if 0029:   2@ >= 10
+then 045A: draw_text_1number 6@ 7@ GXT 'INT_N' number 2@  // ~1~
+else 045A: draw_text_1number 6@ 7@ GXT 'STAT39' number 2@  // 0~1~
+end
+
+// Second Column
+5@=380.0
+6@=520.0
+7@=80.0
+10@s = 'STAT37'  // Knowledge:
+0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.4 1.2 pos 5@ 7@ gxt 10@ 11@
+//0089: 2@ = $knowledge // Knowledge
+10@s = 'FLOAT_N' // ~1~.~1~
+0AB1: @SetDrawText2num 10 font 1 linewidth 600.0 size 0.4 1.2 pos 6@ 7@ gxt 10@ 11@ 0 0
+
+000B: 7@ += 15.0
+10@s = 'STAT38'  // Charm:
+0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.4 1.2 pos 5@ 7@ gxt 10@ 11@
+//0089: 2@ = $charm // Charm
+10@s = 'FLOAT_N' // ~1~.~1~
+0AB1: @SetDrawText2num 10 font 1 linewidth 600.0 size 0.4 1.2 pos 6@ 7@ gxt 10@ 11@ 0 0
+
+000B: 7@ += 15.0
+10@s = 'STAT44'  // Reputation:
+0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.4 1.2 pos 5@ 7@ gxt 10@ 11@
+10@s = 'INT_N' // ~1~
+0AB1: @SetDrawText1num 9 font 1 linewidth 600.0 size 0.4 1.2 pos 6@ 7@ gxt 10@ 11@ 0
+
+000B: 7@ += 15.0
+10@s = 'STAT45'  // Hunger:
+0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.4 1.2 pos 5@ 7@ gxt 10@ 11@
+10@s = 'INT_N' // ~1~
+0AB1: @SetDrawText1num 9 font 1 linewidth 600.0 size 0.4 1.2 pos 6@ 7@ gxt 10@ 11@ 0
+
+// current 2hu player
+0340: set_text_draw_RGBA 224 249 65 255
+0AD3: 10@s = format "T_%.2d" Sts_PlyModelOffset
+0AB1: @SetDrawText 8 font 1 linewidth 640.0 size 0.6 1.5 pos 380.0 415.0 gxt 10@ 11@
+{if 0038: $team_char0 == 0
+then 033E: set_draw_text_position 380.0 415.0 GXT s$team1  
+end
+if 0038: $team_char0 == 1
+then 033E: set_draw_text_position 380.0 415.0 GXT s$team2
+end
+if 0038: $team_char0 == 2
+then 033E: set_draw_text_position 380.0 415.0 GXT s$team3
+end
+if 0038: $team_char0 == 3
+then 033E: set_draw_text_position 380.0 415.0 GXT s$team4
+end
+if 0038: $team_char0 == 4
+then 033E: set_draw_text_position 380.0 415.0 GXT s$team5
+end
+if 0038: $team_char0 == 5
+then 033E: set_draw_text_position 380.0 415.0 GXT s$team6
+end
+if 0038: $team_char0 == 6
+then 033E: set_draw_text_position 380.0 415.0 GXT s$team7
+end}
+0AB2: ret 0
+
+{======================================================================
+======================================================================}
+:StatScreen3
+const
+    Sts_PlyModelOffset = 0@
+    Sts_SelectedModelOffset = 1@
+    Sts_tY = 5@
+    Sts_bY = 6@
+end
+0AD3: 10@s = format "TH_%.2d" Sts_PlyModelOffset
+0AB1: @SetDrawText 8 font 0 linewidth 600.0 size 0.4 1.2 position 53.0 93.0 gxt 10@ 11@
+038E: draw_box_position 118.0 196.0 size 138.0 197.0 RGBA 0 0 0 150 // Main box
+
+Sts_bY = 142.0
+Sts_tY = 139.0
+
+038E: draw_box_position 118.0 Sts_bY size 124.0 12.0 RGBA 92 51 21 220
+038E: draw_box_position 118.0 Sts_bY size 3.0 12.0 RGBA 0 0 0 100
+038E: draw_box_position 149.0 Sts_bY size 3.0 12.0 RGBA 0 0 0 100
+038E: draw_box_position 87.0 Sts_bY size 3.0 12.0 RGBA 0 0 0 100
+10@s = 'ST_HP' // Energy: ~1~/~1~
+0AB1: @SetDrawText2num 10 font 2 linewidth 600.0 size 0.2 0.6 pos 63.0 Sts_tY gxt 10@ 11@ 0 100
+
+Sts_bY += 20.0
+Sts_tY += 20.0
+
+038E: draw_box_position 118.0 Sts_bY size 124.0 12.0 RGBA 92 51 21 220
+038E: draw_box_position 118.0 Sts_bY size 3.0 12.0 RGBA 0 0 0 100
+038E: draw_box_position 149.0 Sts_bY size 3.0 12.0 RGBA 0 0 0 100
+038E: draw_box_position 87.0 Sts_bY size 3.0 12.0 RGBA 0 0 0 100
+10@s = 'ST_KNW' // Knowlegde: ~1~.~1~
+0AB1: @SetDrawText2num 10 font 2 linewidth 600.0 size 0.2 0.6 pos 63.0 Sts_tY gxt 10@ 11@ 0 0
+
+Sts_bY += 20.0
+Sts_tY += 20.0
+
+038E: draw_box_position 118.0 Sts_bY size 124.0 12.0 RGBA 92 51 21 220
+038E: draw_box_position 118.0 Sts_bY size 3.0 12.0 RGBA 0 0 0 100
+038E: draw_box_position 149.0 Sts_bY size 3.0 12.0 RGBA 0 0 0 100
+038E: draw_box_position 87.0 Sts_bY size 3.0 12.0 RGBA 0 0 0 100
+10@s = 'ST_CHR' // Charm: ~1~.~1~
+0AB1: @SetDrawText2num 10 font 2 linewidth 600.0 size 0.2 0.6 pos 63.0 Sts_tY gxt 10@ 11@ 0 0
+
+Sts_bY += 20.0
+Sts_tY += 20.0
+
+038E: draw_box_position 118.0 Sts_bY size 124.0 12.0 RGBA 92 51 21 220
+038E: draw_box_position 118.0 Sts_bY size 3.0 12.0 RGBA 0 0 0 100
+038E: draw_box_position 149.0 Sts_bY size 3.0 12.0 RGBA 0 0 0 100
+038E: draw_box_position 87.0 Sts_bY size 3.0 12.0 RGBA 0 0 0 100
+10@s = 'ST_RP' // Reputation: ~1~
+0AB1: @SetDrawText2num 10 font 2 linewidth 600.0 size 0.2 0.6 pos 63.0 Sts_tY gxt 10@ 11@ 0 0
+
+Sts_bY += 20.0
+Sts_tY += 20.0
+
+038E: draw_box_position 118.0 Sts_bY size 124.0 12.0 RGBA 92 51 21 220
+038E: draw_box_position 118.0 Sts_bY size 3.0 12.0 RGBA 0 0 0 100
+038E: draw_box_position 149.0 Sts_bY size 3.0 12.0 RGBA 0 0 0 100
+038E: draw_box_position 87.0 Sts_bY size 3.0 12.0 RGBA 0 0 0 100
+10@s = 'ST_HG' // Hunger: ~1~%
+0AB1: @SetDrawText2num 10 font 2 linewidth 600.0 size 0.2 0.6 pos 63.0 Sts_tY gxt 10@ 11@ 0 0
+
+//---
+
+10@s = 'STAT25'  // Your Career:
+0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 0.9 pos 59.0 256.0 gxt 10@ 11@
+
+10@s = 'ST_DPS'  // Days passed in game: ~1~
+0AB1: @SetDrawText1num 9 font 1 linewidth 600.0 size 0.2 0.9 pos 59.0 268.0 gxt 10@ 11@ 69
+
+10@s = 'STAT21'  // Playing Time:
+0AB1: @SetDrawText1num 9 font 2 linewidth 600.0 size 0.2 0.9 pos 92.0 281.0 gxt 10@ 11@ 69
+
+{0AB1: @GetTeamInUse 0 ret 13@ 14@ 15@ 16@ 17@ 18@ 19@ 20@
+21@=0}
+0AD3: 10@s = format "TH_%.2d" Sts_SelectedModelOffset
+0AB1: @SetDrawText 8 font 3 linewidth 630.0 size 0.4 1.2 position 473.0 333.0 gxt 10@ 11@
+0AB2: ret 0
+
