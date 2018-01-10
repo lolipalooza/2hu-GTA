@@ -1697,7 +1697,7 @@ then
 
         0AB1: @GetData 2 @FirstPersonCameraVars FPV_ROTATION 30@
         
-        0A4A: store_joystick_X_offset_to 4@ Y_offset_to 5@ 
+        0A4A: store_joystick_X_offset_to 4@ Y_offset_to 5@
         0172: 9@ = actor 0@ Z_angle
         0063: 9@ -= 4@ // (float) 
         

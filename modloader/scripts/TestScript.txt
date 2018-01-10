@@ -238,8 +238,6 @@ wait 0
         0391: release_textures
     end
 end}
-wait 500
-fade 1 2000
 0247: load_model #BMX
 038B: load_requested_models
 repeat
@@ -247,31 +245,6 @@ wait 0
 until 0248:   model #BMX available
 00A5: 30@ = create_car #BMX at 2504.8342 -1661.7815 13.3953
 0249: release_model #BMX
-
-2@=-1
-9@=0
-    gosub @GET_ADDRESS
-    000E: 0@ -= @LIST_ADDON
-    0085: 16@ = 9@ // (int) 
-    0012: 16@ *= 20
-    005A: 16@ += 0@ // (int) 
-    gosub @GET_ADDRESS
-    000E: 0@ -= @SKIN_LOAD
-    000A: 0@ += 6
-    for 17@ = 0 to 19
-        0A8D: 1@ = read_memory 16@ size 1 virtual_protect 0
-        0A8C: write_memory 0@ size 1 value 1@ virtual_protect 0
-        000A: 0@ += 1
-        000A: 16@ += 1
-    end
-    if 0039:   2@ == -1 
-    then
-        0653: 14@ = float_stat 21 
-        0653: 15@ = float_stat 23
-    end
-    0085: 2@ = 9@ // (int)
-    0006: 7@ = #SPECIAL10
-    gosub @ACTOR_CHANGE
 
 repeat
 wait 0
@@ -354,50 +327,3 @@ end
 
 
 
-:GET_ADDRESS 
-0A9F: 0@ = current_thread_pointer
-000A: 0@ += 0x10
-0A8D: 0@ = read_memory 0@ size 4 virtual_protect 0
-return
-
-:LIST_ADDON
-hex
-"yukari nanami 2c" 00 00 00 00 "____________________" "____________________" "____________________"
-"____________________" "____________________" "____________________" "____________________"
-00
-end
-
-:SKIN_LOAD
-023C: load_special_actor "____________________" as 10 // models 290-299 
-038B: load_requested_models 
-while 823D:   not special_actor 10 loaded
-    wait 0
-end 
-return
-
-:ACTOR_CHANGE
-if
-0039:   7@ == #NULL
-then
-    09C7: change_player $PLAYER_CHAR model_to #NULL 
-end
-if and
-8039:   not 7@ == #NULL
-8039:   not 7@ == #SPECIAL10
-then
-    0247: load_model 7@
-    038B: load_requested_models 
-    while 8248:   not model 7@ available 
-        wait 0
-    end 
-    09C7: change_player $PLAYER_CHAR model_to 7@
-    0249: release_model 7@ 
-end
-if
-0039:   7@ == #SPECIAL10
-then
-    gosub @SKIN_LOAD
-    09C7: change_player $PLAYER_CHAR model_to #SPECIAL10 
-    0296: unload_special_actor 10 
-end
-return

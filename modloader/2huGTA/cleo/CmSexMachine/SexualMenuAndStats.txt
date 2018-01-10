@@ -321,6 +321,8 @@ then
     9@+=1
     10@s = 'CFG_C5' // Fixed Camera ~y~~1~
     0AB1: @SetDrawTextRGB_1Number 12 font 2 linewidth 600.0 size 0.2 1.0 position 169.0 390.0 GXT 10@ 11@ rgb 255 255 255 number 9@
+    10@s = 'CFG_T6' // <  >
+    0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 244.0 390.0 GXT 10@ 11@
 end
 if 8@ == 2 // First Person Camera
 then

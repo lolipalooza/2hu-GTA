@@ -280,6 +280,7 @@ then
     ClimaxState = 0
     PleasureState = 0
     PulseButtonState = NOT_PULSED
+    0AB1: @InitCursorControl 0
     wait 500
     fade 1 time 800
     wait 500
@@ -317,9 +318,14 @@ return
 {======================================================================
 ======================================================================}
 :SexMachine
+// Mouse cursor control
+0AB1: @CursorControl 0
+
 if SexState == 0
 then
-    if 00E1:   player 0 pressed_key PAD_CHANGE_CAMERA_VIEW // V
+    if //or
+    //00E1:   player 0 pressed_key PAD_CHANGE_CAMERA_VIEW // V
+    0AB1: @CursorClickCheck 4 box_position 203.0 395.0 box_size 72.0 11.0
     then SexState=1
         0AB1: @GetInt 1 @CameraMode Dummy1
         0AB1: @IncOrDecIntVariable 4 var_to_increase Dummy1 min_value 0 max_value 2 flag FLAG_INCREASE store_into Dummy1
@@ -330,8 +336,11 @@ then
     then SexState=2
         gosub @ToggleSexualMenu
     end
-    if 00E1:   player 0 pressed_key PAD_FIREWEAPON // CLICK
-    then SexState=3
+    if 0AB1: @CursorClickCheck 4 box_position 76.0 436.0 box_size 143.0 13.0
+    then gosub @ToggleSexualMenu
+    end
+    if 0AB1: @CursorClickCheck 4 box_position 318.0 395.0 box_size 70.0 12.0 // Change pose animation
+    then
         0AB1: @GetInt 1 @CurrentAnimation Dummy1
         0AB1: call_scm_func @ReadSexPosesInfo 3 SpeedState SexPoseInt SexPlace out Dummy3 Dummy4 Dummy2
         0AB1: @IncOrDecIntVariable 4 var_to_increase Dummy1 min_value 1 max_value Dummy2 flag FLAG_INCREASE store_into Dummy1
@@ -340,19 +349,37 @@ then
     end
 
     0494: get_joystick 0 data_to MoveAxisX MoveAxisY SpAxisX SpAxisY
-    if 0018:   MoveAxisX > 100 // RIGHT
+    if 0018:   SpAxisX > 100 // RIGHT
     then SexState = 4
         0AB1: @GetInt 1 @CurrentCamera MoveAxisY
         0AB1: call_scm_func @IncOrDecIntVariable 4 MoveAxisY 0 11 FLAG_INCREASE MoveAxisY
         0AB1: @StoreInt 2 @CurrentCamera MoveAxisY
         0AB1: call_scm_func @ToggleSexualCamera 4 SexPoseInt SexPlace PornActress PornActor
     end
-    if 001A:   -100 > MoveAxisX // LEFT
+    if 001A:   -100 > SpAxisX // LEFT
     then SexState = 5
         0AB1: @GetInt 1 @CurrentCamera MoveAxisY
         0AB1: @IncOrDecIntVariable 4 var_to_increase MoveAxisY min_value 0 max_value 11 flag FLAG_DECREASE store_into MoveAxisY
         0AB1: @StoreInt 2 @CurrentCamera MoveAxisY
         0AB1: call_scm_func @ToggleSexualCamera 4 SexPoseInt SexPlace PornActress PornActor
+    end
+    0AB1: @GetInt 1 @CameraMode Dummy1
+    if Dummy1 == 1 // Fixed Camera
+    then
+        if 0AB1: @CursorClickCheck 4 box_position 247.0 395.0 box_size 13.0 12.0
+        then
+            0AB1: @GetInt 1 @CurrentCamera MoveAxisY
+            0AB1: @IncOrDecIntVariable 4 var_to_increase MoveAxisY min_value 0 max_value 11 flag FLAG_DECREASE store_into MoveAxisY
+            0AB1: @StoreInt 2 @CurrentCamera MoveAxisY
+            0AB1: call_scm_func @ToggleSexualCamera 4 SexPoseInt SexPlace PornActress PornActor
+        end
+        if 0AB1: @CursorClickCheck 4 box_position 263.0 395.0 box_size 13.0 12.0
+        then
+            0AB1: @GetInt 1 @CurrentCamera MoveAxisY
+            0AB1: call_scm_func @IncOrDecIntVariable 4 MoveAxisY 0 11 FLAG_INCREASE MoveAxisY
+            0AB1: @StoreInt 2 @CurrentCamera MoveAxisY
+            0AB1: call_scm_func @ToggleSexualCamera 4 SexPoseInt SexPlace PornActress PornActor
+        end
     end
 end
 if SexState == 1
@@ -368,21 +395,15 @@ then
     then SexState=0
     end
 end
-if SexState == 3
-then
-    if 80E1:   not player 0 pressed_key PAD_FIREWEAPON
-    then SexState=0
-    end
-end
 if SexState == 4
 then
-    if 8018:   not MoveAxisX > 100
+    if 8018:   not SpAxisX > 100
     then SexState = 0
     end
 end
 if SexState == 5
 then
-    if 801A:   not -100 > MoveAxisX
+    if 801A:   not -100 > SpAxisX
     then SexState = 0
     end
 end
@@ -783,3 +804,145 @@ then
 end
 return
 
+{======================================================================
+======================================================================}
+const
+    CC_POSX = 0
+    CC_POSY = 4
+    CC_CLICKX = 8
+    CC_CLICKY = 12
+    CC_CFLAG = 16
+    
+    CC_SIZE_X = 12.0
+    CC_SIZE_Y = 12.0
+end
+
+:InitCursorControl
+0390: load_txd_dictionary 'ftend'
+038F: load_texture "smouse" as 1
+0AB1: @StoreData 3 @CursorControlVars 320.0 CC_POSX
+0AB1: @StoreData 3 @CursorControlVars 224.0 CC_POSY
+0826: enable_hud 0
+0581: enable_radar 0
+0AB2: ret 0
+
+:CursorControl
+0AB1: @GetData 2 @CursorControlVars CC_POSX 12@
+0AB1: @GetData 2 @CursorControlVars CC_POSY 13@
+0A4A: store_joystick_X_offset_to 10@ Y_offset_to 11@
+if 12@ < 0.0
+then 12@=0.0
+else
+    if 12@ > 640.0
+    then 12@=640.0
+    else 0059: 12@ += 10@ // (float)
+    end
+end
+if 13@ < 0.0
+then 13@=0.0
+else
+    if 13@ > 448.0
+    then 13@=448.0
+    else 0063: 13@ -= 11@  // (float)
+    end
+end
+03E3: set_texture_to_be_drawn_antialiased 1
+10@=CC_SIZE_X
+11@=CC_SIZE_Y
+10@/=2.0
+11@/=2.0
+005B: 10@ += 12@  // (float)
+005B: 11@ += 13@  // (float)
+038D: draw_texture 1 position 10@ 11@ size 12.0 12.0 RGBA 255 255 255 255
+0AB1: @StoreData 3 @CursorControlVars 12@ CC_POSX
+0AB1: @StoreData 3 @CursorControlVars 13@ CC_POSY
+if 00E1:   player 0 pressed_key PAD_FIREWEAPON // CLICK
+then
+    0AB1: @StoreData 3 @CursorControlVars 12@ CC_CLICKX
+    0AB1: @StoreData 3 @CursorControlVars 13@ CC_CLICKY
+else
+    0AB1: @GetData 2 @CursorControlVars CC_CFLAG 14@
+    if 14@ == 1
+    then 0AB1: @StoreData 3 @CursorControlVars 0 CC_CFLAG
+    end
+end
+0AB2: ret 0
+
+:CursorControlVars
+hex
+    00 00 00 00 // X position
+    00 00 00 00 // Y position
+    00 00 00 00 // X clicked
+    00 00 00 00 // Y clicked
+    00 00 00 00 // click flag
+end
+
+{======================================================================
+======================================================================}
+:CursorClickControl
+0AB2: ret 0
+
+{======================================================================
+======================================================================}
+:CursorGetCorners
+// Inputs: 0@ 1@: center of the box, 2@ 3@: size of the box
+2@/=2.0
+3@/=2.0
+0087: 4@ = 0@ // (float)
+0063: 4@ -= 2@  // (float)
+0087: 5@ = 1@ // (float)
+0063: 5@ -= 3@  // (float)
+0087: 6@ = 0@ // (float)
+005B: 6@ += 2@  // (float)
+0087: 7@ = 1@ // (float)
+005B: 7@ += 3@  // (float)
+0AB2: ret 4 superior_left_corner 4@ 5@ inferior_right_corner 6@ 7@
+
+{======================================================================
+======================================================================}
+:CursorClickCheck
+// 0@: corner 1 x-point
+// 1@: corner 1 y-point
+// 2@: corner 2 x-point
+// 3@: corner 2 y-point
+0AB1: @CursorPositionCheck 4 rectangle_center 0@ 1@ rectangle_size 2@ 3@
+0AB1: @GetData 2 @CursorControlVars CC_CLICKX 12@
+0AB1: @GetData 2 @CursorControlVars CC_CLICKY 13@
+0AB1: @CursorGetCorners 4 rectangle_center 0@ 1@ rectangle_size 2@ 3@ return_values superior_left_corner 0@ 1@ inferior_right_corner 2@ 3@
+
+0AB1: @GetData 2 @CursorControlVars CC_CFLAG 14@
+if or
+14@ == 1
+80E1:   not player 0 pressed_key PAD_FIREWEAPON // CLICK
+then
+    059A:  return_false
+    0AB2: ret 0
+end
+
+if and
+0035:   12@ >= 0@  // (float)
+0035:   2@ >= 12@  // (float)
+0035:   13@ >= 1@  // (float)
+0035:   3@ >= 13@  // (float)
+then
+    0485:  return_true
+    0AB1: @StoreData 3 @CursorControlVars 1 CC_CFLAG
+else 059A:  return_false
+end
+0AB2: ret 0
+
+{======================================================================
+======================================================================}
+:CursorPositionCheck
+// Inputs: 0@ 1@: center of the box, 2@ 3@: size of the box
+0AB1: @GetData 2 @CursorControlVars CC_POSX 12@
+0AB1: @GetData 2 @CursorControlVars CC_POSY 13@
+0AB1: @CursorGetCorners 4 rectangle_center 0@ 1@ rectangle_size 2@ 3@ return_values superior_left_corner 4@ 5@ inferior_right_corner 6@ 7@
+if and
+0035:   12@ >= 4@  // (float)
+0035:   6@ >= 12@  // (float)
+0035:   13@ >= 5@  // (float)
+0035:   7@ >= 13@  // (float)
+then 038E: draw_box_position 0@ 1@ size 2@ 3@ RGBA 0 0 0 100
+end
+0AB2: ret 0
