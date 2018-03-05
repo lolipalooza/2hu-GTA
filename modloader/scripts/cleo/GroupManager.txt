@@ -427,12 +427,46 @@ then 1@ = 0.0
 else 1@ = 1.0
     2@ = 1
 end
-015D: set_gamespeed 1@
-0581: enable_radar 2@
-0826: enable_hud 2@
-01B4: set_player $PLAYER_CHAR can_move 2@
-03F0: enable_text_draw 0@
-09BA: show_entered_zone_name 2@
+0AB1: @GetInt 1 @TabMenuEnabled 10@
+if and
+0@ == 1
+10@ == 0
+then 20@=1
+end
+if and
+0@ == 0
+10@ == 1
+then 20@=1
+end
+if 20@==1
+then
+    015D: set_gamespeed 1@
+    0581: enable_radar 2@
+    0826: enable_hud 2@
+    01B4: set_player $PLAYER_CHAR can_move 2@
+    03F0: enable_text_draw 0@
+    09BA: show_entered_zone_name 2@
+end
+0AB1: @StoreInt 2 @TabMenuEnabled 0@
+0AB2: ret 0
+
+:TabMenuEnabled
+hex
+00
+end
+
+:GetInt
+// 0@: label, 1@: offset for address
+0AC6: 10@ = label 0@ offset
+005A: 10@ += 1@  // (int)
+0A8D: 11@ = read_memory 10@ size 1 virtual_protect 0
+0AB2: ret 1 11@
+
+:StoreInt
+// 0@: label, 1@: value, 2@: offset for address
+0AC6: 10@ = label 0@ offset
+005A: 10@ += 2@  // (int)
+0A8C: write_memory 10@ size 1 value 1@ virtual_protect 0
 0AB2: ret 0
 
 {======================================================================
