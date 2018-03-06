@@ -165,6 +165,9 @@ wait 0
         if PulseButtonState == PULSED_ENTER_VEH
         then break // End Sex Activity
         end
+        if 0AB1: @CursorClickCheck 4 box_position 71.0 19.0 box_size 105.0 13.0
+        then break // End Sex Activity
+        end
     end
     if ShowSexualStats==true
     then
@@ -252,6 +255,7 @@ then
     0581: enable_radar 0
     0826: enable_hud 0
     03F0: enable_text_draw 1
+    03E0: draw_text_behind_textures 1
     0AB1: @StorePlayerData 0
     077E: get_active_interior_to Dummy1
     if Dummy1 == 0
@@ -266,6 +270,8 @@ then
     end
     SexPoseInt = SEX_FUCKING
     SexPlace = PL_TABLE
+    0AB1: @StoreInt 2 @SxMn_Pose SexPoseInt
+    0AB1: @StoreInt 2 @SxMn_Place SexPlace
     //0209: SexPoseInt = random_int_in_ranges ? ?
     0AB1: call_scm_func @GetActorsCoordinates 2 SexPoseInt SexPlace ret FemX FemY FemZ FemA MaleX MaleY MaleZ MaleA
     0AB1: call_scm_func @GenerateActors 8 FemX FemY FemZ FemA MaleX MaleY MaleZ MaleA ret PornActress PornActor
@@ -333,10 +339,10 @@ then
         0AB1: @StoreInt 2 @CameraMode Dummy1
         0AB1: call_scm_func @ToggleSexualCamera 4 SexPoseInt SexPlace PornActress PornActor
     end
-    if 00E1:   player 0 pressed_key PAD_ANSWER_PHONE // TAB
+    {if 00E1:   player 0 pressed_key PAD_ANSWER_PHONE // TAB
     then SexState=2
         gosub @ToggleSexualMenu
-    end
+    end}
     if 0AB1: @CursorClickCheck 4 box_position 76.0 436.0 box_size 143.0 13.0
     then gosub @ToggleSexualMenu
     end
@@ -618,7 +624,7 @@ if and
 0029:   SexMenuState >= SX_MENU_LEFT_FIRST_ELEM
 002B:   SX_MENU_LEFT_LAST_ELEM >= SexMenuState  // (int)
 then
-    if PulseButtonState == PULSED_UP
+    {if PulseButtonState == PULSED_UP
     then 0AB1: @IncOrDecIntVariable 4 SexMenuState 1 3 FLAG_INCREASE SexMenuState
     end
     if PulseButtonState == PULSED_DOWN
@@ -627,13 +633,13 @@ then
     if PulseButtonState == PULSED_SPRINT
     then SexMenuState *= 20
         PulseButtonState++
-    end
+    end}
     if PulseButtonState == PULSED_ENTER_VEH
     then SexMenuState = 0 // Close Sexual Menu
     end
 end
 
-// Is current selector on opt 1 right menu items ?
+{// Is current selector on opt 1 right menu items ?
 if and
 0029:   SexMenuState >= SX_MENU_OPT1_PLACES_FIRST_ELEM
 002B:   SX_MENU_OPT1_PLACES_LAST_ELEM >= SexMenuState  // (int)
@@ -736,7 +742,7 @@ then
     if PulseButtonState == PULSED_ENTER_VEH
     then SexMenuState = SX_MENU_LEFT_FIRST_ELEM
     end
-end
+end}
 
 if or
 PulseButtonState == PULSED_UP

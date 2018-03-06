@@ -4,9 +4,11 @@ S_MENU	Sex Options
 S_OPT1	Cambiar lugar
 S_OPT2	Cambiar posicion
 S_OPT3	Cambiar camara
+S_OPT4	Change!
+S_OPT5	Cancel
 S_MENU1	Lugares
 S_MENU2	Posiciones
-S_MENU2	Camaras
+S_MENU3	Camaras
 S_PL_1	Bed
 S_PL_2	Sofa
 S_PL_3	Table
@@ -73,10 +75,11 @@ I_GNRL1	Puedes aumentar el ritmo de los movimientos con ~b~~k~~PED_CYCLE_WEAPON_
 
 CFG_T1	~b~Mouse wheel~w~: Increase/decrease speed.
 CFG_T2	~b~~k~~PED_ANSWER_PHONE~~w~: Open/close menu.
-CFG_T3	~b~~k~~VEHICLE_ENTER_EXIT~: ~s~Go back.
+CFG_T3	~b~~k~~VEHICLE_ENTER_EXIT~~s~: Go back.
 CFG_T4	~b~NUM4~s~/~b~NUM6~s~: Change cam view (fixed mode).
 CFG_T5	Poses
 CFG_T6	<    >
+CFG_T7	Change position
 
 CFG_C1	~b~~k~~CAMERA_CHANGE_VIEW_ALL_SITUATIONS~~w~: Change view (Free Camera)
 CFG_C2	~b~~k~~CAMERA_CHANGE_VIEW_ALL_SITUATIONS~~w~: Change view (Fixed Camera ~1~)

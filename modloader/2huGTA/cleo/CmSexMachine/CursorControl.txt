@@ -14,10 +14,9 @@ end
 :InitCursorControl
 0390: load_txd_dictionary 'ftend'
 038F: load_texture "smouse" as 1
+03E0: draw_text_behind_textures 1
 0AB1: @StoreData 3 @CursorControlVars 320.0 CC_POSX
 0AB1: @StoreData 3 @CursorControlVars 224.0 CC_POSY
-0826: enable_hud 0
-0581: enable_radar 0
 0AB2: ret 0
 
 :CursorControl
