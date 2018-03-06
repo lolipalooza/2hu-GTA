@@ -291,6 +291,7 @@ then
     wait 500
     fade 1 time 800
     wait 500
+    01B4: set_player $PLAYER_CHAR can_move 1
     {
     03E5: show_text_box 'I_CTRL1'  // Puedes cambiar la vista con ~b~~k~~CAMERA_CHANGE_VIEW_ALL_SITUATIONS~~w~. Ingresa al menu pulsando ~b~~k~~PED_ANSWER_PHONE~~w~ para ver las diferentes opciones.
     wait 7000
@@ -624,125 +625,10 @@ if and
 0029:   SexMenuState >= SX_MENU_LEFT_FIRST_ELEM
 002B:   SX_MENU_LEFT_LAST_ELEM >= SexMenuState  // (int)
 then
-    {if PulseButtonState == PULSED_UP
-    then 0AB1: @IncOrDecIntVariable 4 SexMenuState 1 3 FLAG_INCREASE SexMenuState
-    end
-    if PulseButtonState == PULSED_DOWN
-    then 0AB1: @IncOrDecIntVariable 4 SexMenuState 1 3 FLAG_DECREASE SexMenuState
-    end
-    if PulseButtonState == PULSED_SPRINT
-    then SexMenuState *= 20
-        PulseButtonState++
-    end}
     if PulseButtonState == PULSED_ENTER_VEH
     then SexMenuState = 0 // Close Sexual Menu
     end
 end
-
-{// Is current selector on opt 1 right menu items ?
-if and
-0029:   SexMenuState >= SX_MENU_OPT1_PLACES_FIRST_ELEM
-002B:   SX_MENU_OPT1_PLACES_LAST_ELEM >= SexMenuState  // (int)
-then
-    if PulseButtonState == PULSED_UP
-    then 0AB1: @IncOrDecIntVariable 4 SexMenuState increase_from SX_MENU_OPT1_PLACES_FIRST_ELEM to SX_MENU_OPT1_PLACES_LAST_ELEM FLAG_INCREASE SexMenuState
-    end
-    if PulseButtonState == PULSED_DOWN
-    then 0AB1: @IncOrDecIntVariable 4 SexMenuState increase_from SX_MENU_OPT1_PLACES_FIRST_ELEM to SX_MENU_OPT1_PLACES_LAST_ELEM FLAG_DECREASE SexMenuState
-    end
-    if PulseButtonState == PULSED_SPRINT
-    then
-        0085: Dummy1 = SexMenuState // (int)
-        Dummy1 -= SX_MENU_OPT1_PLACES_FIRST_ELEM
-        0AB1: @GetRightSelectedElement 2 SX_MENU_OPT1_PLACES_FIRST_ELEM Dummy1 ret Dummy3 Dummy4
-        0AB1: call_scm_func @GetPlaceFromString 2 Dummy3 Dummy4 ret Dummy1
-        if 0AB1: @CheckPoseAndPlaceAvailability 2 SexPoseInt Dummy1
-        then
-            if 803B:   not Dummy1 == SexPlace  // (int)
-            then
-                0085: SexPlace = Dummy1 // (int)
-                fade 0 time 800
-                wait 800 ms
-                015F: set_camera_position 0.0 0.0 0.0 rotation 0.0 0.0 0.0
-                0160: set_camera_point_at 0.0 0.0 0.0 switchstyle 2
-                009B: destroy_actor PornActress
-                009B: destroy_actor PornActor
-                0AB1: call_scm_func @GetActorsCoordinates 2 SexPoseInt SexPlace ret FemX FemY FemZ FemA MaleX MaleY MaleZ MaleA
-                0AB1: call_scm_func @GenerateActors 8 FemX FemY FemZ FemA MaleX MaleY MaleZ MaleA ret PornActress PornActor
-                0AB1: call_scm_func @GenerateSexFiles 2 SexPoseInt SexPlace
-                0AB1: call_scm_func @LoadSexualPose 5 PornActress PornActor SexPoseInt SexPlace SPD_SLOW
-                0AB1: call_scm_func @ToggleSexualCamera 4 SexPoseInt SexPlace PornActress PornActor
-                wait 500
-                fade 1 time 800
-            end
-        end
-    end
-    if PulseButtonState == PULSED_ENTER_VEH
-    then SexMenuState = SX_MENU_LEFT_FIRST_ELEM
-    end
-end
-
-// Is current selector on opt 2 right menu items ?
-if and
-0029:   SexMenuState >= SX_MENU_OPT2_POSITIONS_FIRST_ELEM
-002B:   SX_MENU_OPT2_POSITIONS_LAST_ELEM >= SexMenuState  // (int)
-then
-    if PulseButtonState == PULSED_UP
-    then 0AB1: @IncOrDecIntVariable 4 SexMenuState increase_from SX_MENU_OPT2_POSITIONS_FIRST_ELEM to SX_MENU_OPT2_POSITIONS_LAST_ELEM FLAG_INCREASE SexMenuState
-    end
-    if PulseButtonState == PULSED_DOWN
-    then 0AB1: @IncOrDecIntVariable 4 SexMenuState increase_from SX_MENU_OPT2_POSITIONS_FIRST_ELEM to SX_MENU_OPT2_POSITIONS_LAST_ELEM FLAG_DECREASE SexMenuState
-    end
-    if PulseButtonState == PULSED_SPRINT
-    then
-        0085: Dummy1 = SexMenuState // (int)
-        Dummy1 -= SX_MENU_OPT2_POSITIONS_FIRST_ELEM
-        0AB1: @GetRightSelectedElement 2 SX_MENU_OPT2_POSITIONS_FIRST_ELEM Dummy1 ret Dummy3 Dummy4
-        0AB1: call_scm_func @GetPoseFromString 2 Dummy3 Dummy4 ret Dummy1
-        if 0AB1: @CheckPoseAndPlaceAvailability 2 Dummy1 SexPlace
-        then
-            if 803B:   not Dummy1 == SexPoseInt  // (int)
-            then
-                0085: SexPoseInt = Dummy1 // (int)
-                fade 0 time 800
-                wait 800 ms
-                015F: set_camera_position 0.0 0.0 0.0 rotation 0.0 0.0 0.0
-                0160: set_camera_point_at 0.0 0.0 0.0 switchstyle 2
-                009B: destroy_actor PornActress
-                009B: destroy_actor PornActor
-                0AB1: call_scm_func @GetActorsCoordinates 2 SexPoseInt SexPlace ret FemX FemY FemZ FemA MaleX MaleY MaleZ MaleA
-                0AB1: call_scm_func @GenerateActors 8 FemX FemY FemZ FemA MaleX MaleY MaleZ MaleA ret PornActress PornActor
-                0AB1: call_scm_func @GenerateSexFiles 2 SexPoseInt SexPlace
-                0AB1: call_scm_func @LoadSexualPose 5 PornActress PornActor SexPoseInt SexPlace SPD_SLOW
-                0AB1: call_scm_func @ToggleSexualCamera 4 SexPoseInt SexPlace PornActress PornActor
-                wait 500
-                fade 1 time 800
-            end
-        end
-    end
-    if PulseButtonState == PULSED_ENTER_VEH
-    then SexMenuState = SX_MENU_LEFT_FIRST_ELEM
-    end
-end
-
-// Is current selector on opt 3 right menu items ?
-if and
-0029:   SexMenuState >= SX_MENU_OPT3_CAMERAS_FIRST_ELEM
-002B:   SX_MENU_OPT3_CAMERAS_LAST_ELEM >= SexMenuState  // (int)
-then
-    if PulseButtonState == PULSED_UP
-    then 0AB1: @IncOrDecIntVariable 4 SexMenuState 60 69 FLAG_INCREASE SexMenuState
-    end
-    if PulseButtonState == PULSED_DOWN
-    then 0AB1: @IncOrDecIntVariable 4 SexMenuState 60 69 FLAG_DECREASE SexMenuState
-    end
-    if PulseButtonState == PULSED_SPRINT
-    then // TODO
-    end
-    if PulseButtonState == PULSED_ENTER_VEH
-    then SexMenuState = SX_MENU_LEFT_FIRST_ELEM
-    end
-end}
 
 if or
 PulseButtonState == PULSED_UP
