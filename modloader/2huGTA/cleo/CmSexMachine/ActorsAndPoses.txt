@@ -1,18 +1,9 @@
 {======================================================================
 ======================================================================}
 :GenerateActors
-const
-    GenAct_f_X = 0@
-    GenAct_f_Y = 1@
-    GenAct_f_Z = 2@
-    GenAct_f_A = 3@
-    GenAct_m_X = 4@
-    GenAct_m_Y = 5@
-    GenAct_m_Z = 6@
-    GenAct_m_A = 7@
-    GenAct_Actor = 8@
-    GenAct_Actress = 9@
-end
+// 0@: pose, 1@: place
+0AB1: @GetActorsCoordinates 2 0@ 1@ ret fem_xyza 10@ 11@ 12@ 13@ male_xyza 20@ 21@ 22@ 23@
+
 023C: load_special_actor 'bdoll' as 1
 023C: load_special_actor 'tumi' as 2
 038B: load_requested_models
@@ -21,21 +12,18 @@ wait 0
 until 023D:   special_actor 1 loaded and 023D:   special_actor 2 loaded
 
 // Actress
-009A: GenAct_Actress = create_actor_pedtype 5 model #SPECIAL01 at GenAct_f_X GenAct_f_Y GenAct_f_Z
-0173: set_actor GenAct_Actress Z_angle_to GenAct_f_A
-0619: enable_actor GenAct_Actress collision_detection 0
+009A: 30@ = create_actor_pedtype 5 model #SPECIAL01 at 10@ 11@ 12@
+0173: set_actor 30@ Z_angle_to 13@
+0619: enable_actor 30@ collision_detection 0
 
 // Actor
-009A: GenAct_Actor = create_actor_pedtype 4 model #SPECIAL02 at GenAct_m_X GenAct_m_Y GenAct_m_Z
-0173: set_actor GenAct_Actor Z_angle_to GenAct_m_A
-0619: enable_actor GenAct_Actor collision_detection 0
-
-{0489: set_actor 2@ muted 0 
-0568: set_actor 2@ untargetable 0} 
+009A: 31@ = create_actor_pedtype 4 model #SPECIAL02 at 20@ 21@ 22@
+0173: set_actor 31@ Z_angle_to 23@
+0619: enable_actor 31@ collision_detection 0
 
 0296: unload_special_actor 1
 0296: unload_special_actor 2
-0AB2: ret 2 GenAct_Actress GenAct_Actor
+0AB2: ret 2 actress 30@ actor 31@
 
 {======================================================================
 ======================================================================}

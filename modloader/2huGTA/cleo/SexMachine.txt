@@ -40,14 +40,6 @@ const
     SexPoseInt = 21@
     SexPlace = 22@
     PulseButtonState = 23@
-    FemX = 24@
-    FemY = 25@
-    FemZ = 26@
-    FemA = 27@
-    MaleX = 28@
-    MaleY = 29@
-    MaleZ = 30@
-    MaleA = 31@
     
     MoveAxisX = Dummy1
     MoveAxisY = Dummy2
@@ -273,8 +265,7 @@ then
     0AB1: @StoreInt 2 @SxMn_Pose SexPoseInt
     0AB1: @StoreInt 2 @SxMn_Place SexPlace
     //0209: SexPoseInt = random_int_in_ranges ? ?
-    0AB1: call_scm_func @GetActorsCoordinates 2 SexPoseInt SexPlace ret FemX FemY FemZ FemA MaleX MaleY MaleZ MaleA
-    0AB1: call_scm_func @GenerateActors 8 FemX FemY FemZ FemA MaleX MaleY MaleZ MaleA ret PornActress PornActor
+    0AB1: call_scm_func @GenerateActors 2 SexPoseInt SexPlace ret PornActress PornActor
     0AB1: call_scm_func @GenerateSexFiles 2 SexPoseInt SexPlace
     0AB1: call_scm_func @LoadSexualPose 5 PornActress PornActor SexPoseInt SexPlace SPD_SLOW
     0AB1: call_scm_func @ToggleSexualCamera 4 SexPoseInt SexPlace PornActress PornActor

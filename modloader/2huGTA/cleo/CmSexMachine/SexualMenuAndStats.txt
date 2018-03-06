@@ -119,8 +119,7 @@ then
         0160: set_camera_point_at 0.0 0.0 0.0 switchstyle 2
         009B: destroy_actor PornActress
         009B: destroy_actor PornActor
-        0AB1: call_scm_func @GetActorsCoordinates 2 SexPoseInt SexPlace ret FemX FemY FemZ FemA MaleX MaleY MaleZ MaleA
-        0AB1: call_scm_func @GenerateActors 8 FemX FemY FemZ FemA MaleX MaleY MaleZ MaleA ret PornActress PornActor
+        0AB1: call_scm_func @GenerateActors 2 SexPoseInt SexPlace ret PornActress PornActor
         0AB1: call_scm_func @GenerateSexFiles 2 SexPoseInt SexPlace
         0AB1: call_scm_func @LoadSexualPose 5 PornActress PornActor SexPoseInt SexPlace SPD_SLOW
         0AB1: call_scm_func @ToggleSexualCamera 4 SexPoseInt SexPlace PornActress PornActor
