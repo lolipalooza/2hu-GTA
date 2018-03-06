@@ -267,6 +267,7 @@ then
     //0209: SexPoseInt = random_int_in_ranges ? ?
     0AB1: call_scm_func @GenerateActors 2 SexPoseInt SexPlace ret PornActress PornActor
     0AB1: call_scm_func @GenerateSexFiles 2 SexPoseInt SexPlace
+    0AB1: call_scm_func @PutPlayerIntoScene 2 SexPoseInt SexPlace
     0AB1: call_scm_func @LoadSexualPose 5 PornActress PornActor SexPoseInt SexPlace SPD_SLOW
     0AB1: call_scm_func @ToggleSexualCamera 4 SexPoseInt SexPlace PornActress PornActor
     OnSexActivity = true

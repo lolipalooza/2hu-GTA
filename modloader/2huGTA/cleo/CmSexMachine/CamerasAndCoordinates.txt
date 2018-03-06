@@ -36,17 +36,22 @@ end
 
 {======================================================================
 ======================================================================}
+:PutPlayerIntoScene
+// 0@: pose, 1@: place
+0619: enable_actor $PLAYER_ACTOR collision_detection 0
+0AB1: @GetCenterCoordinates 2 0@ 1@ ret 3@ 4@ 5@
+5@ -= 1.0
+00A1: put_actor $PLAYER_ACTOR at 3@ 4@ 5@
+0605: actor $PLAYER_ACTOR perform_animation "sex_pose" IFP "ped" framedelta 4.0 loop 1 lockX 0 lockY 0 lockF 0 time -1
+0AB2: ret 0
+
+{======================================================================
+======================================================================}
 :ToggleSexualCamera
 // 0@: sexual pose, 1@: sex place, 2@: actress, 3@: actor
 0AB1: @GetInt 1 @CameraMode 11@
 if 11@ == 0 // Free mode
-then
-    0619: enable_actor $PLAYER_ACTOR collision_detection 0
-    0AB1: @GetCenterCoordinates 2 0@ 1@ ret 3@ 4@ 5@
-    5@ -= 1.0
-    00A1: put_actor $PLAYER_ACTOR at 3@ 4@ 5@
-    0605: actor $PLAYER_ACTOR perform_animation "sex_pose" IFP "ped" framedelta 4.0 loop 1 lockX 0 lockY 0 lockF 0 time -1
-    02EB: restore_camera_with_jumpcut
+then 02EB: restore_camera_with_jumpcut
 end
 if 11@ == 1 // Fixed mode
 then
