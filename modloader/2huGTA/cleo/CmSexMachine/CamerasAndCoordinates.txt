@@ -169,7 +169,10 @@ then
         then 0AB2: ret 12 cam_pos 2374.467529 -1123.176392 1051.975342 cam_target 2374.461670 -1123.606445 1051.072510 rotation -1.92 angle 180.0 min_rotation -2.2 max_rotation -1.35 min_angle 140.0 max_angle 220.0
         end
         if 1@ == PL_KITCHEN
-        then 0AB2: ret 12 cam_pos 2374.285889 -1131.329224 1051.775391 cam_target 2374.108154 -1131.341675 1050.791382 rotation -1.9 angle 90.0 min_rotation -2.7 max_rotation -1.5 min_angle 55.0 max_angle 125.0
+        then 0AB2: ret 12 cam_pos 2374.285889 -1131.329224 1051.775391 cam_target 2372.693604 -1125.855713 1051.345581 rotation -1.9 angle 90.0 min_rotation -2.7 max_rotation -1.5 min_angle 55.0 max_angle 125.0
+        end
+        if 1@ == PL_FOOT
+        then 0AB2: ret 12 cam_pos 2372.681152 -1125.007690 1051.875366 cam_target 2372.661377 -1125.376953 1050.917725 rotation -2.0 angle 180.0 min_rotation -2.5 max_rotation -1.76 min_angle 150.0 max_angle 210.0
         end
     end
     if 0@ == SEX_ANAL
@@ -281,6 +284,9 @@ then
         end
         if 1@ == PL_KITCHEN
         then 0AB2: ret 3 2373.8 -1131.4 1050.4
+        end
+        if 1@ == PL_FOOT
+        then 0AB2: ret 3 2372.6848 -1125.203 1050.875
         end
     end
     if 0@ == SEX_ANAL
@@ -787,6 +793,45 @@ then
             end
             if 0@ == 11
             then 0AB2: ret 6 cam_pos 2373.492188 -1130.394165 1049.975830 cam_target 2373.935303 -1131.160889 1050.440430 //Camera 18
+            end
+        end
+        if 2@ == PL_FOOT
+        then
+            if 0@ == 0
+            then 0AB2: ret 6 cam_pos 2371.675293 -1127.482544 1051.575439 cam_target 2372.015381 -1126.580444 1051.310059 // Camera 1
+            end
+            if 0@ == 1
+            then 0AB2: ret 6 cam_pos 2372.648926 -1127.721069 1051.575439 cam_target 2372.659424 -1126.756958 1051.310181 // Camera 2
+            end
+            if 0@ == 2
+            then 0AB2: ret 6 cam_pos 2374.339844 -1123.453125 1051.575439 cam_target 2373.627686 -1124.102905 1051.309937 // Camera 4
+            end
+            if 0@ == 3
+            then 0AB2: ret 6 cam_pos 2371.027588 -1123.593262 1051.575439 cam_target 2371.716064 -1124.249390 1051.266602 // Camera 5
+            end
+            if 0@ == 4
+            then 0AB2: ret 6 cam_pos 2371.900635 -1126.054810 1052.175293 cam_target 2372.345947 -1125.517090 1051.459351 // Camera 6
+            end
+            if 0@ == 5
+            then 0AB2: ret 6 cam_pos 2372.982422 -1124.785522 1052.175293 cam_target 2372.668457 -1125.025513 1051.256714 // Camera 8
+            end
+            if 0@ == 6
+            then 0AB2: ret 6 cam_pos 2372.052246 -1125.655640 1051.475464 cam_target 2372.663086 -1124.864258 1051.450439 // Camera 10
+            end
+            if 0@ == 7
+            then 0AB2: ret 6 cam_pos 2372.177246 -1125.886353 1050.875610 cam_target 2372.886719 -1125.192627 1050.751465 // Camera 11
+            end
+            if 0@ == 8
+            then 0AB2: ret 6 cam_pos 2372.702393 -1126.191040 1050.975586 cam_target 2372.677979 -1125.191650 1050.950562 // Camera 12
+            end
+            if 0@ == 9
+            then 0AB2: ret 6 cam_pos 2373.193848 -1125.759766 1050.675659 cam_target 2372.656494 -1125.002563 1051.046875 // Camera 13
+            end
+            if 0@ == 10
+            then 0AB2: ret 6 cam_pos 2373.430908 -1126.082031 1050.175781 cam_target 2372.724854 -1125.385010 1050.299927 // Camera 14
+            end
+            if 0@ == 11
+            then 0AB2: ret 6 cam_pos 2372.656250 -1125.243042 1052.075317 cam_target 2372.656250 -1125.261719 1051.075439 // Camera 15
             end
         end
     end
@@ -1483,7 +1528,7 @@ then
         then 0AB2: ret 8 fem_xyz 0.0 0.0 0.0 angle 0.0 male_xyz 0.0 0.0 0.0 angle 0.0
         end
         if 1@ == PL_FOOT
-        then 0AB2: ret 8 fem_xyz 0.0 0.0 0.0 angle 0.0 male_xyz 0.0 0.0 0.0 angle 0.0
+        then 0AB2: ret 8 fem_xyz 2372.697998 -1125.624634 1049.845337 angle 180.0 male_xyz 2372.679688 -1124.909058 1049.935303 angle 180.0
         end
     end
     if 0@ == SEX_ANAL
