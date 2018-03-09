@@ -123,7 +123,7 @@ then
         0AB1: call_scm_func @GenerateSexFiles 2 SexPoseInt SexPlace
         0AB1: call_scm_func @PutPlayerIntoScene 2 SexPoseInt SexPlace
         0AB1: call_scm_func @LoadSexualPose 5 PornActress PornActor SexPoseInt SexPlace SPD_SLOW
-        0AB1: call_scm_func @ToggleSexualCamera 4 SexPoseInt SexPlace PornActress PornActor
+        0AB1: call_scm_func @ToggleSexualCamera 2 SexPoseInt SexPlace
         wait 500
         fade 1 time 800
         SexMenuState = 0 // Close Sexual Menu
