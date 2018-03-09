@@ -284,12 +284,6 @@ then
     fade 1 time 800
     wait 500
     01B4: set_player $PLAYER_CHAR can_move 1
-    {
-    03E5: show_text_box 'I_CTRL1'  // Puedes cambiar la vista con ~b~~k~~CAMERA_CHANGE_VIEW_ALL_SITUATIONS~~w~. Ingresa al menu pulsando ~b~~k~~PED_ANSWER_PHONE~~w~ para ver las diferentes opciones.
-    wait 7000
-    03E5: show_text_box 'I_GNRL1'  // Puedes aumentar el ritmo de los movimientos con ~b~~k~~PED_CYCLE_WEAPON_LEFT~~w~ / ~b~~k~~PED_CYCLE_WEAPON_RIGHT~~w~. Tambien puedes parar totalmente disminuyendo el ritmo a su minimo valor.
-    0ACA: show_text_box "~b~~k~~PED_ANSWER_PHONE~: ~s~ingresar al menu. ~b~~k~~VEHICLE_ENTER_EXIT~: ~s~salir."
-    }
 else
     fade 0 time 800
     wait 800 ms
