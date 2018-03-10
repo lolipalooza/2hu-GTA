@@ -115,7 +115,7 @@ hex
     "______" 0 "______" 0 "______" 0 "______" 0 // Bath
     "slow__" 1 "slow__" 2 "normal" 3 "fast__" 1 // Kitchen
     "______" 0 "______" 0 "______" 0 "______" 0 // Wall
-    "normal" 1 "slow__" 1 "normal" 1 "normal" 1 // Foot
+    "slow__" 2 "slow__" 2 "normal" 1 "fast__" 1 // Foot
 
     // Reverse Sex
     "slow__" 2 "slow__" 2 "normal" 2 "fast__" 2 // Bed

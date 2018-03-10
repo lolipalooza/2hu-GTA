@@ -1528,7 +1528,7 @@ then
         then 0AB2: ret 8 fem_xyz 0.0 0.0 0.0 angle 0.0 male_xyz 0.0 0.0 0.0 angle 0.0
         end
         if 1@ == PL_FOOT
-        then 0AB2: ret 8 fem_xyz 2372.697998 -1125.624634 1049.845337 angle 180.0 male_xyz 2372.679688 -1124.909058 1049.935303 angle 180.0
+        then 0AB2: ret 8 fem_xyz 2372.697998 -1125.624634 1049.845337 angle 180.0 male_xyz 2372.679688 -1124.909058 1049.935303 angle 0.0
         end
     end
     if 0@ == SEX_ANAL

@@ -232,6 +232,7 @@ then
     then
         0B04: copy_file "models\files\sex\Blowjob on Foot\idle1.ifp" to DEST_IDLE1 //IF and SET
         0B04: copy_file "models\files\sex\Blowjob on Foot\slow1.ifp" to DEST_SLOW1 //IF and SET
+        0B04: copy_file "models\files\sex\Blowjob on Foot\slow2.ifp" to DEST_SLOW2 //IF and SET
         0B04: copy_file "models\files\sex\Blowjob on Foot\normal1.ifp" to DEST_NORMAL1 //IF and SET
         0B04: copy_file "models\files\sex\Blowjob on Foot\fast1.ifp" to DEST_FAST1 //IF and SET
     end
