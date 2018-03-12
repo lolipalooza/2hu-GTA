@@ -166,7 +166,7 @@ end
 ======================================================================}
 :ReadGroupOffsets
 // 0@: group
-0A9A: 1@ = openfile "modloader/2hu gta/groups.dat" mode "rb"  // IF and SET
+0A9A: 1@ = openfile "modloader/2hugta/groups.dat" mode "rb"  // IF and SET
 3@=0
 repeat
     0ADA: 2@ = scan_file 1@ format "%d %d %d %d %d %d %d" 10@ 11@ 12@ 13@ 14@ 15@ 16@ //IF and SET
