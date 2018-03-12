@@ -230,11 +230,22 @@ then
     end
     if 1@ == PL_FOOT
     then
-        0B04: copy_file "models\files\sex\Blowjob on Foot\idle1.ifp" to DEST_IDLE1 //IF and SET
-        0B04: copy_file "models\files\sex\Blowjob on Foot\slow1.ifp" to DEST_SLOW1 //IF and SET
-        0B04: copy_file "models\files\sex\Blowjob on Foot\slow2.ifp" to DEST_SLOW2 //IF and SET
-        0B04: copy_file "models\files\sex\Blowjob on Foot\normal1.ifp" to DEST_NORMAL1 //IF and SET
-        0B04: copy_file "models\files\sex\Blowjob on Foot\fast1.ifp" to DEST_FAST1 //IF and SET
+        if 2@ == BT_LOLI
+        then
+            0B04: copy_file "models\files\sex\Blowjob on Foot (loli)\idle1.ifp" to DEST_IDLE1 //IF and SET
+            0B04: copy_file "models\files\sex\Blowjob on Foot (loli)\slow1.ifp" to DEST_SLOW1 //IF and SET
+            0B04: copy_file "models\files\sex\Blowjob on Foot (loli)\slow2.ifp" to DEST_SLOW2 //IF and SET
+            0B04: copy_file "models\files\sex\Blowjob on Foot (loli)\normal1.ifp" to DEST_NORMAL1 //IF and SET
+            0B04: copy_file "models\files\sex\Blowjob on Foot (loli)\normal2.ifp" to DEST_NORMAL2 //IF and SET
+            0B04: copy_file "models\files\sex\Blowjob on Foot (loli)\fast1.ifp" to DEST_FAST1 //IF and SET
+        else
+            0B04: copy_file "models\files\sex\Blowjob on Foot\idle1.ifp" to DEST_IDLE1 //IF and SET
+            0B04: copy_file "models\files\sex\Blowjob on Foot\slow1.ifp" to DEST_SLOW1 //IF and SET
+            0B04: copy_file "models\files\sex\Blowjob on Foot\slow2.ifp" to DEST_SLOW2 //IF and SET
+            0B04: copy_file "models\files\sex\Blowjob on Foot\normal1.ifp" to DEST_NORMAL1 //IF and SET
+            0B04: copy_file "models\files\sex\Blowjob on Foot\normal2.ifp" to DEST_NORMAL2 //IF and SET
+            0B04: copy_file "models\files\sex\Blowjob on Foot\fast1.ifp" to DEST_FAST1 //IF and SET
+        end
     end
 end
 if 0@ == SEX_CUNNI

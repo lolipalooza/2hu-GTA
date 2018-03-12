@@ -39,7 +39,9 @@ const
     Plsr_Gain = 20@
     SexPoseInt = 21@
     SexPlace = 22@
-    PulseButtonState = 23@
+    BodyType = 23@
+    PulseButtonState = 24@
+    Dummy5 = 25@
     
     MoveAxisX = Dummy1
     MoveAxisY = Dummy2
@@ -81,6 +83,10 @@ const
     PL_WALL = 7
     PL_FOOT = 8
 
+    BT_NORMAL = 0
+    BT_LOLI = 1
+    BT_BIG = 2
+    
     SPD_IDLE   = 0
     SPD_SLOW   = 1
     SPD_NORMAL = 2
@@ -262,6 +268,7 @@ then
     end
     SexPoseInt = SEX_FUCKING
     SexPlace = PL_TABLE
+    BodyType = BT_NORMAL
     0AB1: @StoreInt 2 @SxMn_Pose SexPoseInt
     0AB1: @StoreInt 2 @SxMn_Place SexPlace
     //0209: SexPoseInt = random_int_in_ranges ? ?
@@ -342,24 +349,24 @@ then
         0AB1: call_scm_func @LoadSexualPose 5 PornActress PornActor SexPoseInt SexPlace SpeedState
     end
 
-    0494: get_joystick 0 data_to MoveAxisX MoveAxisY SpAxisX SpAxisY
-    if 0018:   SpAxisX > 100 // RIGHT
-    then SexState = 4
-        0AB1: @GetInt 1 @CurrentCamera MoveAxisY
-        0AB1: call_scm_func @IncOrDecIntVariable 4 MoveAxisY 0 11 FLAG_INCREASE MoveAxisY
-        0AB1: @StoreInt 2 @CurrentCamera MoveAxisY
-        0AB1: call_scm_func @ToggleSexualCamera 2 SexPoseInt SexPlace
-    end
-    if 001A:   -100 > SpAxisX // LEFT
-    then SexState = 5
-        0AB1: @GetInt 1 @CurrentCamera MoveAxisY
-        0AB1: @IncOrDecIntVariable 4 var_to_increase MoveAxisY min_value 0 max_value 11 flag FLAG_DECREASE store_into MoveAxisY
-        0AB1: @StoreInt 2 @CurrentCamera MoveAxisY
-        0AB1: call_scm_func @ToggleSexualCamera 2 SexPoseInt SexPlace
-    end
     0AB1: @GetInt 1 @CameraMode Dummy1
     if Dummy1 == 1 // Fixed Camera
     then
+        0494: get_joystick 0 data_to MoveAxisX MoveAxisY SpAxisX SpAxisY
+        if 0018:   SpAxisX > 100 // RIGHT
+        then SexState = 4
+            0AB1: @GetInt 1 @CurrentCamera MoveAxisY
+            0AB1: call_scm_func @IncOrDecIntVariable 4 MoveAxisY 0 11 FLAG_INCREASE MoveAxisY
+            0AB1: @StoreInt 2 @CurrentCamera MoveAxisY
+            0AB1: call_scm_func @ToggleSexualCamera 2 SexPoseInt SexPlace
+        end
+        if 001A:   -100 > SpAxisX // LEFT
+        then SexState = 5
+            0AB1: @GetInt 1 @CurrentCamera MoveAxisY
+            0AB1: @IncOrDecIntVariable 4 var_to_increase MoveAxisY min_value 0 max_value 11 flag FLAG_DECREASE store_into MoveAxisY
+            0AB1: @StoreInt 2 @CurrentCamera MoveAxisY
+            0AB1: call_scm_func @ToggleSexualCamera 2 SexPoseInt SexPlace
+        end
         if 0AB1: @CursorClickCheck 4 box_position 247.0 395.0 box_size 13.0 12.0
         then
             0AB1: @GetInt 1 @CurrentCamera MoveAxisY
@@ -380,7 +387,6 @@ if SexState == 1
 then
     if 80E1:   not player 0 pressed_key PAD_CHANGE_CAMERA_VIEW
     then SexState=0
-        032A: set_behind_camera_mode_to 0
     end
 end
 if SexState == 2

@@ -60,7 +60,7 @@ hex
 
 // On Foot
 "S_BJ_1" "S_HJ_1" "______" "______" "______"
-"______" "______" "______" "______" "______"
+"S_BL_1" "______" "______" "______" "______"
 "______" "______" "______" "______" "______"
 "______" "______" "______" "______" "______"
 "______" "______" "______" "______" "______"
@@ -106,13 +106,16 @@ then
     0AB1: @GetInt 1 @SxMn_Pose Dummy1
     0AB1: @GetInt 1 @SxMn_Place Dummy2
     0AB1: @SxMn_GetGXTPose 2 place Dummy2 offset Dummy1 ret Dummy3 Dummy4
-    0AB1: @GetPoseFromString 2 Dummy3 Dummy4 ret Dummy1
+    Dummy5=0
+    0AB1: @GetPoseFromString 2 Dummy3 Dummy4 ret Dummy1 Dummy5
     if or
     803B:   not Dummy1 == SexPoseInt  // (int)
     803B:   not Dummy2 == SexPlace  // (int)
+    803B:   not Dummy5 == BodyType  // (int)
     then
         0085: SexPoseInt = Dummy1 // (int)
         0085: SexPlace = Dummy2 // (int)
+        0085: BodyType = Dummy5 // (int)
         fade 0 time 800
         wait 800 ms
         015F: set_camera_position 0.0 0.0 0.0 rotation 0.0 0.0 0.0
@@ -120,7 +123,7 @@ then
         009B: destroy_actor PornActress
         009B: destroy_actor PornActor
         0AB1: call_scm_func @GenerateActors 2 SexPoseInt SexPlace ret PornActress PornActor
-        0AB1: call_scm_func @GenerateSexFiles 2 SexPoseInt SexPlace
+        0AB1: call_scm_func @GenerateSexFiles 3 SexPoseInt SexPlace BodyType
         0AB1: call_scm_func @PutPlayerIntoScene 2 SexPoseInt SexPlace
         0AB1: call_scm_func @LoadSexualPose 5 PornActress PornActor SexPoseInt SexPlace SPD_SLOW
         0AB1: call_scm_func @ToggleSexualCamera 2 SexPoseInt SexPlace
