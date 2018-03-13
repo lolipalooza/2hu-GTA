@@ -3,336 +3,348 @@
 // Playable characters
 :ModelsList
 hex
-    "reimu1" "marisa" "alice1" "suikyn"                              // team 1  (Hakurei Shrine Team)
-    "youmu1" "yuyuko" "yukn2c" "ranykm" "chnnt1"                     // team 2  (Perfect Cherry Blossom Team)
-    "sakuy1" "meilin" "patzak" "koaku1" "remil1" "flandr"            // team 3  (Scarlet Devil Mansion Team)
-    "sanaek" "kanako" "suwak1"                                       // team 4  (Mountain of Faith Team)
-    "ayamin" "hatate" "mmjeto" "minori" "shizu1" "hinaky" "nitor2"   // team 5  (Bonbunmaru Team)
-    "satori" "koikyn" "rinnm1" "okuus1"                              // team 6  (Subterranean Animism Team)
-    "cirno1" "daiyou" "rumia1" "letty1" "wriggl" "mystia" "tokiko"   // team 7  (Baka Team)
-    "sunny1" "lunach" "starzp" "lilywh" "lyrica" "lunasa" "merlin"   // team 8  (Fairy Team)
-    "eirin1" "kaguy1" "reisen" "tewinb" "mokou1" "keine1"            // team 9  (Imperishable Night Team)
-    "tenshi" "ikunge" "shiki1" "komach" "yuuka1" "medtoy"            // team 10 (Phantasmagoria of Flower View Team)
-    "yamam1" "kisume" "parsee" "yuugi1"                              // team 11 (Subterranean Animism 2 Team)
-    "byakur" "ichrn1" "nuemek" "shoutm" "nazrin" "muras1" "kogasa"   // team 12 (Undefined Fantastic Object Team)
-    "seiga1" "miksb2" "futokn" "tojik1" "yoshik" "mamizo" "kyouko"   // team 13 (Ten Desires Team)
-    "______" "______" "______" "______" "______" "______" "______"   // team 14 (Custom Team)
+"reimu1__________________" "marisa__________________" "alice1__________________" "suikyn__________________"                                                                                    // team 1  (Hakurei Shrine Team)
+"youmu1__________________" "yuyuko__________________" "yukn2c__________________" "ranykm__________________" "chnnt1__________________"                                                         // team 2  (Perfect Cherry Blossom Team)
+"sakuy1__________________" "meilin__________________" "patzak__________________" "koaku1__________________" "remil1__________________" "flandr__________________"                              // team 3  (Scarlet Devil Mansion Team)
+"sanaek__________________" "kanako__________________" "suwak1__________________"                                                                                                               // team 4  (Mountain of Faith Team)
+"ayamin__________________" "hatate__________________" "mmjeto__________________" "minori__________________" "shizu1__________________" "hinaky__________________" "nitor2__________________"   // team 5  (Bonbunmaru Team)
+"satori__________________" "koikyn__________________" "rinnm1__________________" "okuus1__________________"                                                                                    // team 6  (Subterranean Animism Team)
+"cirno1__________________" "daiyou__________________" "rumia1__________________" "letty1__________________" "wriggl__________________" "mystia__________________" "tokiko__________________"   // team 7  (Baka Team)
+"sunny1__________________" "lunach__________________" "starzp__________________" "lilywh__________________" "lyrica__________________" "lunasa__________________" "merlin__________________"   // team 8  (Fairy Team)
+"eirin1__________________" "kaguy1__________________" "reisen__________________" "tewinb__________________" "mokou1__________________" "keine1__________________"                              // team 9  (Imperishable Night Team)
+"tenshi__________________" "ikunge__________________" "shiki1__________________" "komach__________________" "yuuka1__________________" "medtoy__________________"                              // team 10 (Phantasmagoria of Flower View Team)
+"yamam1__________________" "kisume__________________" "parsee__________________" "yuugi1__________________"                                                                                    // team 11 (Subterranean Animism 2 Team)
+"byakur__________________" "ichrn1__________________" "nuemek__________________" "shoutm__________________" "nazrin__________________" "muras1__________________" "kogasa__________________"   // team 12 (Undefined Fantastic Object Team)
+"seiga1__________________" "miksb2__________________" "futokn__________________" "tojik1__________________" "yoshik__________________" "mamizo__________________" "kyouko__________________"   // team 13 (Ten Desires Team)
+"________________________" "________________________" "________________________" "________________________" "________________________" "________________________" "________________________"   // team 14 (Custom Team)
 end
 
 // Special Clothes for each Character
 :ReimuHakurei
 hex
-    "reimu1"
+"reimu1__________________"
 end
 :MarisaKirisame
 hex
-    "marisa"
+"marisa__________________"
 end
 :AliceMargatroid
 hex
-    "alice1" "alice2" "alice3"
+"alice1__________________" "alice2__________________" "alice3__________________"
 end
 :SuikaIbuki
 hex
-    "suikyn" "suizak" "suika3"
+"suikyn__________________" "suizak__________________" "suika3__________________"
 end
 :YoumuKonpaku
 hex
-    "youmu1"
+"youmu1__________________"
 end
 :YuyukoSaigyouji
 hex
-    "yuyuko"
+"yuyuko__________________"
 end
 :YukariYakumo
 hex
-    "yuknm1" "yukn1p" "yuknm2" "yukn2b" "yukn2c" "yukn2p" "yuknm3" "yukn3p"
+"yuknm1__________________" "yukn1p__________________" "yuknm2__________________" "yukn2b__________________" "yukn2c__________________"
+"yukn2p__________________" "yuknm3__________________" "yukn3p__________________"
 end
 :RanYakumo
 hex
-    "ranykm"
+"ranykm__________________"
 end
 :Chen
 hex
-    "chnnt1" "chnnt2"
+"chnnt1__________________" "chnnt2__________________"
 end
 :SakuyaIzayoi
 hex
-    "sakuy1" "sakuy2" "sk1ts1" "sk1sw1" "sk1ts2" "sk1ts3" "sk1ts4" "sk1ts5" "sk1sp1" "sk1sp2"
-    "sk1sp3" "sk1sp4" "sk2sp1" "sk2sw1" "sk2sw2" "sk2sw3" "sk2sp2" "sk2sp3" "sk2sp4" "sakde1"
-    "sakde2" "sakte1" "sakte2" "sakte3" "sktesp" "sk2ts1" "sk2ts2" "sk2ts3" "sktss1" "sktss2"
-    "sakdns"
+"sakuy1__________________" "sakuy2__________________" "sk1ts1__________________" "sk1sw1__________________" "sk1ts2__________________"
+"sk1ts3__________________" "sk1ts4__________________" "sk1ts5__________________" "sk1sp1__________________" "sk1sp2__________________"
+"sk1sp3__________________" "sk1sp4__________________" "sk2sp1__________________" "sk2sw1__________________" "sk2sw2__________________"
+"sk2sw3__________________" "sk2sp2__________________" "sk2sp3__________________" "sk2sp4__________________" "sakde1__________________"
+"sakde2__________________" "sakte1__________________" "sakte2__________________" "sakte3__________________" "sktesp__________________"
+"sk2ts1__________________" "sk2ts2__________________" "sk2ts3__________________" "sktss1__________________" "sktss2__________________"
+"sakdns__________________"
 end
 :HongMeiling
 hex
-    "meilin" "meidr1" "meidr2" "meisp1" "meisp2" "meisp3" "meisp4" "meisw1" "meisw2" "meisw3"
-    "mesw4a" "mesw4b" "mesw4c"
+"meilin__________________" "meidr1__________________" "meidr2__________________" "meisp1__________________" "meisp2__________________"
+"meisp3__________________" "meisp4__________________" "meisw1__________________" "meisw2__________________" "meisw3__________________"
+"mesw4a__________________" "mesw4b__________________" "mesw4c__________________"
 end
 :PatchouliKnowledge
 hex
-    "patzak"
+"patzak__________________"
 end
 :Koakuma
 hex
-    "koaku1" "koaku2" "koaku3" "kalsh1" "kalsh2" "kalsh3" "koasp1" "koasp2" "koasp3" "koasp4"
-    "kosw1a" "kosw1b" "koasw2" "koasw3" "kosw4a" "kosw4b" "kosw4c" "kosw5a" "kosw5b" "kosw5c"
-    "kosw6a" "kosw6b" "kosw6c" "korpg1" "korpg2"
+"koaku1__________________" "koaku2__________________" "koaku3__________________" "kalsh1__________________" "kalsh2__________________"
+"kalsh3__________________" "koasp1__________________" "koasp2__________________" "koasp3__________________" "koasp4__________________"
+"kosw1a__________________" "kosw1b__________________" "koasw2__________________" "koasw3__________________" "kosw4a__________________"
+"kosw4b__________________" "kosw4c__________________" "kosw5a__________________" "kosw5b__________________" "kosw5c__________________"
+"kosw6a__________________" "kosw6b__________________" "kosw6c__________________" "korpg1__________________" "korpg2__________________"
 end
 :RemiliaScarlet
 hex
-    "remil1"
+"remil1__________________"
 end
 :FlandreScarlet
 hex
-    "flandr"
+"flandr__________________"
 end
 :SanaeKochiya
 hex
-    "sanaek" "sanaeb"
+"sanaek__________________" "sanaeb__________________"
 end
 :KanakoYasaka
 hex
-    "kanako" "kanklg"
+"kanako__________________" "kanklg__________________"
 end
 :SuwakoMoriya
 hex
-    "suwak1" "suwak2"
+"suwak1__________________" "suwak2__________________"
 end
 :AyaShameimaru
 hex
-    "ayamin" "ayaipj"
+"ayamin__________________" "ayaipj__________________"
 end
 :HatateHimekaidou
 hex
-    "hatate"
+"hatate__________________"
 end
 :MomijiInubashiri
 hex
-    "mmjeto"
+"mmjeto__________________"
 end
 :MinorikoAki
 hex
-    "minori"
+"minori__________________"
 end
 :ShizuhaAki
 hex
-    "shizu1" "shizu2"
+"shizu1__________________" "shizu2__________________"
 end
 :HinaKagiyama
 hex
-    "hinaky"
+"hinaky__________________"
 end
 :NitoriKawashiro
 hex
-    "nitor1" "nitor2" "nitsw1" "nitsw2"
+"nitor1__________________" "nitor2__________________" "nitsw1__________________" "nitsw2__________________"
 end
 :SatoriKomeiji
 hex
-    "satori"
+"satori__________________"
 end
 :KoishiKomeiji
 hex
-    "koikyn" "koibik"
+"koikyn__________________" "koibik__________________"
 end
 :RinKaenbyou
 hex
-    "rinnm1" "rinnm2" "rsw1v0" "rsw2v0" "rinun1" "rinun2" "rinun3" "rinun4" "rinun5" "rinun6"
-    "rinun7" "rinun8" "rinun9" "rinu10" "rinu11" "rinu12" "rinu13" "rinsw1" "rinsw2" "rinsw3"
-    "rinsw4" "rinsw5" "rinsw6" "rinsw7" "rinsw8" "rinsw9" "rnsw10" "rnsw11" "rnsw12" "rnsw13"
-    "rinsp1" "rinsp2" "rinsp3" "rinsp4" "rinsp5" "rinsp6" "rinsp7" "rinsp8" "rinsp9" "rnsp10"
-    "rnsp11" "rnsp12" "rnsp13"
+"rinnm1__________________" "rinnm2__________________" "rsw1v0__________________" "rsw2v0__________________" "rinun1__________________"
+"rinun2__________________" "rinun3__________________" "rinun4__________________" "rinun5__________________" "rinun6__________________"
+"rinun7__________________" "rinun8__________________" "rinun9__________________" "rinu10__________________" "rinu11__________________"
+"rinu12__________________" "rinu13__________________" "rinsw1__________________" "rinsw2__________________" "rinsw3__________________"
+"rinsw4__________________" "rinsw5__________________" "rinsw6__________________" "rinsw7__________________" "rinsw8__________________"
+"rinsw9__________________" "rnsw10__________________" "rnsw11__________________" "rnsw12__________________" "rnsw13__________________"
+"rinsp1__________________" "rinsp2__________________" "rinsp3__________________" "rinsp4__________________" "rinsp5__________________"
+"rinsp6__________________" "rinsp7__________________" "rinsp8__________________" "rinsp9__________________" "rnsp10__________________"
+"rnsp11__________________" "rnsp12__________________" "rnsp13__________________"
 end
 :UtsuhoReiuji
 hex
-    "okuub1" "okuub2" "okuus1" "okuus2" "okuus3" "okuus4" "okuus5"
+"okuub1__________________" "okuub2__________________" "okuus1__________________" "okuus2__________________" "okuus3__________________"
+"okuus4__________________" "okuus5__________________"
 end
 :Cirno
 hex
-    "cirno1"
+"cirno1__________________"
 end
 :Daiyousei
 hex
-    "daiyou"
+"daiyou__________________"
 end
 :Rumia
 hex
-    "rumia1"
+"rumia1__________________"
 end
 :LettyWhiterock
 hex
-    "letty1"
+"letty1__________________"
 end
 :WriggleNightbug
 hex
-    "wriggl"
+"wriggl__________________"
 end
 :MystiaLorelei
 hex
-    "mystia" "mysti1" "mysti2"
+"mystia__________________" "mysti1__________________" "mysti2__________________"
 end
 :Tokiko
 hex
-    "tokiko"
+"tokiko__________________"
 end
 :SunnyMilk
 hex
-    "sunny1"
+"sunny1__________________"
 end
 :LunaChild
 hex
-    "lunach"
+"lunach__________________"
 end
 :StarZapphire
 hex
-    "starzp"
+"starzp__________________"
 end
 :LilyWhite
 hex
-    "lilywh"
+"lilywh__________________"
 end
 :LyricaPrismriver
 hex
-    "lyrica"
+"lyrica__________________"
 end
 :LunasaPrismriver
 hex
-    "lunasa"
+"lunasa__________________"
 end
 :MerlinPrismriver
 hex
-    "merlin"
+"merlin__________________"
 end
 :EirinYakogoro
 hex
-    "eirin1" "eirnsp"
+"eirin1__________________" "eirnsp__________________"
 end
 :KaguyaHouraisan
 hex
-    "kaguy1" "kaguy2"
+"kaguy1__________________" "kaguy2__________________"
 end
 :ReisenUdongeinInaba
 hex
-    "reisen" "reissw"
+"reisen__________________" "reissw__________________"
 end
 :TewiInaba
 hex
-    "tewinb" "tewib2"
+"tewinb__________________" "tewib2__________________"
 end
 :FujiwaraNoMokou
 hex
-    "mokou1" "mokusp" "mkspnk" "mokusw"
+"mokou1__________________" "mokusp__________________" "mkspnk__________________" "mokusw__________________"
 end
 :KeineKamishirasawa
 hex
-    "keine1"
+"keine1__________________"
 end
 :TenshiHinanai
 hex
-    "tenshi"
+"tenshi__________________"
 end
 :IkuNagae
 hex
-    "ikunge"
+"ikunge__________________"
 end
 :ShikieikiYamaxadanu
 hex
-    "shiki1"
+"shiki1__________________"
 end
 :KomachiOnozuka
 hex
-    "komach"
+"komach__________________"
 end
 :YuukaKazami
 hex
-    "yuuka1" "yupc1a" "yupc2a" "yupc3a" "yupc3b"
+"yuuka1__________________" "yupc1a__________________" "yupc2a__________________" "yupc3a__________________" "yupc3b__________________"
 end
 :MedicineMelancholy
 hex
-    "medtoy"
+"medtoy__________________"
 end
 :YamameKurodani
 hex
-    "yamam1" "yamam2"
+"yamam1__________________" "yamam2__________________"
 end
 :Kisume
 hex
-    "kisume"
+"kisume__________________"
 end
 :ParseeMizuhashi
 hex
-    "parsee"
+"parsee__________________"
 end
 :YuugiHoshiguma
 hex
-    "yuugi1" "ygptl1" "ygptl2" "ygptsp"
+"yuugi1__________________" "ygptl1__________________" "ygptl2__________________" "ygptsp__________________"
 end
 :ByakurenHijiri
 hex
-    "byakur"
+"byakur__________________"
 end
 :IchirinKumoi
 hex
-    "ichrn1" "ichrn2"
+"ichrn1__________________" "ichrn2__________________"
 end
 :NueHoujuu
 hex
-    "nuemek"
+"nuemek__________________"
 end
 :ShouToramaru
 hex
-    "shoutm"
+"shoutm__________________"
 end
 :Nazrin
 hex
-    "nazrin"
+"nazrin__________________"
 end
 :MinamitsuMurasa
 hex
-    "muras1" "muras2"
+"muras1__________________" "muras2__________________"
 end
 :KogasaTatara
 hex
-    "kogasa"
+"kogasa__________________"
 end
 :SeigaKaku
 hex
-    "seiga1"
+"seiga1__________________"
 end
 :ToyosatomimiNoMiko
 hex
-    "miksb1" "miksb2"
+"miksb1__________________" "miksb2__________________"
 end
 :MononobeNoFuto
 hex
-    "futokn"
+"futokn__________________"
 end
 :SogaNoTojiko
 hex
-    "tojik1" "tojik2"
+"tojik1__________________" "tojik2__________________"
 end
 :YoshikaMiyako
 hex
-    "yoshik"
+"yoshik__________________"
 end
 :MamizouFutatsuiwa
 hex
-    "mamizo"
+"mamizo__________________"
 end
 :KyoukoKasodani
 hex
-    "kyouko"
+"kyouko__________________"
 end
     
 :SpecialCharacters
 hex
-    "maribe" "marbsw" "renko1" "renksw"
-    "toyohm" "yorihm" "reisn2"
-    "rinosk"
-    "akyuu1"
-    "ibkase"
-    "motoo1" "motoo2"
-    "bfair1" "bfair2" "bfai3a" "bfai3b" "bfai3c" "bfair4" "bfai5a" "bfai5b" "bfai5c" "bfai5d" "mfair1" "mfair2" "mfair3" "zfairy"
-    "shangh" "hourai" "goliat"
-    "mima00" "shinki"
+"maribe__________________" "marbsw__________________" "renko1__________________" "renksw__________________"
+"toyohm__________________" "yorihm__________________" "reisn2__________________"
+"rinosk__________________"
+"akyuu1__________________"
+"ibkase__________________"
+"motoo1__________________" "motoo2__________________"
+"bfair1__________________" "bfair2__________________" "bfai3a__________________" "bfai3b__________________" "bfai3c__________________" "bfair4__________________" "bfai5a__________________" "bfai5b__________________" "bfai5c__________________" "bfai5d__________________" "mfair1__________________" "mfair2__________________" "mfair3__________________" "zfairy__________________"
+"shangh__________________" "hourai__________________" "goliat__________________"
+"mima00__________________" "shinki__________________"
 end
 

@@ -20,14 +20,14 @@ until 023D: special_actor 0@ loaded
 
 {======================================================================
 ======================================================================}
-:CopyModel
+{:CopyModel
 0AB1: @ModifyPaths 4 model_offset 0@ orig_offset OFFSET_ORIG_DFF dest_offset OFFSET_DEST_DFF dest_place 1@
 0AB1: @ModifyPaths 4 model_offset 0@ orig_offset OFFSET_ORIG_TXD dest_offset OFFSET_DEST_TXD dest_place 1@
-if 0AB1: @CopySkinIntoFolder 0
+if 0AB1: @CopySkinIntoFolder2 0
 then 0485:  return_true
 else 059A:  return_false
 end
-0AB2: ret 0
+0AB2: ret 0}
 
 {======================================================================
 ======================================================================}
@@ -92,7 +92,7 @@ end
 
 {======================================================================
 ======================================================================}
-:ModifyPaths
+{:ModifyPaths
 const
     Mpth_ModelsOffset = 0@
     Mpth_CopySkinOffset = 1@
@@ -133,18 +133,18 @@ else
     Mpth_CopySkinAddress--
     0A8C: write_memory Mpth_CopySkinAddress size 1 value 0x30 virtual_protect 0
 end
-0AB2: ret 0
+0AB2: ret 0}
 
 {======================================================================
 ======================================================================}
-:CopySkinIntoFolder
+{:CopySkinIntoFolder2
 if and
 0B04: copy_file "models/touhou/______.dff" to "modloader/skins/SP01.dff" //IF and SET
 0B04: copy_file "models/touhou/______.txd" to "modloader/skins/SP01.txd" //IF and SET
 then 0485:  return_true
 else 059A:  return_false
 end
-0AB2: ret 0
+0AB2: ret 0}
 
 {======================================================================
 ======================================================================}
@@ -158,3 +158,144 @@ end
 0A8D: 26@ = read_memory 29@ size 2 virtual_protect 0
 0AB2: ret 2 25@ 26@
 
+{======================================================================
+======================================================================}
+:CopySkinIntoFolder
+hex
+D6 00 04 01 // 00D6: if and
+
+// "0B04: copy_file" command (dff file)
+00000000                                                    //04 0B 0E FF
+0000000000000000000000000000                                //"models/touhou/"
+0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 // filename (24 chars max)
+00000000                                                    // ".dff"
+00 00                                                       //0E FF // holder for second input length
+0000000000 0000000000 0000000000 0000000000                 //"modloader/skins/SP0X"
+00000000                                                    // ".dff"
+
+// "0B04: copy_file" command (txd file)
+00000000                                                    //04 0B 0E FF
+0000000000000000000000000000                                //"models/touhou/"
+0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 0000 // filename (24 chars max)
+00000000                                                    // ".txd"
+00 00                                                       //0E FF
+0000000000 0000000000 0000000000 0000000000                 //"modloader/skins/SP0X"
+00000000                                                    // ".txd"
+end
+004D: jump_if_false @CopyFalse
+    0485:  return_true
+    jump @CopyTrue
+:CopyFalse
+    059A:  return_false
+:CopyTrue
+0AB2: ret 0
+
+{======================================================================
+======================================================================}
+:HelpString
+hex
+04 0B 0E FF             // length: 4    offset: 0
+"modloader/skins/SP0X"  // length: 20   offset: 4
+"models/touhou/"        // length: 14   offset: 24
+".dff"                  // length: 4    offset: 38
+".txd"                  // length: 4    offset: 42
+end
+
+{======================================================================
+======================================================================}
+:LoadCopyCommand
+0AC6: 0@ = label @CopyStuff2 offset
+0@ += 4
+0AB1: @Get2huFilenameLength 0 ret 30@
+
+
+0AB1: @CopyStringIntoAddr 4 address 0@ string @HelpString str_length 3 str_offset 0 ret 0@
+0085: 31@ = 30@ // (int)
+000A: 31@ += 14
+000A: 31@ += 4
+0A8C: write_memory 0@ size 1 value 31@ virtual_protect 0
+0@+=1
+0AB1: @CopyStringIntoAddr 4 address 0@ string @HelpString str_length 14 str_offset 24 ret 0@
+0AB1: @CopyStringIntoAddr 4 address 0@ string @2huModel str_length 30@ str_offset 0 ret 0@
+0AB1: @CopyStringIntoAddr 4 address 0@ string @HelpString str_length 4 str_offset 38 ret 0@
+0AB1: @CopyStringIntoAddr 4 address 0@ string @HelpString str_length 1 str_offset 2 ret 0@
+0006: 31@ = 20
+000A: 31@ += 4
+0A8C: write_memory 0@ size 1 value 31@ virtual_protect 0
+0@+=1
+0AB1: @CopyStringIntoAddr 4 address 0@ string @HelpString str_length 20 str_offset 4 ret 0@
+0AB1: @CopyStringIntoAddr 4 address 0@ string @HelpString str_length 4 str_offset 38 ret 0@
+
+
+0AB1: @CopyStringIntoAddr 4 address 0@ string @HelpString str_length 3 str_offset 0 ret 0@
+0085: 31@ = 30@ // (int)
+000A: 31@ += 14
+000A: 31@ += 4
+0A8C: write_memory 0@ size 1 value 31@ virtual_protect 0
+0@+=1
+0AB1: @CopyStringIntoAddr 4 address 0@ string @HelpString str_length 14 str_offset 24 ret 0@
+0AB1: @CopyStringIntoAddr 4 address 0@ string @2huModel str_length 30@ str_offset 0 ret 0@
+0AB1: @CopyStringIntoAddr 4 address 0@ string @HelpString str_length 4 str_offset 42 ret 0@
+0AB1: @CopyStringIntoAddr 4 address 0@ string @HelpString str_length 1 str_offset 2 ret 0@
+0006: 31@ = 20
+000A: 31@ += 4
+0A8C: write_memory 0@ size 1 value 31@ virtual_protect 0
+0@+=1
+0AB1: @CopyStringIntoAddr 4 address 0@ string @HelpString str_length 20 str_offset 4 ret 0@
+0AB1: @CopyStringIntoAddr 4 address 0@ string @HelpString str_length 4 str_offset 42 ret 0@
+0AB2: ret 0
+
+{======================================================================
+======================================================================}
+:Get2huFilenameLength
+0AC6: 0@ = label @2huModel offset
+30@=-1
+repeat
+wait 0
+    0A8D: 1@ = read_memory 0@ size 1 virtual_protect 0
+    0@+=1
+    30@+=1
+    if or
+    1@ == 95
+    30@ == 24
+    then break
+    end
+until false
+0AB2: ret 1 30@
+
+{======================================================================
+======================================================================}
+:CopyStringIntoAddr
+// 0@: address  1@: string  2@: length  3@: offset
+0AC6: 10@ = label 1@ offset
+005A: 10@ += 3@  // (int)
+for 11@ = 1 to 2@
+    0A8D: 20@ = read_memory 10@ size 1 virtual_protect 0
+    0A8C: write_memory 0@ size 1 value 20@ virtual_protect 0
+    0@+=1
+    10@+=1
+end
+0AB2: ret 1 0@
+
+{======================================================================
+======================================================================}
+:DEBUG_ExportCommand
+30@=0
+30@+=4
+30@+=14
+30@+=24
+30@+=4
+30@+=2
+30@+=20
+30@+=4
+30@*=2
+30@+=4
+0AC6: 1@ = label @CopyStuff2 offset
+0A9A: 0@ = openfile "modloader/scripts/mem.bin" mode "wb+"  // IF and SET
+for 20@ = 1 to 30@
+    0A8D: 10@ = read_memory 1@ size 1 virtual_protect 0
+    1@+=1
+    0A9E: writefile 0@ size 1 from 10@
+end
+0A9B: closefile 0@
+0AB2: ret 0
