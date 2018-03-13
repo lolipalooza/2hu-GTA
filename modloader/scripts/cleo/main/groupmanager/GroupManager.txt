@@ -94,9 +94,9 @@ end
 0AB2: ret 7 0@ 1@ 2@ 3@ 4@ 5@ 6@
 
 :DEBUG_LogCreatedActors
-0AB1: @DEBUG_GetModelName 1 13@(At_index,8i) ret 25@ 26@
+0AB1: @DEBUG_GetModelName 1 13@(At_index,8i) ret 25@ 26@ 27@ 28@
 0A9A: 30@ = openfile LOG_FILE_PATH mode "ab+"
-0AD9: write_formatted_text "creating... idx: %d, skin: %s, offset: %d, model: %d, as: %d (SP%.2d.dff)" in_file 30@ vars At_index 25@s 13@(At_index,8i) At_Dummy At_Dummy2 At_Dummy2
+0AD9: write_formatted_text "creating... idx: %d, skin: %s, offset: %d, model: %d, as: %d (SP%.2d.dff)" in_file 30@ vars At_index 25@v 13@(At_index,8i) At_Dummy At_Dummy2 At_Dummy2
 0AD9: write_formatted_text ", xyz %f %f %f angle %f" in_file 30@ vars At_pX At_pY At_pZ At_pA
 0A9B: closefile 30@
 return
