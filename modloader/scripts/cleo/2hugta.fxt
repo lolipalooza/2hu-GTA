@@ -1,0 +1,203 @@
+// caracteres especiales
+// ñ: ®
+// ¿: ¯
+// ¡: ^ // este simbolito parece no estar funcionando, podria ser error del fonts.txd
+// á: ˜ 
+// é: ž
+// í: ¢
+// ó: ¦
+// ú: ª
+
+// ás: ˜s
+// ám: ˜m
+// át: ˜t
+
+# GroupManager script
+
+STAT	Player Status
+STAT02	~1~/~1~
+STAT04	Hp:
+STAT05	Fat:
+STAT06	Stamina:
+STAT07	Muscle:
+STAT08	Max Health:
+STAT09	Sex Appeal:
+STAT10	Respect:
+STAT11	Appearance:
+STAT12	Days passed in game:
+STAT13	Unlocked Cities:
+STAT14	Current number of girlfriends:
+STAT15	Flying skill:
+STAT36	Driving Skill:
+STAT16	Lung Capacity:
+STAT17	Bike Skill:
+STAT18	Cycling Skill:
+STAT19	Luck:
+STAT22	Most Favorite Radio Station:
+STAT23	Least Favorite Radio Station:
+STAT24	Current weapon skill:
+STAT25	Your Career:
+STAT26	None
+STAT21	Playing Time:
+STAT37	Knowledge:
+STAT38	Charm:
+STAT39	0~1~
+STAT40	~1~:
+STAT42	0~1~:
+STAT43	00~1~:
+STAT44	Reputation:
+STAT45	Hunger:
+INT_N	~1~
+FLOAT_N	~1~.~1~
+
+ST_HP	Energy: ~1~/~1~
+ST_KNW	Knowlegde: ~1~.~1~
+ST_CHR	Charm: ~1~.~1~
+ST_RP	Reputation: ~1~
+ST_HG	Hunger: ~1~%
+ST_DPS	Days passed in game: ~1~
+
+ST_STMN	Stamina
+ST_MSCL	Muscle
+ST_FAT	Fat
+ST_SXAP	Sex Appeal
+
+TH_00	Reimu Hakurei
+TH_01	Marisa Kirisame
+TH_02	Alice Margatroid
+TH_03	Suika Ibuki
+TH_04	Youmu Konpaku
+TH_05	Yuyuko Saigyouji
+TH_06	Yukari Yakumo
+TH_07	Ran Yakumo
+TH_08	Chen
+TH_09	Sakuya Izayoi
+TH_10	Hong Meiling
+TH_11	Patchouli Knowledge
+TH_12	Koakuma
+TH_13	Remilia Scarlet
+TH_14	Flandre Scarlet
+TH_15	Sanae Kochiya
+TH_16	Kanako Yasaka
+TH_17	Suwako Moriya
+TH_18	Aya Shameimaru
+TH_19	Hatate Himekaidou
+TH_20	Momiji Inubashiri
+TH_21	Minoriko Aki
+TH_22	Shizuha Aki
+TH_23	Hina Kagiyama
+TH_24	Nitori Kawashiro
+TH_25	Satori Komeiji
+TH_26	Koishi Komeiji
+TH_27	Rin Kaenbyou
+TH_28	Utsuho Reiuji
+TH_29	Cirno
+TH_30	Daiyousei
+TH_31	Rumia
+TH_32	Letty Whiterock
+TH_33	Wriggle Nightbug
+TH_34	Mystia Lorelei
+TH_35	Tokiko
+TH_36	Sunny Milk
+TH_37	Luna Child
+TH_38	Star Zapphire
+TH_39	Lily White
+TH_40	Lyrica Prismriver
+TH_41	Lunasa Prismriver
+TH_42	Merlin Prismriver
+TH_43	Eirin Yakogoro
+TH_44	Kaguya Houraisan
+TH_45	Reisen Udongein Inaba
+TH_46	Tewi Inaba
+TH_47	Fujiwara no Mokou
+TH_48	Keine Kamishirasawa
+TH_49	Tenshi Hinanai
+TH_50	Iku Nagae
+TH_51	Shikieiki Yamaxadanu
+TH_52	Komachi Onozuka
+TH_53	Yuuka Kazami
+TH_54	Medicine Melancholy
+TH_55	Yamame Kurodani
+TH_56	Kisume
+TH_57	Parsee Mizuhashi
+TH_58	Yuugi Hoshiguma
+TH_59	Byakuren Hijiri
+TH_60	Ichirin Kumoi
+TH_61	Nue Houjuu
+TH_62	Shou Toramaru
+TH_63	Nazrin
+TH_64	Minamitsu Murasa
+TH_65	Kogasa Tatara
+TH_66	Seiga Kaku
+TH_67	Toyosatomimi no Miko
+TH_68	Mononobe no Futo
+TH_69	Soga no Tojiko
+TH_70	Yoshika Miyako
+TH_71	Mamizou Futatsuiwa
+TH_72	Kyouko Kasodani
+
+I_CHGP	Wch 2hu group wld u choose?
+CHGPTL	Touhou GTA III era
+GROUPS	Touhou Groups
+GRP_01	1: Hakurei Shrine Team
+GRP_02	2: Perfect Cherry Blossom Team
+GRP_03	3: Scarlet Devil Mansion Team
+GRP_04	4: Mountain of Faith Team
+GRP_05	5: Bonbunmaru Team
+GRP_06	6: Subterranean Animism Team
+GRP_07	7: Great Fairy Wars 1 Team
+GRP_08	8: Great Fairy Wars 2 Team
+GRP_09	9: Imperishable Night Team
+GRP_10	10: Phantasmagoria of Flower View Team
+GRP_11	11: Subterranean Animism 2 Team
+GRP_12	12: Undefined Fantastic Object Team
+GRP_13	13: Ten Desires Team
+GRP_14	14: Custom Team
+
+# Custom Mission Taxi
+
+TTUTOR	Presiona ~y~~k~~TOGGLE_SUBMISSIONS~ ~s~para iniciar trabajos de taxista.
+TAXI_M	Chofer de Taxis
+FARES	Tarifas:
+TAXI1	~g~Busca un cliente.
+TAXI2	~r~Se te ha terminado el tiempo!
+TAXI3	~r~Tu pasajero huyo aterrorizado!
+TAXI4	Carrera completada!
+TAXI5	Bonificacion de velocidad!!
+TAXI6	Jornada finalizada
+TAXI7	~r~Tu vehiculo esta da®ado, llevalo a que lo reparen.
+TAXI8	~r~Oops! Sera mejor que busques a otro ~s~cliente~r~!
+TAXIH1	Parate cerca de un peaton marcado para recogerlo, luego llevalo a su destino antes de que el tiempo finalice.
+M_WTX3	~r~Tu cliente esta muerto!
+TSCORE2	$~1~
+IN_ROW	Bonificaci¦n ~1~ SEGUIDOS! ~1~ $
+TSCORE	GANANCIAS: $~1~
+FARE1	~g~Destination ~s~'Meeouch Sex Kitten Club' ~g~in Redlight.
+FARE2	~g~Destination ~s~'Supa Save' ~g~in Portland View.
+FARE3	~g~Destination ~s~'old school hall' ~g~in Chinatown.
+FARE4	~g~Destination ~s~'Greasy Joe's Cafe' ~g~in Callahan Point.
+FARE5	~g~Destination ~s~'AmmuNation' ~g~in Redlight.
+FARE6	~g~Destination ~s~'Easy Credit Autos' ~g~in Saint Mark's.
+FARE7	~g~Destination ~s~'Woody's topless bar' ~g~in Redlight.
+FARE8	~g~Destination ~s~'Marcos Bistro' ~g~in Saint Mark's.
+FARE9	~g~Destination ~s~'import export garage' ~g~in Portland Harbor.
+FARE10	~g~Destination ~s~'Punk Noodles' ~g~in Chinatown.
+FARE11	~g~Destination ~s~'Construction site' ~g~in Fort staunton.
+FARE12	~g~Destination ~s~'Football Stadium' ~g~in Aspatria.
+FARE13	~g~Destination ~s~'The Church' ~g~in Bedford Point
+FARE14	~g~Destination ~s~'The Casino' ~g~in Torrington
+FARE15	~g~Destination ~s~'Liberty University' ~g~in Liberty Campus
+FARE16	~g~Destination ~s~'Shopping Mall' ~g~in Belleville Park Area
+FARE17	~g~Destination ~s~'Museum' ~g~in Newport
+FARE18	~g~Destination ~s~'AmCo Building' ~g~in Torrington
+FARE19	~g~Destination ~s~'Bolt Burgers' ~g~in Bedford Point
+FARE20	~g~Destination ~s~'The Park' ~g~in Belleville
+FARE21	~g~Destination ~s~'Francis intl. Airport'
+FARE22	~g~Destination ~s~'Cochrane Dam'
+FARE23	~g~Destination ~s~'import export garage' ~g~in Cochrane Dam district
+FARE24	~g~Destination ~s~'The hospital' ~g~in Pike Creek
+FARE25	~g~Destination ~s~'The Park' ~g~in Shoreside Vale
+FARE26	~g~Destination ~s~'North West Towers' ~g~in Wichita Gardens
+
+AEIOU	˜ ž¢¦ª, el burro sabe m˜ s que tª. ¯o no? co®o!
+

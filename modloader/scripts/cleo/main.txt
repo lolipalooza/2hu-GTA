@@ -58,12 +58,6 @@ end
 
 0A94: start_custom_mission "missions/CmInitialize"
 
-wait 1500
-if 0@s == 'LibCity'
-then 0AB1: @IIIFade 2 1 2500
-else fade 1 2500
-end
-
 if 0AAB:   file_exists SAVEFILE_PATH
 then
     0AB1: @GetPlayerCharacterData 1 create_log_in_file 0 store_player_character_data_in Dummy1 ThSelect
@@ -83,6 +77,12 @@ end
 0A9A: Dummy1 = openfile LOG_FILE_PATH mode "wb+"
 0AD9: write_formatted_text "Team in use: %.2d %.2d %.2d %.2d %.2d %.2d %.2d %.2d, selected: %d%c%c" in_file Dummy1 vars 13@ 14@ 15@ 16@ 17@ 18@ 19@ 20@ ThSelect 0xd 0xa
 0A9B: closefile Dummy1
+
+wait 1500
+if 0@s == 'LibCity'
+then 0AB1: @IIIFade 2 1 2500
+else fade 1 2500
+end
 
 TextureShown=0
 Gm_State=0
