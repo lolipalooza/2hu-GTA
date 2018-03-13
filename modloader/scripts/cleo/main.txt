@@ -72,7 +72,7 @@ end
 0AB1: @GetTeamInUse 0 ret 13@ 14@ 15@ 16@ 17@ 18@ 19@ 20@
 0AB1: @CopyTeamModels 0
 
-0AB1: @ChangePlayerSkin 2 13@(ThSelect,7i) ThSelect
+0AB1: @ChangePlayerSkin 2 13@(ThSelect,7i) ThSelect // TODO: data 13@(ThSelect,7i) looks unnecessary
 
 0A9A: Dummy1 = openfile LOG_FILE_PATH mode "wb+"
 0AD9: write_formatted_text "Team in use: %.2d %.2d %.2d %.2d %.2d %.2d %.2d %.2d, selected: %d%c%c" in_file Dummy1 vars 13@ 14@ 15@ 16@ 17@ 18@ 19@ 20@ ThSelect 0xd 0xa

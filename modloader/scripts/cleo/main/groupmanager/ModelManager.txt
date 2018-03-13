@@ -20,10 +20,23 @@ until 023D: special_actor 0@ loaded
 
 {======================================================================
 ======================================================================}
+:ChangePlayerSkin
+// TODO: data 0@ looks unnecessary
+0085: 2@ = 1@ // (int)
+2@ += 290 // #SPECIALXX
+0085: 3@ = 1@ // (int)
+3@++
+0AB1: @LoadModel 1 3@
+09C7: change_player $PLAYER_CHAR model_to 2@
+0296: unload_special_actor 3@
+0AB2: ret 0
+
+{======================================================================
+======================================================================}
 {:CopyModel
 0AB1: @ModifyPaths 4 model_offset 0@ orig_offset OFFSET_ORIG_DFF dest_offset OFFSET_DEST_DFF dest_place 1@
 0AB1: @ModifyPaths 4 model_offset 0@ orig_offset OFFSET_ORIG_TXD dest_offset OFFSET_DEST_TXD dest_place 1@
-if 0AB1: @CopySkinIntoFolder2 0
+if 0AB1: @CopySkinIntoFolder 0
 then 0485:  return_true
 else 059A:  return_false
 end
@@ -31,7 +44,7 @@ end
 
 {======================================================================
 ======================================================================}
-:CopyTeamModels
+{:CopyTeamModels
 0AB1: @GetTeamInUse 0 ret 13@ 14@ 15@ 16@ 17@ 18@ 19@ 20@
 for 0@ = 0 to 6
     if 13@(0@,7i) <> 0xff
@@ -46,23 +59,11 @@ for 0@ = 0 to 6
         end
     end
 end
-0AB2: ret 0
+0AB2: ret 0}
 
 {======================================================================
 ======================================================================}
-:ChangePlayerSkin
-0085: 2@ = 1@ // (int)
-2@ += 290 // #SPECIALXX
-0085: 3@ = 1@ // (int)
-3@++
-0AB1: @LoadModel 1 3@
-09C7: change_player $PLAYER_CHAR model_to 2@
-0296: unload_special_actor 3@
-0AB2: ret 0
-
-{======================================================================
-======================================================================}
-:CopyModelAndLoad
+{:CopyModelAndLoad
 const
     Cml_ModelOffset = 0@
     Cml_PlaceHolder = 1@
@@ -88,7 +89,7 @@ else
     0AB1: @DEBUG_GetModelName 1 0@ ret Cml_Str1 Cml_Str2
     0AD0: show_formatted_text_lowpriority "~r~ERROR~s~: Failed to copy skin file ~y~%s~s~ into ~y~modloader\skins" time 5000 Cml_String
 end
-0AB2: ret 0
+0AB2: ret 0}
 
 {======================================================================
 ======================================================================}
@@ -137,7 +138,7 @@ end
 
 {======================================================================
 ======================================================================}
-{:CopySkinIntoFolder2
+{:CopySkinIntoFolder
 if and
 0B04: copy_file "models/touhou/______.dff" to "modloader/skins/SP01.dff" //IF and SET
 0B04: copy_file "models/touhou/______.txd" to "modloader/skins/SP01.txd" //IF and SET
@@ -148,7 +149,7 @@ end
 
 {======================================================================
 ======================================================================}
-:DEBUG_GetModelName
+{:DEBUG_GetModelName
 0AC6: 29@ = label @ModelsList offset
 0085: 28@ = 0@ // (int)
 28@ *= 6
@@ -156,7 +157,25 @@ end
 0A8D: 25@ = read_memory 29@ size 4 virtual_protect 0
 29@+=4
 0A8D: 26@ = read_memory 29@ size 2 virtual_protect 0
-0AB2: ret 2 25@ 26@
+0AB2: ret 2 25@ 26@}
+
+{======================================================================
+======================================================================}
+:CopyTeamModels
+0AB1: @GetTeamInUse 0 ret 13@ 14@ 15@ 16@ 17@ 18@ 19@ 20@
+for 0@ = 0 to 6
+    if 13@(0@,7i) <> 0xff
+    then
+        0085: 1@ = 0@ // (int)
+        000A: 1@ += 1
+        0AB1: @LoadCopyCommand 2 model_offset 13@(0@,7i) place_holder 1@
+        if 0AB1: @CopySkinIntoFolder 0
+        then
+        else 0AD0: show_formatted_text_lowpriority "~r~ERROR~s~: Failed to copy model SP~y~%.2d~s~ into ~y~modloader\skins" time 5000 13@(0@,7i)
+        end
+    end
+end
+0AB2: ret 0
 
 {======================================================================
 ======================================================================}
@@ -204,45 +223,55 @@ end
 {======================================================================
 ======================================================================}
 :LoadCopyCommand
-0AC6: 0@ = label @CopyStuff2 offset
-0@ += 4
+// 0@: model offset     1@: place holder
+0AC6: 10@ = label @HelpString offset
+10@+=23
+1@+=0x30
+0A8C: write_memory 10@ size 1 value 1@ virtual_protect 0
+
+0AC6: 10@ = label @CopyStuff2 offset
+10@ += 4
 0AB1: @Get2huFilenameLength 0 ret 30@
 
+0AC6: 20@ = label @ModelsList offset
+0@*=24
+005A: 20@ += 0@  // (int)
 
-0AB1: @CopyStringIntoAddr 4 address 0@ string @HelpString str_length 3 str_offset 0 ret 0@
+
+0AB1: @CopyStringIntoAddr 4 address 10@ string @HelpString str_length 3 str_offset 0 ret 10@
 0085: 31@ = 30@ // (int)
 000A: 31@ += 14
 000A: 31@ += 4
-0A8C: write_memory 0@ size 1 value 31@ virtual_protect 0
-0@+=1
-0AB1: @CopyStringIntoAddr 4 address 0@ string @HelpString str_length 14 str_offset 24 ret 0@
-0AB1: @CopyStringIntoAddr 4 address 0@ string @2huModel str_length 30@ str_offset 0 ret 0@
-0AB1: @CopyStringIntoAddr 4 address 0@ string @HelpString str_length 4 str_offset 38 ret 0@
-0AB1: @CopyStringIntoAddr 4 address 0@ string @HelpString str_length 1 str_offset 2 ret 0@
+0A8C: write_memory 10@ size 1 value 31@ virtual_protect 0
+10@+=1
+0AB1: @CopyStringIntoAddr 4 address 10@ string @HelpString str_length 14 str_offset 24 ret 10@
+0AB1: @CopyStringIntoAddr 4 address 10@ string @ModelsList str_length 30@ str_offset 20@ ret 10@
+0AB1: @CopyStringIntoAddr 4 address 10@ string @HelpString str_length 4 str_offset 38 ret 10@
+0AB1: @CopyStringIntoAddr 4 address 10@ string @HelpString str_length 1 str_offset 2 ret 10@
 0006: 31@ = 20
 000A: 31@ += 4
-0A8C: write_memory 0@ size 1 value 31@ virtual_protect 0
-0@+=1
-0AB1: @CopyStringIntoAddr 4 address 0@ string @HelpString str_length 20 str_offset 4 ret 0@
-0AB1: @CopyStringIntoAddr 4 address 0@ string @HelpString str_length 4 str_offset 38 ret 0@
+0A8C: write_memory 10@ size 1 value 31@ virtual_protect 0
+10@+=1
+0AB1: @CopyStringIntoAddr 4 address 10@ string @HelpString str_length 20 str_offset 4 ret 10@
+0AB1: @CopyStringIntoAddr 4 address 10@ string @HelpString str_length 4 str_offset 38 ret 10@
 
 
-0AB1: @CopyStringIntoAddr 4 address 0@ string @HelpString str_length 3 str_offset 0 ret 0@
+0AB1: @CopyStringIntoAddr 4 address 10@ string @HelpString str_length 3 str_offset 0 ret 10@
 0085: 31@ = 30@ // (int)
 000A: 31@ += 14
 000A: 31@ += 4
-0A8C: write_memory 0@ size 1 value 31@ virtual_protect 0
-0@+=1
-0AB1: @CopyStringIntoAddr 4 address 0@ string @HelpString str_length 14 str_offset 24 ret 0@
-0AB1: @CopyStringIntoAddr 4 address 0@ string @2huModel str_length 30@ str_offset 0 ret 0@
-0AB1: @CopyStringIntoAddr 4 address 0@ string @HelpString str_length 4 str_offset 42 ret 0@
-0AB1: @CopyStringIntoAddr 4 address 0@ string @HelpString str_length 1 str_offset 2 ret 0@
+0A8C: write_memory 10@ size 1 value 31@ virtual_protect 0
+10@+=1
+0AB1: @CopyStringIntoAddr 4 address 10@ string @HelpString str_length 14 str_offset 24 ret 10@
+0AB1: @CopyStringIntoAddr 4 address 10@ string @ModelsList str_length 30@ str_offset 20@ ret 10@
+0AB1: @CopyStringIntoAddr 4 address 10@ string @HelpString str_length 4 str_offset 42 ret 10@
+0AB1: @CopyStringIntoAddr 4 address 10@ string @HelpString str_length 1 str_offset 2 ret 10@
 0006: 31@ = 20
 000A: 31@ += 4
-0A8C: write_memory 0@ size 1 value 31@ virtual_protect 0
-0@+=1
-0AB1: @CopyStringIntoAddr 4 address 0@ string @HelpString str_length 20 str_offset 4 ret 0@
-0AB1: @CopyStringIntoAddr 4 address 0@ string @HelpString str_length 4 str_offset 42 ret 0@
+0A8C: write_memory 10@ size 1 value 31@ virtual_protect 0
+10@+=1
+0AB1: @CopyStringIntoAddr 4 address 10@ string @HelpString str_length 20 str_offset 4 ret 10@
+0AB1: @CopyStringIntoAddr 4 address 10@ string @HelpString str_length 4 str_offset 42 ret 10@
 0AB2: ret 0
 
 {======================================================================

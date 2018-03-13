@@ -1,12 +1,12 @@
 {$CLEO .cs}
 0000: NOP
-0AB1: @LoadCopyCommand 0
+{0AB1: @LoadCopyCommand 0
 //0AB1: @DEBUG_ExportCommand 0
 
 if 0AB1: @CopyStuff2 0
 then 0ACC: show_text_lowpriority "File copied successfully!" time 4000
 else 0ACC: show_text_lowpriority "Error copy. Check script and try again!" time 4000
-end
+end}
 0A93: end_custom_thread
 
 :CopyStuff
