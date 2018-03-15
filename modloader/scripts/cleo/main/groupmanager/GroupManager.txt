@@ -2,17 +2,17 @@
 ======================================================================}
 :GroupManager_loop
 if Gm_State == 0
-then 0AB1: @ActivityMachine_GenerateCharacters 8 team_actors 1@ 2@ 3@ 4@ 5@ 6@ 7@ use_as_selected ThSelect returned_actors 1@ 2@ 3@ 4@ 5@ 6@ 7@
+then 0AB1: @ActivityMachine_GenerateCharacters 1 selected_character ThSelect
 end
 if Gm_State == 1
 then
     0A9A: Dummy1 = openfile LOG_FILE_PATH mode "ab+"
-    0AB1: @ActivityMachine_ChangePlayer 9 create_log_in Dummy1 destroy_team_actors 1@ 2@ 3@ 4@ 5@ 6@ 7@ use_as_selected CurrSelect
+    0AB1: @ActivityMachine_ChangePlayer 9 create_log_in Dummy1 use_as_selected CurrSelect
     0A9B: closefile Dummy1
     0085: ThSelect = CurrSelect // (int)
     Gm_State=0
 end
-if 00E1:   player 0 pressed_key 4 //0AB0:   key_pressed 9 //00E1:   player 0 pressed_key 4
+if 0AB0:   key_pressed 9 //00E1:   player 0 pressed_key 4
 then
     0AB1: @LoadOrUnloadTextures 2 FLAG_TRUE TextureShown ret TextureShown
     0AB1: @EnableTabMenu 1 FLAG_TRUE
@@ -46,8 +46,8 @@ return
 ======================================================================}
 :ActivityMachine_GenerateCharacters
 const
-    At_TeamActor = 0@ // 0@ 1@ 2@ 3@ 4@ 5@ 6@
-    At_Select = 7@
+    At_Select = 0@
+    // 1@ 2@ 3@ 4@ 5@ 6@ 7@: actors
     At_index = 8@
     At_pX = 9@
     At_pY = 10@
@@ -58,9 +58,10 @@ const
     At_Dummy2 = 22@
     LONG_RADIUS = 45.0
 end
+0AB1: @Gm_GetActors 0 ret 1@ 2@ 3@ 4@ 5@ 6@ 7@
 0AB1: @GetTeamInUse 0 ret 13@ 14@ 15@ 16@ 17@ 18@ 19@ 20@
 for At_index = 0 to 6
-    if 856D:   not actor At_TeamActor(At_index,7i) defined
+    if 856D:   not actor 1@(At_index,7i) defined
     then
         0AB1: @GetCoordinates 1 At_index ret At_pX At_pY At_pZ At_pA
         if 00FE:   actor $PLAYER_ACTOR sphere 0 in_sphere At_pX At_pY At_pZ radius LONG_RADIUS LONG_RADIUS LONG_RADIUS
@@ -75,23 +76,24 @@ for At_index = 0 to 6
                 At_Dummy2++
                 0AB1: @LoadModel 1 At_Dummy2
                 gosub @DEBUG_LogCreatedActors
-                009A: At_TeamActor(At_index,7i) = create_actor_pedtype 8 model At_Dummy at At_pX At_pY At_pZ
-                0173: set_actor At_TeamActor(At_index,7i) Z_angle_to At_pA
+                009A: 1@(At_index,7i) = create_actor_pedtype 8 model At_Dummy at At_pX At_pY At_pZ
+                0173: set_actor 1@(At_index,7i) Z_angle_to At_pA
                 gosub @DEBUG_LogCreatedActorsDone
                 0296: unload_special_actor At_Dummy2
             end
         end
-    else //056D:   actor At_TeamActor(At_index,7i) defined
+    else //056D:   actor 1@(At_index,7i) defined
         if and
-        8104:   not actor $PLAYER_ACTOR near_actor At_TeamActor(At_index,7i) radius LONG_RADIUS LONG_RADIUS LONG_RADIUS sphere 0
+        8104:   not actor $PLAYER_ACTOR near_actor 1@(At_index,7i) radius LONG_RADIUS LONG_RADIUS LONG_RADIUS sphere 0
         80FE:   not actor $PLAYER_ACTOR sphere 0 in_sphere At_pX At_pY At_pZ radius LONG_RADIUS LONG_RADIUS LONG_RADIUS
         then
             //gosub @GET_CLOSEST_LOCATION_TEAM_ACTOR // modifies 19@(0@,7i) and 16@ 17@ 18@ with 19@ information
-            009B: destroy_actor At_TeamActor(At_index,7i)
+            009B: destroy_actor 1@(At_index,7i)
         end
     end
 end
-0AB2: ret 7 0@ 1@ 2@ 3@ 4@ 5@ 6@
+0AB1: @Gm_StoreActors 7 1@ 2@ 3@ 4@ 5@ 6@ 7@
+0AB2: ret 0
 
 :DEBUG_LogCreatedActors
 0AB1: @DEBUG_GetModelName 1 13@(At_index,8i) ret 25@ 26@ 27@ 28@
@@ -106,6 +108,32 @@ return
 0AD9: write_formatted_text " ...done%c%c" in_file 30@ vars 0xd 0xa
 0A9B: closefile 30@
 return
+
+:Gm_Actors
+hex
+{   Actor 1     Actor 2     Actor 3     Actor 4     Actor 5     Actor 6     Actor 7    }
+    0000 0000   0000 0000   0000 0000   0000 0000   0000 0000   0000 0000   0000 0000
+end
+
+:Gm_GetActors
+for 20@ = 0 to 6
+    0AC6: 10@ = label @Gm_Actors offset
+    0085: 21@ = 20@ // (int)
+    0012: 21@ *= 4
+    005A: 10@ += 21@  // (int)
+    0A8D: 0@(20@,7i) = read_memory 10@ size 4 virtual_protect 0
+end
+0AB2: ret 7 actors 0@ 1@ 2@ 3@ 4@ 5@ 6@
+
+:Gm_StoreActors
+for 20@ = 0 to 6
+    0AC6: 10@ = label @Gm_Actors offset
+    0085: 21@ = 20@ // (int)
+    0012: 21@ *= 4
+    005A: 10@ += 21@  // (int)
+    0A8C: write_memory 10@ size 4 value 0@(20@,7i) virtual_protect 0
+end
+0AB2: ret 0
 
 {======================================================================
 ======================================================================}
@@ -176,18 +204,18 @@ end
 {======================================================================
 ======================================================================}
 :ActivityMachine_ChangePlayer
-// inputs: 0@: log file, 1@ ... 7@: team actors, 8@: CurrSelect
+// inputs: 0@: log file, 1@: CurrSelect
 const
     Chp_LogFile = 0@
-    // 1@ ... 7@: actors
-    Chp_Select = 8@
+    Chp_Select = 1@
     Chp_CurrCity = 10@s // 10@ 11@
     Chp_Index = 12@
     // 13@ ... 20@: team data
-    Chp_X = 21@
-    Chp_Y = 22@
-    Chp_Z = 23@
-    Chp_A = 24@
+    // 21@ ... 27@: actors
+    Chp_X = 28@
+    Chp_Y = 29@
+    Chp_Z = 30@
+    Chp_A = 31@
 end
 0AB1: @GetTeamInUse 0 ret 13@ 14@ 15@ 16@ 17@ 18@ 19@ 20@
 if Chp_LogFile <> 0
@@ -199,11 +227,15 @@ then 0AB1: @IIIFade 2 0 800
 else fade 0 800
 end
 wait 800
+
+0AB1: @Gm_GetActors 0 ret 21@ 22@ 23@ 24@ 25@ 26@ 27@
 for Chp_Index = 0 to 6
-    if 056D:   actor 1@(Chp_Index,7i) defined
-    then 009B: destroy_actor 1@(Chp_Index,7i)
+    if 056D:   actor 21@(Chp_Index,7i) defined
+    then 009B: destroy_actor 21@(Chp_Index,7i)
     end
 end
+0AB1: @Gm_StoreActors 7 21@ 22@ 23@ 24@ 25@ 26@ 27@
+
 01B4: set_player $PLAYER_CHAR can_move 0
 0AB1: @ChangePlayerSkin 2 13@(Chp_Select,7i) Chp_Select
 0AB1: @GetCoordinates 1 Chp_Select ret Chp_X Chp_Y Chp_Z Chp_A

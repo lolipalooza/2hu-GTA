@@ -161,7 +161,7 @@ end
 0A8D: 27@ = read_memory 29@ size 4 virtual_protect 0
 29@+=4
 0A8D: 28@ = read_memory 29@ size 4 virtual_protect 0
-0AB2: ret 2 25@ 26@ 27@ 28@
+0AB2: ret 4 25@ 26@ 27@ 28@
 
 {======================================================================
 ======================================================================}
@@ -172,6 +172,7 @@ for 0@ = 0 to 6
     then
         0085: 1@ = 0@ // (int)
         000A: 1@ += 1
+        0AB1: @ClearCopyCommand 0
         0AC6: 10@ = label @CopySkinIntoFolder offset
         10@ += 4
         0AB1: @LoadCopyCommand 4 model_offset 13@(0@,7i) place_holder 1@ begin_copy_in_address 10@ dff_or_txd_offset 38 ret 10@ // 38 is dff
@@ -232,6 +233,17 @@ end
 
 {======================================================================
 ======================================================================}
+:ClearCopyCommand
+0AC6: 0@ = label @CopySkinIntoFolder offset
+0@ += 4
+for 10@ = 1 to 144 // (4+14+24+4+2+20+4)*2 = 144
+    0A8C: write_memory 0@ size 1 value 0 virtual_protect 0
+    0@+=1
+end
+0AB2: ret 0
+
+{======================================================================
+======================================================================}
 :LoadCopyCommand
 // 0@: model offset     1@: place holder    2@: begin copy in address   3@: dff or txd offset
 0AC6: 10@ = label @HelpString offset
@@ -261,60 +273,6 @@ end
 0AB1: @CopyStringIntoAddr 4 address 2@ string @HelpString str_length 20 str_offset 4 ret 2@
 0AB1: @CopyStringIntoAddr 4 address 2@ string @HelpString str_length 4 str_offset 3@ ret 2@
 0AB2: ret 1 address_of_next_write 2@
-
-{======================================================================
-======================================================================}
-:LoadCopyCommand2
-// 0@: model offset     1@: place holder
-0AC6: 10@ = label @HelpString offset
-10@+=23
-1@+=0x30
-0A8C: write_memory 10@ size 1 value 1@ virtual_protect 0
-
-0AC6: 10@ = label @CopySkinIntoFolder offset
-10@ += 4
-
-0AC6: 20@ = label @ModelsList offset
-0@*=24
-005A: 20@ += 0@  // (int)
-0AB1: @Get2huFilenameLength 1 2hu_filename_address 20@ ret 30@
-
-
-0AB1: @CopyStringIntoAddr 4 address 10@ string @HelpString str_length 3 str_offset 0 ret 10@
-0085: 31@ = 30@ // (int)
-000A: 31@ += 14
-000A: 31@ += 4
-0A8C: write_memory 10@ size 1 value 31@ virtual_protect 0
-10@+=1
-0AB1: @CopyStringIntoAddr 4 address 10@ string @HelpString str_length 14 str_offset 24 ret 10@
-0AB1: @CopyStringIntoAddr 4 address 10@ string @ModelsList str_length 30@ str_offset 0@ ret 10@
-0AB1: @CopyStringIntoAddr 4 address 10@ string @HelpString str_length 4 str_offset 38 ret 10@
-0AB1: @CopyStringIntoAddr 4 address 10@ string @HelpString str_length 1 str_offset 2 ret 10@
-0006: 31@ = 20
-000A: 31@ += 4
-0A8C: write_memory 10@ size 1 value 31@ virtual_protect 0
-10@+=1
-0AB1: @CopyStringIntoAddr 4 address 10@ string @HelpString str_length 20 str_offset 4 ret 10@
-0AB1: @CopyStringIntoAddr 4 address 10@ string @HelpString str_length 4 str_offset 38 ret 10@
-
-
-0AB1: @CopyStringIntoAddr 4 address 10@ string @HelpString str_length 3 str_offset 0 ret 10@
-0085: 31@ = 30@ // (int)
-000A: 31@ += 14
-000A: 31@ += 4
-0A8C: write_memory 10@ size 1 value 31@ virtual_protect 0
-10@+=1
-0AB1: @CopyStringIntoAddr 4 address 10@ string @HelpString str_length 14 str_offset 24 ret 10@
-0AB1: @CopyStringIntoAddr 4 address 10@ string @ModelsList str_length 30@ str_offset 0@ ret 10@
-0AB1: @CopyStringIntoAddr 4 address 10@ string @HelpString str_length 4 str_offset 42 ret 10@
-0AB1: @CopyStringIntoAddr 4 address 10@ string @HelpString str_length 1 str_offset 2 ret 10@
-0006: 31@ = 20
-000A: 31@ += 4
-0A8C: write_memory 10@ size 1 value 31@ virtual_protect 0
-10@+=1
-0AB1: @CopyStringIntoAddr 4 address 10@ string @HelpString str_length 20 str_offset 4 ret 10@
-0AB1: @CopyStringIntoAddr 4 address 10@ string @HelpString str_length 4 str_offset 42 ret 10@
-0AB2: ret 0
 
 {======================================================================
 ======================================================================}
