@@ -1,0 +1,91 @@
+{$CLEO .cs}
+thread 'PlayerWalkStyle'
+
+{======================================================================
+======================================================================}
+
+//====================
+// This Works, hooray! YAAAYY
+//====================
+while true
+    repeat
+    wait 0
+    until 0AB0:   key_pressed 80
+    repeat
+    wait 0
+    until 8AB0:   not key_pressed 80
+    
+    0ACC: show_text_lowpriority "New walkstyle" time 5000
+    
+    04ED: load_animation  "NewWalkstyle"
+    repeat
+    wait 0
+    until 04EE:   animation "NewWalkstyle" loaded
+    gosub @ReadFromPedsIde 
+    0245: set_actor $PLAYER_ACTOR walk_style_to "NEW"
+    04EF: release_animation "NewWalkstyle"
+    
+    repeat
+    wait 0
+    until 0AB0:   key_pressed 80
+    repeat
+    wait 0
+    until 8AB0:   not key_pressed 80
+    
+    gosub @ReadFromMemory
+    0ACC: show_text_lowpriority "Original walkstyle" time 5000
+end
+
+// ======================
+// This doesn't work duuh
+//=======================
+while true
+    repeat
+    wait 0
+    until 0AB0:   key_pressed 80
+    repeat
+    wait 0
+    until 8AB0:   not key_pressed 80
+
+    if 0B04: copy_file "models\files\ifps\ped.ifp" to "modloader/animations/ped.ifp" //IF and SET
+    then
+        gosub @ReadFromMemory
+        0ACC: show_text_lowpriority "Created new ped.ifp" time 5000
+    else 0ACC: show_text_lowpriority "Could not copy ped.ifp" time 5000
+    end
+    
+    repeat
+    wait 0
+    until 0AB0:   key_pressed 80
+    repeat
+    wait 0
+    until 8AB0:   not key_pressed 80
+
+    if 0B00: delete_file "modloader/animations/ped.ifp"  // IF and SET
+    then
+        gosub @ReadFromMemory
+        0ACC: show_text_lowpriority "Restored original ped.ifp" time 5000
+    else 0ACC: show_text_lowpriority "Could not find false ped.ifp" time 5000
+    end
+end
+
+{======================================================================
+======================================================================}
+:GetBaseAddress
+0@ = 0x609A4E 
+return 
+
+:ReadFromMemory
+gosub @GetBaseAddress 
+0A8C: write_memory 0@ size 4 value 0x04D48689 virtual_protect 1 
+0@ += 0x4 
+0A8C: write_memory 0@ size 2 value 0x0 virtual_protect 1 
+return 
+
+:ReadFromPedsIde
+gosub @GetBaseAddress 
+0A8C: write_memory 0@ size 4 value 0x90909090 virtual_protect 1 
+0@ += 0x4 
+0A8C: write_memory 0@ size 2 value 0x9090 virtual_protect 1 
+return 
+

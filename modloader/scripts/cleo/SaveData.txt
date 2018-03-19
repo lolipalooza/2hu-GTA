@@ -75,7 +75,7 @@ const
     It_Dummy2 = 9@
     // 10@ 11@ 12@ ... dummy inputs
 end
-0A9A: It_DatFile = openfile "modloader/2hu GTA/save file data2.txt" mode "rb"  // IF and SET
+0A9A: It_DatFile = openfile "modloader/2huGTA/save file data2.txt" mode "rb"  // IF and SET
 0A9A: It_TempFile = openfile TEMPFILE_PATH mode "wb+"  // IF and SET
 
 0A9A: It_LogFile = openfile LOGFILE_PATH mode "ab+"  // IF and SET
@@ -579,7 +579,7 @@ const
     It_CurrGroup = It_Index
     It_CurrCharacter = It_Dummy1
 end
-0A9A: It_DatFile = openfile "modloader/2hu GTA/save file data2.txt" mode "rb"  // IF and SET
+0A9A: It_DatFile = openfile "modloader/2huGTA/save file data2.txt" mode "rb"  // IF and SET
 0A9A: It_TempFile = openfile TEMPDATAFILE_PATH mode "ab+"  // IF and SET
 
 0AB1: @GetPlayerCharacterData 1 create_log_in_file 0 store_player_character_data_in It_CurrGroup It_CurrCharacter

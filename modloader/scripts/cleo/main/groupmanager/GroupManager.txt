@@ -14,7 +14,7 @@ then
 end
 if 0AB0:   key_pressed 9 //00E1:   player 0 pressed_key 4
 then
-    0AB1: @LoadOrUnloadTextures 2 FLAG_TRUE TextureShown ret TextureShown
+    0AB1: @LoadOrUnloadTextures 1 FLAG_TRUE
     0AB1: @EnableTabMenu 1 FLAG_TRUE
     0AB1: @StatScreen 1 CurrSelect
     0AB1: @GetButtonFlanks 3 FLAG_PAD_PRESS PAD_LEFT_RIGHT AxisXPressState ret AxisXPressState FlankUp FlankDown AxisX
@@ -35,7 +35,7 @@ then
     end
 else
     0AB1: @EnableTabMenu 1 FLAG_FALSE
-    0AB1: @LoadOrUnloadTextures 2 FLAG_FALSE TextureShown ret TextureShown
+    0AB1: @LoadOrUnloadTextures 1 FLAG_FALSE
     if 803B:   not ThSelect == CurrSelect  // (int)
     then Gm_State=1
     end

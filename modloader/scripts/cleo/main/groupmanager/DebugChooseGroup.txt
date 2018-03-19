@@ -17,8 +17,11 @@ end
 08D4: Db_GrpPanel = create_panel_with_title 'CHGPTL' position 29.0 145.0 width 300.0 columns 1 interactive 1 background 1 alignment 1  // Touhou GTA III era
 08DB:  set_panel Db_GrpPanel column 0 header 'GROUPS' data 'GRP_01' 'GRP_02' 'GRP_03' 'GRP_04' 'GRP_05' 'GRP_06' 'GRP_07' 'GRP_08' 'GRP_09' 'GRP_10' 'GRP_11' 'GRP_12'
 
-fade 1 2500
-wait 2500
+0AB1: @GetLoadedCity 0 ret 10@ 11@
+if 10@s == 'LibCity'
+then 0AB1: @IIIFade 2 1 2500
+else fade 1 2500
+end
 
 repeat
 wait 0 ms

@@ -242,6 +242,7 @@ const
     Lut_Aux = 3@
     Lut_LongStr = 4@v // 4@ 5@ 6@ 7@
 end
+0AB1: @GetTextureShown 0 ret Lut_TxdShown
 0AB1: @GetTeamInUse 0 ret 13@ 14@ 15@ 16@ 17@ 18@ 19@ 20@
 if Lut_Flag == 1
 then
@@ -275,7 +276,23 @@ else
         0391: release_textures
     end
 end
-0AB2: ret 1 Lut_TxdShown
+0AB1: @StoreTextureShown 1 Lut_TxdShown
+0AB2: ret 0
+
+:TextureShown
+hex
+00
+end
+
+:GetTextureShown
+0AC6: 1@ = label @TextureShown offset
+0A8D: 0@ = read_memory 1@ size 1 virtual_protect 0
+0AB2: ret 1 0@
+
+:StoreTextureShown
+0AC6: 1@ = label @TextureShown offset
+0A8C: write_memory 1@ size 1 value 0@ virtual_protect 0
+0AB2: ret 0
 
 {======================================================================
 ======================================================================}

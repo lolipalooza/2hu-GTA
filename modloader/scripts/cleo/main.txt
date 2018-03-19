@@ -15,7 +15,6 @@ const
     Dummy2 = 9@
     Dummy3 = 10@
     Dummy4 = 11@
-    TextureShown = 12@
     FlankUp = Dummy1
     FlankDown = Dummy2
     // 13@ 14@ 15@ 16@ 17@ 18@ 19@ 20@: Team in use
@@ -46,11 +45,11 @@ end
 :Main
 wait 0
 if 0AAB:   file_exists "cleo/__2hugta__"
-then 0AB1: @ReadCityFromFile 0 ret 0@ 1@
+then 0AB1: @ReadCityFromFile 0 ret 10@ 11@
 else 0A93: end_custom_thread
 end
 
-if 0@s == 'LibCity'
+if 10@s == 'LibCity'
 then 0AB1: @IIIFade 2 0 0
 else fade 0 0
 end
@@ -78,13 +77,11 @@ end
 0A9B: closefile Dummy1
 
 wait 1500
-if 0@s == 'LibCity'
+0AB1: @GetLoadedCity 0 ret 10@ 11@
+if 10@s == 'LibCity'
 then 0AB1: @IIIFade 2 1 2500
 else fade 1 2500
 end
-
-TextureShown=0
-Gm_State=0
 
 {======================================================================
 Main loop

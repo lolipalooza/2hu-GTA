@@ -1,165 +1,6 @@
 {$CLEO .cs}
 thread 'TsetingTheTset'
 
-:first
-{=======================
-Handle files test
-========================}
-const
-    BIN_READ = 0x6272
-    TXT_READ = 0x72
-    BIN_WRITE = 0x6277
-    TXT_WRITE = 0x77
-
-    FLAG_TEXT = 1
-    FLAG_BOX = 0
-end
-
-{0A9A: 0@ = openfile "cleo/test.txt" mode BIN_WRITE  // IF and SET
-00A0: store_actor $PLAYER_ACTOR position_to 1@ 2@ 3@
-0A9E: writefile 0@ size 12 from 1@
-0A9B: closefile 0@}
-
-{======================================================================
-======================================================================}
-{0AB1: call_scm_func @getString 1 0 0@ 1@
-00BB: show_text_lowpriority GXT 0@s time 6000 flag 1}  // It works, fuck yeah!!
-
-{30@ = @getString
-0AB1: call_scm_func 30@ 1 0 0@ 1@
-00BB: show_text_lowpriority GXT 0@s time 6000 flag 1}  // It works TOO!! fuck wea
-
-{if 0AB1: @Test 2 69 13 ret 0@ 1@
-then 02FD: show_text_2numbers_lowpriority GXT 'BB_05' numbers 0@ 1@ time 8000 flag 1  // ~b~1 Pointer!~s~ Distance ~1~.~1~m    // It works!! Fuck wea
-end}
-
-{======================================================================
-======================================================================}
-{var
-    4@ : Float
-end
-
-while true
-wait 0
-    0494: get_joystick 0 data_to 0@ 1@ 2@ 3@
-    if //or
-    -100 > 1@ // UP
-    //1@ > 100 // DOWN
-    then 0605: actor $PLAYER_ACTOR perform_animation "WALK_player" IFP "PED" framedelta 4.0 loop 1 lockX 1 lockY 1 lockF 0 time -1
-    else
-        if and
-        -100<1@
-        1@< 100
-        0@==0
-        then 0687: clear_actor $PLAYER_ACTOR task
-        end
-    end
-        
-    if -100 > 0@ // LEFT
-    then
-        01B4: set_player $PLAYER_CHAR can_move 0
-        0172: 4@ = actor $PLAYER_ACTOR Z_angle
-        4@ += 20.0
-        05D4: AS_actor $PLAYER_ACTOR rotate_angle 4@
-    else 01B4: set_player $PLAYER_CHAR can_move 1
-    end
-    
-    if 0@ > 100 // RIGHT
-    then
-        01B4: set_player $PLAYER_CHAR can_move 0
-        0172: 4@ = actor $PLAYER_ACTOR Z_angle
-        4@ -= 20.0
-        05D4: AS_actor $PLAYER_ACTOR rotate_angle 4@
-    else 01B4: set_player $PLAYER_CHAR can_move 1
-    end
-end}
-
-{======================================================================
-======================================================================}
-{
-//====================
-// This Works, hooray! YAAAYY
-//====================
-while true
-    repeat
-    wait 0
-    until 0AB0:   key_pressed 80
-    repeat
-    wait 0
-    until 8AB0:   not key_pressed 80
-    
-    0ACC: show_text_lowpriority "New walkstyle" time 5000
-    
-    04ED: load_animation  "NewWalkstyle"
-    repeat
-    wait 0
-    until 04EE:   animation "NewWalkstyle" loaded
-    gosub @ReadFromPedsIde 
-    0245: set_actor $PLAYER_ACTOR walk_style_to "NEW"
-    04EF: release_animation "NewWalkstyle"
-    
-    repeat
-    wait 0
-    until 0AB0:   key_pressed 80
-    repeat
-    wait 0
-    until 8AB0:   not key_pressed 80
-    
-    gosub @ReadFromMemory
-    0ACC: show_text_lowpriority "Original walkstyle" time 5000
-end
-
-// ======================
-// This doesn't work duuh
-//=======================
-while true
-    repeat
-    wait 0
-    until 0AB0:   key_pressed 80
-    repeat
-    wait 0
-    until 8AB0:   not key_pressed 80
-
-    if 0B04: copy_file "models\files\ifps\ped.ifp" to "modloader/animations/ped.ifp" //IF and SET
-    then
-        gosub @ReadFromMemory
-        0ACC: show_text_lowpriority "Created new ped.ifp" time 5000
-    else 0ACC: show_text_lowpriority "Could not copy ped.ifp" time 5000
-    end
-    
-    repeat
-    wait 0
-    until 0AB0:   key_pressed 80
-    repeat
-    wait 0
-    until 8AB0:   not key_pressed 80
-
-    if 0B00: delete_file "modloader/animations/ped.ifp"  // IF and SET
-    then
-        gosub @ReadFromMemory
-        0ACC: show_text_lowpriority "Restored original ped.ifp" time 5000
-    else 0ACC: show_text_lowpriority "Could not find false ped.ifp" time 5000
-    end
-end
-
-:GetBaseAddress
-0@ = 0x609A4E 
-return 
-
-:ReadFromMemory
-gosub @GetBaseAddress 
-0A8C: write_memory 0@ size 4 value 0x04D48689 virtual_protect 1 
-0@ += 0x4 
-0A8C: write_memory 0@ size 2 value 0x0 virtual_protect 1 
-return 
-
-:ReadFromPedsIde
-gosub @GetBaseAddress 
-0A8C: write_memory 0@ size 4 value 0x90909090 virtual_protect 1 
-0@ += 0x4 
-0A8C: write_memory 0@ size 2 value 0x9090 virtual_protect 1 
-return 
-}
 {======================================================================
 ======================================================================}
 
@@ -238,6 +79,13 @@ wait 0
         0391: release_textures
     end
 end}
+
+{======================================================================
+======================================================================}
+
+035F: actor $PLAYER_ACTOR armour += 100
+0213: 28@ = create_pickup #BODYARMOUR type 3 at 2498.4163 -1644.3 13.7826
+
 0247: load_model #BMX
 038B: load_requested_models
 repeat
@@ -245,6 +93,25 @@ wait 0
 until 0248:   model #BMX available
 00A5: 29@ = create_car #BMX at 2504.8342 -1661.7815 13.3953
 0249: release_model #BMX
+
+//036A: put_actor $PLAYER_ACTOR in_car 29@
+
+//0186: 19@ = create_marker_above_car 29@
+//07E0: set_marker 19@ type_to 1
+
+{
+0ACB: show_styled_text "Styled Text 1" time 4000 style 1
+wait 4000
+0ACB: show_styled_text "Styled Text 2" time 1000 style 2
+//wait 1000
+//0ACB: show_styled_text "Styled Text 3" time 1000 style 3 // This is wasted style
+wait 1000
+0ACB: show_styled_text "Styled Text 4" time 1000 style 4
+
+0ACB: show_styled_text "Styled Text 3" time 4000 style 3 // This is wasted style
+}
+
+0AB1: @MoveMoney 2 xy_pos 250.0 250.0
 
 repeat
 wait 0
@@ -265,65 +132,66 @@ wait 0
         then 31@=0
         end
     end
+    
+    if 30@==0
+    then
+        if 00FE:   actor $PLAYER_ACTOR sphere 0 in_sphere 2486.6272 -1646.509 14.0703 radius 15.0 15.0 15.0
+        then
+            if 00FF:   actor $PLAYER_ACTOR sphere 1 in_sphere 2486.6272 -1646.509 14.0703 radius 2.0 2.0 2.0 on_foot
+            then
+                30@=1
+                0ACC: show_text_lowpriority "Hello ~r~world~s~! Jeje es ~y~pati~s~neta del ~b~planeta." time 4000
+            end
+        end
+    end
+    if 30@==1
+    then
+        if 80FF:   not actor $PLAYER_ACTOR sphere 0 in_sphere 2486.6272 -1646.509 14.0703 radius 2.0 2.0 2.0 on_foot
+        then 30@=0
+        end
+    end
+
+    if 0ADC:   test_cheat "W0"
+    then 010D: set_player $PLAYER_CHAR wanted_level_to 0
+    end
+    if 0ADC:   test_cheat "W1"
+    then 010D: set_player $PLAYER_CHAR wanted_level_to 1
+    end
+    if 0ADC:   test_cheat "W2"
+    then 010D: set_player $PLAYER_CHAR wanted_level_to 2
+    end
+    if 0ADC:   test_cheat "W3"
+    then 010D: set_player $PLAYER_CHAR wanted_level_to 3
+    end
+    if 0ADC:   test_cheat "W4"
+    then 010D: set_player $PLAYER_CHAR wanted_level_to 4
+    end
+    if 0ADC:   test_cheat "W5"
+    then 010D: set_player $PLAYER_CHAR wanted_level_to 5
+    end
+    if 0ADC:   test_cheat "W6"
+    then 010D: set_player $PLAYER_CHAR wanted_level_to 6
+    end
 until false
 0A93: end_custom_thread
 
-{======================================================================
-======================================================================}
-:getString
-const
-    // 0@ : String Index
-    Offset = 1@
-    Pointer = 2@
-    OutputString = 3@s
-    OutputStr1 = 3@
-    OutputStr2 = 4@
-end
-0AB1: @GetAddress 1 @Strings ret Pointer
-Offset=8
-006A: Offset *= 0@  // (int)
-005A: Pointer += Offset  // (int)
-0A8D: OutputStr1 = read_memory Pointer size 4 virtual_protect 0
-Pointer+=4
-0A8D: OutputStr2 = read_memory Pointer size 4 virtual_protect 0
-0AB2: ret 2 OutputStr1 OutputStr2
 
+:MoveMoney
+0AC6: 2@ = label @Money_PosY offset 
+0A8C: write_memory 2@ size 4 value 1@ virtual_protect 0
+0A8C: write_memory 5830108 size 4 value 2@ virtual_protect 1 // Money Position Y
 
-{======================================================================
-======================================================================}
-:Test
-0485:  return_true
-0AB2: ret 2 0@ 1@
-
-{======================================================================
-======================================================================}
-:Test2
-if 0@ == 0
-then 059A:  return_false
-else 0485:  return_true
-end
+0AC6: 2@ = label @Money_PosX offset 
+0A8C: write_memory 2@ size 4 value 0@ virtual_protect 0
+0A8C: write_memory 5830140 size 4 value 2@ virtual_protect 1 // Money Position X
 0AB2: ret 0
 
-{======================================================================
-======================================================================}
-:GetAddress
-0A9F: 1@ = current_thread_pointer
-000A: 1@ += 0x10
-0A8D: 1@ = read_memory 1@ size 4 virtual_protect 0
-000E: 1@ -= 0@
-0AB2: ret 1 1@
-
-{======================================================================
-======================================================================}
-:Strings
+:Money_PosX
 hex
-"TEST1" 000000 "TEST2" 000000 "TEST3" 000000 "TEST4" 000000 "TEST5" 000000 00
+00 00 00 00
 end
 
-:EmptySpace
+:Money_PosY
 hex
-00000000 00000000
+00 00 00 00
 end
-
-
-

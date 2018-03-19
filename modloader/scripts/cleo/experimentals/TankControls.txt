@@ -1,0 +1,41 @@
+{$CLEO .cs}
+thread 'TankControls'
+
+var
+    4@ : Float
+end
+
+while true
+wait 0
+    0494: get_joystick 0 data_to 0@ 1@ 2@ 3@
+    if //or
+    -100 > 1@ // UP
+    //1@ > 100 // DOWN
+    then 0605: actor $PLAYER_ACTOR perform_animation "WALK_player" IFP "PED" framedelta 4.0 loop 1 lockX 1 lockY 1 lockF 0 time -1
+    else
+        if and
+        -100<1@
+        1@< 100
+        0@==0
+        then 0687: clear_actor $PLAYER_ACTOR task
+        end
+    end
+        
+    if -100 > 0@ // LEFT
+    then
+        01B4: set_player $PLAYER_CHAR can_move 0
+        0172: 4@ = actor $PLAYER_ACTOR Z_angle
+        4@ += 20.0
+        05D4: AS_actor $PLAYER_ACTOR rotate_angle 4@
+    else 01B4: set_player $PLAYER_CHAR can_move 1
+    end
+    
+    if 0@ > 100 // RIGHT
+    then
+        01B4: set_player $PLAYER_CHAR can_move 0
+        0172: 4@ = actor $PLAYER_ACTOR Z_angle
+        4@ -= 20.0
+        05D4: AS_actor $PLAYER_ACTOR rotate_angle 4@
+    else 01B4: set_player $PLAYER_CHAR can_move 1
+    end
+end

@@ -7,19 +7,19 @@ thread 'PlayMusic'
 ======================================================================}
 :Main
 if 0@ == 0
-then 0AAC: 22@ = load_audiostream "modloader/2hu gta/audio/lc/mpass.mp3"
+then 0AAC: 22@ = load_audiostream "modloader/2hugta/audio/lc/mpass.mp3"
 end
 if 0@ == 1
-then 0AAC: 22@ = load_audiostream "modloader/2hu gta/audio/vc/mpass.mp3"
+then 0AAC: 22@ = load_audiostream "modloader/2hugta/audio/vc/mpass.mp3"
 end
 if 0@ == 2
-then 0AAC: 22@ = load_audiostream "modloader/2hu gta/audio/lcs/mpass.mp3"
+then 0AAC: 22@ = load_audiostream "modloader/2hugta/audio/lcs/mpass.mp3"
 end
 if 0@ == 3
-then 0AAC: 22@ = load_audiostream "modloader/2hu gta/audio/lcs/mpass2.mp3"
+then 0AAC: 22@ = load_audiostream "modloader/2hugta/audio/lcs/mpass2.mp3"
 end
 if 0@ == 4
-then 0AAC: 22@ = load_audiostream "modloader/2hu gta/audio/vcs/mpass.mp3"
+then 0AAC: 22@ = load_audiostream "modloader/2hugta/audio/vcs/mpass.mp3"
 end
 0AAD: set_mp3 22@ perform_action 1
 0AAF: 23@ = get_mp3_length 22@

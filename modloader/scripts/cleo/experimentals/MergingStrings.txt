@@ -1,0 +1,14 @@
+{$CLEO .cs}
+thread 'MergingStrings'
+
+{======================================================================
+======================================================================}
+// This stoopeed shiet works YAAAAAAY
+0AC8: 0@ = allocate_memory_size 59
+0AD3: 0@ = format "We could never store this much text in one variable before!"
+//0ACA: show_text_box 0@
+//0ACC: show_text_lowpriority 0@ time 4000
+0AD0: show_formatted_text_lowpriority "my text: %s" time 4000 0@
+0AC9: free_allocated_memory 0@
+
+0A93: end_custom_thread
