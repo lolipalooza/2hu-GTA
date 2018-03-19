@@ -111,7 +111,7 @@ wait 1000
 0ACB: show_styled_text "Styled Text 3" time 4000 style 3 // This is wasted style
 }
 
-0AB1: @MoveMoney 2 xy_pos 250.0 250.0
+//0AB1: @MoveMoney 2 xy_pos 250.0 250.0
 
 repeat
 wait 0

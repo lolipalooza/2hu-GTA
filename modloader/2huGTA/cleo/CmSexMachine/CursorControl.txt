@@ -11,7 +11,7 @@ const
     CC_SIZE_Y = 12.0
 end
 
-:InitCursorControl
+:InitCursorControl // call it once at begining
 0390: load_txd_dictionary 'ftend'
 038F: load_texture "smouse" as 1
 03E0: draw_text_behind_textures 1
@@ -19,7 +19,7 @@ end
 0AB1: @StoreData 3 @CursorControlVars 224.0 CC_POSY
 0AB2: ret 0
 
-:CursorControl
+:CursorControl // Needs to be in loop
 0AB1: @GetData 2 @CursorControlVars CC_POSX 12@
 0AB1: @GetData 2 @CursorControlVars CC_POSY 13@
 0A4A: store_joystick_X_offset_to 10@ Y_offset_to 11@
