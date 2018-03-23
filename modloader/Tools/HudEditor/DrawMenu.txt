@@ -177,7 +177,7 @@ then
     if 0AB1: @CursorClickCheck 4 box_position 183.0 145.0 box_size 16.0 12.0 // Plus
     then 0AB1: @IncMoneyBorder 3 border 0 border1 0 shadow 1
     end
-    
+
     // Back
     if 0AB1: @CursorClickCheck 4 box_position 149.0 169.0 box_size 90.0 15.0
     then
@@ -302,7 +302,9 @@ for 5@ = 0 to 11 // 12 lines max
         if 05AE:   18@s == 'float' // @s == 'short'
         then 0AB1: @DrawFloat 9 var_label 22@ font 1 linewidth 600.0 size 0.2 1.0 position 103.0 4@ GXT 12@ 13@
         end
-        if 05AE:   18@s == 'hex' // @s == 'short'
+        if or
+        05AE:   18@s == 'hex' // @s == 'short'
+        05AE:   18@s == 'int32' // @s == 'short'
         then 0AB1: @DrawHex 9 var_label 22@ font 1 linewidth 600.0 size 0.2 1.0 position 103.0 4@ GXT 12@ 13@
         end
         if 05AE:   18@s == 'int8' // @s == 'short'
@@ -339,63 +341,39 @@ for 5@ = 0 to 11 // 12 lines max
         
         // ------------------- Control and logic --------------------------//
         
+        0AC6: 6@ = label @IncrementalOffset offset
+        0A8D: 7@ = read_memory 6@ size 4 virtual_protect 0
+        0087: 8@ = 7@ // (float)
+        0013: 8@ *= -1.0
+            
         0087: 9@ = 4@ // (float)
         000B: 9@ += 5.0
         
         // Increment Offset
-        if 05AE:   10@s == 'INCR' // @s == 'short'
+        if and
+        05AE:   14@s == 'MINUS' // @s == 'short'
+        05AE:   16@s == 'PLUS' // @s == 'short'
         then
- 
-            if 0AB1: @CursorClickCheck 4 box_position 162.0 9@ box_size 16.0 12.0 // Minus
-            then 0AB1: @IncOrDec_IncrementalOffset 1 decrease -1
-            end
-            if 0AB1: @CursorClickCheck 4 box_position 183.0 9@ box_size 16.0 12.0 // Plus
-            then 0AB1: @IncOrDec_IncrementalOffset 1 increase 1
-            end
- 
-        else // Increment Variables
-        
-            0AC6: 6@ = label @IncrementalOffset offset
-            0A8D: 7@ = read_memory 6@ size 4 virtual_protect 0
-            0087: 8@ = 7@ // (float)
-            0013: 8@ *= -1.0
-        
-            if 0AB1: @CursorClickCheck 4 box_position 162.0 9@ box_size 16.0 12.0 // Minus
-            then gosub @DecreaseParameter
-            end
-            if 0AB1: @CursorClickCheck 4 box_position 183.0 9@ box_size 16.0 12.0 // Plus
-            then gosub @IncreaseParameter
-            end
+            if 05AE:   10@s == 'INCR' // @s == 'short'
+            then
+     
+                if 0AB1: @CursorClickCheck 4 box_position 162.0 9@ box_size 16.0 12.0 // Minus
+                then 0AB1: @IncOrDec_IncrementalOffset 1 decrease -1
+                end
+                if 0AB1: @CursorClickCheck 4 box_position 183.0 9@ box_size 16.0 12.0 // Plus
+                then 0AB1: @IncOrDec_IncrementalOffset 1 increase 1
+                end
+     
+            else // Increment Variables
             
-            {if 05AE:   18@s == 'float' // @s == 'short'
-            then
                 if 0AB1: @CursorClickCheck 4 box_position 162.0 9@ box_size 16.0 12.0 // Minus
-                then 0AB1: @AddOffsetToFloatParameter 3 param_addr 22@ param_offset 8@ mem_addr 21@
+                then gosub @DecreaseParameter
                 end
                 if 0AB1: @CursorClickCheck 4 box_position 183.0 9@ box_size 16.0 12.0 // Plus
-                then 0AB1: @AddOffsetToFloatParameter 3 param_addr 22@ param_offset 7@ mem_addr 21@
+                then gosub @IncreaseParameter
                 end
+                
             end
-            if or
-            05AE:   18@s == 'hex' // @s == 'short'
-            05AE:   18@s == 'int32' // @s == 'short'
-            then
-                if 0AB1: @CursorClickCheck 4 box_position 162.0 9@ box_size 16.0 12.0 // Minus
-                then 0AB1: @AddOffsetToInt32Parameter 3 param_label 22@ param_offset 8@ real_addr 21@
-                end
-                if 0AB1: @CursorClickCheck 4 box_position 183.0 9@ box_size 16.0 12.0 // Plus
-                then 0AB1: @AddOffsetToInt32Parameter 3 param_label 22@ param_offset 7@ real_addr 21@
-                end
-            end
-            if 05AE:   18@s == 'int8' // @s == 'short'
-            then
-                if 0AB1: @CursorClickCheck 4 box_position 162.0 9@ box_size 16.0 12.0 // Minus
-                then 0AB1: @AddOffsetToInt8Parameter 3 param_label 22@ param_offset 8@ real_addr 21@
-                end
-                if 0AB1: @CursorClickCheck 4 box_position 183.0 9@ box_size 16.0 12.0 // Plus
-                then 0AB1: @AddOffsetToInt8Parameter 3 param_label 22@ param_offset 7@ real_addr 21@
-                end
-            end}
         end
         
         // Position
@@ -404,13 +382,13 @@ for 5@ = 0 to 11 // 12 lines max
             if 0AB0:   key_pressed KEY_A
             then
                 31@=KEY_A
-                gosub @IncreaseParameter
+                gosub @DecreaseParameter
                 32@=0
             end
             if 0AB0:   key_pressed KEY_D
             then
                 31@=KEY_D
-                gosub @DecreaseParameter
+                gosub @IncreaseParameter
                 32@=0
             end
         end
@@ -419,13 +397,13 @@ for 5@ = 0 to 11 // 12 lines max
             if 0AB0:   key_pressed KEY_W
             then
                 31@=KEY_W
-                gosub @DecreaseParameter
+                gosub @IncreaseParameter
                 32@=0
             end
             if 0AB0:   key_pressed KEY_S
             then
                 31@=KEY_S
-                gosub @IncreaseParameter
+                gosub @DecreaseParameter
                 32@=0
             end
         end

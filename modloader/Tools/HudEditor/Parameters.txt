@@ -72,6 +72,7 @@ end
 }
 
 // Money
+0AB1: @IntializeLine 5 var 0 line 0 mem_addr 0 var_label @IncrementalOffset
 0AB1: @IntializeLine 5 var 0 line 1 mem_addr _MoneyPosX var_label @Money_PosX
 0AB1: @IntializeLine 5 var 0 line 2 mem_addr _MoneyPosY var_label @Money_PosY
 0AB1: @IntializeLine 5 var 0 line 3 mem_addr _MoneyWidth var_label @Money_Width
