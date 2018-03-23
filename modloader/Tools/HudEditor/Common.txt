@@ -1,0 +1,88 @@
+{======================================================================
+======================================================================}
+:SetDrawText
+const
+    DwTx_Font = 0@
+    DwTx_Linewidth = 1@
+    DwTx_SizeX = 2@
+    DwTx_SizeY = 3@
+    DwTx_PosX = 4@
+    DwTx_PosY = 5@
+    DwTx_gxt1 = 6@
+    DwTx_gxt2 = 7@
+    DwTx_Gxt = 6@s
+end
+0349: set_text_draw_font DwTx_Font
+0343: set_text_draw_linewidth DwTx_Linewidth
+033F: set_text_draw_letter_size DwTx_SizeX DwTx_SizeY
+033E: set_draw_text_position DwTx_PosX DwTx_PosY GXT DwTx_Gxt
+0AB2: ret 0
+
+:SetDrawTextRGB
+0340: set_text_draw_RGBA 8@ 9@ 10@ 255
+0349: set_text_draw_font DwTx_Font
+0343: set_text_draw_linewidth DwTx_Linewidth
+033F: set_text_draw_letter_size DwTx_SizeX DwTx_SizeY
+033E: set_draw_text_position DwTx_PosX DwTx_PosY GXT DwTx_Gxt
+0AB2: ret 0
+
+:SetDrawTextRGB_1Number
+0340: set_text_draw_RGBA 8@ 9@ 10@ 255
+0349: set_text_draw_font DwTx_Font
+0343: set_text_draw_linewidth DwTx_Linewidth
+033F: set_text_draw_letter_size DwTx_SizeX DwTx_SizeY
+045A: draw_text_1number DwTx_PosX DwTx_PosY GXT DwTx_Gxt number 11@
+0AB2: ret 0
+
+{======================================================================
+======================================================================}
+:DrawFloat // 0@: label, 1@: font, 2@: linewidth, 3@ 4@: size, 5@ 6@: position, 7@ 8@: gxt
+0AC6: 10@ = label 0@ offset
+0A8D: 11@ = read_memory 10@ size 4 virtual_protect 0
+0AD3: 20@v = format "%.3f" 11@
+0ADF: add_dynamic_GXT_entry 7@s text 20@v
+0AB1: @SetDrawText 8 font 1@ linewidth 2@ size 3@ 4@ position 5@ 6@ GXT 7@ 8@
+0AB2: ret 0
+
+{======================================================================
+======================================================================}
+:DrawHex // 0@: label, 1@: font, 2@: linewidth, 3@ 4@: size, 5@ 6@: position, 7@ 8@: gxt
+0AC6: 10@ = label 0@ offset
+0A8D: 11@ = read_memory 10@ size 4 virtual_protect 0
+0AD3: 20@v = format "0x%.2X" 11@
+0ADF: add_dynamic_GXT_entry 7@s text 20@v
+0AB1: @SetDrawText 8 font 1@ linewidth 2@ size 3@ 4@ position 5@ 6@ GXT 7@ 8@
+0AB2: ret 0
+
+{======================================================================
+======================================================================}
+:DrawInt32 // 0@: label, 1@: font, 2@: linewidth, 3@ 4@: size, 5@ 6@: position, 7@ 8@: gxt
+0AC6: 10@ = label 0@ offset
+0A8D: 11@ = read_memory 10@ size 4 virtual_protect 0
+0AB1: @SetDrawTextRGB_1Number 12 font 1@ linewidth 2@ size 3@ 4@ pos 5@ 6@ GXT 7@ 8@ rgb 255 255 255 integer 11@
+0AB2: ret 0
+
+{======================================================================
+======================================================================}
+:DrawInt8 // 0@: label, 1@: font, 2@: linewidth, 3@ 4@: size, 5@ 6@: position, 7@ 8@: gxt
+0AC6: 10@ = label 0@ offset
+0A8D: 11@ = read_memory 10@ size 1 virtual_protect 0
+0AB1: @SetDrawTextRGB_1Number 12 font 1@ linewidth 2@ size 3@ 4@ pos 5@ 6@ GXT 7@ 8@ rgb 255 255 255 integer 11@
+0AB2: ret 0
+
+{======================================================================
+Auxiliar functions for Cursor Control
+======================================================================}
+:GetData
+// 0@: label, 1@: offset for address
+0AC6: 10@ = label 0@ offset
+005A: 10@ += 1@  // (int)
+0A8D: 11@ = read_memory 10@ size 4 virtual_protect 0
+0AB2: ret 1 11@
+
+:StoreData
+// 0@: label, 1@: value, 2@: offset for address
+0AC6: 10@ = label 0@ offset
+005A: 10@ += 2@  // (int)
+0A8C: write_memory 10@ size 4 value 1@ virtual_protect 0
+0AB2: ret 0

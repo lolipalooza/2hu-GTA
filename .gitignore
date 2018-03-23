@@ -46,6 +46,7 @@ modloader/VCS/radio/
 !modloader/skins/
 modloader/skins/*.dff
 modloader/skins/*.txd
+!modloader/Tools/
 
 /movies/
 /ReadMe/

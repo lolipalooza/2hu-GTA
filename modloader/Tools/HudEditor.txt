@@ -1,0 +1,275 @@
+{$CLEO .cs}
+thread 'HudEditor'
+
+{======================================================================
+======================================================================}
+const
+    PAD_FIREWEAPON = 17
+    
+    KEY_SPACE = 32
+    KEY_NUM_8 = 104
+    KEY_NUM_4 = 100
+    KEY_NUM_6 = 102
+    KEY_NUM_2 = 98
+    KEY_W = 87
+    KEY_A = 65
+    KEY_S = 83
+    KEY_D = 68
+    
+    // General states
+    G_INITIAL               = 0
+    G_BUILD_PANEL           = 1
+    G_ACTION_CONFIRM        = 2
+    G_ACTION_X_UP           = 3
+    G_ACTION_X_DOWN         = 4
+    G_ACTION_Y_UP           = 5
+    G_ACTION_Y_DOWN         = 6
+    G_ACTION_LEFT           = 7
+    G_ACTION_RIGHT          = 8
+    G_MENU_LOOP             = 9
+    G_DRAW_MENU_LOOP        = 10
+    
+    // Panel States
+    P_GENERAL_MENU          = 0
+    P_OPTIONS_1             = 1
+    P_EDIT_MONEY            = 2
+    P_EDIT_CLOCK            = 3
+
+    P_QUANTITY  = 2 // max panel state + 1
+    DW_QUANTITY  = 2 // Draw menues
+    
+    V_FIRST_OPTION          = P_EDIT_MONEY
+    
+    LOG_FILE = "modloader/interface designer/HudEdit.log"
+end
+
+{======================================================================
+======================================================================}
+0AB1: @InitializeGxtEntries 0
+0AB1: @InitializeGxtData 2 panels_quantity P_QUANTITY draw_menues_quantity DW_QUANTITY
+
+0AB1: @InitCursorControl 0
+
+0AB1: @InitializeParameters 0
+
+// Clean log file
+0A9A: 20@ = openfile LOG_FILE mode "wb+"  // IF and SET
+0A9B: closefile 20@
+
+{======================================================================
+======================================================================}
+repeat
+wait 0
+    // Initial state - IDLE
+    if 31@ == G_INITIAL
+    then
+        if 0ADC:   test_cheat "HUD"
+        then
+            01B4: set_player $PLAYER_CHAR can_move 0
+            31@ = G_BUILD_PANEL
+        end
+    end
+    
+    // Panels
+    if 31@ == G_BUILD_PANEL
+    then
+        0AB1: @BuildPanel 1 panels_state 30@ ret panel 10@
+        31@ = G_MENU_LOOP
+    end
+    if 31@ == G_MENU_LOOP
+    then
+        08D7: 11@ = panel 10@ active_row
+        0AB1: @PanelMenuLoop 3 panels_state 30@ choice_option 11@ general_state 31@ ret 30@ 31@
+    end
+    if or
+    31@ == G_ACTION_CONFIRM
+    31@ == G_ACTION_X_UP
+    31@ == G_ACTION_Y_UP
+    31@ == G_ACTION_X_DOWN
+    31@ == G_ACTION_Y_DOWN
+    31@ == G_ACTION_LEFT
+    31@ == G_ACTION_RIGHT
+    then
+        08D7: 11@ = panel 10@ active_row
+        08DA: remove_panel 10@
+        0AB1: @PerformAction 4 panels_state 30@ choice_option 11@ general_state 31@ panel 10@ ret 30@ 31@
+    end
+    
+    // Editor
+    if 31@ == G_DRAW_MENU_LOOP
+    then 0AB1: @DrawMenuLoop 3 panels_state 30@ choice_option 11@ general_state 31@ ret 30@ 31@
+    end
+until false
+
+{======================================================================
+======================================================================}
+{$I HudEditor/Parameters.txt}
+{$I HudEditor/Panels.txt}
+{$I HudEditor/DrawMenu.txt}
+{$I HudEditor/Common.txt}
+{$I HudEditor/CursorControl.txt}
+
+{======================================================================
+======================================================================}
+:Panels
+hex
+    // 0: General menu
+    "HUDEDIT_" "GENERAL_" "1_______"
+    
+    "HUDED1__" "ENDH____" "dummy___" "dummy___" "dummy___" "dummy___"
+    "dummy___" "dummy___" "dummy___" "dummy___" "dummy___" "dummy___"
+    
+    // 1: General options 1
+    "HUDEDIT_" "HUDED1__" "1_______"
+    
+    "HOPT01__" "HOPT02__" "BACK____" "dummy___" "dummy___" "dummy___"
+    "dummy___" "dummy___" "dummy___" "dummy___" "dummy___" "dummy___"
+end
+
+{======================================================================
+======================================================================}
+:DrawMenu
+hex
+    // 0: Money Text
+    "HOPT01__"
+    "INCR____" "INCRV___" "MINUS___" "PLUS____" "float___" 00000002 "____________"
+    "MOPT01X_" "M01XV___" "WASD1___" "dummy___" "float___" 00000001 "____________"
+    "MOPT01Y_" "M01YV___" "WASD2___" "dummy___" "float___" 00000002 "____________"
+    "MOPT02__" "M01WV___" "MINUS___" "PLUS____" "float___" 00000001 "____________"
+    "MOPT03__" "M01HV___" "MINUS___" "PLUS____" "float___" 00000002 "____________"
+    "MOPT04__" "M04V____" "MINUS___" "PLUS____" "hex_____" 00000001 "____________"
+    "MOPT05__" "INTN____" "MINUS___" "PLUS____" "int8____" 00000001 "____________"
+    "MOPT06__" "INTN____" "MINUS___" "PLUS____" "int8____" 00000001 "____________"
+    "dummy___" "dummy___" "dummy___" "dummy___" "dummy___" 00000000 "____________"
+    "dummy___" "dummy___" "dummy___" "dummy___" "dummy___" 00000000 "____________"
+    "dummy___" "dummy___" "dummy___" "dummy___" "dummy___" 00000000 "____________"
+    "dummy___" "dummy___" "dummy___" "dummy___" "dummy___" 00000000 "____________"
+    
+    // 0: Clock Text
+    "HOPT02__"
+    "INCR____" "INCRV___" "MINUS___" "PLUS____" "float___" 00000002 "____________"
+    "MOPT02__" "M01WV___" "MINUS___" "PLUS____" "float___" 00000001 "____________"
+    "MOPT03__" "M01HV___" "MINUS___" "PLUS____" "float___" 00000002 "____________"
+    "MOPT04__" "M04V____" "MINUS___" "PLUS____" "hex_____" 00000001 "____________"
+    "MOPT05__" "INTN____" "MINUS___" "PLUS____" "int8____" 00000001 "____________"
+    "dummy___" "dummy___" "dummy___" "dummy___" "dummy___" 00000000 "____________"
+    "dummy___" "dummy___" "dummy___" "dummy___" "dummy___" 00000000 "____________"
+    "dummy___" "dummy___" "dummy___" "dummy___" "dummy___" 00000000 "____________"
+    "dummy___" "dummy___" "dummy___" "dummy___" "dummy___" 00000000 "____________"
+    "dummy___" "dummy___" "dummy___" "dummy___" "dummy___" 00000000 "____________"
+    "dummy___" "dummy___" "dummy___" "dummy___" "dummy___" 00000000 "____________"
+    "dummy___" "dummy___" "dummy___" "dummy___" "dummy___" 00000000 "____________"
+end
+
+{======================================================================
+======================================================================}
+:InitializeGxtData // replace "_" by 0x00, inputs: 0@: panels quantity, 1@: draw menues quantity
+0AC6: 2@ = label @Panels offset
+3@ = 8    // short strings length
+3@ *= 15  // short strings per panel
+006A: 3@ *= 0@  // (int)     // panels quantity
+0AB1: @ReplaceCharByNull 2 address 2@ length 3@
+
+0AC6: 2@ = label @DrawMenu offset
+0AB1: @GetDrawMenuLength 0 length 3@
+006A: 3@ *= 1@  // (int)     // draw menues quantity
+0AB1: @ReplaceCharByNull 2 address 2@ length 3@
+0AB2: ret 0
+
+:ReplaceCharByNull // 0@: address, 1@: length
+for 11@ = 1 to 1@
+    0A8D: 10@ = read_memory 0@ size 1 virtual_protect 0
+    if 10@ == 0x5F // 5F : symbol "_"
+    then 0A8C: write_memory 0@ size 1 value 0x00 virtual_protect 0
+    end
+    000A: 0@ += 1
+end
+0AB2: ret 0
+
+{======================================================================
+======================================================================}
+:PerformAction // 0@: panels state, 1@: chosen option, 2@: general state, 3@: panel
+// Panel 1
+if 0@ == P_GENERAL_MENU
+then
+    //if 2@ == G_ACTION_CONFIRM
+    //then
+        if 1@ == 0
+        then
+            0@ = P_OPTIONS_1
+            2@ = G_BUILD_PANEL
+        end
+        if 1@ == 1
+        then
+            2@ = G_INITIAL
+            01B4: set_player $PLAYER_CHAR can_move 1
+        end
+        0AB2: ret 2 panels_state 0@ general_state 2@
+    //end
+end
+
+// Panel 2 - Edit Hud
+if 0@ == P_OPTIONS_1
+then
+    //if 2@ == G_ACTION_CONFIRM
+    //then
+        if 1@ == 0
+        then
+            03F0: enable_text_draw 1
+            2@ = G_DRAW_MENU_LOOP
+            0@ = P_EDIT_MONEY
+        end
+        if 1@ == 1
+        then
+            2@ = G_DRAW_MENU_LOOP
+            0@ = P_EDIT_CLOCK
+        end
+        if 1@ == 2
+        then
+            2@ = G_BUILD_PANEL
+            0@ = P_GENERAL_MENU
+        end
+        0AB2: ret 2 panels_state 0@ general_state 2@
+    //end
+end
+0AB2: ret 2 panels_state 0@ general_state 2@
+
+:IncrementalOffset
+hex
+00 00 00 00
+end
+
+{======================================================================
+======================================================================}
+:InitializeGxtEntries
+0ADF: add_dynamic_GXT_entry "INT_N" text "~1~"
+0ADF: add_dynamic_GXT_entry "FLOAT_N" text "~1~.~1~"
+
+0ADF: add_dynamic_GXT_entry "HUDEDIT" text "Advanced Hud Editor"
+0ADF: add_dynamic_GXT_entry "GENERAL" text "General Menu"
+0ADF: add_dynamic_GXT_entry "HUDED1" text "Edit HUD"
+0ADF: add_dynamic_GXT_entry "ENDH" text "Finish"
+
+0ADF: add_dynamic_GXT_entry "HOPT01" text "Money Text"
+0ADF: add_dynamic_GXT_entry "HOPT02" text "Clock Text"
+0ADF: add_dynamic_GXT_entry "BACK" text "Back"
+
+0ADF: add_dynamic_GXT_entry "EDMONEY" text "Edit Money"
+0ADF: add_dynamic_GXT_entry "INCR" text "Increment offset"
+0ADF: add_dynamic_GXT_entry "MOPT01" text "Position"
+0ADF: add_dynamic_GXT_entry "MOPT01X" text "X Position"
+0ADF: add_dynamic_GXT_entry "MOPT01Y" text "Y Position"
+0ADF: add_dynamic_GXT_entry "MOPT02" text "Width"
+0ADF: add_dynamic_GXT_entry "MOPT03" text "Height"
+0ADF: add_dynamic_GXT_entry "MOPT04" text "Border"
+0ADF: add_dynamic_GXT_entry "MOPT05" text "Border1"
+0ADF: add_dynamic_GXT_entry "MOPT06" text "Shadow Distance"
+
+0ADF: add_dynamic_GXT_entry "PLUS" text "+"
+0ADF: add_dynamic_GXT_entry "MINUS" text "-"
+0ADF: add_dynamic_GXT_entry "KEY_W" text "w"
+0ADF: add_dynamic_GXT_entry "KEY_A" text "a"
+0ADF: add_dynamic_GXT_entry "KEY_S" text "s"
+0ADF: add_dynamic_GXT_entry "KEY_D" text "d"
+0AB2: ret 0
+

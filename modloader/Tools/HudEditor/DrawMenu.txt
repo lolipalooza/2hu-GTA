@@ -1,0 +1,576 @@
+{======================================================================
+======================================================================}
+:EditorLoop // 0@: panels state, 1@: chosen option, 2@: general state
+0AC6: 30@ = label @DrawMenuLoop_StateVar offset
+0A8D: 31@ = read_memory 30@ size 1 virtual_protect 0
+
+if 0@ == P_EDIT_MONEY
+then
+    0AB1: @CursorControl 0
+    
+    038E: draw_box_position 107.0 83.0 size 175.0 133.0 RGBA 0 0 0 100
+    
+    10@s = 'HOPT01' // Money Text
+    0AB1: @SetDrawText 8 font 3 linewidth 600.0 size 0.4 1.2 position 16.0 9.0 GXT 10@ 11@
+    
+    10@s = 'INCR' // Increment offset
+    0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 30.0 24.0 GXT 10@ 11@
+    
+    10@s = 'MOPT01X' // X Position
+    0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 30.0 47.0 GXT 10@ 11@
+    10@s = 'MOPT01Y' // Y Position
+    0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 30.0 59.0 GXT 10@ 11@
+    
+    10@s = 'MOPT02' // Width
+    0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 30.0 82.0 GXT 10@ 11@
+    10@s = 'MOPT03' // Height
+    0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 30.0 94.0 GXT 10@ 11@
+    
+    10@s = 'MOPT04' // Border
+    0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 30.0 116.0 GXT 10@ 11@
+    10@s = 'MOPT05' // Border1
+    0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 30.0 128.0 GXT 10@ 11@
+    10@s = 'MOPT06' // Shadow Distance
+    0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 30.0 140.0 GXT 10@ 11@
+    
+    10@s = 'INCR_V'
+    0AB1: @DrawFloat 9 @IncrementalOffset font 1 linewidth 600.0 size 0.2 1.0 position 103.0 24.0 GXT 10@ 11@
+    10@s = 'M01X_V'
+    0AB1: @DrawFloat 9 @Money_PosX font 1 linewidth 600.0 size 0.2 1.0 position 103.0 47.0 GXT 10@ 11@
+    10@s = 'M01Y_V'
+    0AB1: @DrawFloat 9 @Money_PosY font 1 linewidth 600.0 size 0.2 1.0 position 103.0 59.0 GXT 10@ 11@
+    10@s = 'M01W_V'
+    0AB1: @DrawFloat 9 @Money_Width font 1 linewidth 600.0 size 0.2 1.0 position 103.0 82.0 GXT 10@ 11@
+    10@s = 'M01H_V'
+    0AB1: @DrawFloat 9 @Money_Height font 1 linewidth 600.0 size 0.2 1.0 position 103.0 94.0 GXT 10@ 11@    
+    10@s = 'M04_V'
+    0AB1: @DrawHex 9 @Money_Border font 1 linewidth 600.0 size 0.2 1.0 position 103.0 116.0 GXT 10@ 11@
+    10@s = 'INT_N'
+    0AB1: @DrawInt8 9 @Money_Border1 font 1 linewidth 600.0 size 0.2 1.0 position 103.0 128.0 GXT 10@ 11@
+    0AB1: @DrawInt8 9 @Money_ShadowDistance font 1 linewidth 600.0 size 0.2 1.0 position 103.0 140.0 GXT 10@ 11@
+    
+    // Wasd symbol
+    038E: draw_box_position 156.0 64.0 size 12.0 10.0 RGBA 100 100 100 210
+    038E: draw_box_position 171.0 64.0 size 12.0 10.0 RGBA 100 100 100 210
+    038E: draw_box_position 186.0 64.0 size 12.0 10.0 RGBA 100 100 100 210
+    038E: draw_box_position 171.0 51.0 size 12.0 10.0 RGBA 100 100 100 210
+    10@s = 'KEY_W'
+    0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 169.0 46.0 GXT 10@ 11@
+    10@s = 'KEY_A'
+    0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 154.0 59.0 GXT 10@ 11@
+    10@s = 'KEY_S'
+    0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 169.0 59.0 GXT 10@ 11@
+    10@s = 'KEY_D'
+    0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 184.0 59.0 GXT 10@ 11@
+    
+    // Increment Offset
+    10@s = 'MINUS' // -
+    0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 159.0 24.0 GXT 10@ 11@
+    10@s = 'PLUS' // +
+    0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 180.0 24.0 GXT 10@ 11@
+
+    // Width
+    10@s = 'MINUS' // -
+    0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 159.0 82.0 GXT 10@ 11@
+    10@s = 'PLUS' // +
+    0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 180.0 82.0 GXT 10@ 11@
+    
+    // Height
+    10@s = 'MINUS' // -
+    0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 159.0 94.0 GXT 10@ 11@
+    10@s = 'PLUS' // +
+    0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 180.0 94.0 GXT 10@ 11@
+    
+    // Border
+    10@s = 'MINUS' // -
+    0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 159.0 116.0 GXT 10@ 11@
+    10@s = 'PLUS' // +
+    0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 180.0 116.0 GXT 10@ 11@
+    
+    // Border1
+    10@s = 'MINUS' // -
+    0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 159.0 128.0 GXT 10@ 11@
+    10@s = 'PLUS' // +
+    0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 180.0 128.0 GXT 10@ 11@
+    
+    // Shadow Distance
+    10@s = 'MINUS' // -
+    0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 159.0 140.0 GXT 10@ 11@
+    10@s = 'PLUS' // +
+    0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 180.0 140.0 GXT 10@ 11@
+    
+    10@s = 'BACK' // Back
+    0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 140.0 162.0 GXT 10@ 11@
+    
+    // Increment Offset
+    if 0AB1: @CursorClickCheck 4 box_position 162.0 29.0 box_size 16.0 14.0 // Minus
+    then 0AB1: @IncOrDec_IncrementalOffset 1 decrease -1
+    end
+    if 0AB1: @CursorClickCheck 4 box_position 183.0 29.0 box_size 16.0 14.0 // Plus
+    then 0AB1: @IncOrDec_IncrementalOffset 1 increase 1
+    end
+    0AC6: 10@ = label @IncrementalOffset offset
+    0A8D: 11@ = read_memory 10@ size 4 virtual_protect 0
+    0087: 12@ = 11@ // (float)
+    0013: 12@ *= -1.0
+    
+    // Width
+    if 0AB1: @CursorClickCheck 4 box_position 162.0 87.0 box_size 16.0 12.0 // Minus
+    then 0AB1: @IncMoneySize 2 width_height_offsets 12@ 0.0
+    end
+    if 0AB1: @CursorClickCheck 4 box_position 183.0 87.0 box_size 16.0 12.0 // Plus
+    then 0AB1: @IncMoneySize 2 width_height_offsets 11@ 0.0
+    end
+    
+    // Height
+    if 0AB1: @CursorClickCheck 4 box_position 162.0 99.0 box_size 16.0 12.0 // Minus
+    then 0AB1: @IncMoneySize 2 width_height_offsets 0.0 12@
+    end
+    if 0AB1: @CursorClickCheck 4 box_position 183.0 99.0 box_size 16.0 12.0 // Plus
+    then 0AB1: @IncMoneySize 2 width_height_offsets 0.0 11@
+    end
+    
+    // Position
+    if 0AB0:   key_pressed KEY_W
+    then
+        31@=KEY_W
+        0AB1: @MoveMoneyPosition 2 xy_offsets 0.0 12@
+        32@=0
+    end
+    if 0AB0:   key_pressed KEY_A
+    then
+        31@=KEY_A
+        0AB1: @MoveMoneyPosition 2 xy_offsets 11@ 0.0
+        32@=0
+    end
+    if 0AB0:   key_pressed KEY_S
+    then
+        31@=KEY_S
+        0AB1: @MoveMoneyPosition 2 xy_offsets 0.0 11@
+        32@=0
+    end
+    if 0AB0:   key_pressed KEY_D
+    then
+        31@=KEY_D
+        0AB1: @MoveMoneyPosition 2 xy_offsets 12@ 0.0
+        32@=0
+    end
+    
+    // Border
+    if 0AB1: @CursorClickCheck 4 box_position 162.0 121.0 box_size 16.0 12.0 // Minus
+    then 0AB1: @IncMoneyBorder 3 border -1 border1 0 shadow 0
+    end
+    if 0AB1: @CursorClickCheck 4 box_position 183.0 121.0 box_size 16.0 12.0 // Plus
+    then 0AB1: @IncMoneyBorder 3 border 1 border1 0 shadow 0
+    end
+    // Border1
+    if 0AB1: @CursorClickCheck 4 box_position 162.0 133.0 box_size 16.0 12.0 // Minus
+    then 0AB1: @IncMoneyBorder 3 border 0 border1 -1 shadow 0
+    end
+    if 0AB1: @CursorClickCheck 4 box_position 183.0 133.0 box_size 16.0 12.0 // Plus
+    then 0AB1: @IncMoneyBorder 3 border 0 border1 1 shadow 0
+    end
+    // Shadow Distance
+    if 0AB1: @CursorClickCheck 4 box_position 162.0 145.0 box_size 16.0 12.0 // Minus
+    then 0AB1: @IncMoneyBorder 3 border 0 border1 0 shadow -1
+    end
+    if 0AB1: @CursorClickCheck 4 box_position 183.0 145.0 box_size 16.0 12.0 // Plus
+    then 0AB1: @IncMoneyBorder 3 border 0 border1 0 shadow 1
+    end
+    
+    // Back
+    if 0AB1: @CursorClickCheck 4 box_position 149.0 169.0 box_size 90.0 15.0
+    then
+        03F0: enable_text_draw 0
+        2@ = G_BUILD_PANEL
+        0@ = P_OPTIONS_1
+    end
+end
+
+if or
+31@ == KEY_W
+32@ > 350
+then
+    if 8AB0:   not key_pressed KEY_W
+    then 31@=0
+    end
+end
+if or
+31@ == KEY_A
+32@ > 350
+then
+    if 8AB0:   not key_pressed KEY_A
+    then 31@=0
+    end
+end
+if or
+31@ == KEY_S
+32@ > 350
+then
+    if 8AB0:   not key_pressed KEY_S
+    then 31@=0
+    end
+end
+if or
+31@ == KEY_D
+32@ > 350
+then
+    if 8AB0:   not key_pressed KEY_D
+    then 31@=0
+    end
+end
+0A8C: write_memory 30@ size 1 value 31@ virtual_protect 0
+0AB2: ret 2 panels_state 0@ general_state 2@
+
+{======================================================================
+======================================================================}
+:GetDrawMenuLength
+3@ = 8    // short strings length
+3@ *= 6   // short strings per line
+3@ += 8   // 2 ints
+3@ *= 12  // lines
+3@ += 8   // title string
+0AB2: ret 1 3@
+
+:ReadMenuTitle // 0@: option
+0AC6: 10@ = label @DrawMenu offset
+0AB1: @GetDrawMenuLength 0 length 3@
+006A: 3@ *= 0@  // (int)
+005A: 10@ += 3@  // (int)
+0A8D: 11@ = read_memory 10@ size 4 virtual_protect 0
+000A: 10@ += 4
+0A8D: 12@ = read_memory 10@ size 4 virtual_protect 0
+0AB2: ret 1 11@ 12@
+
+:ReadMenuLine // 0@: option, 1@: line
+0AC6: 10@ = label @DrawMenu offset
+
+// Menu
+3@ = 8    // short strings length
+3@ *= 6   // short strings per line
+3@ += 8   // 2 ints
+3@ *= 12  // lines
+3@ += 8   // title string
+006A: 3@ *= 0@  // (int)
+005A: 10@ += 3@  // (int)
+
+// Title
+000A: 10@ += 8
+
+// Line
+3@ = 8
+3@ *= 6
+006A: 3@ *= 1@  // (int)
+005A: 10@ += 3@  // (int)
+
+3@ = 8
+3@ *= 6
+3@ += 8
+for 11@ = 0 to 3@ // line length
+    0A8D: 12@(11@,7i) = read_memory 10@ size 4 virtual_protect 0
+    000A: 10@ += 4
+    0A8D: 22@(11@,7i) = read_memory 10@ size 4 virtual_protect 0
+    000A: 10@ += 4
+end
+0A9A: 20@ = openfile LOG_FILE mode "ab+"  // IF and SET
+0AD9: write_formatted_text "read data: gxt1 '%s' gxt2 '%s' gxt3 '%s' gxt4 '%s' gxt5 '%s' int %d mem_addr 0x%.8X addr %d addr %d" in_file 20@ gxt1 12@s 22@ gxt2 13@ 23@ gxt3 14@ 24@ gxt4 15@ 25@ gxt5 16@ 26@ int 17@ int 27@ int 18@ int 28@
+0A9B: closefile 20@
+0AB2: ret 14 gxt1 12@ 22@ gxt2 13@ 23@ gxt3 14@ 24@ gxt4 15@ 25@ gxt5 16@ 26@ int 17@ int 27@ int 18@ int 28@
+
+{======================================================================
+======================================================================}
+:DrawMenuLoop // 0@: panels state, 1@: chosen option, 2@: general state
+0AC6: 30@ = label @DrawMenuLoop_StateVar offset
+0A8D: 31@ = read_memory 30@ size 1 virtual_protect 0
+
+0AB1: @CursorControl 0
+    
+038E: draw_box_position 107.0 83.0 size 175.0 133.0 RGBA 0 0 0 100
+
+// Recalculating chosen option
+0085: 1@ = 0@ // (int)
+000E: 1@ -= V_FIRST_OPTION
+    
+0AB1: @ReadMenuTitle 1 option 1@ ret 10@ 11@
+0AB1: @SetDrawText 8 font 3 linewidth 600.0 size 0.4 1.2 position 16.0 9.0 GXT 10@ 11@
+
+4@ = 24.0 // First line Y coord
+for 5@ = 0 to 11 // 12 lines max
+    0AB1: @ReadMenuLine 2 option 1@ line 5@ ret gxt1 10@ 11@ gxt2 12@ 13@ gxt3 14@ 15@ gxt4 16@ 17@ gxt5 18@ 19@ lines_skip 20@ mem_addr 21@ var_addr 22@ action_addr 23@
+    if 85AE:   not 10@s == 'dummy' // @s == 'short'
+    then
+        // ----------------------- Display --------------------------------//
+        
+        // Variable name
+        0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 30.0 4@ GXT 10@ 11@
+        
+        // Variable value
+        if 05AE:   18@s == 'float' // @s == 'short'
+        then 0AB1: @DrawFloat 9 var_label 22@ font 1 linewidth 600.0 size 0.2 1.0 position 103.0 4@ GXT 12@ 13@
+        end
+        if 05AE:   18@s == 'hex' // @s == 'short'
+        then 0AB1: @DrawHex 9 var_label 22@ font 1 linewidth 600.0 size 0.2 1.0 position 103.0 4@ GXT 12@ 13@
+        end
+        if 05AE:   18@s == 'int8' // @s == 'short'
+        then 12@s = 'INT_N'
+            0AB1: @DrawInt8 9 var_label 22@ font 1 linewidth 600.0 size 0.2 1.0 position 103.0 4@ GXT 12@ 13@
+        end
+        
+        // WASD or MINUS / PLUS
+        if 05AE:   16@s == 'WASD1' // @s == 'short'
+        then
+            // Wasd symbol
+            038E: draw_box_position 156.0 64.0 size 12.0 10.0 RGBA 100 100 100 210
+            038E: draw_box_position 171.0 64.0 size 12.0 10.0 RGBA 100 100 100 210
+            038E: draw_box_position 186.0 64.0 size 12.0 10.0 RGBA 100 100 100 210
+            038E: draw_box_position 171.0 51.0 size 12.0 10.0 RGBA 100 100 100 210
+            0087: 7@ = 4@ // (float)
+            000B: 7@ += 12.0
+            0087: 6@ = 4@ // (float)
+            000F: 6@ -= 1.0
+            24@s = 'KEY_W'
+            0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 169.0 6@ GXT 24@ 25@
+            24@s = 'KEY_A'
+            0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 154.0 7@ GXT 24@ 25@
+            24@s = 'KEY_S'
+            0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 169.0 7@ GXT 24@ 25@
+            24@s = 'KEY_D'
+            0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 184.0 7@ GXT 24@ 25@
+        end
+        if 05AE:   16@s == 'MINUS' // @s == 'short'
+        then
+            0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 159.0 4@ GXT 14@ 15@ // minus
+            0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 180.0 4@ GXT 16@ 17@ // plus
+        end
+        
+        // ------------------- Control and logic --------------------------//
+        
+        // Increment Offset
+        if 05AE:   10@s == 'INCR' // @s == 'short'
+        then
+ 
+            if 0AB1: @CursorClickCheck 4 box_position 162.0 4@ box_size 16.0 12.0 // Minus
+            then 0AB1: @IncOrDec_IncrementalOffset 1 decrease -1
+            end
+            if 0AB1: @CursorClickCheck 4 box_position 183.0 4@ box_size 16.0 12.0 // Plus
+            then 0AB1: @IncOrDec_IncrementalOffset 1 increase 1
+            end
+ 
+        else // Increment Variables
+        
+            0AC6: 6@ = label @IncrementalOffset offset
+            0A8D: 7@ = read_memory 6@ size 4 virtual_protect 0
+            0087: 8@ = 7@ // (float)
+            0013: 8@ *= -1.0
+        
+            if 0AB1: @CursorClickCheck 4 box_position 162.0 4@ box_size 16.0 12.0 // Minus
+            then gosub @DecreaseParameter
+            end
+            if 0AB1: @CursorClickCheck 4 box_position 183.0 4@ box_size 16.0 12.0 // Plus
+            then gosub @IncreaseParameter
+            end
+            
+            {if 05AE:   18@s == 'float' // @s == 'short'
+            then
+                if 0AB1: @CursorClickCheck 4 box_position 162.0 4@ box_size 16.0 12.0 // Minus
+                then 0AB1: @AddOffsetToFloatParameter 3 param_addr 22@ param_offset 8@ mem_addr 21@
+                end
+                if 0AB1: @CursorClickCheck 4 box_position 183.0 4@ box_size 16.0 12.0 // Plus
+                then 0AB1: @AddOffsetToFloatParameter 3 param_addr 22@ param_offset 7@ mem_addr 21@
+                end
+            end
+            if or
+            05AE:   18@s == 'hex' // @s == 'short'
+            05AE:   18@s == 'int32' // @s == 'short'
+            then
+                if 0AB1: @CursorClickCheck 4 box_position 162.0 4@ box_size 16.0 12.0 // Minus
+                then 0AB1: @AddOffsetToInt32Parameter 3 param_label 22@ param_offset 8@ real_addr 21@
+                end
+                if 0AB1: @CursorClickCheck 4 box_position 183.0 4@ box_size 16.0 12.0 // Plus
+                then 0AB1: @AddOffsetToInt32Parameter 3 param_label 22@ param_offset 7@ real_addr 21@
+                end
+            end
+            if 05AE:   18@s == 'int8' // @s == 'short'
+            then
+                if 0AB1: @CursorClickCheck 4 box_position 162.0 4@ box_size 16.0 12.0 // Minus
+                then 0AB1: @AddOffsetToInt8Parameter 3 param_label 22@ param_offset 8@ real_addr 21@
+                end
+                if 0AB1: @CursorClickCheck 4 box_position 183.0 4@ box_size 16.0 12.0 // Plus
+                then 0AB1: @AddOffsetToInt8Parameter 3 param_label 22@ param_offset 7@ real_addr 21@
+                end
+            end}
+        end
+        
+        // Position
+        if 05AE:   16@s == 'WASD1' // @s == 'short'
+        then
+            if 0AB0:   key_pressed KEY_A
+            then
+                31@=KEY_A
+                gosub @IncreaseParameter
+                32@=0
+            end
+            if 0AB0:   key_pressed KEY_D
+            then
+                31@=KEY_D
+                gosub @DecreaseParameter
+                32@=0
+            end
+        end
+        if 05AE:   16@s == 'WASD2' // @s == 'short'
+        then
+            if 0AB0:   key_pressed KEY_W
+            then
+                31@=KEY_W
+                gosub @DecreaseParameter
+                32@=0
+            end
+            if 0AB0:   key_pressed KEY_S
+            then
+                31@=KEY_S
+                gosub @IncreaseParameter
+                32@=0
+            end
+        end
+        
+        // Preparing next line
+        if 20@ == 1
+        then 4@ += 12.0
+        end
+        if 20@ == 2
+        then 4@ += 24.0
+        end
+        if 20@ == 3
+        then 4@ += 36.0
+        end
+    
+    else break
+    end
+end    
+
+// Back
+10@s = 'BACK'
+0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 140.0 4@ GXT 10@ 11@
+4@ += 7.0        
+if 0AB1: @CursorClickCheck 4 box_position 149.0 4@ box_size 90.0 15.0
+then
+    03F0: enable_text_draw 0
+    2@ = G_BUILD_PANEL
+    0@ = P_OPTIONS_1
+end
+
+if or
+31@ == KEY_W
+32@ > 350
+then
+    if 8AB0:   not key_pressed KEY_W
+    then 31@=0
+    end
+end
+if or
+31@ == KEY_A
+32@ > 350
+then
+    if 8AB0:   not key_pressed KEY_A
+    then 31@=0
+    end
+end
+if or
+31@ == KEY_S
+32@ > 350
+then
+    if 8AB0:   not key_pressed KEY_S
+    then 31@=0
+    end
+end
+if or
+31@ == KEY_D
+32@ > 350
+then
+    if 8AB0:   not key_pressed KEY_D
+    then 31@=0
+    end
+end
+
+0A8C: write_memory 30@ size 1 value 31@ virtual_protect 0
+0AB2: ret 2 panels_state 0@ general_state 2@
+
+:DrawMenuLoop_StateVar
+hex
+00
+end
+
+:DecreaseParameter
+if 05AE:   18@s == 'float' // @s == 'short'
+then 0AB1: @AddOffsetToFloatParameter 3 param_addr 22@ param_offset 7@ mem_addr 21@
+end
+if or
+05AE:   18@s == 'hex' // @s == 'short'
+05AE:   18@s == 'int32' // @s == 'short'
+then 0AB1: @AddOffsetToInt32Parameter 3 param_label 22@ param_offset 7@ real_addr 21@
+end
+if 05AE:   18@s == 'int8' // @s == 'short'
+then 0AB1: @AddOffsetToInt8Parameter 3 param_label 22@ param_offset 7@ real_addr 21@
+end
+return
+            
+:IncreaseParameter
+if 05AE:   18@s == 'float' // @s == 'short'
+then 0AB1: @AddOffsetToFloatParameter 3 param_addr 22@ param_offset 8@ mem_addr 21@
+end
+if or
+05AE:   18@s == 'hex' // @s == 'short'
+05AE:   18@s == 'int32' // @s == 'short'
+then 0AB1: @AddOffsetToInt32Parameter 3 param_label 22@ param_offset 8@ real_addr 21@
+end
+if 05AE:   18@s == 'int8' // @s == 'short'
+then 0AB1: @AddOffsetToInt8Parameter 3 param_label 22@ param_offset 8@ real_addr 21@
+end
+return
+
+{======================================================================
+======================================================================}
+:IncOrDec_IncrementalOffset // 0@: if +1 -> inc, if -1 -> dec
+0AC6: 10@ = label @IncrementalOffset offset
+0A8D: 11@ = read_memory 10@ size 4 virtual_protect 0
+0087: 12@ = 11@ // (float)
+        
+if 12@ == 10.0
+then
+    if 0@ > 0
+    then 11@=0.001
+    else 11@=1.0
+    end
+end
+if 12@ == 1.0
+then
+    if 0@ > 0
+    then 11@=10.0
+    else 11@=0.1
+    end
+end
+if 12@ == 0.1
+then
+    if 0@ > 0
+    then 11@=1.0
+    else 11@=0.01
+    end
+end
+if 12@ == 0.01
+then
+    if 0@ > 0
+    then 11@=0.1
+    else 11@=0.001
+    end
+end
+if 12@ == 0.001
+then
+    if 0@ > 0
+    then 11@=0.01
+    else 11@=10.0
+    end
+end
+
+0A8C: write_memory 10@ size 4 value 11@ virtual_protect 0
+0AB2: ret 0
+
