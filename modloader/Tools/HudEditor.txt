@@ -40,7 +40,7 @@ const
     
     V_FIRST_OPTION          = P_EDIT_MONEY
     
-    LOG_FILE = "modloader/interface designer/HudEdit.log"
+    LOG_FILE = "modloader/Tools/HudEdit.log"
 end
 
 {======================================================================
@@ -55,6 +55,12 @@ end
 // Clean log file
 0A9A: 20@ = openfile LOG_FILE mode "wb+"  // IF and SET
 0A9B: closefile 20@
+
+{0AB1: @ReadMenuLine 2 option 0 line 1 ret gxt1 10@ 11@ gxt2 12@ 13@ gxt3 14@ 15@ gxt4 16@ 17@ gxt5 18@ 19@ lines_skip 20@ mem_addr 21@ var_addr 22@ action_addr 23@
+0A9A: 29@ = openfile LOG_FILE mode "ab+"  // IF and SET
+0AD9: write_formatted_text "read data: gxt1 '%s' gxt2 '%s' gxt3 '%s' gxt4 '%s' " in_file 29@ gxt1 10@s gxt2 12@s gxt3 14@s gxt4 16@s
+0AD9: write_formatted_text "gxt5 '%s' lines_skip %d mem_addr 0x%.8X addr %d%c%c" in_file 29@ gxt5 18@s lines_skip 20@ mem_addr 21@ var_addr 22@ carriage_return 0xd 0xa
+0A9B: closefile 29@}
 
 {======================================================================
 ======================================================================}
@@ -132,33 +138,33 @@ end
 hex
     // 0: Money Text
     "HOPT01__"
-    "INCR____" "INCRV___" "MINUS___" "PLUS____" "float___" 00000002 "____________"
-    "MOPT01X_" "M01XV___" "WASD1___" "dummy___" "float___" 00000001 "____________"
-    "MOPT01Y_" "M01YV___" "WASD2___" "dummy___" "float___" 00000002 "____________"
-    "MOPT02__" "M01WV___" "MINUS___" "PLUS____" "float___" 00000001 "____________"
-    "MOPT03__" "M01HV___" "MINUS___" "PLUS____" "float___" 00000002 "____________"
-    "MOPT04__" "M04V____" "MINUS___" "PLUS____" "hex_____" 00000001 "____________"
-    "MOPT05__" "INTN____" "MINUS___" "PLUS____" "int8____" 00000001 "____________"
-    "MOPT06__" "INTN____" "MINUS___" "PLUS____" "int8____" 00000001 "____________"
-    "dummy___" "dummy___" "dummy___" "dummy___" "dummy___" 00000000 "____________"
-    "dummy___" "dummy___" "dummy___" "dummy___" "dummy___" 00000000 "____________"
-    "dummy___" "dummy___" "dummy___" "dummy___" "dummy___" 00000000 "____________"
-    "dummy___" "dummy___" "dummy___" "dummy___" "dummy___" 00000000 "____________"
+    "INCR____" "INCRV___" "MINUS___" "PLUS____" "float___" 2 "___" "____________"
+    "MOPT01X_" "M01XV___" "WASD1___" "dummy___" "float___" 1 "___" "____________"
+    "MOPT01Y_" "M01YV___" "WASD2___" "dummy___" "float___" 2 "___" "____________"
+    "MOPT02__" "M01WV___" "MINUS___" "PLUS____" "float___" 1 "___" "____________"
+    "MOPT03__" "M01HV___" "MINUS___" "PLUS____" "float___" 2 "___" "____________"
+    "MOPT04__" "M04V____" "MINUS___" "PLUS____" "hex_____" 1 "___" "____________"
+    "MOPT05__" "INTN____" "MINUS___" "PLUS____" "int8____" 1 "___" "____________"
+    "MOPT06__" "INTN____" "MINUS___" "PLUS____" "int8____" 1 "___" "____________"
+    "dummy___" "dummy___" "dummy___" "dummy___" "dummy___" 0 "___" "____________"
+    "dummy___" "dummy___" "dummy___" "dummy___" "dummy___" 0 "___" "____________"
+    "dummy___" "dummy___" "dummy___" "dummy___" "dummy___" 0 "___" "____________"
+    "dummy___" "dummy___" "dummy___" "dummy___" "dummy___" 0 "___" "____________"
     
     // 0: Clock Text
     "HOPT02__"
-    "INCR____" "INCRV___" "MINUS___" "PLUS____" "float___" 00000002 "____________"
-    "MOPT02__" "M01WV___" "MINUS___" "PLUS____" "float___" 00000001 "____________"
-    "MOPT03__" "M01HV___" "MINUS___" "PLUS____" "float___" 00000002 "____________"
-    "MOPT04__" "M04V____" "MINUS___" "PLUS____" "hex_____" 00000001 "____________"
-    "MOPT05__" "INTN____" "MINUS___" "PLUS____" "int8____" 00000001 "____________"
-    "dummy___" "dummy___" "dummy___" "dummy___" "dummy___" 00000000 "____________"
-    "dummy___" "dummy___" "dummy___" "dummy___" "dummy___" 00000000 "____________"
-    "dummy___" "dummy___" "dummy___" "dummy___" "dummy___" 00000000 "____________"
-    "dummy___" "dummy___" "dummy___" "dummy___" "dummy___" 00000000 "____________"
-    "dummy___" "dummy___" "dummy___" "dummy___" "dummy___" 00000000 "____________"
-    "dummy___" "dummy___" "dummy___" "dummy___" "dummy___" 00000000 "____________"
-    "dummy___" "dummy___" "dummy___" "dummy___" "dummy___" 00000000 "____________"
+    "INCR____" "INCRV___" "MINUS___" "PLUS____" "float___" 2 "___" "____________"
+    "MOPT02__" "M01WV___" "MINUS___" "PLUS____" "float___" 1 "___" "____________"
+    "MOPT03__" "M01HV___" "MINUS___" "PLUS____" "float___" 2 "___" "____________"
+    "MOPT04__" "M04V____" "MINUS___" "PLUS____" "hex_____" 1 "___" "____________"
+    "MOPT05__" "INTN____" "MINUS___" "PLUS____" "int8____" 1 "___" "____________"
+    "dummy___" "dummy___" "dummy___" "dummy___" "dummy___" 0 "___" "____________"
+    "dummy___" "dummy___" "dummy___" "dummy___" "dummy___" 0 "___" "____________"
+    "dummy___" "dummy___" "dummy___" "dummy___" "dummy___" 0 "___" "____________"
+    "dummy___" "dummy___" "dummy___" "dummy___" "dummy___" 0 "___" "____________"
+    "dummy___" "dummy___" "dummy___" "dummy___" "dummy___" 0 "___" "____________"
+    "dummy___" "dummy___" "dummy___" "dummy___" "dummy___" 0 "___" "____________"
+    "dummy___" "dummy___" "dummy___" "dummy___" "dummy___" 0 "___" "____________"
 end
 
 {======================================================================
@@ -273,3 +279,37 @@ end
 0ADF: add_dynamic_GXT_entry "KEY_D" text "d"
 0AB2: ret 0
 
+{======================================================================
+======================================================================}
+:__Debug_MemDump
+0A9A: 0@ = openfile "modloader/Tools/dumpDrawMenu.log" mode "ab+"  // IF and SET
+0AC6: 1@ = label @DrawMenu offset
+
+0A8D: 10@ = read_memory 1@ size 4 virtual_protect 0
+1@ += 4
+0A8D: 11@ = read_memory 1@ size 4 virtual_protect 0
+1@ += 4
+0AD9: write_formatted_text "Title: %s%c%c" in_file 0@ title 10@s carriage_return 0xd 0xa
+
+for 3@ = 1 to 12
+    for 2@ = 1 to 5
+        0A8D: 10@ = read_memory 1@ size 4 virtual_protect 0
+        1@ += 4
+        0A8D: 11@ = read_memory 1@ size 4 virtual_protect 0
+        1@ += 4
+        0AD9: write_formatted_text "%s " in_file 0@ text 10@s
+    end
+    
+    0A8D: 10@ = read_memory 1@ size 1 virtual_protect 0
+    1@ += 4
+    0AD9: write_formatted_text "%d " in_file 0@ int 10@
+    
+    1@ += 4
+    1@ += 4
+    1@ += 4
+0AD9: write_formatted_text "%c%c" in_file 0@ carriage_return 0xd 0xa
+end
+0AD9: write_formatted_text "%c%c" in_file 0@ carriage_return 0xd 0xa
+
+0A9B: closefile 0@
+0AB2: ret 0

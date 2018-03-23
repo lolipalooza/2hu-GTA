@@ -86,11 +86,18 @@ end
 :IntializeLine // var 0@ line 1@ mem_addr 2@ var_label 3@
 0AB1: @GetDrawMenuLength 0 ret 5@
 006A: 5@ *= 0@  // (int)
+
+6@ = 8
+6@ *= 6
+6@ += 8   // 2 ints
+006A: 6@ *= 1@  // (int)
+
 5@ += 8
 5@ += 40 // 8*5
 5@ += 4
 0AC6: 10@ = label @DrawMenu offset
 005A: 10@ += 5@  // (int)
+005A: 10@ += 6@  // (int)
 
 0A8C: write_memory 10@ size 4 value 2@ virtual_protect 0 // Memory Address
 10@ += 4

@@ -240,17 +240,11 @@ end
 0A8D: 11@ = read_memory 10@ size 4 virtual_protect 0
 000A: 10@ += 4
 0A8D: 12@ = read_memory 10@ size 4 virtual_protect 0
-0AB2: ret 1 11@ 12@
+0AB2: ret 2 11@ 12@
 
 :ReadMenuLine // 0@: option, 1@: line
 0AC6: 10@ = label @DrawMenu offset
-
-// Menu
-3@ = 8    // short strings length
-3@ *= 6   // short strings per line
-3@ += 8   // 2 ints
-3@ *= 12  // lines
-3@ += 8   // title string
+0AB1: @GetDrawMenuLength 0 length 3@
 006A: 3@ *= 0@  // (int)
 005A: 10@ += 3@  // (int)
 
@@ -260,22 +254,22 @@ end
 // Line
 3@ = 8
 3@ *= 6
+3@ += 8   // 2 ints
 006A: 3@ *= 1@  // (int)
 005A: 10@ += 3@  // (int)
 
-3@ = 8
-3@ *= 6
-3@ += 8
-for 11@ = 0 to 3@ // line length
+3@=8
+3@*=5
+005A: 3@ += 10@  // (int)
+0A8D: 30@ = read_memory 3@ size 1 virtual_protect 0
+
+for 11@ = 0 to 6
     0A8D: 12@(11@,7i) = read_memory 10@ size 4 virtual_protect 0
     000A: 10@ += 4
     0A8D: 22@(11@,7i) = read_memory 10@ size 4 virtual_protect 0
     000A: 10@ += 4
 end
-0A9A: 20@ = openfile LOG_FILE mode "ab+"  // IF and SET
-0AD9: write_formatted_text "read data: gxt1 '%s' gxt2 '%s' gxt3 '%s' gxt4 '%s' gxt5 '%s' int %d mem_addr 0x%.8X addr %d addr %d" in_file 20@ gxt1 12@s 22@ gxt2 13@ 23@ gxt3 14@ 24@ gxt4 15@ 25@ gxt5 16@ 26@ int 17@ int 27@ int 18@ int 28@
-0A9B: closefile 20@
-0AB2: ret 14 gxt1 12@ 22@ gxt2 13@ 23@ gxt3 14@ 24@ gxt4 15@ 25@ gxt5 16@ 26@ int 17@ int 27@ int 18@ int 28@
+0AB2: ret 14 gxt1 12@ 22@ gxt2 13@ 23@ gxt3 14@ 24@ gxt4 15@ 25@ gxt5 16@ 26@ int 30@ int 27@ int 18@ int 28@
 
 {======================================================================
 ======================================================================}
@@ -317,7 +311,7 @@ for 5@ = 0 to 11 // 12 lines max
         end
         
         // WASD or MINUS / PLUS
-        if 05AE:   16@s == 'WASD1' // @s == 'short'
+        if 05AE:   14@s == 'WASD1' // @s == 'short'
         then
             // Wasd symbol
             038E: draw_box_position 156.0 64.0 size 12.0 10.0 RGBA 100 100 100 210
@@ -337,7 +331,7 @@ for 5@ = 0 to 11 // 12 lines max
             24@s = 'KEY_D'
             0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 184.0 7@ GXT 24@ 25@
         end
-        if 05AE:   16@s == 'MINUS' // @s == 'short'
+        if 05AE:   14@s == 'MINUS' // @s == 'short'
         then
             0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 159.0 4@ GXT 14@ 15@ // minus
             0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 180.0 4@ GXT 16@ 17@ // plus
@@ -345,14 +339,17 @@ for 5@ = 0 to 11 // 12 lines max
         
         // ------------------- Control and logic --------------------------//
         
+        0087: 9@ = 4@ // (float)
+        000B: 9@ += 5.0
+        
         // Increment Offset
         if 05AE:   10@s == 'INCR' // @s == 'short'
         then
  
-            if 0AB1: @CursorClickCheck 4 box_position 162.0 4@ box_size 16.0 12.0 // Minus
+            if 0AB1: @CursorClickCheck 4 box_position 162.0 9@ box_size 16.0 12.0 // Minus
             then 0AB1: @IncOrDec_IncrementalOffset 1 decrease -1
             end
-            if 0AB1: @CursorClickCheck 4 box_position 183.0 4@ box_size 16.0 12.0 // Plus
+            if 0AB1: @CursorClickCheck 4 box_position 183.0 9@ box_size 16.0 12.0 // Plus
             then 0AB1: @IncOrDec_IncrementalOffset 1 increase 1
             end
  
@@ -363,19 +360,19 @@ for 5@ = 0 to 11 // 12 lines max
             0087: 8@ = 7@ // (float)
             0013: 8@ *= -1.0
         
-            if 0AB1: @CursorClickCheck 4 box_position 162.0 4@ box_size 16.0 12.0 // Minus
+            if 0AB1: @CursorClickCheck 4 box_position 162.0 9@ box_size 16.0 12.0 // Minus
             then gosub @DecreaseParameter
             end
-            if 0AB1: @CursorClickCheck 4 box_position 183.0 4@ box_size 16.0 12.0 // Plus
+            if 0AB1: @CursorClickCheck 4 box_position 183.0 9@ box_size 16.0 12.0 // Plus
             then gosub @IncreaseParameter
             end
             
             {if 05AE:   18@s == 'float' // @s == 'short'
             then
-                if 0AB1: @CursorClickCheck 4 box_position 162.0 4@ box_size 16.0 12.0 // Minus
+                if 0AB1: @CursorClickCheck 4 box_position 162.0 9@ box_size 16.0 12.0 // Minus
                 then 0AB1: @AddOffsetToFloatParameter 3 param_addr 22@ param_offset 8@ mem_addr 21@
                 end
-                if 0AB1: @CursorClickCheck 4 box_position 183.0 4@ box_size 16.0 12.0 // Plus
+                if 0AB1: @CursorClickCheck 4 box_position 183.0 9@ box_size 16.0 12.0 // Plus
                 then 0AB1: @AddOffsetToFloatParameter 3 param_addr 22@ param_offset 7@ mem_addr 21@
                 end
             end
@@ -383,26 +380,26 @@ for 5@ = 0 to 11 // 12 lines max
             05AE:   18@s == 'hex' // @s == 'short'
             05AE:   18@s == 'int32' // @s == 'short'
             then
-                if 0AB1: @CursorClickCheck 4 box_position 162.0 4@ box_size 16.0 12.0 // Minus
+                if 0AB1: @CursorClickCheck 4 box_position 162.0 9@ box_size 16.0 12.0 // Minus
                 then 0AB1: @AddOffsetToInt32Parameter 3 param_label 22@ param_offset 8@ real_addr 21@
                 end
-                if 0AB1: @CursorClickCheck 4 box_position 183.0 4@ box_size 16.0 12.0 // Plus
+                if 0AB1: @CursorClickCheck 4 box_position 183.0 9@ box_size 16.0 12.0 // Plus
                 then 0AB1: @AddOffsetToInt32Parameter 3 param_label 22@ param_offset 7@ real_addr 21@
                 end
             end
             if 05AE:   18@s == 'int8' // @s == 'short'
             then
-                if 0AB1: @CursorClickCheck 4 box_position 162.0 4@ box_size 16.0 12.0 // Minus
+                if 0AB1: @CursorClickCheck 4 box_position 162.0 9@ box_size 16.0 12.0 // Minus
                 then 0AB1: @AddOffsetToInt8Parameter 3 param_label 22@ param_offset 8@ real_addr 21@
                 end
-                if 0AB1: @CursorClickCheck 4 box_position 183.0 4@ box_size 16.0 12.0 // Plus
+                if 0AB1: @CursorClickCheck 4 box_position 183.0 9@ box_size 16.0 12.0 // Plus
                 then 0AB1: @AddOffsetToInt8Parameter 3 param_label 22@ param_offset 7@ real_addr 21@
                 end
             end}
         end
         
         // Position
-        if 05AE:   16@s == 'WASD1' // @s == 'short'
+        if 05AE:   14@s == 'WASD1' // @s == 'short'
         then
             if 0AB0:   key_pressed KEY_A
             then
@@ -417,7 +414,7 @@ for 5@ = 0 to 11 // 12 lines max
                 32@=0
             end
         end
-        if 05AE:   16@s == 'WASD2' // @s == 'short'
+        if 05AE:   14@s == 'WASD2' // @s == 'short'
         then
             if 0AB0:   key_pressed KEY_W
             then
