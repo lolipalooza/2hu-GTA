@@ -1,229 +1,5 @@
 {======================================================================
 ======================================================================}
-:EditorLoop // 0@: panels state, 1@: chosen option, 2@: general state
-0AC6: 30@ = label @DrawMenuLoop_StateVar offset
-0A8D: 31@ = read_memory 30@ size 1 virtual_protect 0
-
-if 0@ == P_EDIT_MONEY
-then
-    0AB1: @CursorControl 0
-    
-    038E: draw_box_position 107.0 83.0 size 175.0 133.0 RGBA 0 0 0 100
-    
-    10@s = 'HOPT01' // Money Text
-    0AB1: @SetDrawText 8 font 3 linewidth 600.0 size 0.4 1.2 position 16.0 9.0 GXT 10@ 11@
-    
-    10@s = 'INCR' // Increment offset
-    0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 30.0 24.0 GXT 10@ 11@
-    
-    10@s = 'MOPT01X' // X Position
-    0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 30.0 47.0 GXT 10@ 11@
-    10@s = 'MOPT01Y' // Y Position
-    0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 30.0 59.0 GXT 10@ 11@
-    
-    10@s = 'MOPT02' // Width
-    0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 30.0 82.0 GXT 10@ 11@
-    10@s = 'MOPT03' // Height
-    0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 30.0 94.0 GXT 10@ 11@
-    
-    10@s = 'MOPT04' // Border
-    0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 30.0 116.0 GXT 10@ 11@
-    10@s = 'MOPT05' // Border1
-    0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 30.0 128.0 GXT 10@ 11@
-    10@s = 'MOPT06' // Shadow Distance
-    0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 30.0 140.0 GXT 10@ 11@
-    
-    10@s = 'INCR_V'
-    0AB1: @DrawFloat 9 @IncrementalOffset font 1 linewidth 600.0 size 0.2 1.0 position 103.0 24.0 GXT 10@ 11@
-    10@s = 'M01X_V'
-    0AB1: @DrawFloat 9 @Money_PosX font 1 linewidth 600.0 size 0.2 1.0 position 103.0 47.0 GXT 10@ 11@
-    10@s = 'M01Y_V'
-    0AB1: @DrawFloat 9 @Money_PosY font 1 linewidth 600.0 size 0.2 1.0 position 103.0 59.0 GXT 10@ 11@
-    10@s = 'M01W_V'
-    0AB1: @DrawFloat 9 @Money_Width font 1 linewidth 600.0 size 0.2 1.0 position 103.0 82.0 GXT 10@ 11@
-    10@s = 'M01H_V'
-    0AB1: @DrawFloat 9 @Money_Height font 1 linewidth 600.0 size 0.2 1.0 position 103.0 94.0 GXT 10@ 11@    
-    10@s = 'M04_V'
-    0AB1: @DrawHex 9 @Money_Border font 1 linewidth 600.0 size 0.2 1.0 position 103.0 116.0 GXT 10@ 11@
-    10@s = 'INT_N'
-    0AB1: @DrawInt8 9 @Money_Border1 font 1 linewidth 600.0 size 0.2 1.0 position 103.0 128.0 GXT 10@ 11@
-    0AB1: @DrawInt8 9 @Money_ShadowDistance font 1 linewidth 600.0 size 0.2 1.0 position 103.0 140.0 GXT 10@ 11@
-    
-    // Wasd symbol
-    038E: draw_box_position 156.0 64.0 size 12.0 10.0 RGBA 100 100 100 210
-    038E: draw_box_position 171.0 64.0 size 12.0 10.0 RGBA 100 100 100 210
-    038E: draw_box_position 186.0 64.0 size 12.0 10.0 RGBA 100 100 100 210
-    038E: draw_box_position 171.0 51.0 size 12.0 10.0 RGBA 100 100 100 210
-    10@s = 'KEY_W'
-    0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 169.0 46.0 GXT 10@ 11@
-    10@s = 'KEY_A'
-    0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 154.0 59.0 GXT 10@ 11@
-    10@s = 'KEY_S'
-    0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 169.0 59.0 GXT 10@ 11@
-    10@s = 'KEY_D'
-    0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 184.0 59.0 GXT 10@ 11@
-    
-    // Increment Offset
-    10@s = 'MINUS' // -
-    0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 159.0 24.0 GXT 10@ 11@
-    10@s = 'PLUS' // +
-    0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 180.0 24.0 GXT 10@ 11@
-
-    // Width
-    10@s = 'MINUS' // -
-    0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 159.0 82.0 GXT 10@ 11@
-    10@s = 'PLUS' // +
-    0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 180.0 82.0 GXT 10@ 11@
-    
-    // Height
-    10@s = 'MINUS' // -
-    0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 159.0 94.0 GXT 10@ 11@
-    10@s = 'PLUS' // +
-    0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 180.0 94.0 GXT 10@ 11@
-    
-    // Border
-    10@s = 'MINUS' // -
-    0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 159.0 116.0 GXT 10@ 11@
-    10@s = 'PLUS' // +
-    0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 180.0 116.0 GXT 10@ 11@
-    
-    // Border1
-    10@s = 'MINUS' // -
-    0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 159.0 128.0 GXT 10@ 11@
-    10@s = 'PLUS' // +
-    0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 180.0 128.0 GXT 10@ 11@
-    
-    // Shadow Distance
-    10@s = 'MINUS' // -
-    0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 159.0 140.0 GXT 10@ 11@
-    10@s = 'PLUS' // +
-    0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 180.0 140.0 GXT 10@ 11@
-    
-    10@s = 'BACK' // Back
-    0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 140.0 162.0 GXT 10@ 11@
-    
-    // Increment Offset
-    if 0AB1: @CursorClickCheck 4 box_position 162.0 29.0 box_size 16.0 14.0 // Minus
-    then 0AB1: @IncOrDec_IncrementalOffset 1 decrease -1
-    end
-    if 0AB1: @CursorClickCheck 4 box_position 183.0 29.0 box_size 16.0 14.0 // Plus
-    then 0AB1: @IncOrDec_IncrementalOffset 1 increase 1
-    end
-    0AC6: 10@ = label @IncrementalOffset offset
-    0A8D: 11@ = read_memory 10@ size 4 virtual_protect 0
-    0087: 12@ = 11@ // (float)
-    0013: 12@ *= -1.0
-    
-    // Width
-    if 0AB1: @CursorClickCheck 4 box_position 162.0 87.0 box_size 16.0 12.0 // Minus
-    then 0AB1: @IncMoneySize 2 width_height_offsets 12@ 0.0
-    end
-    if 0AB1: @CursorClickCheck 4 box_position 183.0 87.0 box_size 16.0 12.0 // Plus
-    then 0AB1: @IncMoneySize 2 width_height_offsets 11@ 0.0
-    end
-    
-    // Height
-    if 0AB1: @CursorClickCheck 4 box_position 162.0 99.0 box_size 16.0 12.0 // Minus
-    then 0AB1: @IncMoneySize 2 width_height_offsets 0.0 12@
-    end
-    if 0AB1: @CursorClickCheck 4 box_position 183.0 99.0 box_size 16.0 12.0 // Plus
-    then 0AB1: @IncMoneySize 2 width_height_offsets 0.0 11@
-    end
-    
-    // Position
-    if 0AB0:   key_pressed KEY_W
-    then
-        31@=KEY_W
-        0AB1: @MoveMoneyPosition 2 xy_offsets 0.0 12@
-        32@=0
-    end
-    if 0AB0:   key_pressed KEY_A
-    then
-        31@=KEY_A
-        0AB1: @MoveMoneyPosition 2 xy_offsets 11@ 0.0
-        32@=0
-    end
-    if 0AB0:   key_pressed KEY_S
-    then
-        31@=KEY_S
-        0AB1: @MoveMoneyPosition 2 xy_offsets 0.0 11@
-        32@=0
-    end
-    if 0AB0:   key_pressed KEY_D
-    then
-        31@=KEY_D
-        0AB1: @MoveMoneyPosition 2 xy_offsets 12@ 0.0
-        32@=0
-    end
-    
-    // Border
-    if 0AB1: @CursorClickCheck 4 box_position 162.0 121.0 box_size 16.0 12.0 // Minus
-    then 0AB1: @IncMoneyBorder 3 border -1 border1 0 shadow 0
-    end
-    if 0AB1: @CursorClickCheck 4 box_position 183.0 121.0 box_size 16.0 12.0 // Plus
-    then 0AB1: @IncMoneyBorder 3 border 1 border1 0 shadow 0
-    end
-    // Border1
-    if 0AB1: @CursorClickCheck 4 box_position 162.0 133.0 box_size 16.0 12.0 // Minus
-    then 0AB1: @IncMoneyBorder 3 border 0 border1 -1 shadow 0
-    end
-    if 0AB1: @CursorClickCheck 4 box_position 183.0 133.0 box_size 16.0 12.0 // Plus
-    then 0AB1: @IncMoneyBorder 3 border 0 border1 1 shadow 0
-    end
-    // Shadow Distance
-    if 0AB1: @CursorClickCheck 4 box_position 162.0 145.0 box_size 16.0 12.0 // Minus
-    then 0AB1: @IncMoneyBorder 3 border 0 border1 0 shadow -1
-    end
-    if 0AB1: @CursorClickCheck 4 box_position 183.0 145.0 box_size 16.0 12.0 // Plus
-    then 0AB1: @IncMoneyBorder 3 border 0 border1 0 shadow 1
-    end
-
-    // Back
-    if 0AB1: @CursorClickCheck 4 box_position 149.0 169.0 box_size 90.0 15.0
-    then
-        03F0: enable_text_draw 0
-        2@ = G_BUILD_PANEL
-        0@ = P_OPTIONS_1
-    end
-end
-
-if or
-31@ == KEY_W
-32@ > 350
-then
-    if 8AB0:   not key_pressed KEY_W
-    then 31@=0
-    end
-end
-if or
-31@ == KEY_A
-32@ > 350
-then
-    if 8AB0:   not key_pressed KEY_A
-    then 31@=0
-    end
-end
-if or
-31@ == KEY_S
-32@ > 350
-then
-    if 8AB0:   not key_pressed KEY_S
-    then 31@=0
-    end
-end
-if or
-31@ == KEY_D
-32@ > 350
-then
-    if 8AB0:   not key_pressed KEY_D
-    then 31@=0
-    end
-end
-0A8C: write_memory 30@ size 1 value 31@ virtual_protect 0
-0AB2: ret 2 panels_state 0@ general_state 2@
-
-{======================================================================
-======================================================================}
 :GetDrawMenuLength
 3@ = 8    // short strings length
 3@ *= 6   // short strings per line
@@ -279,7 +55,7 @@ end
 
 0AB1: @CursorControl 0
     
-038E: draw_box_position 107.0 83.0 size 175.0 133.0 RGBA 0 0 0 100
+//038E: draw_box_position 107.0 83.0 size 175.0 133.0 RGBA 0 0 0 100
 
 // Recalculating chosen option
 0085: 1@ = 0@ // (int)
@@ -482,10 +258,10 @@ end
 if or
 05AE:   18@s == 'hex' // @s == 'short'
 05AE:   18@s == 'int32' // @s == 'short'
-then 0AB1: @AddOffsetToInt32Parameter 3 param_label 22@ param_offset 7@ real_addr 21@
+then 0AB1: @AddOffsetToInt32Parameter 3 param_label 22@ param_offset -1 real_addr 21@
 end
 if 05AE:   18@s == 'int8' // @s == 'short'
-then 0AB1: @AddOffsetToInt8Parameter 3 param_label 22@ param_offset 7@ real_addr 21@
+then 0AB1: @AddOffsetToInt8Parameter 3 param_label 22@ param_offset -1 real_addr 21@
 end
 return
             
@@ -496,10 +272,10 @@ end
 if or
 05AE:   18@s == 'hex' // @s == 'short'
 05AE:   18@s == 'int32' // @s == 'short'
-then 0AB1: @AddOffsetToInt32Parameter 3 param_label 22@ param_offset 8@ real_addr 21@
+then 0AB1: @AddOffsetToInt32Parameter 3 param_label 22@ param_offset 1 real_addr 21@
 end
 if 05AE:   18@s == 'int8' // @s == 'short'
-then 0AB1: @AddOffsetToInt8Parameter 3 param_label 22@ param_offset 8@ real_addr 21@
+then 0AB1: @AddOffsetToInt8Parameter 3 param_label 22@ param_offset 1 real_addr 21@
 end
 return
 

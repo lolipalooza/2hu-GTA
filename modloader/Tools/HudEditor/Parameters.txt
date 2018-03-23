@@ -23,40 +23,36 @@ end
 0AC6: 0@ = label @IncrementalOffset offset
 0A8C: write_memory 0@ size 4 value 1.0 virtual_protect 0
 
+
+
 0AC6: 0@ = label @Money_PosX offset 
 0A8C: write_memory 0@ size 4 value 32.0 virtual_protect 0
 0AC6: 0@ = label @Money_PosY offset 
 0A8C: write_memory 0@ size 4 value 89.0 virtual_protect 0
-0AB1: @ChangeMoneyPosition 2 xy_pos 32.0 89.0
+0AB1: @WriteFloatParameter 3 param_label @Money_PosX param_value 32.0 param_real_address _MoneyPosX
+0AB1: @WriteFloatParameter 3 param_label @Money_PosY param_value 89.0 param_real_address _MoneyPosY
 
-0AC6: 0@ = label @Money_Height offset 
-0A8C: write_memory 0@ size 4 value 0.55 virtual_protect 0
 0AC6: 0@ = label @Money_Width offset 
+0A8C: write_memory 0@ size 4 value 0.55 virtual_protect 0
+0AC6: 0@ = label @Money_Height offset 
 0A8C: write_memory 0@ size 4 value 1.1 virtual_protect 0
-0AB1: @ChangeMoneySize 2 width 0.55 height 1.1
+0AB1: @WriteFloatParameter 3 param_label @Money_Width param_value 0.55 param_real_address _MoneyWidth
+0AB1: @WriteFloatParameter 3 param_label @Money_Height param_value 1.1 param_real_address _MoneyHeight
+
+0AC6: 0@ = label @Money_Border offset 
+0A8C: write_memory 0@ size 4 value 0x189FFD virtual_protect 0
+0AB1: @WriteInt32Parameter 2 real_addr _MoneyBorderInt param_value 0x189FFD
+
+0AC6: 0@ = label @Money_Border1 offset 
+0A8C: write_memory 0@ size 1 value 2 virtual_protect 0
+0AB1: @WriteInt8Parameter 2 real_addr _MoneyBorderByte1 param_value 2
 
 0AC6: 0@ = label @Money_ShadowDistance offset 
 0A8C: write_memory 0@ size 1 value 0 virtual_protect 0
-0AC6: 0@ = label @Money_Border offset 
-0A8C: write_memory 0@ size 4 value 0x189FFD virtual_protect 0
-0AC6: 0@ = label @Money_Border1 offset 
-0A8C: write_memory 0@ size 1 value 2 virtual_protect 0
-0AB1: @ChangeMoneyBorder 3 border 0x189FFD border1 2 shadow 0
-{
-0A8D: 0@ = read_memory 0x58EC14 size 1 virtual_protect 0 // x-pos related
-0A8D: 1@ = read_memory 0x58EC15 size 4 virtual_protect 0 // x-pos
-0A8D: 11@ = read_memory 1@ size 4 virtual_protect 1
-0AD0: show_formatted_text_lowpriority "X-Pos: %f, X-Pos related: %d" time 6000 11@ 0@
+0AB1: @WriteInt8Parameter 2 real_addr _MoneyBorderByte2 param_value 0
 
-// Unknown pos-x and pos-y real addresses
-0AC6: 0@ = label @Clock_PosX offset 
-0A8C: write_memory 0@ size 4 value 32.0 virtual_protect 0
-0AC6: 0@ = label @Clock_PosY offset 
-0A8C: write_memory 0@ size 4 value 89.0 virtual_protect 0
-0AB1: @WriteParameter 3 param_label @Clock_PosX param_value 32.0 param_real_address 2@
-//0AB1: @WriteParameter 3 param_label @Clock_PosY param_value 89.0 param_real_address 2@
 
-}
+
 0AC6: 0@ = label @Clock_Width offset 
 0A8C: write_memory 0@ size 4 value 0.55 virtual_protect 0
 0AC6: 0@ = label @Clock_Height offset 
@@ -64,14 +60,26 @@ end
 0AB1: @WriteFloatParameter 3 param_label @Clock_Width param_value 0.55 param_real_address _ClockWidth
 0AB1: @WriteFloatParameter 3 param_label @Clock_Height param_value 1.1 param_real_address _ClockHeight
 
+0AC6: 0@ = label @Clock_Border offset 
+0A8C: write_memory 0@ size 4 value 0x18AA1A virtual_protect 0
+0AB1: @WriteInt32Parameter 2 real_addr _ClockBorderInt param_value 0x18AA1A
+
+0AC6: 0@ = label @Clock_Border1 offset 
+0A8C: write_memory 0@ size 1 value 2 virtual_protect 0
+0AB1: @WriteInt8Parameter 2 real_addr _ClockBorderByte1 param_value 2
+
+
 {
-0AC6: 0@ = label @Var offset 
-0A8D: 1@ = read_memory __var_addr__ size 4 virtual_protect 1
-0A8D: 2@ = read_memory 1@ size 4 virtual_protect 1
-0A8C: write_memory 0@ size 4 value 2@ virtual_protect 0
+// Read Default Values
+0A8D: 0@ = read_memory _ClockBorderInt size 4 virtual_protect 0
+0A8D: 1@ = read_memory _ClockBorderByte1 size 1 virtual_protect 0
+//0A8D: 11@ = read_memory 1@ size 4 virtual_protect 1
+0A9A: 20@ = openfile LOG_FILE mode "wb+"  // IF and SET
+0AD9: write_formatted_text "border int: 0x%X, border byte: %d" in_file 20@ 0@ 1@
+0A9B: closefile 20@
 }
 
-// Money
+// 0: Money
 0AB1: @IntializeLine 5 var 0 line 0 mem_addr 0 var_label @IncrementalOffset
 0AB1: @IntializeLine 5 var 0 line 1 mem_addr _MoneyPosX var_label @Money_PosX
 0AB1: @IntializeLine 5 var 0 line 2 mem_addr _MoneyPosY var_label @Money_PosY
@@ -80,6 +88,13 @@ end
 0AB1: @IntializeLine 5 var 0 line 5 mem_addr _MoneyBorderInt var_label @Money_Border
 0AB1: @IntializeLine 5 var 0 line 6 mem_addr _MoneyBorderByte1 var_label @Money_Border1
 0AB1: @IntializeLine 5 var 0 line 7 mem_addr _MoneyBorderByte2 var_label @Money_ShadowDistance
+
+// 1: Clock
+0AB1: @IntializeLine 5 var 1 line 0 mem_addr 0 var_label @IncrementalOffset
+0AB1: @IntializeLine 5 var 1 line 1 mem_addr _ClockWidth var_label @Clock_Width
+0AB1: @IntializeLine 5 var 1 line 2 mem_addr _ClockHeight var_label @Clock_Height
+0AB1: @IntializeLine 5 var 1 line 3 mem_addr _ClockBorderInt var_label @Clock_Border
+0AB1: @IntializeLine 5 var 1 line 4 mem_addr _ClockBorderByte1 var_label @Clock_Border1
 0AB2: ret 0
 
 {======================================================================
@@ -99,160 +114,13 @@ end
 0AC6: 10@ = label @DrawMenu offset
 005A: 10@ += 5@  // (int)
 005A: 10@ += 6@  // (int)
-
 0A8C: write_memory 10@ size 4 value 2@ virtual_protect 0 // Memory Address
 10@ += 4
-
-0AC6: 11@ = label 3@ offset
-0A8C: write_memory 10@ size 4 value 11@ virtual_protect 0 // Var Address
+0A8C: write_memory 10@ size 4 value 3@ virtual_protect 0 // Var Label
 0AB2: ret 0
 
 {======================================================================
 ======================================================================}
-:MoveMoneyPosition // 0@: x offset, 1@: y offset
-0AC6: 10@ = label @Money_PosX offset
-0A8D: 11@ = read_memory 10@ size 4 virtual_protect 0
-005B: 11@ += 0@  // (float)
-0A8C: write_memory 10@ size 4 value 11@ virtual_protect 0
-0AC6: 20@ = label @Money_PosY offset
-0A8D: 21@ = read_memory 20@ size 4 virtual_protect 0
-005B: 21@ += 1@  // (float)
-0A8C: write_memory 20@ size 4 value 21@ virtual_protect 0
-0AB1: @ChangeMoneyPosition 2 xy_pos 11@ 21@
-0AB2: ret 0
-
-:ChangeMoneyPosition // 0@: x position, 1@: y position
-0AC6: 2@ = label @Money_PosY offset 
-0A8C: write_memory 2@ size 4 value 1@ virtual_protect 0
-0A8C: write_memory _MoneyPosY size 4 value 2@ virtual_protect 1 // Money Position Y
-
-0AC6: 2@ = label @Money_PosX offset 
-0A8C: write_memory 2@ size 4 value 0@ virtual_protect 0
-0A8C: write_memory _MoneyPosX size 4 value 2@ virtual_protect 1 // Money Position X
-0AB2: ret 0
-
-:Money_PosX
-hex
-00 00 00 00
-end
-
-:Money_PosY
-hex
-00 00 00 00
-end
-
-:IncMoneySize // 0@: w offset, 1@: h offset
-0AC6: 10@ = label @Money_Width offset
-0A8D: 11@ = read_memory 10@ size 4 virtual_protect 0
-005B: 11@ += 0@  // (float)
-0A8C: write_memory 10@ size 4 value 11@ virtual_protect 0
-0AC6: 20@ = label @Money_Height offset
-0A8D: 21@ = read_memory 20@ size 4 virtual_protect 0
-005B: 21@ += 1@  // (float)
-0A8C: write_memory 20@ size 4 value 21@ virtual_protect 0
-0AB1: @ChangeMoneySize 2 width 11@ height 21@
-0AB2: ret 0
-
-:ChangeMoneySize // 0@: width, 1@: height
-0AC6: 2@ = label @Money_Height offset 
-0A8C: write_memory 2@ size 4 value 1@ virtual_protect 0
-0A8C: write_memory _MoneyHeight size 4 value 2@ virtual_protect 1 // Money height
-
-0AC6: 2@ = label @Money_Width offset 
-0A8C: write_memory 2@ size 4 value 0@ virtual_protect 0
-0A8C: write_memory _MoneyWidth size 4 value 2@ virtual_protect 1 // Money width
-0AB2: ret 0
-
-:Money_Width
-hex
-00 00 00 00
-end
-
-:Money_Height
-hex
-00 00 00 00
-end
-
-:IncMoneyBorder // 0@: border offset, 1@: border1 ? offset, 2@: shadow distance offset
-0A8D: 10@ = read_memory _MoneyBorderByte2 size 1 virtual_protect 1
-0A8D: 11@ = read_memory _MoneyBorderByte1 size 1 virtual_protect 1
-0A8D: 12@ = read_memory _MoneyBorderInt size 4 virtual_protect 1
-005A: 10@ += 2@  // (int)
-005A: 11@ += 1@  // (int)
-005A: 12@ += 0@  // (int)
-if 12@ > 0x189FFD
-then 12@=0x189FFD
-end
-if and
-12@ > 0x189FED
-0x189FF1 > 12@
-then
-    if 0@>0
-    then 12@=0x189FF1
-    else 12@=0x189FED
-    end
-end
-if and
-12@ > 0x189FE9
-0x189FEB > 12@
-then
-    if 0@>0
-    then 12@=0x189FEB
-    else 12@=0x189FE9
-    end
-end
-if and
-12@ > 0x189FE4
-0x189FE9 > 12@
-then
-    if 0@>0
-    then 12@=0x189FE9
-    else 12@=0x189FE4
-    end
-end
-if 12@ == 0x189FE2 // 0x189FE2 makes crash
-then
-    if 0@>0
-    then 12@=0x189FE3
-    else 12@=0x189FE1
-    end
-end
-if
-0x189FE1 > 12@
-then 12@=0x189FE1
-end
-// III hud uses this value 0x189F5D
-0AC6: 20@ = label @Money_Border offset
-0A8C: write_memory 20@ size 4 value 12@ virtual_protect 0
-0AC6: 20@ = label @Money_Border1 offset
-0A8C: write_memory 20@ size 1 value 11@ virtual_protect 0
-0AC6: 20@ = label @Money_ShadowDistance offset
-0A8C: write_memory 20@ size 1 value 10@ virtual_protect 0
-0AB1: @ChangeMoneyBorder 3 border 12@ border1 11@ shadow 10@
-0AB2: ret 0
-
-:ChangeMoneyBorder // 0@: border, 1@: border1, 2@: shadow distance
-0A8C: write_memory _MoneyBorderByte2 size 1 value 2@ virtual_protect 1 // Money shadow distance
-0A8C: write_memory _MoneyBorderByte1 size 1 value 1@ virtual_protect 1 // something possibly related to border, unknown
-0A8C: write_memory _MoneyBorderInt size 4 value 0@ virtual_protect 1 // Money border 2
-0AB2: ret 0
-
-:Money_Border
-hex
-00 00 00 00
-end
-
-:Money_ShadowDistance
-hex
-00
-end
-
-:Money_Border1
-hex
-00
-end
-
-
 :WriteFloatParameter // 0@: param label, 1@: param value, 2@: param real address
 0AC6: 10@ = label 0@ offset 
 0A8C: write_memory 10@ size 4 value 1@ virtual_protect 0
@@ -289,28 +157,140 @@ end
 0A8D: 10@ = read_memory 2@ size 4 virtual_protect 1
 005A: 10@ += 1@  // (int)
 0AC6: 20@ = label 0@ offset
+0AB1: @MoneyBorder_Exceptions 3 label 0@ value 10@ offset 1@ ret value 10@
+0AB1: @ClockBorder_Exceptions 3 label 0@ value 10@ offset 1@ ret value 10@
 0A8C: write_memory 20@ size 4 value 10@ virtual_protect 0
 0AB1: @WriteInt32Parameter 2 real_addr 2@ param_value 10@
 0AB2: ret 0
 
 
+:Money_PosX
+hex
+00 00 00 00
+end
+:Money_PosY
+hex
+00 00 00 00
+end
+:Money_Width
+hex
+00 00 00 00
+end
+:Money_Height
+hex
+00 00 00 00
+end
+:Money_Border
+hex
+00 00 00 00
+end
+:Money_ShadowDistance
+hex
+00
+end
+:Money_Border1
+hex
+00
+end
+
 :Clock_PosX
 hex
 00 00 00 00
 end
-
 :Clock_PosY
 hex
 00 00 00 00
 end
-
 :Clock_Width
 hex
 00 00 00 00
 end
-
 :Clock_Height
 hex
 00 00 00 00
 end
+:Clock_Border
+hex
+00 00 00 00
+end
+:Clock_Border1
+hex
+00
+end
+
+
+{======================================================================
+======================================================================}
+:MoneyBorder_Exceptions // label 0@ value 1@ offset 2@
+0AD3: 10@v = format "%d" 0@
+0AD3: 15@v = format "%d" @Money_Border
+if 85AE:   not 10@v == 15@v // @s == 'short'
+then 0AB2: ret 1 1@
+end
+if 1@ > 0x189FFD
+then 1@=0x189FFD
+end
+if and
+1@ > 0x189FED
+0x189FF1 > 1@
+then
+    if 2@>0
+    then 1@=0x189FF1
+    else 1@=0x189FED
+    end
+end
+if and
+1@ > 0x189FE9
+0x189FEB > 1@
+then
+    if 2@>0
+    then 1@=0x189FEB
+    else 1@=0x189FE9
+    end
+end
+if and
+1@ > 0x189FE4
+0x189FE9 > 1@
+then
+    if 2@>0
+    then 1@=0x189FE9
+    else 1@=0x189FE4
+    end
+end
+if 1@ == 0x189FE2 // 0x189FE2 makes crash
+then
+    if 2@>0
+    then 1@=0x189FE3
+    else 1@=0x189FE1
+    end
+end
+if 0x189FE1 > 1@
+then 1@=0x189FE1
+end
+// III hud uses this value 0x189F5D
+0AB2: ret 1 1@
+
+{======================================================================
+======================================================================}
+:ClockBorder_Exceptions // label 0@ value 1@ offset 2@
+0AD3: 10@v = format "%d" 0@
+0AD3: 15@v = format "%d" @Clock_Border
+if 85AE:   not 10@v == 15@v // @s == 'short'
+then 0AB2: ret 1 1@
+end
+0085: 2@ = 1@ // (int)
+if 2@ > 0x18AA1A
+then 1@=0x18A9FA
+end
+if 0x18AA1A > 2@
+then 1@=0x18AA1A
+end
+if 0x18A9FA > 2@
+then 1@=0x18AA1A
+end
+if 2@ > 0x18A9FA
+then 1@=0x18A9FA
+end
+// III hud uses this value 0x189F5D
+0AB2: ret 1 1@
 

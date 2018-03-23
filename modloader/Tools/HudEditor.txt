@@ -45,22 +45,16 @@ end
 
 {======================================================================
 ======================================================================}
+// Clean log file
+0A9A: 20@ = openfile LOG_FILE mode "wb+"  // IF and SET
+0A9B: closefile 20@
+
 0AB1: @InitializeGxtEntries 0
 0AB1: @InitializeGxtData 2 panels_quantity P_QUANTITY draw_menues_quantity DW_QUANTITY
 
 0AB1: @InitCursorControl 0
 
 0AB1: @InitializeParameters 0
-
-// Clean log file
-0A9A: 20@ = openfile LOG_FILE mode "wb+"  // IF and SET
-0A9B: closefile 20@
-
-{0AB1: @ReadMenuLine 2 option 0 line 1 ret gxt1 10@ 11@ gxt2 12@ 13@ gxt3 14@ 15@ gxt4 16@ 17@ gxt5 18@ 19@ lines_skip 20@ mem_addr 21@ var_addr 22@ action_addr 23@
-0A9A: 29@ = openfile LOG_FILE mode "ab+"  // IF and SET
-0AD9: write_formatted_text "read data: gxt1 '%s' gxt2 '%s' gxt3 '%s' gxt4 '%s' " in_file 29@ gxt1 10@s gxt2 12@s gxt3 14@s gxt4 16@s
-0AD9: write_formatted_text "gxt5 '%s' lines_skip %d mem_addr 0x%.8X addr %d%c%c" in_file 29@ gxt5 18@s lines_skip 20@ mem_addr 21@ var_addr 22@ carriage_return 0xd 0xa
-0A9B: closefile 29@}
 
 {======================================================================
 ======================================================================}
@@ -145,19 +139,19 @@ hex
     "MOPT03__" "M01HV___" "MINUS___" "PLUS____" "float___" 2 "___" "____________"
     "MOPT04__" "M04V____" "MINUS___" "PLUS____" "hex_____" 1 "___" "____________"
     "MOPT05__" "INTN____" "MINUS___" "PLUS____" "int8____" 1 "___" "____________"
-    "MOPT06__" "INTN____" "MINUS___" "PLUS____" "int8____" 1 "___" "____________"
+    "MOPT06__" "INTN____" "MINUS___" "PLUS____" "int8____" 2 "___" "____________"
     "dummy___" "dummy___" "dummy___" "dummy___" "dummy___" 0 "___" "____________"
     "dummy___" "dummy___" "dummy___" "dummy___" "dummy___" 0 "___" "____________"
     "dummy___" "dummy___" "dummy___" "dummy___" "dummy___" 0 "___" "____________"
     "dummy___" "dummy___" "dummy___" "dummy___" "dummy___" 0 "___" "____________"
     
-    // 0: Clock Text
+    // 1: Clock Text
     "HOPT02__"
     "INCR____" "INCRV___" "MINUS___" "PLUS____" "float___" 2 "___" "____________"
     "MOPT02__" "M01WV___" "MINUS___" "PLUS____" "float___" 1 "___" "____________"
     "MOPT03__" "M01HV___" "MINUS___" "PLUS____" "float___" 2 "___" "____________"
     "MOPT04__" "M04V____" "MINUS___" "PLUS____" "hex_____" 1 "___" "____________"
-    "MOPT05__" "INTN____" "MINUS___" "PLUS____" "int8____" 1 "___" "____________"
+    "MOPT05__" "INTN____" "MINUS___" "PLUS____" "int8____" 2 "___" "____________"
     "dummy___" "dummy___" "dummy___" "dummy___" "dummy___" 0 "___" "____________"
     "dummy___" "dummy___" "dummy___" "dummy___" "dummy___" 0 "___" "____________"
     "dummy___" "dummy___" "dummy___" "dummy___" "dummy___" 0 "___" "____________"
@@ -227,6 +221,7 @@ then
         end
         if 1@ == 1
         then
+            03F0: enable_text_draw 1
             2@ = G_DRAW_MENU_LOOP
             0@ = P_EDIT_CLOCK
         end
