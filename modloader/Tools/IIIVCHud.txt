@@ -1,0 +1,342 @@
+{$CLEO .cs}
+thread 'IIIVCHud'
+
+const
+    _MoneyPosX        = 0x58F5FC
+    _MoneyPosY        = 0x58F5DC
+    _MoneyWidth       = 0x58F564
+    _MoneyHeight      = 0x58F54E
+    _MoneyBorderInt   = 0x58F58F
+    _MoneyBorderByte1 = 0x58F58D
+    _MoneyBorderByte2 = 0x58F586
+    _MoneyColor       = 0x58F499
+    
+    _ClockPosX        = 0x58EC16
+    _ClockPosY        = 0x58EC04
+    _ClockWidth       = 0x58EB47
+    _ClockHeight      = 0x58EB31
+    _ClockBorderInt   = 0x58EB72
+    _ClockBorderByte1 = 0x58EB70
+    _ClockColor       = 0x58EBD1
+    
+    _WeaponBoxPosX    = 0x58F927
+    _WeaponBoxPosY    = 0x58F913
+    _WeaponBoxWidth   = 0x58D935 // alternative addresses: 0x58D8CB    0x58D935
+    _WeaponBoxHeight  = 0x58D94D // alternative addresses: 0x58D896    0x58D94D
+    
+    _WeaponAmmoPosX   = 0x58FA02
+    _WeaponAmmoPosY   = 0x58F9DC
+    _WeaponAmmoWidth  = 0x5894CD
+    _WeaponAmmoHeight = 0x5894B7
+    _WeaponAmmoBorder = 0x589505
+    _WeaponAmmoColor2 = 0x5895FD
+    
+    _WantedUnknown                      = 0x58FA12
+    _ShowInactiveWantedStars            = 0x58DD1B
+    _WantedBorder1                      = 0x58DD43
+    _ActiveWantedStarsColorId           = 0x58DDC9
+    _ActiveWantedStarsColor             = 0x58DDD0
+    
+    _WantedUnknownProp1                 = 0x58DE84
+    _WantedUnknownProp2                 = 0x58DE9F
+    _WantedUnknownProp3                 = 0x58DEBA
+    _InactiveWantedAlphaProp4           = 0x58DF29
+    _InactiveWantedHeightProp5          = 0x58DF61
+    _InactiveWantedWidthProp6           = 0x58DF7D
+    
+    _WantedStarsActiveAndInactivePosX   = 0x58DD0F
+    _WantedStarsInactivePosY            = 0x58DFB3
+    _WantedStarsActivePosY              = 0x58DDFC
+    _WantedStarsActivePosYRelated       = 0x58DEF5
+    
+    _WantedStarsHeightRelated           = 0x58DCAA
+    _ActiveWantedStarsHeight            = 0x58DD70
+    _InactiveWantedStarsHeight          = 0x58DF5D
+    
+    _WantedStarsWidthRelated            = 0x58DCC0
+    _ActiveWantedStarsWidth             = 0x58DD86
+    _InactiveWantedStarsWidth           = 0x58DF79
+    
+    _SpaceBetweenStars                  = 0x58DFED
+end
+{
+// Base colours
+0A8C: write_memory 0xBAB22C size 4 value 0xFF492B71 virtual_protect 0  //      0         0      Health Bar, Red Stuff
+0A8C: write_memory 0xBAB230 size 4 value 0xFF6AA05F virtual_protect 0  //      4         1      Cash/Money, Entered Car Name Text, Green Stuff
+0A8C: write_memory 0xBAB234 size 4 value 0xFFF3A780 virtual_protect 0  //      8         2      Blue Stuff
+0A8C: write_memory 0xBAB244 size 4 value 0xFF02ACDC virtual_protect 0  //      24        6      Map Lines (Brown/Yellow)
+0A8C: write_memory 0xBAB248 size 4 value 0xFFFC6EA8 virtual_protect 0  //      28        7      Pink, Purple Stuff
+0A8C: write_memory 0xBAB258 size 4 value 0xFF6AC4D2 virtual_protect 0  //      44        11     Yellow Stuff
+}
+{
+// SA
+0AB1: @EditBaseColours 6 0 0 0 0 0 0
+0AB1: @EditMoney 10 unknown 0.0 0 pos_xy 32.0 89.0 size 0.55 1.10 border 0x189FFD 2 0 rgba 0xFF1D19B4
+0AB1: @EditClock 7 pos_xy 32.0 22.0 size 0.55 1.10 border 1616410 2 rgba 0xFF1D19B4
+0AB1: @EditWeapon 10 box_xy 32.0 20.0 box_size 47.0 58.0 ammo_xy 32.0 20.0 ammo_size 0.30 0.70 ammo_border 1 ammo_color_id 3
+0AB1: @EditWantedLevelStars 17 unknown 47.0 show 0x97E border 1620041 ative_color_id 6 active_rgba 0xFF1D19B4 props 0 0 0 0 0 0 pos_xy 29.0 114.0 inact_y 114.0 size 1.21 0.605 space_between 18.0
+}
+// III
+0AB1: @EditBaseColours 6 0xFF492B71 0xFF6AA05F 0xFFF3A780 0xFF02ACDC 0xFFFC6EA8 0xFF6AC4D2
+//0AB1: @EditMoney 10 unknown 22.5 235 pos_xy 110.0 43.5 size 0.80 1.34 border 0x189F5D 1 1 rgba 0xFF8F8566
+//0AB1: @EditClock 7 pos_xy 32.0 22.5 size 0.80 1.34 border 1616378 1 rgba 0xFF8F8566
+//0AB1: @EditWeapon 10 box_xy -12.5 27.5 box_size 63.5 63.5 ammo_xy -12.5 27.5 ammo_size 0.40 0.60 ammo_border 0 ammo_color_id 6
+//0AB1: @EditWantedLevelStars 17 unknown 65.0 show 0x9090 border 1620009 ative_color_id 4 active_rgba 0xFF8F8566 props 144 144 144 144 144 144 pos_xy 52.30 114.0 inact_y 87.0 size 1.30 0.80 space_between 23.0
+
+repeat
+wait 0
+until false
+
+{======================================================================
+======================================================================}
+:WriteInPointer // param_label 0@ param_value 1@ mem_address 2@
+0AC6: 10@ = label 0@ offset 
+0A8C: write_memory 10@ size 4 value 1@ virtual_protect 0
+0A8C: write_memory 2@ size 4 value 10@ virtual_protect 1
+0AB2: ret 0
+
+:WriteParameter // mem_address 0@ param_size 1@ param_value 2@
+0A8C: write_memory 0@ size 1@ value 2@ virtual_protect 1
+0AB2: ret 0
+
+{======================================================================
+======================================================================}
+:EditBaseColours
+0A8C: write_memory 0xBAB22C size 4 value 0xFF492B71 virtual_protect 0  //      0         0      Health Bar, Red Stuff
+0A8C: write_memory 0xBAB230 size 4 value 0xFF6AA05F virtual_protect 0  //      4         1      Cash/Money, Entered Car Name Text, Green Stuff
+0A8C: write_memory 0xBAB234 size 4 value 0xFFF3A780 virtual_protect 0  //      8         2      Blue Stuff
+0A8C: write_memory 0xBAB244 size 4 value 0xFF02ACDC virtual_protect 0  //      24        6      Map Lines (Brown/Yellow)
+0A8C: write_memory 0xBAB248 size 4 value 0xFFFC6EA8 virtual_protect 0  //      28        7      Pink, Purple Stuff
+0A8C: write_memory 0xBAB258 size 4 value 0xFF6AC4D2 virtual_protect 0  //      44        11     Yellow Stuff
+
+:EditClock // pos_xy 0@ 1@ size 2@ 3@ border 4@ 5@ rgba 6@
+0AB1: @WriteInPointer 3 param_label @Clock_PosX param_value 0@ mem_address _ClockPosX
+0AB1: @WriteInPointer 3 param_label @Clock_PosY param_value 1@ mem_address _ClockPosY
+0AB1: @WriteInPointer 3 param_label @Clock_Width param_value 2@ mem_address _ClockWidth
+0AB1: @WriteInPointer 3 param_label @Clock_Height param_value 3@ mem_address _ClockHeight
+0AB1: @WriteParameter 3 mem_address _ClockBorderInt param_size 4 param_value 4@
+0AB1: @WriteParameter 3 mem_address _ClockBorderByte1 param_size 1 param_value 5@
+//0AB1: @WriteInPointer 3 param_label @Clock_ColorRGBA param_value 6@ mem_address _ClockColor
+0AB2: ret 0
+
+:EditMoney // unknown 0@ 1@ pos_xy 2@ 3@ size 4@ 5@ border 6@ 7@ 8@ rgba 9@
+0AB1: @WriteInPointer 3 param_label @Money_Unknown param_value 0@ mem_address 0x58EC04
+0AB1: @WriteParameter 3 mem_address 0x588B89 param_size 1 param_value 1@
+0AB1: @WriteInPointer 3 param_label @Money_PosX param_value 1@ mem_address _MoneyPosX
+0AB1: @WriteInPointer 3 param_label @Money_PosY param_value 2@ mem_address _MoneyPosY
+0AB1: @WriteInPointer 3 param_label @Money_Width param_value 3@ mem_address _MoneyWidth
+0AB1: @WriteInPointer 3 param_label @Money_Height param_value 4@ mem_address _MoneyHeight
+0AB1: @WriteParameter 3 mem_address _MoneyBorderInt param_size 4 param_value 5@
+0AB1: @WriteParameter 3 mem_address _MoneyBorderByte1 param_size 1 param_value 6@
+0AB1: @WriteParameter 3 mem_address _MoneyBorderByte2 param_size 1 param_value 7@
+//0AB1: @WriteInPointer 3 param_label @Money_ColorRGBA param_value 8@ mem_address _MoneyColor
+0AB2: ret 0
+
+:EditWeapon // box_xy 0@ 1@ box_size 2@ 3@ ammo_xy 4@ 5@ ammo_size 6@ 7@ ammo_border 8@ ammo_color_id 9@
+0AB1: @WriteInPointer 3 param_label @WeaponBox_PosX param_value 0@ mem_address _WeaponBoxPosX
+0AB1: @WriteInPointer 3 param_label @WeaponBox_PosY param_value 1@ mem_address _WeaponBoxPosY
+0AB1: @WriteInPointer 3 param_label @WeaponBox_Width param_value 2@ mem_address _WeaponBoxWidth
+0AB1: @WriteInPointer 3 param_label @WeaponBox_Height param_value 3@ mem_address _WeaponBoxHeight
+0AB1: @WriteInPointer 3 param_label @WeaponBox_Width param_value 2@ mem_address 0x58D8CB
+0AB1: @WriteInPointer 3 param_label @WeaponBox_Height param_value 3@ mem_address 0x58D896
+
+0AB1: @WriteInPointer 3 param_label @WeaponAmmo_PosX param_value 4@ mem_address _WeaponAmmoPosX
+0AB1: @WriteInPointer 3 param_label @WeaponAmmo_PosY param_value 5@ mem_address _WeaponAmmoPosY
+0AB1: @WriteInPointer 3 param_label @WeaponAmmo_Width param_value 6@ mem_address _WeaponAmmoWidth
+0AB1: @WriteInPointer 3 param_label @WeaponAmmo_Height param_value 7@ mem_address _WeaponAmmoHeight
+0AB1: @WriteParameter 3 mem_address _WeaponAmmoBorder param_size 1 param_value 8@
+0AB1: @WriteParameter 3 mem_address _WeaponAmmoColor2 param_size 1 param_value 9@
+0AB2: ret 0
+
+:EditWantedLevelStars // unknown 0@ show 1@ border 2@ ative_color_id 3@ active_rgba 4@ props 5@ 6@ 7@ 8@ 9@ 10@ pos_xy 11@ 12@ inact_y 13@ size 14@ 15@ space_between 16@
+0AB1: @WriteInPointer 3 param_label @Wanted_Unknown param_value 0@ mem_address _WantedUnknown
+0AB1: @WriteParameter 3 mem_address _ShowInactiveWantedStars param_size 2 param_value 1@ // Hidden as default
+0AB1: @WriteParameter 3 mem_address _WantedBorder1 param_size 4 param_value 2@
+0AB1: @WriteParameter 3 mem_address _ActiveWantedStarsColorId param_size 1 param_value 3@
+0AB1: @WriteInPointer 3 param_label @Wanted_ActiveColorRGBA param_value 4@ mem_address _ActiveWantedStarsColor
+{
+0AB1: @WriteParameter 3 mem_address _WantedUnknownProp1 param_size 6 param_value 5@
+0AB1: @WriteParameter 3 mem_address _WantedUnknownProp2 param_size 6 param_value 6@
+0AB1: @WriteParameter 3 mem_address _WantedUnknownProp3 param_size 6 param_value 7@
+0AB1: @WriteParameter 3 mem_address _InactiveWantedAlphaProp4 param_size 6 param_value 8@
+0AB1: @WriteParameter 3 mem_address _InactiveWantedHeightProp5 param_size 6 param_value 9@
+0AB1: @WriteParameter 3 mem_address _InactiveWantedWidthProp6 param_size 6 param_value 10@
+}
+0AB1: @WriteInPointer 3 param_label @Wanted_ActiveAndInactive_PosX param_value 11@ mem_address _WantedStarsActiveAndInactivePosX
+0AB1: @WriteInPointer 3 param_label @Wanted_Inactive_PosY param_value 12@ mem_address _WantedStarsInactivePosY
+0AB1: @WriteInPointer 3 param_label @Wanted_Active_PosY param_value 13@ mem_address _WantedStarsActivePosY
+0AB1: @WriteInPointer 3 param_label @Wanted_Active_PosY_2 param_value 13@ mem_address _WantedStarsActivePosYRelated
+
+0AB1: @WriteInPointer 3 param_label @Wanted_Height2 param_value 14@ mem_address _WantedStarsHeightRelated
+0AB1: @WriteInPointer 3 param_label @Wanted_ActiveHeight param_value 14@ mem_address _ActiveWantedStarsHeight
+0AB1: @WriteInPointer 3 param_label @Wanted_InactiveHeight param_value 14@ mem_address _InactiveWantedStarsHeight
+
+0AB1: @WriteInPointer 3 param_label @Wanted_Width2 param_value 15@ mem_address _WantedStarsWidthRelated
+0AB1: @WriteInPointer 3 param_label @Wanted_ActiveWidth param_value 15@ mem_address _ActiveWantedStarsWidth
+0AB1: @WriteInPointer 3 param_label @Wanted_InactiveWidth param_value 15@ mem_address _InactiveWantedStarsWidth
+
+0AB1: @WriteInPointer 3 param_label @Wanted_SpaceBetween param_value 16@ mem_address _SpaceBetweenStars
+0AB2: ret 0
+
+{======================================================================
+======================================================================}
+:Money_Unknown
+hex
+00 00 00 00
+end
+:Money_PosX
+hex
+00 00 00 00
+end
+:Money_PosY
+hex
+00 00 00 00
+end
+:Money_Width
+hex
+00 00 00 00
+end
+:Money_Height
+hex
+00 00 00 00
+end
+:Money_Border
+hex
+00 00 00 00
+end
+:Money_ShadowDistance
+hex
+00
+end
+:Money_Border1
+hex
+00
+end
+:Money_ColorRGBA
+hex
+00 00 00 00
+end
+
+:Clock_PosX
+hex
+00 00 00 00
+end
+:Clock_PosY
+hex
+00 00 00 00
+end
+:Clock_Width
+hex
+00 00 00 00
+end
+:Clock_Height
+hex
+00 00 00 00
+end
+:Clock_Border
+hex
+00 00 00 00
+end
+:Clock_Border1
+hex
+00
+end
+:Clock_ColorRGBA
+hex
+00 00 00 00
+end
+
+:WeaponBox_PosX
+hex
+00 00 00 00
+end
+:WeaponBox_PosY
+hex
+00 00 00 00
+end
+:WeaponBox_Width
+hex
+00 00 00 00
+end
+:WeaponBox_Height
+hex
+00 00 00 00
+end
+
+:WeaponAmmo_PosX
+hex
+00 00 00 00
+end
+:WeaponAmmo_PosY
+hex
+00 00 00 00
+end
+:WeaponAmmo_Width
+hex
+00 00 00 00
+end
+:WeaponAmmo_Height
+hex
+00 00 00 00
+end
+:WeaponAmmo_Border
+hex
+00
+end
+:WeaponAmmo_Color2
+hex
+00
+end
+
+:Wanted_Unknown
+hex
+00 00 00 00
+end
+:Wanted_ActiveColorRGBA
+hex
+00 00 00 00
+end
+:Wanted_ActiveAndInactive_PosX
+hex
+00 00 00 00
+end
+:Wanted_Inactive_PosY
+hex
+00 00 00 00
+end
+:Wanted_Active_PosY
+hex
+00 00 00 00
+end
+:Wanted_Active_PosY_2
+hex
+00 00 00 00
+end
+:Wanted_Height2
+hex
+00 00 00 00
+end
+:Wanted_ActiveHeight
+hex
+00 00 00 00
+end
+:Wanted_InactiveHeight
+hex
+00 00 00 00
+end
+:Wanted_Width2
+hex
+00 00 00 00
+end
+:Wanted_ActiveWidth
+hex
+00 00 00 00
+end
+:Wanted_InactiveWidth
+hex
+00 00 00 00
+end
+:Wanted_SpaceBetween
+hex
+00 00 00 00
+end

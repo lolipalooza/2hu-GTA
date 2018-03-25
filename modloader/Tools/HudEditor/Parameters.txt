@@ -20,8 +20,8 @@ const
     
     _WeaponBoxPosX    = 0x58F927
     _WeaponBoxPosY    = 0x58F913
-    _WeaponBoxWidth   = 0x58D935 // alternative address: 0x58D935    0x58D8CB
-    _WeaponBoxHeight  = 0x58D94D // alternative address: 0x58D94D    0x58D896
+    _WeaponBoxWidth   = 0x58D935 // alternative addresses: 0x58D8CB    0x58D935
+    _WeaponBoxHeight  = 0x58D94D // alternative addresses: 0x58D896    0x58D94D
     
     _WeaponAmmoPosX   = 0x58FA02
     _WeaponAmmoPosY   = 0x58F9DC
@@ -29,6 +29,34 @@ const
     _WeaponAmmoHeight = 0x5894B7
     _WeaponAmmoBorder = 0x589505
     _WeaponAmmoColor2 = 0x5895FD
+    
+    _WantedUnknown                      = 0x58FA12
+    _ShowInactiveWantedStars            = 0x58DD1B
+    _WantedBorder1                      = 0x58DD43
+    _ActiveWantedStarsColorId           = 0x58DDC9
+    _ActiveWantedStarsColor             = 0x58DDD0
+    
+    _WantedUnknownProp1                 = 0x58DE84
+    _WantedUnknownProp2                 = 0x58DE9F
+    _WantedUnknownProp3                 = 0x58DEBA
+    _InactiveWantedAlphaProp4           = 0x58DF29
+    _InactiveWantedHeightProp5          = 0x58DF61
+    _InactiveWantedWidthProp6           = 0x58DF7D
+    
+    _WantedStarsActiveAndInactivePosX   = 0x58DD0F
+    _WantedStarsInactivePosY            = 0x58DFB3
+    _WantedStarsActivePosY              = 0x58DDFC
+    _WantedStarsActivePosYRelated       = 0x58DEF5
+    
+    _WantedStarsHeightRelated           = 0x58DCAA
+    _ActiveWantedStarsHeight            = 0x58DD70
+    _InactiveWantedStarsHeight          = 0x58DF5D
+    
+    _WantedStarsWidthRelated            = 0x58DCC0
+    _ActiveWantedStarsWidth             = 0x58DD86
+    _InactiveWantedStarsWidth           = 0x58DF79
+    
+    _SpaceBetweenStars                  = 0x58DFED
 end
 
 {======================================================================

@@ -114,6 +114,9 @@ for 5@ = 0 to 11 // 12 lines max
             0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 159.0 4@ GXT 14@ 15@ // minus
             0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 180.0 4@ GXT 16@ 17@ // plus
         end
+        if 05AE:   14@s == 'ACTIV' // @s == 'short'
+        then 0AB1: @SetDrawText 8 font 1 linewidth 600.0 size 0.2 1.0 position 159.0 4@ GXT 14@ 15@ // minus
+        end
         
         // ------------------- Control and logic --------------------------//
         
@@ -149,6 +152,14 @@ for 5@ = 0 to 11 // 12 lines max
                 then gosub @DecreaseParameter
                 end
                 
+            end
+        end
+        
+        // Flag (true or false)
+        if 05AE:   14@s == 'ACTIV' // @s == 'short'
+        then
+            if 0AB1: @CursorClickCheck 4 box_position 162.0 9@ box_size 16.0 12.0
+            then 0AB1: @IncOrDec_IncrementalOffset 1 decrease -1
             end
         end
         
