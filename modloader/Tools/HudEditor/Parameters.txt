@@ -10,11 +10,25 @@ const
     _MoneyBorderByte2 = 0x58F586
     _MoneyColor       = 0x58F499
     
+    _ClockPosX        = 0x58EC16
+    _ClockPosY        = 0x58EC04
     _ClockWidth       = 0x58EB47
     _ClockHeight      = 0x58EB31
     _ClockBorderInt   = 0x58EB72
     _ClockBorderByte1 = 0x58EB70
     _ClockColor       = 0x58EBD1
+    
+    _WeaponBoxPosX    = 0x58F927
+    _WeaponBoxPosY    = 0x58F913
+    _WeaponBoxWidth   = 0x58D935 // alternative address: 0x58D935    0x58D8CB
+    _WeaponBoxHeight  = 0x58D94D // alternative address: 0x58D94D    0x58D896
+    
+    _WeaponAmmoPosX   = 0x58FA02
+    _WeaponAmmoPosY   = 0x58F9DC
+    _WeaponAmmoWidth  = 0x5894CD
+    _WeaponAmmoHeight = 0x5894B7
+    _WeaponAmmoBorder = 0x589505
+    _WeaponAmmoColor2 = 0x5895FD
 end
 
 {======================================================================
@@ -53,6 +67,13 @@ end
 
 
 
+0AC6: 0@ = label @Clock_PosX offset 
+0A8C: write_memory 0@ size 4 value 32.0 virtual_protect 0
+0AC6: 0@ = label @Clock_PosY offset 
+0A8C: write_memory 0@ size 4 value 22.0 virtual_protect 0
+0AB1: @WriteFloatParameter 3 param_label @Clock_PosX param_value 32.0 param_real_address _ClockPosX
+0AB1: @WriteFloatParameter 3 param_label @Clock_PosY param_value 22.0 param_real_address _ClockPosY
+
 0AC6: 0@ = label @Clock_Width offset 
 0A8C: write_memory 0@ size 4 value 0.55 virtual_protect 0
 0AC6: 0@ = label @Clock_Height offset 
@@ -68,6 +89,47 @@ end
 0A8C: write_memory 0@ size 1 value 2 virtual_protect 0
 0AB1: @WriteInt8Parameter 2 real_addr _ClockBorderByte1 param_value 2
 
+
+
+
+0AC6: 0@ = label @WeaponBox_PosX offset 
+0A8C: write_memory 0@ size 4 value 32.0 virtual_protect 0
+0AC6: 0@ = label @WeaponBox_PosY offset 
+0A8C: write_memory 0@ size 4 value 20.0 virtual_protect 0
+0AB1: @WriteFloatParameter 3 param_label @WeaponBox_PosX param_value 32.0 param_real_address _WeaponBoxPosX
+0AB1: @WriteFloatParameter 3 param_label @WeaponBox_PosY param_value 20.0 param_real_address _WeaponBoxPosY
+
+0AC6: 0@ = label @WeaponBox_Width offset 
+0A8C: write_memory 0@ size 4 value 47.0 virtual_protect 0
+0AC6: 0@ = label @WeaponBox_Height offset 
+0A8C: write_memory 0@ size 4 value 58.0 virtual_protect 0
+0AB1: @WriteFloatParameter 3 param_label @WeaponBox_Width param_value 47.0 param_real_address _WeaponBoxWidth
+0AB1: @WriteFloatParameter 3 param_label @WeaponBox_Height param_value 58.0 param_real_address _WeaponBoxHeight
+
+
+
+
+0AC6: 0@ = label @WeaponAmmo_PosX offset 
+0A8C: write_memory 0@ size 4 value 32.0 virtual_protect 0
+0AC6: 0@ = label @WeaponAmmo_PosY offset 
+0A8C: write_memory 0@ size 4 value 20.0 virtual_protect 0
+0AB1: @WriteFloatParameter 3 param_label @WeaponAmmo_PosX param_value 32.0 param_real_address _WeaponAmmoPosX
+0AB1: @WriteFloatParameter 3 param_label @WeaponAmmo_PosY param_value 20.0 param_real_address _WeaponAmmoPosY
+
+0AC6: 0@ = label @WeaponAmmo_Width offset 
+0A8C: write_memory 0@ size 4 value 0.3000000119 virtual_protect 0
+0AC6: 0@ = label @WeaponAmmo_Height offset 
+0A8C: write_memory 0@ size 4 value 0.6999999881 virtual_protect 0
+0AB1: @WriteFloatParameter 3 param_label @WeaponAmmo_Width param_value 0.3000000119 param_real_address _WeaponAmmoWidth
+0AB1: @WriteFloatParameter 3 param_label @WeaponAmmo_Height param_value 0.6999999881 param_real_address _WeaponAmmoHeight
+
+0AC6: 0@ = label @WeaponAmmo_Border offset 
+0A8C: write_memory 0@ size 1 value 2 virtual_protect 0
+0AB1: @WriteInt8Parameter 2 real_addr _WeaponAmmoBorder param_value 1
+
+0AC6: 0@ = label @WeaponAmmo_Color2 offset 
+0A8C: write_memory 0@ size 1 value 2 virtual_protect 0
+0AB1: @WriteInt8Parameter 2 real_addr _WeaponAmmoColor2 param_value 3
 
 {
 // Read Default Values
@@ -91,10 +153,28 @@ end
 
 // 1: Clock
 0AB1: @IntializeLine 5 var 1 line 0 mem_addr 0 var_label @IncrementalOffset
-0AB1: @IntializeLine 5 var 1 line 1 mem_addr _ClockWidth var_label @Clock_Width
-0AB1: @IntializeLine 5 var 1 line 2 mem_addr _ClockHeight var_label @Clock_Height
-0AB1: @IntializeLine 5 var 1 line 3 mem_addr _ClockBorderInt var_label @Clock_Border
-0AB1: @IntializeLine 5 var 1 line 4 mem_addr _ClockBorderByte1 var_label @Clock_Border1
+0AB1: @IntializeLine 5 var 1 line 1 mem_addr _ClockPosX var_label @Clock_PosX
+0AB1: @IntializeLine 5 var 1 line 2 mem_addr _ClockPosY var_label @Clock_PosY
+0AB1: @IntializeLine 5 var 1 line 3 mem_addr _ClockWidth var_label @Clock_Width
+0AB1: @IntializeLine 5 var 1 line 4 mem_addr _ClockHeight var_label @Clock_Height
+0AB1: @IntializeLine 5 var 1 line 5 mem_addr _ClockBorderInt var_label @Clock_Border
+0AB1: @IntializeLine 5 var 1 line 6 mem_addr _ClockBorderByte1 var_label @Clock_Border1
+
+// 2: Weapon Box
+0AB1: @IntializeLine 5 var 2 line 0 mem_addr 0 var_label @IncrementalOffset
+0AB1: @IntializeLine 5 var 2 line 1 mem_addr _WeaponBoxPosX var_label @WeaponBox_PosX
+0AB1: @IntializeLine 5 var 2 line 2 mem_addr _WeaponBoxPosY var_label @WeaponBox_PosY
+0AB1: @IntializeLine 5 var 2 line 3 mem_addr _WeaponBoxWidth var_label @WeaponBox_Width
+0AB1: @IntializeLine 5 var 2 line 4 mem_addr _WeaponBoxHeight var_label @WeaponBox_Height
+
+// 3: Weapon Ammo
+0AB1: @IntializeLine 5 var 3 line 0 mem_addr 0 var_label @IncrementalOffset
+0AB1: @IntializeLine 5 var 3 line 1 mem_addr _WeaponAmmoPosX var_label @WeaponAmmo_PosX
+0AB1: @IntializeLine 5 var 3 line 2 mem_addr _WeaponAmmoPosY var_label @WeaponAmmo_PosY
+0AB1: @IntializeLine 5 var 3 line 3 mem_addr _WeaponAmmoWidth var_label @WeaponAmmo_Width
+0AB1: @IntializeLine 5 var 3 line 4 mem_addr _WeaponAmmoHeight var_label @WeaponAmmo_Height
+0AB1: @IntializeLine 5 var 3 line 5 mem_addr _WeaponAmmoBorder var_label @WeaponAmmo_Border
+0AB1: @IntializeLine 5 var 3 line 6 mem_addr _WeaponAmmoColor2 var_label @WeaponAmmo_Color2
 0AB2: ret 0
 
 {======================================================================
@@ -164,6 +244,11 @@ end
 0AB2: ret 0
 
 
+:IncrementalOffset
+hex
+00 00 00 00
+end
+
 :Money_PosX
 hex
 00 00 00 00
@@ -218,6 +303,47 @@ hex
 00
 end
 
+:WeaponBox_PosX
+hex
+00 00 00 00
+end
+:WeaponBox_PosY
+hex
+00 00 00 00
+end
+:WeaponBox_Width
+hex
+00 00 00 00
+end
+:WeaponBox_Height
+hex
+00 00 00 00
+end
+
+:WeaponAmmo_PosX
+hex
+00 00 00 00
+end
+:WeaponAmmo_PosY
+hex
+00 00 00 00
+end
+:WeaponAmmo_Width
+hex
+00 00 00 00
+end
+:WeaponAmmo_Height
+hex
+00 00 00 00
+end
+:WeaponAmmo_Border
+hex
+00
+end
+:WeaponAmmo_Color2
+hex
+00
+end
 
 {======================================================================
 ======================================================================}

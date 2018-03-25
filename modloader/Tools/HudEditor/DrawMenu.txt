@@ -143,10 +143,10 @@ for 5@ = 0 to 11 // 12 lines max
             else // Increment Variables
             
                 if 0AB1: @CursorClickCheck 4 box_position 162.0 9@ box_size 16.0 12.0 // Minus
-                then gosub @DecreaseParameter
+                then gosub @IncreaseParameter
                 end
                 if 0AB1: @CursorClickCheck 4 box_position 183.0 9@ box_size 16.0 12.0 // Plus
-                then gosub @IncreaseParameter
+                then gosub @DecreaseParameter
                 end
                 
             end
