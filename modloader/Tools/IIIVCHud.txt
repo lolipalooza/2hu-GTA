@@ -36,6 +36,7 @@ const
     _WantedBorder1                      = 0x58DD43
     _ActiveWantedStarsColorId           = 0x58DDC9
     _ActiveWantedStarsColor             = 0x58DDD0
+    _ActiveWantedStarsPosYId            = 0x58DE23
     
     _WantedUnknownProp1                 = 0x58DE84
     _WantedUnknownProp2                 = 0x58DE9F
@@ -58,30 +59,38 @@ const
     _InactiveWantedStarsWidth           = 0x58DF79
     
     _SpaceBetweenStars                  = 0x58DFED
+
+    _RadioStationFontstyle  = 0x4E9EF9
+    _RadioStationBorder     = 0x4E9F5C
+    _RadioStationBorderId   = 0x4E9F91
+    _RadioStationRGBA1      = 0x4E9F98
+    _RadioStationUnknownId  = 0x4E9FA7
+    _RadioStationRGBA2      = 0x4E9FAE
+    _RadioStationWidth      = 0x4E9F38
+    _RadioStationHeight     = 0x4E9F22
+    _RadioStationUnknown    = 0x58B01D
 end
-{
-// Base colours
-0A8C: write_memory 0xBAB22C size 4 value 0xFF492B71 virtual_protect 0  //      0         0      Health Bar, Red Stuff
-0A8C: write_memory 0xBAB230 size 4 value 0xFF6AA05F virtual_protect 0  //      4         1      Cash/Money, Entered Car Name Text, Green Stuff
-0A8C: write_memory 0xBAB234 size 4 value 0xFFF3A780 virtual_protect 0  //      8         2      Blue Stuff
-0A8C: write_memory 0xBAB244 size 4 value 0xFF02ACDC virtual_protect 0  //      24        6      Map Lines (Brown/Yellow)
-0A8C: write_memory 0xBAB248 size 4 value 0xFFFC6EA8 virtual_protect 0  //      28        7      Pink, Purple Stuff
-0A8C: write_memory 0xBAB258 size 4 value 0xFF6AC4D2 virtual_protect 0  //      44        11     Yellow Stuff
-}
-{
+
+gosub @InitializeAssemblerRegion
+
 // SA
-0AB1: @EditBaseColours 6 0 0 0 0 0 0
-0AB1: @EditMoney 10 unknown 0.0 0 pos_xy 32.0 89.0 size 0.55 1.10 border 0x189FFD 2 0 rgba 0xFF1D19B4
+0AB1: @EditBaseColours 6 0xFF1D19B4 0xFF2C6836 0xFF7F3C32 0xFF106290 0xFFFC6EA8 0xFF63C0E2
+0AB1: @EditMoney 10 unknown 22.0 122 pos_xy 32.0 89.0 size 0.55 1.10 border 0x189FFD 2 0 rgba 0xFF1D19B4
 0AB1: @EditClock 7 pos_xy 32.0 22.0 size 0.55 1.10 border 1616410 2 rgba 0xFF1D19B4
 0AB1: @EditWeapon 10 box_xy 32.0 20.0 box_size 47.0 58.0 ammo_xy 32.0 20.0 ammo_size 0.30 0.70 ammo_border 1 ammo_color_id 3
-0AB1: @EditWantedLevelStars 17 unknown 47.0 show 0x97E border 1620041 ative_color_id 6 active_rgba 0xFF1D19B4 props 0 0 0 0 0 0 pos_xy 29.0 114.0 inact_y 114.0 size 1.21 0.605 space_between 18.0
-}
+0AB1: @EditWantedLevelStars 13 unknown 47.0 show 0x97E border 1620041 ative_color_id 6 active_rgba 0xFF1D19B4 active_pos_y_id 122 props_flag false pos_xy 29.0 114.0 inact_y 114.0 size 1.21 0.605 space_between 18.0
+0AB1: @EditRadioStation 9 fontstyle 2 border 2291248 border_id 6 rgba 0xFF492B71 unknown_id 8 unknown_rgba 0xFF492B71 size 0.60 0.90 unknown_float 3000.0
+{
 // III
 0AB1: @EditBaseColours 6 0xFF492B71 0xFF6AA05F 0xFFF3A780 0xFF02ACDC 0xFFFC6EA8 0xFF6AC4D2
-//0AB1: @EditMoney 10 unknown 22.5 235 pos_xy 110.0 43.5 size 0.80 1.34 border 0x189F5D 1 1 rgba 0xFF8F8566
-//0AB1: @EditClock 7 pos_xy 32.0 22.5 size 0.80 1.34 border 1616378 1 rgba 0xFF8F8566
-//0AB1: @EditWeapon 10 box_xy -12.5 27.5 box_size 63.5 63.5 ammo_xy -12.5 27.5 ammo_size 0.40 0.60 ammo_border 0 ammo_color_id 6
-//0AB1: @EditWantedLevelStars 17 unknown 65.0 show 0x9090 border 1620009 ative_color_id 4 active_rgba 0xFF8F8566 props 144 144 144 144 144 144 pos_xy 52.30 114.0 inact_y 87.0 size 1.30 0.80 space_between 23.0
+0AB1: @EditMoney 10 unknown 22.5 235 pos_xy 110.0 43.5 size 0.80 1.34 border 0x189F5D 1 1 rgba 0xFF8F8566
+0AB1: @EditClock 7 pos_xy 110.0 22.5 size 0.80 1.34 border 1616378 1 rgba 0xFF8F8566
+0AB1: @EditWeapon 10 box_xy -12.5 27.5 box_size 63.5 63.5 ammo_xy -12.5 27.5 ammo_size 0.40 0.60 ammo_border 0 ammo_color_id 6
+0AB1: @EditWantedLevelStars 13 unknown 65.0 show 0x9090 border 1620009 ative_color_id 4 active_rgba 0xFF8F8566 active_pos_y_id 235 props_flag true pos_xy 52.30 87.0 inact_y 90.0 size 1.30 0.80 space_between 23.0
+0AB1: @EditRadioStation 9 fontstyle 3 border 2291216 border_id 5 rgba 0xFF8F8566 unknown_id 0 unknown_rgba 0xFF8F8566 size 0.80 1.34 unknown_float 10000.0
+}
+
+0AB1: @GeneralSettings 1 flag_activate false
 
 repeat
 wait 0
@@ -102,12 +111,14 @@ until false
 {======================================================================
 ======================================================================}
 :EditBaseColours
-0A8C: write_memory 0xBAB22C size 4 value 0xFF492B71 virtual_protect 0  //      0         0      Health Bar, Red Stuff
-0A8C: write_memory 0xBAB230 size 4 value 0xFF6AA05F virtual_protect 0  //      4         1      Cash/Money, Entered Car Name Text, Green Stuff
-0A8C: write_memory 0xBAB234 size 4 value 0xFFF3A780 virtual_protect 0  //      8         2      Blue Stuff
-0A8C: write_memory 0xBAB244 size 4 value 0xFF02ACDC virtual_protect 0  //      24        6      Map Lines (Brown/Yellow)
-0A8C: write_memory 0xBAB248 size 4 value 0xFFFC6EA8 virtual_protect 0  //      28        7      Pink, Purple Stuff
-0A8C: write_memory 0xBAB258 size 4 value 0xFF6AC4D2 virtual_protect 0  //      44        11     Yellow Stuff
+0A8C: write_memory 0xBAB22C size 4 value 0@ virtual_protect 0  //      0         0      Health Bar, Red Stuff
+0A8C: write_memory 0xBAB230 size 4 value 1@ virtual_protect 0  //      4         1      Cash/Money, Entered Car Name Text, Green Stuff
+0A8C: write_memory 0xBAB234 size 4 value 2@ virtual_protect 0  //      8         2      Blue Stuff
+0A8C: write_memory 0xBAB244 size 4 value 3@ virtual_protect 0  //      24        6      Map Lines (Brown/Yellow)
+0A8C: write_memory 0xBAB248 size 4 value 4@ virtual_protect 0  //      28        7      Pink, Purple Stuff
+0A8C: write_memory 0xBAB258 size 4 value 5@ virtual_protect 0  //      44        11     Yellow Stuff
+0AB2: ret 0
+
 
 :EditClock // pos_xy 0@ 1@ size 2@ 3@ border 4@ 5@ rgba 6@
 0AB1: @WriteInPointer 3 param_label @Clock_PosX param_value 0@ mem_address _ClockPosX
@@ -119,18 +130,20 @@ until false
 //0AB1: @WriteInPointer 3 param_label @Clock_ColorRGBA param_value 6@ mem_address _ClockColor
 0AB2: ret 0
 
+
 :EditMoney // unknown 0@ 1@ pos_xy 2@ 3@ size 4@ 5@ border 6@ 7@ 8@ rgba 9@
 0AB1: @WriteInPointer 3 param_label @Money_Unknown param_value 0@ mem_address 0x58EC04
 0AB1: @WriteParameter 3 mem_address 0x588B89 param_size 1 param_value 1@
-0AB1: @WriteInPointer 3 param_label @Money_PosX param_value 1@ mem_address _MoneyPosX
-0AB1: @WriteInPointer 3 param_label @Money_PosY param_value 2@ mem_address _MoneyPosY
-0AB1: @WriteInPointer 3 param_label @Money_Width param_value 3@ mem_address _MoneyWidth
-0AB1: @WriteInPointer 3 param_label @Money_Height param_value 4@ mem_address _MoneyHeight
-0AB1: @WriteParameter 3 mem_address _MoneyBorderInt param_size 4 param_value 5@
-0AB1: @WriteParameter 3 mem_address _MoneyBorderByte1 param_size 1 param_value 6@
-0AB1: @WriteParameter 3 mem_address _MoneyBorderByte2 param_size 1 param_value 7@
-//0AB1: @WriteInPointer 3 param_label @Money_ColorRGBA param_value 8@ mem_address _MoneyColor
+0AB1: @WriteInPointer 3 param_label @Money_PosX param_value 2@ mem_address _MoneyPosX
+0AB1: @WriteInPointer 3 param_label @Money_PosY param_value 3@ mem_address _MoneyPosY
+0AB1: @WriteInPointer 3 param_label @Money_Width param_value 4@ mem_address _MoneyWidth
+0AB1: @WriteInPointer 3 param_label @Money_Height param_value 5@ mem_address _MoneyHeight
+0AB1: @WriteParameter 3 mem_address _MoneyBorderInt param_size 4 param_value 6@
+0AB1: @WriteParameter 3 mem_address _MoneyBorderByte1 param_size 1 param_value 7@
+0AB1: @WriteParameter 3 mem_address _MoneyBorderByte2 param_size 1 param_value 8@
+//0AB1: @WriteInPointer 3 param_label @Money_ColorRGBA param_value 9@ mem_address _MoneyColor
 0AB2: ret 0
+
 
 :EditWeapon // box_xy 0@ 1@ box_size 2@ 3@ ammo_xy 4@ 5@ ammo_size 6@ 7@ ammo_border 8@ ammo_color_id 9@
 0AB1: @WriteInPointer 3 param_label @WeaponBox_PosX param_value 0@ mem_address _WeaponBoxPosX
@@ -148,34 +161,153 @@ until false
 0AB1: @WriteParameter 3 mem_address _WeaponAmmoColor2 param_size 1 param_value 9@
 0AB2: ret 0
 
-:EditWantedLevelStars // unknown 0@ show 1@ border 2@ ative_color_id 3@ active_rgba 4@ props 5@ 6@ 7@ 8@ 9@ 10@ pos_xy 11@ 12@ inact_y 13@ size 14@ 15@ space_between 16@
+
+:EditWantedLevelStars // unknown 0@ show 1@ border 2@ ative_color_id 3@ active_rgba 4@ active_pos_y_id 5@ props 6@ pos_xy 12@ 13@ inact_y 14@ size 15@ 16@ space_between 17@
 0AB1: @WriteInPointer 3 param_label @Wanted_Unknown param_value 0@ mem_address _WantedUnknown
 0AB1: @WriteParameter 3 mem_address _ShowInactiveWantedStars param_size 2 param_value 1@ // Hidden as default
 0AB1: @WriteParameter 3 mem_address _WantedBorder1 param_size 4 param_value 2@
 0AB1: @WriteParameter 3 mem_address _ActiveWantedStarsColorId param_size 1 param_value 3@
 0AB1: @WriteInPointer 3 param_label @Wanted_ActiveColorRGBA param_value 4@ mem_address _ActiveWantedStarsColor
-{
-0AB1: @WriteParameter 3 mem_address _WantedUnknownProp1 param_size 6 param_value 5@
-0AB1: @WriteParameter 3 mem_address _WantedUnknownProp2 param_size 6 param_value 6@
-0AB1: @WriteParameter 3 mem_address _WantedUnknownProp3 param_size 6 param_value 7@
-0AB1: @WriteParameter 3 mem_address _InactiveWantedAlphaProp4 param_size 6 param_value 8@
-0AB1: @WriteParameter 3 mem_address _InactiveWantedHeightProp5 param_size 6 param_value 9@
-0AB1: @WriteParameter 3 mem_address _InactiveWantedWidthProp6 param_size 6 param_value 10@
-}
-0AB1: @WriteInPointer 3 param_label @Wanted_ActiveAndInactive_PosX param_value 11@ mem_address _WantedStarsActiveAndInactivePosX
-0AB1: @WriteInPointer 3 param_label @Wanted_Inactive_PosY param_value 12@ mem_address _WantedStarsInactivePosY
-0AB1: @WriteInPointer 3 param_label @Wanted_Active_PosY param_value 13@ mem_address _WantedStarsActivePosY
-0AB1: @WriteInPointer 3 param_label @Wanted_Active_PosY_2 param_value 13@ mem_address _WantedStarsActivePosYRelated
+0AB1: @WriteParameter 3 mem_address _ActiveWantedStarsPosYId param_size 1 param_value 5@
 
-0AB1: @WriteInPointer 3 param_label @Wanted_Height2 param_value 14@ mem_address _WantedStarsHeightRelated
-0AB1: @WriteInPointer 3 param_label @Wanted_ActiveHeight param_value 14@ mem_address _ActiveWantedStarsHeight
-0AB1: @WriteInPointer 3 param_label @Wanted_InactiveHeight param_value 14@ mem_address _InactiveWantedStarsHeight
+if 6@ == true
+then
+    0AB1: @WriteParameter 3 mem_address _WantedUnknownProp1 param_size 6 param_value 144
+    0AB1: @WriteParameter 3 mem_address _WantedUnknownProp2 param_size 6 param_value 144
+    0AB1: @WriteParameter 3 mem_address _WantedUnknownProp3 param_size 6 param_value 144
+    0AB1: @WriteParameter 3 mem_address _InactiveWantedAlphaProp4 param_size 6 param_value 144
+    0AB1: @WriteParameter 3 mem_address _InactiveWantedHeightProp5 param_size 6 param_value 144
+    0AB1: @WriteParameter 3 mem_address _InactiveWantedWidthProp6 param_size 6 param_value 144
+else
+{ // True values
+D8 0D 98 8C 85 00
+D8 0D 98 8C 85 00
+D8 0D 98 8C 85 00
+D8 0D B0 8C 85 00
+D8 0D 08 8F 85 00
+D8 0D 08 8F 85 00}
+    20@ = _WantedUnknownProp1
+    0AB1: @WriteParameter 3 mem_address 20@ param_size 2 param_value 0x0DD8
+    20@ += 2
+    0AB1: @WriteParameter 3 mem_address 20@ param_size 4 param_value 0x00858C98
+    
+    20@ = _WantedUnknownProp2
+    0AB1: @WriteParameter 3 mem_address 20@ param_size 2 param_value 0x0DD8
+    20@ += 2
+    0AB1: @WriteParameter 3 mem_address 20@ param_size 4 param_value 0x00858C98
+    
+    20@ = _WantedUnknownProp3
+    0AB1: @WriteParameter 3 mem_address 20@ param_size 2 param_value 0x0DD8
+    20@ += 2
+    0AB1: @WriteParameter 3 mem_address 20@ param_size 4 param_value 0x00858C98
+    
+    20@ = _InactiveWantedAlphaProp4
+    0AB1: @WriteParameter 3 mem_address 20@ param_size 2 param_value 0x0DD8
+    20@ += 2
+    0AB1: @WriteParameter 3 mem_address 20@ param_size 4 param_value 0x00858CB0
+    
+    20@ = _InactiveWantedHeightProp5
+    0AB1: @WriteParameter 3 mem_address 20@ param_size 2 param_value 0x0DD8
+    20@ += 2
+    0AB1: @WriteParameter 3 mem_address 20@ param_size 4 param_value 0x00858F08
+    
+    20@ = _InactiveWantedWidthProp6
+    0AB1: @WriteParameter 3 mem_address 20@ param_size 2 param_value 0x0DD8
+    20@ += 2
+    0AB1: @WriteParameter 3 mem_address 20@ param_size 4 param_value 0x00858F08
+end
+0AB1: @WriteInPointer 3 param_label @Wanted_ActiveAndInactive_PosX param_value 7@ mem_address _WantedStarsActiveAndInactivePosX
+0AB1: @WriteInPointer 3 param_label @Wanted_Inactive_PosY param_value 9@ mem_address _WantedStarsInactivePosY
+0AB1: @WriteInPointer 3 param_label @Wanted_Active_PosY param_value 8@ mem_address _WantedStarsActivePosY
+0AB1: @WriteInPointer 3 param_label @Wanted_Active_PosY_2 param_value 8@ mem_address _WantedStarsActivePosYRelated
 
-0AB1: @WriteInPointer 3 param_label @Wanted_Width2 param_value 15@ mem_address _WantedStarsWidthRelated
-0AB1: @WriteInPointer 3 param_label @Wanted_ActiveWidth param_value 15@ mem_address _ActiveWantedStarsWidth
-0AB1: @WriteInPointer 3 param_label @Wanted_InactiveWidth param_value 15@ mem_address _InactiveWantedStarsWidth
+0AB1: @WriteInPointer 3 param_label @Wanted_Height2 param_value 10@ mem_address _WantedStarsHeightRelated
+0AB1: @WriteInPointer 3 param_label @Wanted_ActiveHeight param_value 10@ mem_address _ActiveWantedStarsHeight
+0AB1: @WriteInPointer 3 param_label @Wanted_InactiveHeight param_value 10@ mem_address _InactiveWantedStarsHeight
 
-0AB1: @WriteInPointer 3 param_label @Wanted_SpaceBetween param_value 16@ mem_address _SpaceBetweenStars
+0AB1: @WriteInPointer 3 param_label @Wanted_Width2 param_value 11@ mem_address _WantedStarsWidthRelated
+0AB1: @WriteInPointer 3 param_label @Wanted_ActiveWidth param_value 11@ mem_address _ActiveWantedStarsWidth
+0AB1: @WriteInPointer 3 param_label @Wanted_InactiveWidth param_value 11@ mem_address _InactiveWantedStarsWidth
+
+0AB1: @WriteInPointer 3 param_label @Wanted_SpaceBetween param_value 12@ mem_address _SpaceBetweenStars
+0AB2: ret 0
+
+
+:EditRadioStation // fontstyle 0@ border 1@ border_id 2@ rgba 3@ unknown_id 4@ unknown_rgba 5@ size 6@ 7@ unknown_float 8@
+0AB1: @WriteParameter 3 mem_address _RadioStationFontstyle param_size 1 param_value 0@
+0AB1: @WriteParameter 3 mem_address _RadioStationBorder param_size 4 param_value 1@
+0AB1: @WriteParameter 3 mem_address _RadioStationBorderId param_size 1 param_value 2@
+0AB1: @WriteInPointer 3 param_label @RadioStation_RGBA1 param_value 3@ mem_address _RadioStationRGBA1
+0AB1: @WriteParameter 3 mem_address _RadioStationUnknownId param_size 1 param_value 4@
+0AB1: @WriteInPointer 3 param_label @RadioStation_RGBA2 param_value 5@ mem_address _RadioStationRGBA2
+0AB1: @WriteInPointer 3 param_label @RadioStation_Width param_value 6@ mem_address _RadioStationWidth
+0AB1: @WriteInPointer 3 param_label @RadioStation_Height param_value 7@ mem_address _RadioStationHeight
+0AB1: @WriteInPointer 3 param_label @RadioStation_Unknown param_value 8@ mem_address _RadioStationUnknown
+0AB2: ret 0
+
+
+
+:GeneralSettings // flag_activate 0@
+if 0@ == true
+then
+    0A8C: write_memory 0x58CC6A size 5 value 0x90 virtual_protect 1 // Hide Original Styled Text 3 (Wasted or busted text)
+    0A8C: write_memory 0x53E500 size 4 value 333269 virtual_protect 1
+else
+    0A8C: write_memory 0x58CC6A size 1 value 0xE8 virtual_protect 1 // Show Original Styled Text 3 (Wasted or busted text)
+    0A8C: write_memory 0x58CC6B size 4 value 0x18DBB1 virtual_protect 1 // Show Original Styled Text 3 (Wasted or busted text)
+    0A8C: write_memory 0x53E500 size 4 value 333276 virtual_protect 1
+end
+
+if 0@ == true
+then
+    0AC6: 2@ = label @Noname_6526 offset
+    2@ -= 0x58EE9F
+    0A8C: write_memory 0x58EE9B size 4 value 2@ virtual_protect 1 // Hide health bar
+    0A8C: write_memory 0x58EF6B size 5 value 0x90 virtual_protect 1 // Hide armour bar
+    0A8C: write_memory 0x58F131 size 5 value 0x90 virtual_protect 1 // Hide breath meter
+    
+    // writing in a sector that originally has 90 90 90 90 90 90, something like this:  mov     byte ptr [4@ dir],00
+    // what will we obtain by this? dunno!   // Remember, 4@ is a pointer to 31@, so maybe we are updating 31@ value
+    0A8C: write_memory 0x58FAD9 size 2 value 0x05C6 virtual_protect 1 
+    0A8C: write_memory 0x58FADB size 4 value 4@ virtual_protect 1 
+    0A8C: write_memory 0x58FADF size 1 value 0x00 virtual_protect 1
+    
+else
+    0A8C: write_memory 0x58EE9B size 4 value 0xFFFFA3D1 virtual_protect 1 // Show health bar
+    2@ = 0x58EF6B
+    0A8C: write_memory 2@ size 1 value 0xE8 virtual_protect 1 // Show armour bar
+    2@ += 1
+    0A8C: write_memory 2@ size 4 value 0xFFFFA130 virtual_protect 1 // Show armour bar
+    
+    2@ = 0x58F131
+    0A8C: write_memory 2@ size 1 value 0xE8 virtual_protect 1 // Show breath meter
+    2@ += 1
+    0A8C: write_memory 2@ size 4 value 0xFFFFA85A virtual_protect 1 // Show armour bar
+    
+    0A8C: write_memory 0x58FAD9 size 2 value 0x9090 virtual_protect 1 
+    0A8C: write_memory 0x58FADB size 4 value 0x90909090 virtual_protect 1 
+    0A8C: write_memory 0x58FADF size 1 value 0x90 virtual_protect 1
+end
+
+if 0@ == true
+then
+    0A8C: write_memory 0x58C2BC size 5 value 0x90 virtual_protect 1 
+    0A8C: write_memory 0x58C306 size 1 value 1 virtual_protect 1 
+    0A8C: write_memory 0x58C853 size 1 value 0xD8 virtual_protect 1 
+else
+    2@ = 0x58C2BC
+    0A8C: write_memory 2@ size 1 value 0xE8 virtual_protect 1 
+    2@ += 1
+    0A8C: write_memory 2@ size 4 value 0x0018D31F virtual_protect 1 
+    
+    0A8C: write_memory 0x58C306 size 1 value 2 virtual_protect 1 
+    0A8C: write_memory 0x58C853 size 1 value 0xDC virtual_protect 1 
+end
+
+if 0@ == true
+then
+else
+end
 0AB2: ret 0
 
 {======================================================================
@@ -339,4 +471,385 @@ end
 :Wanted_SpaceBetween
 hex
 00 00 00 00
+end
+
+:RadioStation_RGBA1
+hex
+00 00 00 00
+end
+:RadioStation_RGBA2
+hex
+00 00 00 00
+end
+:RadioStation_Width
+hex
+00 00 00 00
+end
+:RadioStation_Height
+hex
+00 00 00 00
+end
+:RadioStation_Unknown
+hex
+00 00 00 00
+end
+
+{======================================================================
+======================================================================}
+:InitializeAssemblerRegion
+0AC7: 4@ = var 31@ offset 
+0AC6: 2@ = label @Noname_6461 offset 
+2@ += 2 
+0AC6: 3@ = label @Noname_6297 offset 
+0A8C: write_memory 2@ size 4 value 3@ virtual_protect 0 
+2@ += 8 
+0A8E: 3@ = 2@ + 4 // int 
+0A8F: 3@ = 7443360 - 3@ // int 
+0A8C: write_memory 2@ size 4 value 3@ virtual_protect 0 
+2@ += 5 
+0A8E: 3@ = 2@ + 4 // int 
+0A8F: 3@ = 5812397 - 3@ // int 
+0A8C: write_memory 2@ size 4 value 3@ virtual_protect 0 
+2@ += 5 
+0A8E: 3@ = 2@ + 4 // int 
+0A8F: 3@ = 7443728 - 3@ // int 
+0A8C: write_memory 2@ size 4 value 3@ virtual_protect 0 
+2@ += 7 
+0A8E: 3@ = 2@ + 4 // int 
+0A8F: 3@ = 5811615 - 3@ // int 
+0A8C: write_memory 2@ size 4 value 3@ virtual_protect 0 
+2@ += 6 
+0AC6: 3@ = label @Noname_6325 offset 
+3@ += 36 
+0A8C: write_memory 2@ size 4 value 3@ virtual_protect 0 
+2@ += 8 
+0A8E: 3@ = 2@ + 4 // int 
+0A8F: 3@ = 7443328 - 3@ // int 
+0A8C: write_memory 2@ size 4 value 3@ virtual_protect 0 
+2@ += 5 
+0A8E: 3@ = 2@ + 4 // int 
+0A8F: 3@ = 5821161 - 3@ // int 
+0A8C: write_memory 2@ size 4 value 3@ virtual_protect 0 
+2@ += 15 
+0A8E: 3@ = 2@ + 4 // int 
+0A8F: 3@ = 4798033 - 3@ // int 
+0A8C: write_memory 2@ size 4 value 3@ virtual_protect 0 
+2@ += 6 
+0A8C: write_memory 2@ size 4 value 4@ virtual_protect 0 
+2@ += 63 
+0AC6: 3@ = label @Noname_6413 offset 
+0A8C: write_memory 2@ size 4 value 3@ virtual_protect 0 
+2@ += 5 
+0A8E: 3@ = 2@ + 4 // int 
+0A8F: 3@ = 5827502 - 3@ // int 
+0A8C: write_memory 2@ size 4 value 3@ virtual_protect 0 
+2@ += 9 
+0AC6: 3@ = label @Noname_6423 offset 
+0A8C: write_memory 2@ size 4 value 3@ virtual_protect 0 
+2@ += 5 
+0A8E: 3@ = 2@ + 4 // int 
+0A8F: 3@ = 5827502 - 3@ // int 
+0A8C: write_memory 2@ size 4 value 3@ virtual_protect 0 
+2@ += 11 
+0A8E: 3@ = 2@ + 4 // int 
+0A8F: 3@ = 5827497 - 3@ // int 
+0A8C: write_memory 2@ size 4 value 3@ virtual_protect 0 
+2@ += 11 
+0A8E: 3@ = 2@ + 4 // int 
+0A8F: 3@ = 5730443 - 3@ // int 
+0A8C: write_memory 2@ size 4 value 3@ virtual_protect 0 
+2@ += 7 
+0A8E: 3@ = 2@ + 4 // int 
+0A8F: 3@ = 5730443 - 3@ // int 
+0A8C: write_memory 2@ size 4 value 3@ virtual_protect 0 
+2@ += 14 
+0AC6: 3@ = label @Noname_6433 offset 
+0A8C: write_memory 2@ size 4 value 3@ virtual_protect 0 
+2@ += 5 
+0A8E: 3@ = 2@ + 4 // int 
+0A8F: 3@ = 5742952 - 3@ // int 
+0A8C: write_memory 2@ size 4 value 3@ virtual_protect 0 
+2@ += 8 
+0A8E: 3@ = 2@ + 4 // int 
+0A8F: 3@ = 5742437 - 3@ // int 
+0A8C: write_memory 2@ size 4 value 3@ virtual_protect 0 
+2@ += 5 
+0AC6: 3@ = label @Noname_6447 offset 
+0A8C: write_memory 2@ size 4 value 3@ virtual_protect 0 
+2@ += 5 
+0A8E: 3@ = 2@ + 4 // int 
+0A8F: 3@ = 5742952 - 3@ // int 
+0A8C: write_memory 2@ size 4 value 3@ virtual_protect 0 
+2@ += 15 
+0AC6: 3@ = label @Noname_6225 offset 
+3@ += 4 
+0A8C: write_memory 2@ size 4 value 3@ virtual_protect 0 
+2@ += 5 
+0A8E: 3@ = 2@ + 4 // int 
+0A8F: 3@ = 5827610 - 3@ // int 
+0A8C: write_memory 2@ size 4 value 3@ virtual_protect 0 
+2@ += 6 
+0AC6: 3@ = label @Noname_6225 offset 
+0A8C: write_memory 2@ size 4 value 3@ virtual_protect 0 
+2@ += 5 
+0A8E: 3@ = 2@ + 4 // int 
+0A8F: 3@ = 5827610 - 3@ // int 
+0A8C: write_memory 2@ size 4 value 3@ virtual_protect 0
+return
+
+{======================================================================
+======================================================================}
+:Noname_6213
+851F:   not 
+hex
+ AB 3F CD CC 4C 3F 00 00 B4 41
+end
+
+:Noname_6225
+0000: NOP 
+hex
+ DE 42 00 00 EE 42 00 00 DC 42
+end
+
+:Noname_6237
+0000: NOP 
+hex
+ 2E 42 00 00 DC 41 00 00 48 C1
+end
+
+:Noname_6249
+0000: NOP 
+hex
+ 7E 42
+end
+
+:Noname_6253
+hex
+ 9A 99 19 3F
+end
+
+:Noname_6257
+hex
+ CD CC CC 3E
+end
+
+:Noname_6261
+0000: NOP 
+hex
+ 3A 42
+end
+
+:Noname_6265
+0000: NOP 
+hex
+ 82 42
+end
+
+:Noname_6269
+0000: NOP 
+hex
+ AE 42
+end
+
+:Noname_6273
+hex
+ 9A 99 B4 42
+end
+
+:Noname_6277
+hex
+ 33 33 51 42
+end
+
+:Noname_6281
+hex
+ 66 66 A6 3F
+end
+
+:Noname_6285
+hex
+ CD CC 4C 3F
+end
+
+:Noname_6289
+0000: NOP 
+hex
+ B8 41
+end
+
+:Noname_6293
+hex
+ 33 33 93 3F
+end
+
+:Noname_6297
+hex
+ 9A 99 99 3F
+end
+
+:Noname_6301
+0000: NOP 
+hex
+ 58 42
+end
+
+:Noname_6305
+hex
+ 00 40 1C 46
+end
+
+:Noname_6309
+0000: NOP 
+hex
+ BF 42
+end
+
+:Noname_6313
+0000: NOP 
+hex
+ 90 42
+end
+
+:Noname_6317
+0000: NOP 
+hex
+ B4 42 00 00 F2 42
+end
+
+:Noname_6325
+0000: NOP 
+hex
+ D8 41 00 00 27 43 9A 99 B9 3F 9A 99 99 3F 00 80
+ 4C 43 8F C2 95 3F 00 00 80 3F 00 00 00 00 C3 F5
+ C8 3F B8 1E 85 3F 00 00 B6 42 66 66 E6 3F 33 33
+ B3 3F 00 00 00 3F 00 00 1B 43
+end
+
+:Noname_6385
+hex
+ 66 85 8F FF 59 73 96 FF BA 65 32 FF 98 9A 52 FF
+ C2 A5 78 FF 8E BB CC FF 00 00 00 FF
+end
+
+:Noname_6413
+hex
+ 25 64 3A 25 30 32 64 41 4D 00
+end
+
+:Noname_6423
+hex
+ 25 64 3A 25 30 32 64 50 4D 00
+end
+
+:Noname_6433
+hex
+ 4F 4E 2C 20 32 34 48 20 43 4C 4F 43 4B 00
+end
+
+:Noname_6447
+hex
+ 4F 4E 2C 20 31 32 48 20 43 4C 4F 43 4B 00
+end
+
+:Noname_6461
+hex
+ D8                 //  add     al,bl
+ 0D 00 00 00 00     //  or      eax,40AE8A5
+ D9 1C 24           //  fstp    dword ptr [esp]
+ E8 00 00 00 00     //  call    gta_sa.exe+3193A0(007193A0)  // sub_7193A0      proc near               ; CODE XREF: CMenu__DrawTextBoxWTitle
+ E9 00 00 00 00     //  jmp     0058B0AD
+end
+
+:Noname_6480
+hex
+ E8 00 00 00 00     //  call    gta_sa.exe+319510(00719510)  // __setFontShadowRGBA proc near
+ 6A 01              //  push    01
+ E9 00 00 00 00     //  jmp     gta_sa.exe+18AD9F(0058AD9F)
+end
+
+:Noname_6492
+hex
+ D8 0D 00 00 00 00  //  fmul    dword ptr [040AE8E5]
+ D9 1C 24           //  fstp    dword ptr [esp]
+ E8 00 00 00 00     //  call    gta_sa.exe+319380(00719380)  // int __cdecl StoreTextDrawLetterSize(float lWidth,float lHeight)
+ E9 00 00 00 00     //  jmp     gta_sa.exe+18D2E9(0058D2E9)
+end
+
+:Noname_6511
+hex
+ C6 44 24 3C 54     //  mov     byte ptr [esp+3C],54
+ C6 44 24 38 C0     //  mov     byte ptr [esp+38],-40
+ E9 00 00 00 00     //  jmp     gta_sa.exe+93651(00493651)
+end
+
+:Noname_6526
+hex
+ C6 05 00 00 00 00 01   //  mov     byte ptr [04224AE8],01
+ C3                     //  ret
+end
+
+:Noname_6534
+hex
+ 80 3D 69 67 BA 00 02   //  cmp     byte ptr [00BA6769],02
+ 75 47                  //  jne     040AE9E2
+ 83 F9 00               //  cmp     ecx,00
+ 75 07                  //  jne     040AE9A7
+ B9 0C 00 00 00         //  mov     ecx,0000000C
+ EB 0A                  //  jmp     040AE9B1
+ 83 F9 0C               //  cmp     ecx,0C
+ 75 05                  //  jne     040AE9B1
+ B9 18 00 00 00         //  mov     ecx,00000018
+ 83 F9 0C               //  cmp     ecx,0C
+ 7E 07                  //  jle     040AE9BD
+ 83 E9 0C               //  sub     ecx,0C
+ B2 00                  //  mov     dl,00
+ EB 02                  //  jmp     040AE9BF
+ B2 01                  //  mov     dl,01
+ 50                     //  push    eax
+ 51                     //  push    ecx
+ 80 FA 01               //  cmp     dl,01
+ 75 0E                  //  jne     040AE9D4
+ 8D 54 24 1C            //  lea     edx,[esp+1C]
+ 68 00 00 00 00         //  push    040AE919                [%d:%02dAM]
+ E9 00 00 00 00         //  jmp     0058EBAE
+ 8D 54 24 1C            //  lea     edx,[esp+1C]
+ 68 00 00 00 00         //  push    040AE923                [%d:%02dPM]
+ E9 00 00 00 00         //  jmp     0058EBAE
+ 50                     //  push    eax
+ 51                     //  push    ecx
+ 8D 54 24 1C            //  lea     edx,[esp+1C]
+ E9 00 00 00 00         //  jmp     0058EBA9
+end
+
+:Noname_6625
+hex
+ 3C 02          //  cmp     al,02
+ 74 07          //  je      040AE9F8
+ FE C0          //  inc     al
+ E9 00 00 00 00 //  jmp     0057708B
+ B0 00          //  mov     al,00
+ E9 00 00 00 00 //  jmp     0057708B
+end
+
+:Noname_6643
+hex
+ B9 40 B3 C1 00     //  mov     ecx,00C1B340
+ 3C 01              //  cmp     al,01
+ 75 0A              //  jne     040AEA12
+ BE 00 00 00 00     //  mov     esi,040AE92D            [ON, 24H CLOCK]
+ E9 00 00 00 00     //  jmp     0057A168
+ 3C 02              //  cmp     al,02
+ 0F 85 00 00 00 00  //  jne     00579F65
+ BE 00 00 00 00     //  mov     esi,040AE93B            [ON, 12H CLOCK]
+ E9 00 00 00 00     //  jmp     0057A168
+end
+
+:Noname_6680
+hex
+ 80 3D 69 67 BA 00 02   //  cmp     byte ptr [00BA6769],02
+ 75 0B                  //  jne     040AEA38
+ D8 0D 00 00 00 00      //  fmul    dword ptr [040AE861]
+ E9 00 00 00 00         //  jmp     0058EC1A
+ D8 0D 00 00 00 00      //  fmul    dword ptr [040AE85D]
+ E9 00 00 00 00         //  jmp     0058EC1A
 end
