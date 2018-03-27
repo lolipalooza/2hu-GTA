@@ -160,10 +160,10 @@ min(?)	0x189FF1 (crashes if 1 is decreased)
 0A8C: write_memory 5830951 size 4 value 2@ virtual_protect 1 // Weapon position X
 
 0AC6: 2@ = label @Noname_6249 offset // Weapon box Size
-0A8C: write_memory 5822614 size 4 value 2@ virtual_protect 1 
-0A8C: write_memory 5822667 size 4 value 2@ virtual_protect 1 
-0A8C: write_memory 5822773 size 4 value 2@ virtual_protect 1 
-0A8C: write_memory 5822797 size 4 value 2@ virtual_protect 1
+0A8C: write_memory 5822614 size 4 value 2@ virtual_protect 1 // 0x58D896 // Height
+0A8C: write_memory 5822667 size 4 value 2@ virtual_protect 1 // 0x58D8CB // Width
+0A8C: write_memory 5822773 size 4 value 2@ virtual_protect 1 // 0x58D935 // Width
+0A8C: write_memory 5822797 size 4 value 2@ virtual_protect 1 // 0x58D94D // Height
 
 
 // Weapon Ammo
@@ -211,9 +211,9 @@ min(?)	0x189FF1 (crashes if 1 is decreased)
 0A8C: write_memory 5824132 size 6 value 144 virtual_protect 1 
 0A8C: write_memory 5824159 size 6 value 144 virtual_protect 1 
 0A8C: write_memory 5824186 size 6 value 144 virtual_protect 1 
-0A8C: write_memory 5824297 size 6 value 144 virtual_protect 1 
-0A8C: write_memory 5824353 size 6 value 144 virtual_protect 1 
-0A8C: write_memory 5824381 size 6 value 144 virtual_protect 1
+0A8C: write_memory 5824297 size 6 value 144 virtual_protect 1 // This makes darker unactive wanted stars
+0A8C: write_memory 5824353 size 6 value 144 virtual_protect 1 // height unactive wanted stars
+0A8C: write_memory 5824381 size 6 value 144 virtual_protect 1 // width unactive wanted stars
 
 0AC6: 2@ = label @Noname_6269 offset
 0A8C: write_memory 5823996 size 4 value 2@ virtual_protect 1 // Active wanted stars, position Y
@@ -302,11 +302,11 @@ min(?)	0x189FF1 (crashes if 1 is decreased)
 0A8C: write_memory 5811537 size 4 value 1632283 virtual_protect 1 // Zone info font border 2
 0A8C: write_memory 5811572 size 5 value 144 virtual_protect 1 
 
-// probably this is zone info fontstyle
-{0AC6: 2@ = label @Noname_6480 offset // Decompiling bug: Label no found
+
+0AC6: 2@ = label @Noname_6480 offset
 2@ -= 5811614
-0A8C: write_memory 5811609 size 1 value 233 virtual_protect 1 
-0A8C: write_memory 5811610 size 4 value 2@ virtual_protect 1} 
+0A8C: write_memory 5811609 size 1 value 233 virtual_protect 1
+0A8C: write_memory 5811610 size 4 value 2@ virtual_protect 1 // Zone info fontstyle
 
 0A8C: write_memory 5811702 size 4 value 1@ virtual_protect 1 // Zone info font color
 
@@ -321,13 +321,13 @@ min(?)	0x189FF1 (crashes if 1 is decreased)
 
 
 0AC6: 2@ = label @Noname_6526 offset 
-2@ -= 5828255 
-0A8C: write_memory 5828251 size 4 value 2@ virtual_protect 1 // Hide health bar show as text (?) (armour and health appears on text)
+2@ -= 0x58EE9F 
+0A8C: write_memory 5828251 size 4 value 2@ virtual_protect 1 // Hide health bar
 0A8C: write_memory 5828459 size 5 value 144 virtual_protect 1 // Hide armour bar
 0A8C: write_memory 5828913 size 5 value 144 virtual_protect 1 // Hide breath meter
 0A8C: write_memory 5831385 size 2 value 1478 virtual_protect 1 
 0A8C: write_memory 5831387 size 4 value 4@ virtual_protect 1 
-0A8C: write_memory 5831391 size 1 value 0 virtual_protect 1 
+0A8C: write_memory 5831391 size 1 value 0 virtual_protect 1 // writing in a sector that originally has 90 90 90 90 90 90, something like this:  mov     byte ptr [4@ dir],00     // what will we obtain by this? dunno!
 
 
 0AC6: 2@ = label @Noname_6313 offset // Radar height ?
@@ -398,10 +398,10 @@ min(?)	0x189FF1 (crashes if 1 is decreased)
 2@ += 32 
 0A8C: write_memory 5821133 size 4 value 2@ virtual_protect 1 // Styled text 2 height
 
-{0AC6: 2@ = label @Noname_6492 offset // Decompiling bug: Label no found
+0AC6: 2@ = label @Noname_6492 offset
 2@ -= 5821158 
 0A8C: write_memory 5821153 size 1 value 233 virtual_protect 1 
-0A8C: write_memory 5821154 size 4 value 2@ virtual_protect 1}
+0A8C: write_memory 5821154 size 4 value 2@ virtual_protect 1 // Styled text 2 width
 
 0A8C: write_memory 5821402 size 1 value 1 virtual_protect 1 // Styled Text 2 border 1
 0A8C: write_memory 5821404 size 4 value 1622416 virtual_protect 1 // Styled Text 2 border 1
@@ -526,14 +526,14 @@ end
 
 
 
-
-{0AC6: 2@ = label @Noname_6511 offset // Decompiling bug: Label no found
+{
+0AC6: 2@ = label @Noname_6511 offset
 2@ -= 4798030 
 0A8C: write_memory 4798025 size 1 value 233 virtual_protect 1 
-0A8C: write_memory 4798026 size 4 value 2@ virtual_protect 1}
+0A8C: write_memory 4798026 size 4 value 2@ virtual_protect 1
 
 
-{
+
 0AC6: 2@ = label @Noname_6625 offset
 2@ -= 5730443 
 0A8C: write_memory 5730438 size 1 value 233 virtual_protect 1 
@@ -543,8 +543,8 @@ end
 0A8C: write_memory 5742187 size 4 value 2@ virtual_protect 1 
 0AC6: 2@ = label @Noname_6534 offset 
 2@ -= 5827496 
-0A8C: write_memory 5827491 size 1 value 233 virtual_protect 1 //related to next
-0A8C: write_memory 5827492 size 4 value 2@ virtual_protect 1 //related to prev
+0A8C: write_memory 5827491 size 1 value 233 virtual_protect 1
+0A8C: write_memory 5827492 size 4 value 2@ virtual_protect 1
 }
 
 
@@ -863,52 +863,103 @@ end
 
 :Noname_6461
 hex
- D8 0D 00 00 00 00 D9 1C 24 E8 00 00 00 00 E9 00
- 00 00 00 E8 00 00 00 00 6A 01 E9 00 00 00 00 D8
- 0D 00 00 00 00
- D9 1C 24 E8 00 00 00 00 E9 00 00 00 00 C6 44 24
- 3C 54 C6 44 24 38 C0 E9 00 00 00 00
+ D8                 //  add     al,bl
+ 0D 00 00 00 00     //  or      eax,40AE8A5
+ D9 1C 24           //  fstp    dword ptr [esp]
+ E8 00 00 00 00     //  call    gta_sa.exe+3193A0(007193A0)  // sub_7193A0      proc near               ; CODE XREF: CMenu__DrawTextBoxWTitle
+ E9 00 00 00 00     //  jmp     0058B0AD
+end
+
+:Noname_6480
+hex
+ E8 00 00 00 00     //  call    gta_sa.exe+319510(00719510)  // __setFontShadowRGBA proc near
+ 6A 01              //  push    01
+ E9 00 00 00 00     //  jmp     gta_sa.exe+18AD9F(0058AD9F)
+end
+
+:Noname_6492
+hex
+ D8 0D 00 00 00 00  //  fmul    dword ptr [040AE8E5]
+ D9 1C 24           //  fstp    dword ptr [esp]
+ E8 00 00 00 00     //  call    gta_sa.exe+319380(00719380)  // int __cdecl StoreTextDrawLetterSize(float lWidth,float lHeight)
+ E9 00 00 00 00     //  jmp     gta_sa.exe+18D2E9(0058D2E9)
+end
+
+:Noname_6511
+hex
+ C6 44 24 3C 54     //  mov     byte ptr [esp+3C],54
+ C6 44 24 38 C0     //  mov     byte ptr [esp+38],-40
+ E9 00 00 00 00     //  jmp     gta_sa.exe+93651(00493651)
 end
 
 :Noname_6526
-05C6: NOP 
-0000: NOP 
-0000: NOP 
 hex
- 01 C3
+ C6 05 00 00 00 00 01   //  mov     byte ptr [04224AE8],01
+ C3                     //  ret
 end
 
 :Noname_6534
 hex
-// 80 3D 69 67 75 47 83 F9 00 75 07 B9
- 80 3D 69 67 BA 00 02 75 47 83 F9 00 75 07 B9
- 0C 00 00
- 00 EB 0A 83 F9 0C 75 05 B9 18 00 00 00 83 F9 0C
- 7E 07 83 E9 0C B2 00 EB 02 B2 01 50 51 80 FA 01
- 75 0E 8D 54 24 1C
- 68 00 00 00 00 E9 00 00 00
- 00 8D 54 24 1C 68 00 00 00 00 E9 00 00 00 00 50
- 51 8D 54 24 1C E9 00 00 00 00
+ 80 3D 69 67 BA 00 02   //  cmp     byte ptr [00BA6769],02
+ 75 47                  //  jne     040AE9E2
+ 83 F9 00               //  cmp     ecx,00
+ 75 07                  //  jne     040AE9A7
+ B9 0C 00 00 00         //  mov     ecx,0000000C
+ EB 0A                  //  jmp     040AE9B1
+ 83 F9 0C               //  cmp     ecx,0C
+ 75 05                  //  jne     040AE9B1
+ B9 18 00 00 00         //  mov     ecx,00000018
+ 83 F9 0C               //  cmp     ecx,0C
+ 7E 07                  //  jle     040AE9BD
+ 83 E9 0C               //  sub     ecx,0C
+ B2 00                  //  mov     dl,00
+ EB 02                  //  jmp     040AE9BF
+ B2 01                  //  mov     dl,01
+ 50                     //  push    eax
+ 51                     //  push    ecx
+ 80 FA 01               //  cmp     dl,01
+ 75 0E                  //  jne     040AE9D4
+ 8D 54 24 1C            //  lea     edx,[esp+1C]
+ 68 00 00 00 00         //  push    040AE919                [%d:%02dAM]
+ E9 00 00 00 00         //  jmp     0058EBAE
+ 8D 54 24 1C            //  lea     edx,[esp+1C]
+ 68 00 00 00 00         //  push    040AE923                [%d:%02dPM]
+ E9 00 00 00 00         //  jmp     0058EBAE
+ 50                     //  push    eax
+ 51                     //  push    ecx
+ 8D 54 24 1C            //  lea     edx,[esp+1C]
+ E9 00 00 00 00         //  jmp     0058EBA9
 end
 
 :Noname_6625
 hex
- 3C 02 74 07 FE C0 E9 00 00 00 00 B0 00 E9 00 00
- 00 00
+ 3C 02          //  cmp     al,02
+ 74 07          //  je      040AE9F8
+ FE C0          //  inc     al
+ E9 00 00 00 00 //  jmp     0057708B
+ B0 00          //  mov     al,00
+ E9 00 00 00 00 //  jmp     0057708B
 end
 
 :Noname_6643
 hex
- B9 40 B3 C1 00 3C 01 75 0A BE 00 00 00 00 E9 00
- 00 00 00 3C 02 0F
- 85 00 00 00 00 BE 00 00 00
- 00 E9 00 00 00 00
+ B9 40 B3 C1 00     //  mov     ecx,00C1B340
+ 3C 01              //  cmp     al,01
+ 75 0A              //  jne     040AEA12
+ BE 00 00 00 00     //  mov     esi,040AE92D            [ON, 24H CLOCK]
+ E9 00 00 00 00     //  jmp     0057A168
+ 3C 02              //  cmp     al,02
+ 0F 85 00 00 00 00  //  jne     00579F65
+ BE 00 00 00 00     //  mov     esi,040AE93B            [ON, 12H CLOCK]
+ E9 00 00 00 00     //  jmp     0057A168
 end
 
 :Noname_6680
 hex
-// 80 3D 69 67 75 0B D8 0D 00 00 00 00 E9 00 00 00
- 80 3D 69 67 BA 00 02 75 0B D8 0D 00 00 00 00 E9 00 00 00
- 00 D8
- 0D 00 00 00 00 E9 00 00 00 00
+ 80 3D 69 67 BA 00 02   //  cmp     byte ptr [00BA6769],02
+ 75 0B                  //  jne     040AEA38
+ D8 0D 00 00 00 00      //  fmul    dword ptr [040AE861]
+ E9 00 00 00 00         //  jmp     0058EC1A
+ D8 0D 00 00 00 00      //  fmul    dword ptr [040AE85D]
+ E9 00 00 00 00         //  jmp     0058EC1A
 end
