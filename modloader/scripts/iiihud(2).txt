@@ -103,397 +103,399 @@
 0A8C: write_memory 2@ size 4 value 3@ virtual_protect 0
 
 // 12235308 is 0xBAB22C (Base Colours) with offset 0 (Health Bar, Red Stuff)    Offset    ID     Stuff
-0A8C: write_memory 12235308 size 4 value -11981967 virtual_protect 0    //      0         0      Health Bar, Red Stuff
-0A8C: write_memory 12235312 size 4 value -9789345 virtual_protect 0     //      4         1      Cash/Money, Entered Car Name Text, Green Stuff
-0A8C: write_memory 12235316 size 4 value -809088 virtual_protect 0      //      8         2      Blue Stuff
-0A8C: write_memory 12235332 size 4 value -16601892 virtual_protect 0    //      24        6      Map Lines (Brown/Yellow)
-0A8C: write_memory 12235336 size 4 value -233816 virtual_protect 0      //      28        7      Pink, Purple Stuff
-0A8C: write_memory 12235352 size 4 value -9780014 virtual_protect 0     //      44        11     Yellow Stuff
+0A8C: write_memory 12235308 size 4 value 0xFF492B71 virtual_protect 0   //      0         0      Health Bar, Red Stuff
+0A8C: write_memory 12235312 size 4 value 0xFF6AA05F virtual_protect 0   //      4         1      Cash/Money, Entered Car Name Text, Green Stuff
+0A8C: write_memory 12235316 size 4 value 0xFFF3A780 virtual_protect 0   //      8         2      Blue Stuff
+0A8C: write_memory 12235332 size 4 value 0xFF02ACDC virtual_protect 0   //      24        6      Map Lines (Brown/Yellow)
+0A8C: write_memory 12235336 size 4 value 0xFFFC6EA8 virtual_protect 0   //      28        7      Pink, Purple Stuff
+0A8C: write_memory 12235352 size 4 value 0xFF6AC4D2 virtual_protect 0   //      44        11     Yellow Stuff
 
 // Clock
 0AC6: 2@ = label @Noname_6213 offset 
-0A8C: write_memory 5827377 size 4 value 2@ virtual_protect 1 // Clock height
+0A8C: write_memory 0x58EB31 size 4 value 2@ virtual_protect 1 // Clock height           D8 0D 148F8500:     fmul    dword ptr [00858F14]        overwriting address (00858F14)
 
 0AC6: 2@ = label @Noname_6213 offset 
 2@ += 4 
-0A8C: write_memory 5827399 size 4 value 2@ virtual_protect 1 // Clock width
+0A8C: write_memory 0x58EB47 size 4 value 2@ virtual_protect 1 // Clock width            D8 0D AC6C8600:     fmul    dword ptr [00866CAC]        overwriting address
 
-0A8C: write_memory 5827440 size 1 value 1 virtual_protect 1 // Clock border
-0A8C: write_memory 5827442 size 4 value 1616378 virtual_protect 1 // Clock border related
-0A8C: write_memory 5827537 size 4 value 1@ virtual_protect 1 // Clock color
+0A8C: write_memory 0x58EB70 size 1 value 1 virtual_protect 1 // Clock border            6A 02:              push    02                          6A 01:          push 01
+0A8C: write_memory 0x58EB72 size 4 value 0x18A9FA virtual_protect 1 //                  E8 1AAA1800:        call    00719590                    E8 FAA91800:    call 00719570
+0A8C: write_memory 0x58EBD1 size 4 value 1@ virtual_protect 1 // Clock color            B9 2CB2BA00:        mov     ecx,00BAB22C                overwriting address
 
 
 // Money
 0AC6: 2@ = label @Noname_6213 offset 
 2@ += 8 
-0A8C: write_memory 5827588 size 4 value 2@ virtual_protect 1 
-0A8C: write_memory 5802889 size 1 value 235 virtual_protect 1
+0A8C: write_memory 0x58EC04 size 4 value 2@ virtual_protect 1 //                        8C 8F 8500D95C:     mov     [edi+5CD90085],cs           overwriting address
+0A8C: write_memory 0x588B89 size 1 value 0xEB virtual_protect 1 //                      7A 1F:              jp      00588BAA                    EB 1F:          jmp 00588BAA
 0AC6: 2@ = label @Noname_6213 offset 
-0A8C: write_memory 5829966 size 4 value 2@ virtual_protect 1 // Money height
+0A8C: write_memory 0x58F54E size 4 value 2@ virtual_protect 1 // Money height           D8 0D 148F8500:     fmul    dword ptr [00858F14]        overwriting address
 0AC6: 2@ = label @Noname_6213 offset 
 2@ += 4 
-0A8C: write_memory 5829988 size 4 value 2@ virtual_protect 1 // Money width
-0A8C: write_memory 5829785 size 4 value 1@ virtual_protect 1 // Money color
-0A8C: write_memory 5830022 size 1 value 1 virtual_protect 1 // Money shadow distance
-0A8C: write_memory 5830029 size 1 value 1 virtual_protect 1 // something possibly related to border, unknown
-{
-border
-
-max(?)	0x189FFD (crashes if D is increased)
-min(?)	0x189FF1 (crashes if 1 is decreased)
-	    0x189F5D
-}
-0A8C: write_memory 5830031 size 4 value {1613661} 0x189FE4 virtual_protect 1 // Money border 2
+0A8C: write_memory 0x58F564 size 4 value 2@ virtual_protect 1 // Money width            D8 0D AC6C8600:     fmul    dword ptr [00866CAC]        overwriting address
+0A8C: write_memory 0x58F499 size 4 value 1@ virtual_protect 1 // Money color            B9 2CB2BA00:        mov     ecx,00BAB22C                overwriting address
+0A8C: write_memory 0x58F586 size 1 value 1 virtual_protect 1 // Money shadow distance   6A 00:              push    00                          overwriting value
+0A8C: write_memory 0x58F58D size 1 value 1 virtual_protect 1 // Money border distance ? 6A 02:              push    02                          overwriting value
+0A8C: write_memory 0x58F58F size 4 value 0x189FE4 virtual_protect 1 // Money border 2   E8 FD9F1800:        call    00719590                    overwriting address
 0AC6: 2@ = label @Noname_6237 offset 
-0A8C: write_memory 5830108 size 4 value 2@ virtual_protect 1 // Money Position Y
+0A8C: write_memory 0x58F5DC size 4 value 2@ virtual_protect 1 // Money Position Y       0D 886C8600:        or      eax,866C88                  overwriting address
 0AC6: 2@ = label @Noname_6225 offset 
 2@ += 8 
-0A8C: write_memory 5830140 size 4 value 2@ virtual_protect 1 // Money Position X
+0A8C: write_memory 0x58F5FC size 4 value 2@ virtual_protect 1 // Money Position X       D8 0D 0C958500:     fmul    dword ptr [0085950C]        overwriting address
 
 // Weapon
 0AC6: 2@ = label @Noname_6237 offset 
 2@ += 4 
-0A8C: write_memory 5830931 size 4 value 2@ virtual_protect 1 // Weapon position Y
+0A8C: write_memory 0x58F913 size 4 value 2@ virtual_protect 1 // Weapon position Y      0D A48B8500:        or      eax,858BA4                  overwriting address
 
 0AC6: 2@ = label @Noname_6237 offset 
 2@ += 8 
-0A8C: write_memory 5830951 size 4 value 2@ virtual_protect 1 // Weapon position X
+0A8C: write_memory 0x58F927 size 4 value 2@ virtual_protect 1 // Weapon position X      D8 0D 0C958500:     fmul    dword ptr [0085950C]        overwriting address
 
 0AC6: 2@ = label @Noname_6249 offset // Weapon box Size
-0A8C: write_memory 5822614 size 4 value 2@ virtual_protect 1 // 0x58D896 // Height
-0A8C: write_memory 5822667 size 4 value 2@ virtual_protect 1 // 0x58D8CB // Width
-0A8C: write_memory 5822773 size 4 value 2@ virtual_protect 1 // 0x58D935 // Width
-0A8C: write_memory 5822797 size 4 value 2@ virtual_protect 1 // 0x58D94D // Height
+0A8C: write_memory 0x58D896 size 4 value 2@ virtual_protect 1 // Height
+0A8C: write_memory 0x58D8CB size 4 value 2@ virtual_protect 1 // Width
+0A8C: write_memory 0x58D935 size 4 value 2@ virtual_protect 1 // Width
+0A8C: write_memory 0x58D94D size 4 value 2@ virtual_protect 1 // Height
 
 
 // Weapon Ammo
 0AC6: 2@ = label @Noname_6253 offset 
-0A8C: write_memory 5805239 size 4 value 2@ virtual_protect 1 // Ammo text height
+0A8C: write_memory 0x5894B7 size 4 value 2@ virtual_protect 1 // Ammo text height
 
 0AC6: 2@ = label @Noname_6257 offset 
-0A8C: write_memory 5805261 size 4 value 2@ virtual_protect 1 // Ammo text width
+0A8C: write_memory 0x5894CD size 4 value 2@ virtual_protect 1 // Ammo text width
 
-0A8C: write_memory 5805317 size 1 value 0 virtual_protect 1 // Ammo text border
-0A8C: write_memory 5805559 size 4 value 1@ virtual_protect 1 // Ammo text color
-0A8C: write_memory 5805565 size 1 value 6 virtual_protect 1 // Ammo text color 2?
+0A8C: write_memory 0x589505 size 1 value 0 virtual_protect 1 // Ammo text border        6A 01:              push    01                          overwriting value
+0A8C: write_memory 0x5895F7 size 4 value 1@ virtual_protect 1 // Ammo text color        B9 2CB2BA00:        mov     ecx,00BAB22C                overwriting address
+0A8C: write_memory 0x5895FD size 1 value 6 virtual_protect 1 // Ammo text color 2?      6A 03:              push    03                          overwriting value
 
 0AC6: 2@ = label @Noname_6237 offset 
 2@ += 4 
-0A8C: write_memory 5831132 size 4 value 2@ virtual_protect 1 // Ammo text Y-position
+0A8C: write_memory 0x58F9DC size 4 value 2@ virtual_protect 1 // Ammo text Y-position   05 A48B8500:        add     eax,00858BA4                overwriting address
 
 0AC6: 2@ = label @Noname_6261 offset 
-0A8C: write_memory 5831142 size 4 value 2@ virtual_protect 1 // Ammo text Y-position 2?
+0A8C: write_memory 0x58F9E6 size 4 value 2@ virtual_protect 1 // Ammo text Y-pos 2?     0D 786C8600:        or      eax,866C78                  overwriting address
 
 0AC6: 2@ = label @Noname_6237 offset 
 2@ += 8 
-0A8C: write_memory 5831170 size 4 value 2@ virtual_protect 1 // Ammo text X-position
+0A8C: write_memory 0x58FA02 size 4 value 2@ virtual_protect 1 // Ammo text X-position
 
 
 
 // Wanted Level Stars
 0AC6: 2@ = label @Noname_6265 offset
-0A8C: write_memory 5831186 size 4 value 2@ virtual_protect 1 // ???
-0A8C: write_memory 5823771 size 2 value 37008 virtual_protect 1   // Show inactive wanted stars always
-0A8C: write_memory 5823811 size 4 value 1620009 virtual_protect 1 // Remove black thin border to Active wanted stars
-0A8C: write_memory 5823945 size 1 value 4 virtual_protect 1 // Active wanted stars color
-0A8C: write_memory 5823952 size 4 value 1@ virtual_protect 1 // Active wanted stars color
-0A8C: write_memory 5824035 size 1 value 235 virtual_protect 1 // Active wanted stars, position Y
+0A8C: write_memory 0x58FA12 size 4 value 2@ virtual_protect 1 // ???                    0D 4C6C8600:        or      eax,866C4C                  overwriting address
+0A8C: write_memory 0x58DD1B size 2 value 0x9090 virtual_protect 1 // Show inactive wanted stars always
+0A8C: write_memory 0x58DD43 size 4 value 0x0018B829 virtual_protect 1 // Remove black thin border to Active wanted stars        E8 49B81800:        call    00719590            overwriting address (29B81800)
+0A8C: write_memory 0x58DDC9 size 1 value 4 virtual_protect 1 // Active wanted stars color                                       6A 06:              push    06                  overwriting value
+0A8C: write_memory 0x58DDD0 size 4 value 1@ virtual_protect 1 // Active wanted stars color                                      B9 2CB2BA00:        mov     ecx,00BAB22C        overwriting address
+0A8C: write_memory 0x58DE23 size 1 value 0xEB virtual_protect 1 // Active wanted stars, position Y                              7A 22:              jp      0058DE47            changing to EB 1F: jmp 0058DE47
 
 // Color related
 0A8E: 2@ = 1@ + 18 // int 
-0A8C: write_memory 5824119 size 4 value 2@ virtual_protect 1 // ???
+0A8C: write_memory 0x58DE77 size 4 value 2@ virtual_protect 1 //                        0FB6 05 46B2BA00:   movzx   eax,byte ptr [00BAB246]     overwriting address
 2@ -= 1 
-0A8C: write_memory 5824146 size 4 value 2@ virtual_protect 1 // ???
+0A8C: write_memory 0x58DE92 size 4 value 2@ virtual_protect 1 //                        0FB6 0D 45B2BA00:   movzx   ecx,byte ptr [00BAB245]     overwriting address
 2@ -= 1 
-0A8C: write_memory 5824173 size 4 value 2@ virtual_protect 1 // ???
+0A8C: write_memory 0x58DEAD size 4 value 2@ virtual_protect 1 //                        0FB6 15 44B2BA00:   movzx   edx,byte ptr [00BAB244]     overwriting address
 
 // Shape (or size) of unactive wanted stars
-0A8C: write_memory 5824132 size 6 value 144 virtual_protect 1 
-0A8C: write_memory 5824159 size 6 value 144 virtual_protect 1 
-0A8C: write_memory 5824186 size 6 value 144 virtual_protect 1 
-0A8C: write_memory 5824297 size 6 value 144 virtual_protect 1 // This makes darker unactive wanted stars
-0A8C: write_memory 5824353 size 6 value 144 virtual_protect 1 // height unactive wanted stars
-0A8C: write_memory 5824381 size 6 value 144 virtual_protect 1 // width unactive wanted stars
+0A8C: write_memory 0x58DE84 size 6 value 0x90 virtual_protect 1 
+0A8C: write_memory 0x58DE9F size 6 value 0x90 virtual_protect 1 
+0A8C: write_memory 0x58DEBA size 6 value 0x90 virtual_protect 1 
+0A8C: write_memory 0x58DF29 size 6 value 0x90 virtual_protect 1 // This makes darker unactive wanted stars
+0A8C: write_memory 0x58DF61 size 6 value 0x90 virtual_protect 1 // height unactive wanted stars
+0A8C: write_memory 0x58DF7D size 6 value 0x90 virtual_protect 1 // width unactive wanted stars
 
 0AC6: 2@ = label @Noname_6269 offset
-0A8C: write_memory 5823996 size 4 value 2@ virtual_protect 1 // Active wanted stars, position Y
-0A8C: write_memory 5824245 size 4 value 2@ virtual_protect 1
+0A8C: write_memory 0x58DDFC size 4 value 2@ virtual_protect 1 // Active wanted stars, position Y
+0A8C: write_memory 0x58DEF5 size 4 value 2@ virtual_protect 1
 
 0AC6: 2@ = label @Noname_6273 offset 
-0A8C: write_memory 5824435 size 4 value 2@ virtual_protect 1 // Inactive wanted stars, position Y
+0A8C: write_memory 0x58DFB3 size 4 value 2@ virtual_protect 1 // Inactive wanted stars, position Y
 
 0AC6: 2@ = label @Noname_6277 offset 
-0A8C: write_memory 5823759 size 4 value 2@ virtual_protect 1 // Wanted stars (active and inactive) position X
+0A8C: write_memory 0x58DD0F size 4 value 2@ virtual_protect 1 // Wanted stars (active and inactive) position X
 
 0AC6: 2@ = label @Noname_6281 offset
-0A8C: write_memory 5823658 size 4 value 2@ virtual_protect 1 // ???
-0A8C: write_memory 5823856 size 4 value 2@ virtual_protect 1 // height active wanted stars
-0A8C: write_memory 5824349 size 4 value 2@ virtual_protect 1 // height inactive wanted stars
+0A8C: write_memory 0x58DCAA size 4 value 2@ virtual_protect 1 // ???
+0A8C: write_memory 0x58DD70 size 4 value 2@ virtual_protect 1 // height active wanted stars
+0A8C: write_memory 0x58DF5D size 4 value 2@ virtual_protect 1 // height inactive wanted stars
 
 0AC6: 2@ = label @Noname_6285 offset
-0A8C: write_memory 5823680 size 4 value 2@ virtual_protect 1 // ???
-0A8C: write_memory 5823878 size 4 value 2@ virtual_protect 1 // width active wanted stars
-0A8C: write_memory 5824377 size 4 value 2@ virtual_protect 1 // width inactive wanted stars
+0A8C: write_memory 0x58DCC0 size 4 value 2@ virtual_protect 1 // ???
+0A8C: write_memory 0x58DD86 size 4 value 2@ virtual_protect 1 // width active wanted stars
+0A8C: write_memory 0x58DF79 size 4 value 2@ virtual_protect 1 // width inactive wanted stars
 
 0AC6: 2@ = label @Noname_6289 offset
-0A8C: write_memory 5824493 size 4 value 2@ virtual_protect 1 // space between stars
+0A8C: write_memory 0x58DFED size 4 value 2@ virtual_protect 1 // space between stars
 
 
 
 // Radio station font
-0A8C: write_memory 5152505 size 1 value 3 virtual_protect 1 // Radio station fontstyle
-0A8C: write_memory 5152604 size 4 value 2291216 virtual_protect 1 // Radio station border
-0A8C: write_memory 5152657 size 1 value 5 virtual_protect 1 // Radio station color or shadow ?
-0A8C: write_memory 5152664 size 4 value 1@ virtual_protect 1 // Radio station color
-0A8C: write_memory 5152679 size 1 value 0 virtual_protect 1
-0A8C: write_memory 5152686 size 4 value 1@ virtual_protect 1
+0A8C: write_memory 0x4E9EF9 size 1 value 3 virtual_protect 1 // Radio station fontstyle                 6A 02:          push    02                  overwriting value
+0A8C: write_memory 0x4E9F5C size 4 value 0x0022F610 virtual_protect 1 // Radio station border           E8 30F62200:    call    00719590            overwriting address
+0A8C: write_memory 0x4E9F91 size 1 value 5 virtual_protect 1 // Radio station color or shadow ?         6A 06:          push    06                  overwriting value
+0A8C: write_memory 0x4E9F98 size 4 value 1@ virtual_protect 1 // Radio station color
+0A8C: write_memory 0x4E9FA7 size 1 value 0 virtual_protect 1 //                                         6A 08:          push    08                  overwriting value
+0A8C: write_memory 0x4E9FAE size 4 value 1@ virtual_protect 1
 
 0AC6: 2@ = label @Noname_6213 offset 
-0A8C: write_memory 5152546 size 4 value 2@ virtual_protect 1 // Radio station height
+0A8C: write_memory 0x4E9F22 size 4 value 2@ virtual_protect 1 // Radio station height
 
 0AC6: 2@ = label @Noname_6213 offset 
 2@ += 4 
-0A8C: write_memory 5152568 size 4 value 2@ virtual_protect 1 // Radio station width
+0A8C: write_memory 0x4E9F38 size 4 value 2@ virtual_protect 1 // Radio station width
 
 0AC6: 2@ = label @Noname_6305 offset 
-0A8C: write_memory 5812253 size 4 value 2@ virtual_protect 1
+0A8C: write_memory 0x58B01D size 4 value 2@ virtual_protect 1 //                                        1D 949A8500:    sbb     eax,00859A94        overwriting address
 
 
 
 // Vehicle name text
 0AC6: 2@ = label @Noname_6293 offset 
-0A8C: write_memory 5812369 size 4 value 2@ virtual_protect 1 // Vehicle info font height
+0A8C: write_memory 0x58B091 size 4 value 2@ virtual_protect 1 // Vehicle Height
 0AC6: 2@ = label @Noname_6461 offset 
-2@ -= 5812394 
-0A8C: write_memory 5812389 size 1 value 233 virtual_protect 1 // Vehicle info font width (related)
-0A8C: write_memory 5812390 size 4 value 2@ virtual_protect 1 // Vehicle info font width
-0A8C: write_memory 5812411 size 1 value 1 virtual_protect 1 // Vehicle info font style
-0A8C: write_memory 5812418 size 1 value 1 virtual_protect 1 // Vehicle info font border
-0A8C: write_memory 5812420 size 4 value 1631400 virtual_protect 1 // Vehicle info font border
-0A8C: write_memory 5812445 size 4 value 1@ virtual_protect 1 // Vehicle and zone info colour
-0A8C: write_memory 5812451 size 1 value 4 virtual_protect 1 // Vehicle info colour
+2@ -= 0x58B0AA 
+0A8C: write_memory 0x58B0A5 size 1 value 0xE9 virtual_protect 1 // Vehicle Width (related)              D9 1C 24:       fstp    dword ptr [esp]         converted to E9 <address> (jump instruction)  (next bytes will be ignored)
+0A8C: write_memory 0x58B0A6 size 4 value 2@ virtual_protect 1 // Vehicle Width                          editing address to previous jump <address> instruction
+0A8C: write_memory 0x58B0BB size 1 value 1 virtual_protect 1 // Vehicle Fontstyle
+0A8C: write_memory 0x58B0C2 size 1 value 1 virtual_protect 1 // Vehicle Border
+0A8C: write_memory 0x58B0C4 size 4 value 0x0018E4A8 virtual_protect 1 // Vehicle Border
+0A8C: write_memory 0x58B0DD size 4 value 1@ virtual_protect 1 // Vehicle and Zone Bolour
+0A8C: write_memory 0x58B0E3 size 1 value 4 virtual_protect 1 // Vehicle Colour
 
 0AC6: 2@ = label @Noname_6301 offset 
-0A8C: write_memory 5812533 size 4 value 2@ virtual_protect 1 // Vehicle info Y-position
+0A8C: write_memory 0x58B135 size 4 value 2@ virtual_protect 1 // Vehicle Pos Y
 
 0AC6: 2@ = label @Noname_6325 offset 
 2@ += 28 
-0A8C: write_memory 5811888 size 4 value 2@ virtual_protect 1 
-0A8C: write_memory 5811914 size 4 value 2@ virtual_protect 1 
-0A8C: write_memory 5811952 size 4 value 2@ virtual_protect 1 
-0A8C: write_memory 5811979 size 4 value 2@ virtual_protect 1 
-0A8C: write_memory 5812113 size 4 value 2@ virtual_protect 1 
-0A8C: write_memory 5812156 size 4 value 2@ virtual_protect 1 
-0A8C: write_memory 5812201 size 4 value 2@ virtual_protect 1 
-0A8C: write_memory 5812266 size 4 value 2@ virtual_protect 1
+0A8C: write_memory 0x58AEB0 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 0x58AECA size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 0x58AEF0 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 0x58AF0B size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 0x58AF91 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 0x58AFBC size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 0x58AFE9 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 0x58B02A size 4 value 2@ virtual_protect 1
 
 
 
 // Zone info text
 0AC6: 2@ = label @Noname_6305 offset 
-0A8C: write_memory 5811349 size 4 value 2@ virtual_protect 1
+0A8C: write_memory 0x58AC95 size 4 value 2@ virtual_protect 1
 
 0AC6: 2@ = label @Noname_6293 offset 
-0A8C: write_memory 5811500 size 4 value 2@ virtual_protect 1 // Zone info font height
+0A8C: write_memory 0x58AD2C size 4 value 2@ virtual_protect 1 // Zone Height
 
 0AC6: 2@ = label @Noname_6297 offset 
-0A8C: write_memory 5811522 size 4 value 2@ virtual_protect 1 
-0A8C: write_memory 5811535 size 1 value 1 virtual_protect 1 // Zone info font border 1
-0A8C: write_memory 5811537 size 4 value 1632283 virtual_protect 1 // Zone info font border 2
-0A8C: write_memory 5811572 size 5 value 144 virtual_protect 1 
+0A8C: write_memory 0x58AD42 size 4 value 2@ virtual_protect 1 // Zone Width
+0A8C: write_memory 0x58AD4F size 1 value 1 virtual_protect 1 // Zone Border
+0A8C: write_memory 0x58AD51 size 4 value 0x0018E81B virtual_protect 1 // Zone Border
+0A8C: write_memory 0x58AD74 size 5 value 0x90 virtual_protect 1 
 
 
 0AC6: 2@ = label @Noname_6480 offset
-2@ -= 5811614
-0A8C: write_memory 5811609 size 1 value 233 virtual_protect 1
-0A8C: write_memory 5811610 size 4 value 2@ virtual_protect 1 // Zone info fontstyle
+2@ -= 0x58AD9E
+0A8C: write_memory 0x58AD99 size 1 value 0xE9 virtual_protect 1
+0A8C: write_memory 0x58AD9A size 4 value 2@ virtual_protect 1 // Zone Fontstyle     // it is very probable that 6A 01: push 01 inside @Noname_6480 is the value of fontstyle... so, what is the original?
 
-0A8C: write_memory 5811702 size 4 value 1@ virtual_protect 1 // Zone info font color
+0A8C: write_memory 0x58ADF6 size 4 value 1@ virtual_protect 1 // Zone Color
 
 0AC6: 2@ = label @Noname_6309 offset
-0A8C: write_memory 5811770 size 4 value 2@ virtual_protect 1 // Zone info Y-position
+0A8C: write_memory 0x58AE3A size 4 value 2@ virtual_protect 1 // Zone Pos Y
 
 
 
 
-0A8C: write_memory 5819498 size 5 value 144 virtual_protect 1 // Hide Original Styled Text 3 (Wasted or busted text)
-0A8C: write_memory 5498112 size 4 value 333269 virtual_protect 1
+0A8C: write_memory 0x58CC6A size 5 value 0x90 virtual_protect 1 // Hide Original Styled Text 3 (Wasted or busted text)
+0A8C: write_memory 0x53E500 size 4 value 0x000515D5 virtual_protect 1
 
 
 0AC6: 2@ = label @Noname_6526 offset 
 2@ -= 0x58EE9F 
-0A8C: write_memory 5828251 size 4 value 2@ virtual_protect 1 // Hide health bar
-0A8C: write_memory 5828459 size 5 value 144 virtual_protect 1 // Hide armour bar
-0A8C: write_memory 5828913 size 5 value 144 virtual_protect 1 // Hide breath meter
-0A8C: write_memory 5831385 size 2 value 1478 virtual_protect 1 
-0A8C: write_memory 5831387 size 4 value 4@ virtual_protect 1 
-0A8C: write_memory 5831391 size 1 value 0 virtual_protect 1 // writing in a sector that originally has 90 90 90 90 90 90, something like this:  mov     byte ptr [4@ dir],00     // what will we obtain by this? dunno!
+0A8C: write_memory 0x58EE9B size 4 value 2@ virtual_protect 1 // Hide health bar
+0A8C: write_memory 0x58EF6B size 5 value 0x90 virtual_protect 1 // Hide armour bar
+0A8C: write_memory 0x58F131 size 5 value 0x90 virtual_protect 1 // Hide breath meter
+0A8C: write_memory 0x58FAD9 size 2 value 0x05C6 virtual_protect 1 
+0A8C: write_memory 0x58FADB size 4 value 4@ virtual_protect 1 
+0A8C: write_memory 0x58FADF size 1 value 0 virtual_protect 1 // writing in a sector that originally has 90 90 90 90 90 90, something like this:  mov     byte ptr [4@ dir],00     // what will we obtain by this? dunno!
 
 
+
+// Radar
 0AC6: 2@ = label @Noname_6313 offset // Radar height ?
-0A8C: write_memory 5780726 size 4 value 2@ virtual_protect 1 
-0A8C: write_memory 5809277 size 4 value 2@ virtual_protect 1 
-0A8C: write_memory 5809714 size 4 value 2@ virtual_protect 1 
-0A8C: write_memory 5809835 size 4 value 2@ virtual_protect 1 
-0A8C: write_memory 5809934 size 4 value 2@ virtual_protect 1 
-0A8C: write_memory 5810177 size 4 value 2@ virtual_protect 1 
-0A8C: write_memory 5810347 size 4 value 2@ virtual_protect 1 
-0A8C: write_memory 5810465 size 4 value 2@ virtual_protect 1 
-0A8C: write_memory 5810645 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 0x5834F6 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 0x58A47D size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 0x58A632 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 0x58A6AB size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 0x58A70E size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 0x58A801 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 0x58A8AB size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 0x58A921 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 0x58A9D5 size 4 value 2@ virtual_protect 1 
 
 0AC6: 2@ = label @Noname_6317 offset // Radar width ?
-0A8C: write_memory 5780674 size 4 value 2@ virtual_protect 1 
-0A8C: write_memory 5809225 size 4 value 2@ virtual_protect 1 
-0A8C: write_memory 5810153 size 4 value 2@ virtual_protect 1 
-0A8C: write_memory 5810240 size 4 value 2@ virtual_protect 1 
-0A8C: write_memory 5810499 size 4 value 2@ virtual_protect 1 
-0A8C: write_memory 5810589 size 4 value 2@ virtual_protect 1
+0A8C: write_memory 0x5834C2 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 0x58A449 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 0x58A7E9 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 0x58A840 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 0x58A943 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 0x58A99D size 4 value 2@ virtual_protect 1
 
 0AC6: 2@ = label @Noname_6317 offset // Radar Y-position ?
 2@ += 4 
-0A8C: write_memory 5780736 size 4 value 2@ virtual_protect 1 
-0A8C: write_memory 5808551 size 4 value 2@ virtual_protect 1 
-0A8C: write_memory 5808854 size 4 value 2@ virtual_protect 1 
-0A8C: write_memory 5809305 size 4 value 2@ virtual_protect 1 
-0A8C: write_memory 5809678 size 4 value 2@ virtual_protect 1 
-0A8C: write_memory 5809950 size 4 value 2@ virtual_protect 1 
-0A8C: write_memory 5810119 size 4 value 2@ virtual_protect 1 
-0A8C: write_memory 5810280 size 4 value 2@ virtual_protect 1 
-0A8C: write_memory 5810451 size 4 value 2@ virtual_protect 1 
-0A8C: write_memory 5810631 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 0x583500 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 0x58A1A7 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 0x58A2D6 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 0x58A499 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 0x58A60E size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 0x58A71E size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 0x58A7C7 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 0x58A868 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 0x58A913 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 0x58A9C7 size 4 value 2@ virtual_protect 1 
 
 0AC6: 2@ = label @Noname_6325 offset // Radar X-position ?
-0A8C: write_memory 5780692 size 4 value 2@ virtual_protect 1 
-0A8C: write_memory 5809257 size 4 value 2@ virtual_protect 1 
-0A8C: write_memory 5809634 size 4 value 2@ virtual_protect 1 
-0A8C: write_memory 5809894 size 4 value 2@ virtual_protect 1 
-0A8C: write_memory 5810075 size 4 value 2@ virtual_protect 1 
-0A8C: write_memory 5810230 size 4 value 2@ virtual_protect 1 
-0A8C: write_memory 5810409 size 4 value 2@ virtual_protect 1 
-0A8C: write_memory 5810570 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 0x5834D4 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 0x58A469 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 0x58A5E2 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 0x58A6E6 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 0x58A79B size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 0x58A836 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 0x58A8E9 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 0x58A98A size 4 value 2@ virtual_protect 1 
 
 
-
-0A8C: write_memory 5817020 size 5 value 144 virtual_protect 1 
-0A8C: write_memory 5817094 size 1 value 1 virtual_protect 1 
-0A8C: write_memory 5818451 size 1 value 216 virtual_protect 1 
+// Sector:     CHud::DrawSubtitles(void)
+0A8C: write_memory 0x58C2BC size 5 value 0x90 virtual_protect 1 // Erasing instruction:     call    dummy_7195E0    ; *(u32 *)(_C71A84) = _a0; // color?
+0A8C: write_memory 0x58C306 size 1 value 1 virtual_protect 1 //             6A 02:          push    02                      overwriting value
 
 
 
 // Styled Texts
+0A8C: write_memory 0x58C853 size 1 value 0xD8 virtual_protect 1 // changing "qword" by "dword"      DC 0D 6666E63F: fmul    qword ptr [3FE66666]    changing "qword" by "dword"
 0AC6: 2@ = label @Noname_6325 offset 
 2@ += 44 
-0A8C: write_memory 5818453 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 0x58C855 size 4 value 2@ virtual_protect 1 // Styled Text 1 Height               DC 0D 6666E63F: fmul    qword ptr [3FE66666]    overwriting address
 
-0A8C: write_memory 5818473 size 1 value 216 virtual_protect 1 
-0A8C: write_memory 5818475 size 4 value 2@ virtual_protect 1 // Styled Text 1 width
+0A8C: write_memory 0x58C869 size 1 value 0xD8 virtual_protect 1 // changing "qword" by "dword"
+0A8C: write_memory 0x58C86B size 4 value 2@ virtual_protect 1 // Styled Text 1 Width
 
-0A8C: write_memory 5818545 size 1 value 255 virtual_protect 1 // Styled Text 1 border 1
-0A8C: write_memory 5818547 size 4 value 1625273 virtual_protect 1 // Styled Text 1 border 2
-0A8C: write_memory 5818609 size 1 value 0 virtual_protect 1 // Styled Text 1 color (?)
-0A8C: write_memory 5818612 size 4 value 1@ virtual_protect 1 // Styled Text 1 color
-0A8C: write_memory 5831885 size 2 value 37008 virtual_protect 1 
+0A8C: write_memory 0x58C8B1 size 1 value 0xFF virtual_protect 1 // Styled Text 1 Border Id          6A 02:          push    02                      overwriting value
+0A8C: write_memory 0x58C8B3 size 4 value 0x0018CCB9 virtual_protect 1 // Styled Text 1 Border       E8 D9CC1800:    call    00719590                overwriting address
+0A8C: write_memory 0x58C8F1 size 1 value 0 virtual_protect 1 // Styled Text 1 Color Id              6A 06:          push    06                      overwriting value
+0A8C: write_memory 0x58C8F4 size 4 value 1@ virtual_protect 1 // Styled Text 1 color
+0A8C: write_memory 0x58FCCD size 2 value 0x9090 virtual_protect 1 //                                75 1D:          jne     0058FCEC                erasing instruction
 
 0AC6: 2@ = label @Noname_6325 offset 
 2@ += 32 
-0A8C: write_memory 5821133 size 4 value 2@ virtual_protect 1 // Styled text 2 height
+0A8C: write_memory 0x58D2CD size 4 value 2@ virtual_protect 1 // Styled Text 2 Height
 
 0AC6: 2@ = label @Noname_6492 offset
-2@ -= 5821158 
-0A8C: write_memory 5821153 size 1 value 233 virtual_protect 1 
-0A8C: write_memory 5821154 size 4 value 2@ virtual_protect 1 // Styled text 2 width
+2@ -= 0x58D2E6 
+0A8C: write_memory 0x58D2E1 size 1 value 0xE9 virtual_protect 1 
+0A8C: write_memory 0x58D2E2 size 4 value 2@ virtual_protect 1 // Styled Text 2 Width
 
-0A8C: write_memory 5821402 size 1 value 1 virtual_protect 1 // Styled Text 2 border 1
-0A8C: write_memory 5821404 size 4 value 1622416 virtual_protect 1 // Styled Text 2 border 1
+0A8C: write_memory 0x58D3DA size 1 value 1 virtual_protect 1 // Styled Text 2 Border Id
+0A8C: write_memory 0x58D3DC size 4 value 0x0018C190 virtual_protect 1 // Styled Text 2 Border
 
 0AC6: 2@ = label @Noname_6325 offset 
 2@ += 40 
-0A8C: write_memory 5821519 size 4 value 2@ virtual_protect 1 // Styled Text 2 Y-position
+0A8C: write_memory 0x58D44F size 4 value 2@ virtual_protect 1 // Styled Text 2 Pos Y
 
 0AC6: 2@ = label @Noname_6325 offset 
 2@ += 8 
-0A8C: write_memory 5820116 size 4 value 2@ virtual_protect 1 // Styled text 4 height
+0A8C: write_memory 0x58CED4 size 4 value 2@ virtual_protect 1 // Styled Text 4 Height
 
 0AC6: 2@ = label @Noname_6325 offset 
 2@ += 12 
-0A8C: write_memory 5820138 size 4 value 2@ virtual_protect 1 // Styled text 4 width
+0A8C: write_memory 5820138 size 4 value 2@ virtual_protect 1 // Styled Text 4 Width
 
-0A8C: write_memory 5820194 size 1 value 1 virtual_protect 1 // Styled text 4 fontstyle
-0A8C: write_memory 5820201 size 1 value 1 virtual_protect 1 // Styled text 4 border 1
-0A8C: write_memory 5820203 size 4 value 1623617 virtual_protect 1 // Styled text 4 border 2
-0A8C: write_memory 5820242 size 1 value 1 virtual_protect 1 // Styled text 4 color (?)
-0A8C: write_memory 5820249 size 4 value 1@ virtual_protect 1 // Styled text 4 color
+0A8C: write_memory 0x58CF22 size 1 value 1 virtual_protect 1 // Styled Text 4 Fontstyle
+0A8C: write_memory 0x58CF29 size 1 value 1 virtual_protect 1 // Styled Text 4 Border Id
+0A8C: write_memory 0x58CF2B size 4 value 0x0018C641 virtual_protect 1 // Styled Text 4 Border
+0A8C: write_memory 0x58CF52 size 1 value 1 virtual_protect 1 // Styled Text 4 Color Id
+0A8C: write_memory 0x58CF59 size 4 value 1@ virtual_protect 1 // Styled Text 4 RGBA Addr
 
 0AC6: 2@ = label @Noname_6325 offset 
 2@ += 4 
-0A8C: write_memory 5820291 size 4 value 2@ virtual_protect 1 // Styled text 4 Y-position
+0A8C: write_memory 0x58CF83 size 4 value 2@ virtual_protect 1 // Styled Text 4 Pos Y
 
 
-
-// Odd Job Messages (???)
-{
+// Styled Text 5
 0AC6: 2@ = label @Noname_6325 offset 
 2@ += 8 
-0A8C: write_memory 5819597 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 0x58CCCD size 4 value 2@ virtual_protect 1 // Styled Text 5 Height
 
 0AC6: 2@ = label @Noname_6325 offset 
 2@ += 12 
-0A8C: write_memory 5819619 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 0x58CCE3 size 4 value 2@ virtual_protect 1 // Styled Text 5 Width
 
-0A8C: write_memory 5819669 size 5 value 144 virtual_protect 1 
-0A8C: write_memory 5819675 size 1 value 1 virtual_protect 1 
-0A8C: write_memory 5819682 size 1 value 255 virtual_protect 1 
-0A8C: write_memory 5819684 size 4 value 1624136 virtual_protect 1 
-0A8C: write_memory 5819723 size 1 value 1 virtual_protect 1 
-0A8C: write_memory 5819730 size 4 value 1@ virtual_protect 1 
+0A8C: write_memory 0x58CD15 size 5 value 0x90 virtual_protect 1 // Avoid "call CFont__SetCentreSize" (removes linewidth limits)
+0A8C: write_memory 0x58CD1B size 1 value 1 virtual_protect 1 // Styled Text 5 Fontstyle
+0A8C: write_memory 0x58CD22 size 1 value 255 virtual_protect 1 // Styled Text 5 Border Id
+0A8C: write_memory 0x58CD24 size 4 value 0x0018C848 virtual_protect 1 // Styled Text 5 Border
+0A8C: write_memory 0x58CD4B size 1 value 1 virtual_protect 1 // Styled Text 5 Color Id
+0A8C: write_memory 0x58CD52 size 4 value 1@ virtual_protect 1 // Styled Text 5 RGBA addr
 
 0AC6: 2@ = label @Noname_6325 offset 
 2@ += 4 
-0A8C: write_memory 5819772 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 0x58CD7C size 4 value 2@ virtual_protect 1 // Styled Text 5 Pos Y
 
+
+// Styled Text 6
 0AC6: 2@ = label @Noname_6325 offset 
 2@ += 20 
-0A8C: write_memory 5820750 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 0x58D14E size 4 value 2@ virtual_protect 1 // Styled Text 6 Height
 
 0AC6: 2@ = label @Noname_6325 offset 
 2@ += 24 
-0A8C: write_memory 5820772 size 4 value 2@ virtual_protect 1 
-0A8C: write_memory 5820828 size 1 value 1 virtual_protect 1 
-0A8C: write_memory 5820837 size 4 value 1622983 virtual_protect 1 
-0A8C: write_memory 5820876 size 1 value 2 virtual_protect 1 
-0A8C: write_memory 5820883 size 4 value 1@ virtual_protect 1 
+0A8C: write_memory 0x58D164 size 4 value 2@ virtual_protect 1 // Styled Text 6 Width
+
+0A8C: write_memory 0x58D19C size 1 value 1 virtual_protect 1 // Styled Text 6 Fontstyle
+0A8C: write_memory 0x58D1A5 size 4 value 0x0018C3C7 virtual_protect 1 // Styled Text 6 Border
+0A8C: write_memory 0x58D1CC size 1 value 2 virtual_protect 1 // Styled Text 6 Color Id
+0A8C: write_memory 0x58D1D3 size 4 value 1@ virtual_protect 1 // Styled Text 6 RGBA Addr
 
 0AC6: 2@ = label @Noname_6325 offset 
 2@ += 16 
-0A8C: write_memory 5820925 size 4 value 2@ virtual_protect 1 
-0A8C: write_memory 5819936 size 1 value 1 virtual_protect 1 
-0A8C: write_memory 5819945 size 4 value 1623875 virtual_protect 1 
+0A8C: write_memory 0x58D1FD size 4 value 2@ virtual_protect 1 // Styled Text 6 Pos Y
+
+
+// Styled Text 7
+0A8C: write_memory 0x58CE20 size 1 value 1 virtual_protect 1 // Styled Text 7 Fontstyle
+0A8C: write_memory 0x58CE29 size 4 value 0x0018C743 virtual_protect 1 // Styled Text 7 Border
+
+// Garage Messages
 0AC6: 2@ = label @Noname_6325 offset 
 2@ += 48 
-0A8C: write_memory 4487103 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 0x4477BF size 4 value 2@ virtual_protect 1 // Height
 0AC6: 2@ = label @Noname_6325 offset 
 2@ += 52 
-0A8C: write_memory 4487125 size 4 value 2@ virtual_protect 1 
+0A8C: write_memory 0x4477D5 size 4 value 2@ virtual_protect 1 // Width
 
 0AC6: 2@ = label @Noname_6325 offset 
 2@ += 56 
-0A8C: write_memory 4487353 size 4 value 2@ virtual_protect 1 
-0A8C: write_memory 4487459 size 4 value 2@ virtual_protect 1 
-0A8C: write_memory 4487526 size 4 value 2@ virtual_protect 1 
-0A8C: write_memory 4487196 size 1 value 1 virtual_protect 1 
-0A8C: write_memory 4487206 size 1 value 1 virtual_protect 1 
-0A8C: write_memory 4487213 size 4 value 1@ virtual_protect 1 
-0A8C: write_memory 4487231 size 1 value 255 virtual_protect 1 
-0A8C: write_memory 4487233 size 4 value 2956587 virtual_protect 1 
-}
+0A8C: write_memory 0x4478B9 size 4 value 2@ virtual_protect 1 // Pos Y
+0A8C: write_memory 0x447923 size 4 value 2@ virtual_protect 1 // Pos Y
+0A8C: write_memory 0x447966 size 4 value 2@ virtual_protect 1 // Pos Y
+0A8C: write_memory 0x44781C size 1 value 1 virtual_protect 1 // Fontstyle
+0A8C: write_memory 0x447826 size 1 value 1 virtual_protect 1 // Color Id
+0A8C: write_memory 0x44782D size 4 value 1@ virtual_protect 1 // RGBA addr
+0A8C: write_memory 0x44783F size 1 value 255 virtual_protect 1 // Border Id
+0A8C: write_memory 0x447841 size 4 value 0x002D1D2B virtual_protect 1 // Border
+
 
 
 // Change created spheres color
-0A8D: 2@ = read_memory 4722912 size 1 virtual_protect 0
-if 2@ == 233
-then 0A8D: 2@ = read_memory 4722913 size 4 virtual_protect 0
-    2@ += 4722917
-else 2@ = 4722912
+0A8D: 2@ = read_memory 0x4810E0 size 1 virtual_protect 0
+if 2@ == 0xE9
+then
+    0A8D: 2@ = read_memory 0x4810E1 size 4 virtual_protect 0
+    2@ += 0x4810E5
+else 2@ = 0x4810E0
 end
 2@ += 43
 0A8C: write_memory 2@ size 1 value 192 virtual_protect 1
@@ -502,57 +504,49 @@ end
 2@ += 2
 0A8C: write_memory 2@ size 1 value 16 virtual_protect 1
 
-
-
-0A8C: write_memory 5790923 size 1 value 192 virtual_protect 1
-0A8C: write_memory 5790925 size 1 value 84 virtual_protect 1
-0A8C: write_memory 5790927 size 1 value 16 virtual_protect 1
-
-0A8C: write_memory 7392523 size 1 value 192 virtual_protect 1
-0A8C: write_memory 7392525 size 1 value 84 virtual_protect 1
-0A8C: write_memory 7392527 size 1 value 16 virtual_protect 1
+0A8C: write_memory 0x585CCB size 1 value 192 virtual_protect 1
+0A8C: write_memory 0x585CCD size 1 value 84 virtual_protect 1
+0A8C: write_memory 0x585CCF size 1 value 16 virtual_protect 1
 
 // Change inner sphere color
-0A8C: write_memory 7392600 size 1 value 192 virtual_protect 1
-0A8C: write_memory 7392602 size 1 value 84 virtual_protect 1
-0A8C: write_memory 7392604 size 1 value 16 virtual_protect 1  // RGB: 16 84 192, this means: blue
+0A8C: write_memory 0x70CD0B size 1 value 192 virtual_protect 1
+0A8C: write_memory 0x70CD0D size 1 value 84 virtual_protect 1
+0A8C: write_memory 0x70CD0F size 1 value 16 virtual_protect 1
+
+// Change medium sphere color
+0A8C: write_memory 0x70CD58 size 1 value 192 virtual_protect 1
+0A8C: write_memory 0x70CD5A size 1 value 84 virtual_protect 1
+0A8C: write_memory 0x70CD5C size 1 value 16 virtual_protect 1  // RGB: 16 84 192, this means: blue
 
 // Change outer sphere color
-0A8C: write_memory 7392683 size 1 value 192 virtual_protect 1
-0A8C: write_memory 7392685 size 1 value 84 virtual_protect 1
-0A8C: write_memory 7392687 size 1 value 16 virtual_protect 1
+0A8C: write_memory 0x70CDAB size 1 value 192 virtual_protect 1
+0A8C: write_memory 0x70CDAD size 1 value 84 virtual_protect 1
+0A8C: write_memory 0x70CDAF size 1 value 16 virtual_protect 1
 
-0A8C: write_memory 4798024 size 1 value 16 virtual_protect 1
-
-
+// Change Racing Checkpoints color
+0A8C: write_memory 0x493648 size 1 value 16 virtual_protect 1
+0AC6: 2@ = label @Noname_6511 offset
+2@ -= 0x49364E 
+0A8C: write_memory 0x493649 size 1 value 0xE9 virtual_protect 1 
+0A8C: write_memory 0x49364A size 4 value 2@ virtual_protect 1
 
 {
-0AC6: 2@ = label @Noname_6511 offset
-2@ -= 4798030 
-0A8C: write_memory 4798025 size 1 value 233 virtual_protect 1 
-0A8C: write_memory 4798026 size 4 value 2@ virtual_protect 1
-
-
-
 0AC6: 2@ = label @Noname_6625 offset
-2@ -= 5730443 
-0A8C: write_memory 5730438 size 1 value 233 virtual_protect 1 
-0A8C: write_memory 5730439 size 4 value 2@ virtual_protect 1 
+2@ -= 0x57708B 
+0A8C: write_memory 0x577086 size 1 value 0xE9 virtual_protect 1 
+0A8C: write_memory 0x577087 size 4 value 2@ virtual_protect 1 
 0AC6: 2@ = label @Noname_6643 offset 
-2@ -= 5742191 
-0A8C: write_memory 5742187 size 4 value 2@ virtual_protect 1 
+2@ -= 0x579E6F 
+0A8C: write_memory 0x579E6B size 4 value 2@ virtual_protect 1 
 0AC6: 2@ = label @Noname_6534 offset 
-2@ -= 5827496 
-0A8C: write_memory 5827491 size 1 value 233 virtual_protect 1
-0A8C: write_memory 5827492 size 4 value 2@ virtual_protect 1
-}
-
-
+2@ -= 0x58EBA8 
+0A8C: write_memory 0x58EBA3 size 1 value 0xE9 virtual_protect 1
+0A8C: write_memory 0x58EBA4 size 4 value 2@ virtual_protect 1
 0AC6: 2@ = label @Noname_6680 offset 
-2@ -= 5827609 
-0A8C: write_memory 5827604 size 1 value 233 virtual_protect 1 // Clock X-position related
-0A8C: write_memory 5827605 size 4 value 2@ virtual_protect 1 // Clock X-position
-
+2@ -= 0x58EC19 
+0A8C: write_memory 0x58EC14 size 1 value 0xE9 virtual_protect 1 // Clock X-position related
+0A8C: write_memory 0x58EC15 size 4 value 2@ virtual_protect 1 // Clock X-position
+}
 
 0ADF: add_dynamic_GXT_entry "III_HIC" text "?" 
 0ADF: add_dynamic_GXT_entry "III_AIC" text "<" 
@@ -674,10 +668,10 @@ wait 0
             end
         end
     end
-    0A8D: 0@ = read_memory 12234176 size 1 virtual_protect 0 
+    0A8D: 0@ = read_memory 0xBAADC0 size 1 virtual_protect 0
     if 0@ > 0 
     then
-        0ADF: add_dynamic_GXT_entry "EMUTXT3" text 12234176 
+        0ADF: add_dynamic_GXT_entry "EMUTXT3" text 0xBAADC0 
         03E0: draw_text_behind_textures 1 
         033F: set_text_draw_letter_size 2.0 3.9 
         03E4: set_text_draw_align_right 1 

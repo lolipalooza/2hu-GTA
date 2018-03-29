@@ -83,6 +83,8 @@ end}
 {======================================================================
 ======================================================================}
 
+//00A1: put_actor $PLAYER_ACTOR at 2074.9011 -1837.5557 13.5545
+
 035F: actor $PLAYER_ACTOR armour += 100
 0213: 28@ = create_pickup #BODYARMOUR type 3 at 2498.4163 -1644.3 13.7826
 
@@ -99,6 +101,9 @@ until 0248:   model #BMX available
 //0186: 19@ = create_marker_above_car 29@
 //07E0: set_marker 19@ type_to 1
 
+//03BC: 18@ = create_sphere_at 2507.2551 -1672.8655 13.3751 radius 1.0
+//06D5: 17@ = create_racing_checkpoint_at 2508.4629 -1667.5839 13.3931 point_to 2504.8342 -1661.7815 13.3953 type 2 radius 2.0
+
 {
 0ACB: show_styled_text "Styled Text 1" time 4000 style 1
 wait 4000
@@ -108,9 +113,18 @@ wait 4000
 wait 1000
 0ACB: show_styled_text "Styled Text 4" time 1000 style 4
 
-0ACB: show_styled_text "Styled Text 3" time 4000 style 3 // This is wasted style
-}
+//0ACB: show_styled_text "Styled Text 3" time 4000 style 3 // This is wasted style
 
+0ADF: add_dynamic_GXT_entry "STYLED5" text "Styled Text 5"
+0ADF: add_dynamic_GXT_entry "STYLED6" text "Styled Text 6"
+0ADF: add_dynamic_GXT_entry "STYLED7" text "Styled Text 7"
+
+0ACB: show_styled_text "Styled Text 4" time 3000 style 4
+wait 3000
+00BA: show_text_styled GXT "STYLED5" time 2000 style 5
+00BA: show_text_styled GXT "STYLED6" time 2000 style 6
+00BA: show_text_styled GXT "STYLED7" time 2000 style 7
+}
 //0AB1: @MoveMoney 2 xy_pos 250.0 250.0
 
 repeat
