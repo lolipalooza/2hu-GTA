@@ -85,6 +85,9 @@ end}
 
 //00A1: put_actor $PLAYER_ACTOR at 2074.9011 -1837.5557 13.5545
 
+//010D: set_player $PLAYER_CHAR wanted_level_to 3
+//09D4: suspend_wanted_level
+
 035F: actor $PLAYER_ACTOR armour += 100
 0213: 28@ = create_pickup #BODYARMOUR type 3 at 2498.4163 -1644.3 13.7826
 
