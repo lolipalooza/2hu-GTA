@@ -1574,12 +1574,10 @@ then
         0AD3: 2@v = format "%03d" 1@  
         0ADF: add_dynamic_GXT_entry "III_HEA" text 2@v 
         0AB1: @ReadPosition 1 @Health_Pos ret icon_pos 5@ 6@ text_pos 7@ 8@
-        //033E: set_draw_text_position 484.5 66.0 GXT "III_HEA" 
         033E: set_draw_text_position 7@ 8@ GXT "III_HEA" 
         gosub @ConfigDrawText
         0AB1: @ReadRGB 1 @HealthColours ret 2@ 3@ 4@
         0340: set_text_draw_RGBA 2@ 3@ 4@ 255
-        //033E: set_draw_text_position 459.7 66.0 GXT "III_HIC" 
         033E: set_draw_text_position 5@ 6@ GXT "III_HIC" 
     end
         
