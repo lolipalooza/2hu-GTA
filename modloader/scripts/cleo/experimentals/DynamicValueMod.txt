@@ -1,0 +1,59 @@
+{$CLEO .cs}
+thread 'DynamicValueMod'
+
+{============================================
+|   Step 1: Run this script
+|
+|   Step 2: Open Cheat Engine
+|
+|   Step 3: Inside Memory View, look for text "ASDF123" (adding 0 in begining address in FROM __ TO ___).
+|You should see it and also a hex value like "CD CC CC 3D". That's your 3@ that has 0.1 float value, and the 4-bytes zeros before is your 2@.
+|Add your 2@ and your 3@ in the variables view. And edit your 2@ (hex view) to the desired address.
+|Remember: address must contain your value to edit!
+|
+|   Step 4: NUMPAD+ to increase and NUMPAD- to decrease.
+|
+|   Step 5: take note of resulting values.
+|
+| Enjoy!
+===============================================}
+
+0@s='ASDF123'
+3@=0.1
+
+repeat
+wait 0
+    if 31@==0
+    then
+        if 0AB0:   key_pressed 107 // +
+        then 31@=3
+            32@=0
+            0A8D: 11@ = read_memory 2@ size 4 virtual_protect 0
+            005B: 11@ += 3@  // (float)
+            0A8C: write_memory 2@ size 4 value 11@ virtual_protect 1
+        end
+        if 0AB0:   key_pressed 109 // -
+        then 31@=4
+            32@=0
+            0A8D: 11@ = read_memory 2@ size 4 virtual_protect 0
+            0063: 11@ -= 3@  // (float)
+            0A8C: write_memory 2@ size 4 value 11@ virtual_protect 1
+        end
+    end
+    if or
+    31@ == 3
+    32@ > 500
+    then
+        if 8AB0:   not key_pressed 107 // +
+        then 31@=0
+        end
+    end
+    if or
+    31@ == 4
+    32@ > 500
+    then
+        if 8AB0:   not key_pressed 109 // -
+        then 31@=0
+        end
+    end
+until false

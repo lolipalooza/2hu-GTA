@@ -78,7 +78,7 @@ gosub @InitializeAssemblerRegion
 0AB1: @EditMoney 10 unknown 22.0 122 pos_xy 32.0 89.0 size 0.55 1.10 classic_flag false border_ids 2 0 rgba 0xBAB22C
 0AB1: @EditClock 7 pos_xy 32.0 22.0 size 0.55 1.10 border 1616410 2 rgba 0xBAB22C
 0AB1: @EditWeapon 10 box_xy 32.0 20.0 box_size 47.0 58.0 ammo_xy 32.0 20.0 ammo_size 0.30 0.70 ammo_border 1 ammo_color_id 3
-0AB1: @EditWantedLevelStars 13 unknown 47.0 show 0x97E border 1620041 active_color_id 6 active_rgba 0xBAB22C active_pos_y_id 122 props_flag false pos_xy 29.0 114.0 inact_y 114.0 size 1.21 0.605 space_between 18.0
+0AB1: @EditWantedLevelStars 13 classic_flag false rgba_addr 0xBAB22C unknown_float 47.0 active_color_id 6 position 29.0 114.0 inactive_y 114.0 size 1.21 0.605 space_between 18.0 inactive_RGB 0 0 0
 0AB1: @EditRadioStation 9 fontstyle 2 border 2291248 border_id 6 rgba 0xBAB22C unknown_id 8 unknown_rgba 0xBAB22C size 0.60 0.90 unknown_float 3000.0
 0AB1: @EditVehicleText 9 size 1.20 1.5 fontstyle 2 border_id 2 classic_flag false vehicle_zone_rgba 0xBAB22C color_id 1 pos_y 104.0 unknown 0
 0AB1: @EditZoneText 9 unknown_float 3000.0 size 1.20 1.90 border_id 2 classic_flag false fontstyle 0 rgba 0xBAB22C vehicle_zone_rgba 0xBAB22C pos_y 76.0
@@ -99,7 +99,7 @@ gosub @InitializeAssemblerRegion
 0AB1: @EditMoney 10 unknown 22.5 235 pos_xy 110.0 43.5 size 0.80 1.34 classic_flag true border_ids 1 1 rgba 1@
 0AB1: @EditClock 7 pos_xy 110.0 22.5 size 0.80 1.34 border 1616378 1 rgba 1@
 0AB1: @EditWeapon 10 box_xy -12.5 27.5 box_size 63.5 63.5 ammo_xy -12.5 27.5 ammo_size 0.40 0.60 ammo_border 0 ammo_color_id 6
-0AB1: @EditWantedLevelStars 13 unknown 65.0 show 0x9090 border 1620009 active_color_id 4 active_rgba 1@ active_pos_y_id 235 props_flag true pos_xy 52.30 87.0 inact_y 90.0 size 1.30 0.80 space_between 23.0
+0AB1: @EditWantedLevelStars 13 classic_flag true rgba_addr 1@ unknown_float 65.0 active_color_id 4 position 52.30 87.0 inactive_y 90.0 size 1.30 0.80 space_between 23.0 inactive_RGB 0 0 0
 0AB1: @EditRadioStation 9 fontstyle 3 border 2291216 border_id 5 rgba 1@ unknown_id 0 unknown_rgba 1@ size 0.80 1.34 unknown_float 10000.0
 0AB1: @EditVehicleText 9 size 1.20 1.15 fontstyle 1 border_id 1 classic_flag true vehicle_zone_rgba 1@ color_id 4 pos_y 54.0 unknown 0
 0AB1: @EditZoneText 9 unknown_float 10000.0 size 1.20 1.15 border_id 1 classic_flag true fontstyle 1 rgba 1@ vehicle_zone_rgba 1@ pos_y 95.5
@@ -113,28 +113,30 @@ gosub @InitializeAssemblerRegion
 0AB1: @EditStyledText7 8 classic_flag true rgba 1@ size 0.0 0.0 fontstyle 1 border 0 color 0 pos_y 0.0
 0AB1: @EditGarageMessages 8 classic_flag true rgba 1@ size 0.5 1.4 fontstyle 1 border 255 color 1 pos_y 155.0
 0AB1: @ChangeRedStuffColor 3 red 16 green 84 blue 192
+0AB1: @InitializeHealthArmourOxygen 12 health_pos 459.7 66.0 text 484.5 66.0 armour_pos 392.0 66.0 text 411.0 66.0 oxygen_pos 389.0 66.0 drawn_text_size 0.8 2.6
 0AB1: @InitializeMainHudColours 9 health 186 101 50 armour 124 140 95 oxygen 142 187 204
 {
 // VC
 0AC6: 1@ = label @ViceCityBaseColours offset 
 0AB1: @EditBaseColours 6 0xFF492B71 0xFF6AA05F 0xFFF3A780 0xFF02ACDC 0xFFFC6EA8 0xFF6AC4D2
-0AB1: @EditMoney 10 unknown 22.5 235 pos_xy 110.0 43.5 size 0.80 1.34 classic_flag true border_ids 1 1 rgba 1@
-0AB1: @EditClock 7 pos_xy 110.0 22.5 size 0.80 1.34 border 1616378 1 rgba 1@
-0AB1: @EditWeapon 10 box_xy -12.5 27.5 box_size 63.5 63.5 ammo_xy -12.5 27.5 ammo_size 0.40 0.60 ammo_border 0 ammo_color_id 6
-0AB1: @EditWantedLevelStars 13 unknown 65.0 show 0x9090 border 1620009 active_color_id 4 active_rgba 1@ active_pos_y_id 235 props_flag true pos_xy 52.30 87.0 inact_y 90.0 size 1.30 0.80 space_between 23.0
-0AB1: @EditRadioStation 9 fontstyle 3 border 2291216 border_id 5 rgba 1@ unknown_id 0 unknown_rgba 1@ size 0.80 1.34 unknown_float 10000.0
+0AB1: @EditMoney 10 unknown 22.5 235 pos_xy 112.0 43.5 size 0.70 1.20 classic_flag true border_ids 1 1 rgba 1@
+0AB1: @EditClock 7 pos_xy 112.0 22.0 size 0.71 1.20 border 1616378 1 rgba 1@
+0AB1: @EditWeapon 10 box_xy -12.5 27.5 box_size 63.5 63.5 ammo_xy -12.0 47.0 ammo_size 0.48 0.82 ammo_border 0 ammo_color_id 3
+0AB1: @EditWantedLevelStars 13 classic_flag true rgba_addr 1@ unknown_float 65.0 active_color_id 4 position 106.30 87.0 inactive_y 90.0 size 1.30 0.80 space_between 23.0 inactive_RGB 0x1B 0x59 0x82
+0AB1: @EditRadioStation 9 fontstyle 1 border 2291216 border_id 5 rgba 1@ unknown_id 0 unknown_rgba 1@ size 0.80 1.34 unknown_float 10000.0
 0AB1: @EditVehicleText 9 size 1.20 1.15 fontstyle 0 border_id 1 classic_flag true vehicle_zone_rgba 1@ color_id 4 pos_y 54.0 unknown 0
 0AB1: @EditZoneText 9 unknown_float 10000.0 size 1.20 1.15 border_id 1 classic_flag true fontstyle 0 rgba 1@ vehicle_zone_rgba 1@ pos_y 95.5
 0AB1: @GeneralSettings 2 flag_activate true var_addr 4@
-0AB1: @EditRadar 4 position 27.0 121.0 size 90.0 72.0
+0AB1: @EditRadar 4 position 22.0 114.0 size 90.0 72.0
 0AB1: @EditStyledText1 7 classic_flag true rgba 1@ size 1.8 1.8 fontstyle 3 border 255 color 0
-0AB1: @EditStyledText2 8 classic_flag true rgba 1@ size 0.0 1.57 fontstyle 3 border 1 xy_pos 20.0 91.0
+0AB1: @EditStyledText2 8 classic_flag true rgba 1@ size 0.0 1.57 fontstyle 0 border 1 xy_pos 20.0 91.0
 0AB1: @EditStyledText4 8 classic_flag true rgba 1@ size 1.20 1.45 fontstyle 1 border 1 color 1 pos_y 167.0
 0AB1: @EditStyledText5 8 classic_flag true rgba 1@ size 1.20 1.45 fontstyle 1 border 255 color 1 pos_y 167.0
 0AB1: @EditStyledText6 8 classic_flag true rgba 1@ size 1.0 1.17 fontstyle 1 border 0 color 2 pos_y 204.5
 0AB1: @EditStyledText7 8 classic_flag true rgba 1@ size 0.0 0.0 fontstyle 1 border 0 color 0 pos_y 0.0
 0AB1: @EditGarageMessages 8 classic_flag true rgba 1@ size 0.5 1.4 fontstyle 1 border 255 color 1 pos_y 155.0
 0AB1: @ChangeRedStuffColor 3 red 16 green 84 blue 192
+0AB1: @InitializeHealthArmourOxygen 12 health_pos 462.0 65.0 text 487.0 65.0 armour_pos 392.0 65.0 text 415.0 65.0 oxygen_pos 396.0 65.0 drawn_text_size 0.7 2.4
 0AB1: @InitializeMainHudColours 9 health 244 144 215 armour 0xB9 0xB9 0xB9 oxygen 142 187 204
 }
 0ADF: add_dynamic_GXT_entry "III_HIC" text "?" 
@@ -182,6 +184,10 @@ until false
 
 :EditMoney // unknown 0@ 1@ pos_xy 2@ 3@ size 4@ 5@ classic_flag 6@ border_ids 7@ 8@ rgba 9@
 0AB1: @WriteInPointer 3 param_label @Money_Unknown param_value 0@ mem_address 0x58EC04
+if 6@ == true
+then 0A8C: write_memory 0x588B89 size 1 value 0xEB virtual_protect 1 //                      7A 1F:              jp      00588BAA                    EB 1F:          jmp 00588BAA
+else 0A8C: write_memory 0x588B89 size 1 value 0x7A virtual_protect 1
+end
 0AB1: @WriteParameter 3 mem_address 0x588B89 param_size 1 param_value 1@
 0AB1: @WriteInPointer 3 param_label @Money_PosX param_value 2@ mem_address _MoneyPosX
 0AB1: @WriteInPointer 3 param_label @Money_PosY param_value 3@ mem_address _MoneyPosY
@@ -214,22 +220,45 @@ end
 0AB2: ret 0
 
 
-:EditWantedLevelStars // unknown 0@ show 1@ border 2@ ative_color_id 3@ active_rgba 4@ active_pos_y_id 5@ props 6@ pos_xy 12@ 13@ inact_y 14@ size 15@ 16@ space_between 17@
-0AB1: @WriteInPointer 3 param_label @Wanted_Unknown param_value 0@ mem_address _WantedUnknown
-0AB1: @WriteParameter 3 mem_address _ShowInactiveWantedStars param_size 2 param_value 1@ // Hidden as default
-0AB1: @WriteParameter 3 mem_address _WantedBorder1 param_size 4 param_value 2@
-0AB1: @WriteParameter 3 mem_address _ActiveWantedStarsColorId param_size 1 param_value 3@
-0AB1: @WriteParameter 3 mem_address _ActiveWantedStarsColor param_size 4 param_value 4@
-0AB1: @WriteParameter 3 mem_address _ActiveWantedStarsPosYId param_size 1 param_value 5@
 
-if 6@ == true
+:EditWantedLevelStars // classic_flag 0@ rgba_addr 1@ unknown_float 2@ active_color_id 3@ position 4@ 5@ inactive_y 6@ size 7@ 8@ space_between 9@ inactive_RGB 10@ 11@ 12@
+0AB1: @WriteInPointer 3 param_label @Wanted_Unknown param_value 2@ mem_address _WantedUnknown
+if 0@ == true
 then
-    0AB1: @WriteParameter 3 mem_address _WantedUnknownProp1 param_size 6 param_value 144
-    0AB1: @WriteParameter 3 mem_address _WantedUnknownProp2 param_size 6 param_value 144
-    0AB1: @WriteParameter 3 mem_address _WantedUnknownProp3 param_size 6 param_value 144
-    0AB1: @WriteParameter 3 mem_address _InactiveWantedAlphaProp4 param_size 6 param_value 144
-    0AB1: @WriteParameter 3 mem_address _InactiveWantedHeightProp5 param_size 6 param_value 144
-    0AB1: @WriteParameter 3 mem_address _InactiveWantedWidthProp6 param_size 6 param_value 144
+    0A8C: write_memory _ShowInactiveWantedStars size 2 value 0x9090 virtual_protect 1 // Show Inactive Stars Always
+    0A8C: write_memory _WantedBorder1 size 4 value 0x0018B829 virtual_protect 1 // Remove black thin border to Active wanted stars      E8 49B81800:    call    00719590            overwriting address (29B81800)
+    0A8C: write_memory _ActiveWantedStarsPosYId size 1 value 0xEB virtual_protect 1 // Active wanted stars, position Y                  7A 22:          jp      0058DE47            changing to EB 1F: jmp 0058DE47
+else
+    0A8C: write_memory _ShowInactiveWantedStars size 2 value 0x097E virtual_protect 1 // Hide Inactive
+    0A8C: write_memory _WantedBorder1 size 4 value 0x0018B849 virtual_protect 1
+    0A8C: write_memory _ActiveWantedStarsPosYId size 1 value 0x7A virtual_protect 1
+end
+0AB1: @WriteParameter 3 mem_address _ActiveWantedStarsColorId param_size 1 param_value 3@
+0AB1: @WriteParameter 3 mem_address _ActiveWantedStarsColor param_size 4 param_value 1@
+
+// Flashing Stars Color
+if 0@ == true
+then
+    0A8E: 20@ = 1@ + 18 // int 
+    0A8C: write_memory 0x58DE77 size 4 value 20@ virtual_protect 1 //   0FB6 05 46B2BA00:   movzx   eax,byte ptr [00BAB246]     overwriting address
+    20@ -= 1 
+    0A8C: write_memory 0x58DE92 size 4 value 20@ virtual_protect 1 //   0FB6 0D 45B2BA00:   movzx   ecx,byte ptr [00BAB245]     overwriting address
+    20@ -= 1 
+    0A8C: write_memory 0x58DEAD size 4 value 20@ virtual_protect 1 //   0FB6 15 44B2BA00:   movzx   edx,byte ptr [00BAB244]     overwriting address
+else
+    0A8C: write_memory 0x58DE77 size 4 value 0xBAB246 virtual_protect 1
+    0A8C: write_memory 0x58DE92 size 4 value 0xBAB245 virtual_protect 1
+    0A8C: write_memory 0x58DEAD size 4 value 0xBAB244 virtual_protect 1
+end
+
+if 0@ == true
+then
+    0AB1: @WriteParameter 3 mem_address _WantedUnknownProp1 param_size 6 param_value 0x90
+    0AB1: @WriteParameter 3 mem_address _WantedUnknownProp2 param_size 6 param_value 0x90
+    0AB1: @WriteParameter 3 mem_address _WantedUnknownProp3 param_size 6 param_value 0x90
+    0AB1: @WriteParameter 3 mem_address _InactiveWantedAlphaProp4 param_size 6 param_value 0x90
+    0AB1: @WriteParameter 3 mem_address _InactiveWantedHeightProp5 param_size 6 param_value 0x90
+    0AB1: @WriteParameter 3 mem_address _InactiveWantedWidthProp6 param_size 6 param_value 0x90
 else
     20@ = _WantedUnknownProp1
     0AB1: @WriteParameter 3 mem_address 20@ param_size 2 param_value 0x0DD8
@@ -261,20 +290,24 @@ else
     20@ += 2
     0AB1: @WriteParameter 3 mem_address 20@ param_size 4 param_value 0x00858F08
 end
-0AB1: @WriteInPointer 3 param_label @Wanted_ActiveAndInactive_PosX param_value 7@ mem_address _WantedStarsActiveAndInactivePosX
-0AB1: @WriteInPointer 3 param_label @Wanted_Inactive_PosY param_value 9@ mem_address _WantedStarsInactivePosY
-0AB1: @WriteInPointer 3 param_label @Wanted_Active_PosY param_value 8@ mem_address _WantedStarsActivePosY
-0AB1: @WriteInPointer 3 param_label @Wanted_Active_PosY_2 param_value 8@ mem_address _WantedStarsActivePosYRelated
+0AB1: @WriteInPointer 3 param_label @Wanted_ActiveAndInactive_PosX param_value 4@ mem_address _WantedStarsActiveAndInactivePosX
+0AB1: @WriteInPointer 3 param_label @Wanted_Inactive_PosY param_value 6@ mem_address _WantedStarsInactivePosY
+0AB1: @WriteInPointer 3 param_label @Wanted_Active_PosY param_value 5@ mem_address _WantedStarsActivePosY
+0AB1: @WriteInPointer 3 param_label @Wanted_Active_PosY_2 param_value 5@ mem_address _WantedStarsActivePosYRelated
 
-0AB1: @WriteInPointer 3 param_label @Wanted_Height2 param_value 10@ mem_address _WantedStarsHeightRelated
-0AB1: @WriteInPointer 3 param_label @Wanted_ActiveHeight param_value 10@ mem_address _ActiveWantedStarsHeight
-0AB1: @WriteInPointer 3 param_label @Wanted_InactiveHeight param_value 10@ mem_address _InactiveWantedStarsHeight
+0AB1: @WriteInPointer 3 param_label @Wanted_Height2 param_value 7@ mem_address _WantedStarsHeightRelated
+0AB1: @WriteInPointer 3 param_label @Wanted_ActiveHeight param_value 7@ mem_address _ActiveWantedStarsHeight
+0AB1: @WriteInPointer 3 param_label @Wanted_InactiveHeight param_value 7@ mem_address _InactiveWantedStarsHeight
 
-0AB1: @WriteInPointer 3 param_label @Wanted_Width2 param_value 11@ mem_address _WantedStarsWidthRelated
-0AB1: @WriteInPointer 3 param_label @Wanted_ActiveWidth param_value 11@ mem_address _ActiveWantedStarsWidth
-0AB1: @WriteInPointer 3 param_label @Wanted_InactiveWidth param_value 11@ mem_address _InactiveWantedStarsWidth
+0AB1: @WriteInPointer 3 param_label @Wanted_Width2 param_value 8@ mem_address _WantedStarsWidthRelated
+0AB1: @WriteInPointer 3 param_label @Wanted_ActiveWidth param_value 8@ mem_address _ActiveWantedStarsWidth
+0AB1: @WriteInPointer 3 param_label @Wanted_InactiveWidth param_value 8@ mem_address _InactiveWantedStarsWidth
 
-0AB1: @WriteInPointer 3 param_label @Wanted_SpaceBetween param_value 12@ mem_address _SpaceBetweenStars
+0AB1: @WriteInPointer 3 param_label @Wanted_SpaceBetween param_value 9@ mem_address _SpaceBetweenStars
+
+0A8C: write_memory 0x58DF3D size 1 value 12@ virtual_protect 0
+0A8C: write_memory 0x58DF3F size 1 value 11@ virtual_protect 0
+0A8C: write_memory 0x58DF41 size 1 value 10@ virtual_protect 0
 0AB2: ret 0
 
 
@@ -722,6 +755,52 @@ end
 
 
 
+:InitializeHealthArmourOxygen // health_pos 0@ 1@ text 2@ 3@ armour_pos 4@ 5@ text 6@ 7@ oxygen_pos 8@ 9@ size 10@ 11@
+0AC6: 15@ = label @Health_Pos offset
+for 20@ = 0 to 3
+    0A8C: write_memory 15@ size 4 value 0@(20@,4f) virtual_protect 0
+    15@+=4
+end
+0AC6: 15@ = label @Armour_Pos offset
+for 20@ = 0 to 3
+    0A8C: write_memory 15@ size 4 value 4@(20@,4f) virtual_protect 0
+    15@+=4
+end
+0AC6: 15@ = label @Oxygen_Pos offset
+0A8C: write_memory 15@ size 4 value 8@ virtual_protect 0
+15@+=4
+0A8C: write_memory 15@ size 4 value 9@ virtual_protect 0
+
+0AC6: 15@ = label @Hud_DrawnText_Size offset
+0A8C: write_memory 15@ size 4 value 10@ virtual_protect 0
+15@+=4
+0A8C: write_memory 15@ size 4 value 11@ virtual_protect 0
+0AB2: ret 0
+
+
+
+
+:ReadPosition // label 0@
+0AC6: 10@ = label 0@ offset
+for 20@ = 0 to 3
+    0A8D: 11@(20@,4f) = read_memory 10@ size 4 virtual_protect 0
+    10@+=4
+end
+0AB2: ret 4 icon_pos 11@ 12@ text_pos 13@ 14@
+
+
+
+
+:ReadSize // no parameters
+0AC6: 10@ = label @Hud_DrawnText_Size offset
+0A8D: 11@ = read_memory 10@ size 4 virtual_protect 0
+10@+=4
+0A8D: 12@ = read_memory 10@ size 4 virtual_protect 0
+0AB2: ret 2 11@ 12@
+
+
+
+
 :InitializeMainHudColours // health 0@ 1@ 2@ armour 3@ 4@ 5@ oxygen 6@ 7@ 8@
 0AC6: 10@ = label @HealthColours offset
 for 11@ = 0 to 2
@@ -1089,6 +1168,23 @@ end
 :OxygenColours
 hex
 00 00 00
+end
+
+:Health_Pos
+hex
+00 00 00 00     00 00 00 00     00 00 00 00     00 00 00 00
+end
+:Armour_Pos
+hex
+00 00 00 00     00 00 00 00     00 00 00 00     00 00 00 00
+end
+:Oxygen_Pos
+hex
+00 00 00 00     00 00 00 00     00 00 00 00     00 00 00 00
+end
+:Hud_DrawnText_Size
+hex
+00 00 00 00     00 00 00 00
 end
 
 {======================================================================
@@ -1477,11 +1573,14 @@ then
     then
         0AD3: 2@v = format "%03d" 1@  
         0ADF: add_dynamic_GXT_entry "III_HEA" text 2@v 
-        033E: set_draw_text_position 484.5 66.0 GXT "III_HEA" 
+        0AB1: @ReadPosition 1 @Health_Pos ret icon_pos 5@ 6@ text_pos 7@ 8@
+        //033E: set_draw_text_position 484.5 66.0 GXT "III_HEA" 
+        033E: set_draw_text_position 7@ 8@ GXT "III_HEA" 
         gosub @ConfigDrawText
         0AB1: @ReadRGB 1 @HealthColours ret 2@ 3@ 4@
         0340: set_text_draw_RGBA 2@ 3@ 4@ 255
-        033E: set_draw_text_position 459.7 66.0 GXT "III_HIC" 
+        //033E: set_draw_text_position 459.7 66.0 GXT "III_HIC" 
+        033E: set_draw_text_position 5@ 6@ GXT "III_HIC" 
     end
         
     if gosub @PlayerCarSunk 
@@ -1522,7 +1621,9 @@ then
         then
             0AD3: 2@v = format "^%03d" 1@  
             0ADF: add_dynamic_GXT_entry "III_OXY" text 2@v 
-            033E: set_draw_text_position 389.0 66.0 GXT "III_OXY" 
+            0AB1: @ReadPosition 1 @Armour_Pos ret icon_pos 5@ 6@ text_pos 7@ 8@
+            //033E: set_draw_text_position 389.0 66.0 GXT "III_OXY" 
+            033E: set_draw_text_position 5@ 6@ GXT "III_OXY" 
         end
     else
         04DD: 1@ = actor $PLAYER_ACTOR armour 
@@ -1553,12 +1654,15 @@ then
             then
                 0AD3: 2@v = format "%03d" 1@  
                 0ADF: add_dynamic_GXT_entry "III_ARM" text 2@v 
-                033E: set_draw_text_position 411.0 66.0 GXT "III_ARM" 
+                0AB1: @ReadPosition 1 @Armour_Pos ret icon_pos 5@ 6@ text_pos 7@ 8@
+                //033E: set_draw_text_position 411.0 66.0 GXT "III_ARM" 
+                033E: set_draw_text_position 7@ 8@ GXT "III_ARM" 
                 gosub @ConfigDrawText 
                 0AB1: @ReadRGB 1 @ArmourColours ret 2@ 3@ 4@
                 0340: set_text_draw_RGBA 2@ 3@ 4@ 255
                 //0340: set_text_draw_RGBA 124 140 95 255 
-                033E: set_draw_text_position 392.0 66.0 GXT "III_AIC" 
+                //033E: set_draw_text_position 392.0 66.0 GXT "III_AIC" 
+                033E: set_draw_text_position 5@ 6@ GXT "III_AIC" 
             end
         end
     end
@@ -1581,7 +1685,9 @@ return
 
 :ConfigDrawText
 03E0: draw_text_behind_textures 1 
-033F: set_text_draw_letter_size 0.8 2.6 
+0AB1: @ReadSize 0 ret 9@ 10@
+//033F: set_text_draw_letter_size 0.8 2.6 
+033F: set_text_draw_letter_size 9@ 10@
 0349: set_text_draw_font 3 
 060D: draw_text_shadow 1 rgba 0 0 0 255 
 return 
