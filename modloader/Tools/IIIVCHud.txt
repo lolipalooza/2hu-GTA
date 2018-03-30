@@ -1600,7 +1600,6 @@ then
         gosub @ConfigDrawText 
         0AB1: @ReadRGB 1 @OxygenColours ret 2@ 3@ 4@
         0340: set_text_draw_RGBA 2@ 3@ 4@ 255
-        //0340: set_text_draw_RGBA 142 187 204 255 
             
         if 29@ == 10 
         then
@@ -1622,7 +1621,6 @@ then
             0AD3: 2@v = format "^%03d" 1@  
             0ADF: add_dynamic_GXT_entry "III_OXY" text 2@v 
             0AB1: @ReadPosition 1 @Armour_Pos ret icon_pos 5@ 6@ text_pos 7@ 8@
-            //033E: set_draw_text_position 389.0 66.0 GXT "III_OXY" 
             033E: set_draw_text_position 5@ 6@ GXT "III_OXY" 
         end
     else
@@ -1632,7 +1630,6 @@ then
             gosub @ConfigDrawText 
             0AB1: @ReadRGB 1 @ArmourColours ret 2@ 3@ 4@
             0340: set_text_draw_RGBA 2@ 3@ 4@ 255
-            //0340: set_text_draw_RGBA 124 140 95 255 
             if 1@ > 999 
             then 1@ = 999 
             end
@@ -1655,13 +1652,10 @@ then
                 0AD3: 2@v = format "%03d" 1@  
                 0ADF: add_dynamic_GXT_entry "III_ARM" text 2@v 
                 0AB1: @ReadPosition 1 @Armour_Pos ret icon_pos 5@ 6@ text_pos 7@ 8@
-                //033E: set_draw_text_position 411.0 66.0 GXT "III_ARM" 
                 033E: set_draw_text_position 7@ 8@ GXT "III_ARM" 
                 gosub @ConfigDrawText 
                 0AB1: @ReadRGB 1 @ArmourColours ret 2@ 3@ 4@
                 0340: set_text_draw_RGBA 2@ 3@ 4@ 255
-                //0340: set_text_draw_RGBA 124 140 95 255 
-                //033E: set_draw_text_position 392.0 66.0 GXT "III_AIC" 
                 033E: set_draw_text_position 5@ 6@ GXT "III_AIC" 
             end
         end
@@ -1686,7 +1680,6 @@ return
 :ConfigDrawText
 03E0: draw_text_behind_textures 1 
 0AB1: @ReadSize 0 ret 9@ 10@
-//033F: set_text_draw_letter_size 0.8 2.6 
 033F: set_text_draw_letter_size 9@ 10@
 0349: set_text_draw_font 3 
 060D: draw_text_shadow 1 rgba 0 0 0 255 
