@@ -150,7 +150,9 @@ gosub @InitializeAssemblerRegion
 
 repeat
 wait 0
-    gosub @ClassicHudLoop
+    if gosub @IsHudEnabled
+    then gosub @ClassicHudLoop
+    end
 until false
 
 {======================================================================
@@ -417,6 +419,31 @@ end
 0AC6: 20@ = label @Zone_PosY offset
 0A8C: write_memory 20@ size 4 value 8@ virtual_protect 0
 0A8C: write_memory 0x58AE3A size 4 value 20@ virtual_protect 1 // Zone Pos Y
+{
+// CFont::SetSlantRefPoint
+0AC6: 20@ = label @HUD_AREA_POS_X offset
+0AC6: 30@ = label @_CFont__SetSlantRefPoint_3 offset
+30@ += 4
+0A8C: write_memory 20@ size 4 value 50.0 virtual_protect 0
+0A8C: write_memory 30@ size 4 value 20@ virtual_protect 0
+
+0AC6: 20@ = label @HUD_AREA_POS_Y offset
+0AC6: 30@ = label @_CFont__SetSlantRefPoint_1 offset
+30@ += 4
+0A8C: write_memory 20@ size 4 value 250.0 virtual_protect 0
+0A8C: write_memory 30@ size 4 value 20@ virtual_protect 0
+
+0AC6: 20@ = label @HUD_AREA_SLANT offset
+0AC6: 30@ = label @_CFont__SetSlant offset
+30@ += 4
+0A8C: write_memory 20@ size 4 value 0.14 virtual_protect 0
+0A8C: write_memory 30@ size 4 value 20@ virtual_protect 0
+
+0AC6: 20@ = label @_CFont__SetSlantRefPoint offset
+20@ -= 0x58AE62
+0A8C: write_memory 0x58AE5D size 1 value 0xE9 virtual_protect 1 // change "call" by "jmp"
+0A8C: write_memory 0x58AE5E size 4 value 20@ virtual_protect 1
+}
 0AB2: ret 0
 
 
@@ -811,6 +838,13 @@ end
 0A8C: write_memory 20@ size 4 value 8@ virtual_protect 0
 0A8C: write_memory 0x447804 size 4 value 20@ virtual_protect 1 // Linewidth Factor      // Linewidth = RsGlobal.MaximumWidth - 0.0015625 * RsGlobal.MaximumWidth * LinewidthFactor
 0AB2: ret 0
+
+
+
+
+:EditMissionTimers
+0AB2: ret 0
+
 
 
 
@@ -1400,6 +1434,15 @@ end
 0A8E: 3@ = 2@ + 4 // int 
 0A8F: 3@ = 5827610 - 3@ // int 
 0A8C: write_memory 2@ size 4 value 3@ virtual_protect 0
+
+0AC6: 3@ = label @_Value_1080 offset
+0A8C: write_memory 3@ size 4 value 1080.0 virtual_protect 0
+0AC6: 2@ = label @_CFont__SetSlantRefPoint_2 offset
+2@ += 4
+0A8C: write_memory 2@ size 4 value 3@ virtual_protect 0
+0AC6: 2@ = label @_CFont__SetSlantRefPoint_3 offset
+2@ += 12
+0A8C: write_memory 2@ size 4 value 3@ virtual_protect 0
 return
 
 {======================================================================
@@ -1646,6 +1689,86 @@ hex
  E9 00 00 00 00         //  jmp     0058EC1A
 end
 
+:_CFont__SetSlantRefPoint // CFont::SetSlantRefPoint(RsGlobal.maximumWidth - SCREEN_COORD(HUD_AREA_POS_X), SCREEN_COORD_BOTTOM(HUD_AREA_POS_Y));
+hex
+ 8B 35 4470C100             // mov          esi,[00C17044]          [00000500]      RsGlobal
+ 33 C0                      // xor          eax,eax
+ 8B 0D 4870C100             // mov          ecx,[00C17048]          [00000400]      RsGlobal
+ 3B F1                      // cmp          esi,ecx
+end
+:_CFont__SetSlantRefPoint_1
+hex
+ F3 0F10 05 2472015A        // movss        xmm0,[5A017224]         [250.00]        HUD_AREA_POS_Y = 250.0f;                    CHANGE THIS ADDR!!
+ 0F9F C0                    // setg         al
+ 33 D2                      // xor          edx,edx
+ 66 0F6E 0C 85 4470C100     // movd         xmm1,[eax*4+00C17044]
+ 8D 04 85 4470C100          // lea          eax,[eax*4+00C17044]
+ 0F5B C9                    // cvtdq2ps     xmm1,xmm1
+ 3B F1                      // cmp          esi,ecx
+ 0F9F C2                    // setg         dl
+ 83 C4 08                   // add          esp,08                  8
+ 8D 14 95 4470C100          // lea          edx,[edx*4+00C17044]
+ 66 0F6E D1                 // movd         xmm2,ecx
+ F3 0F59 C1                 // mulss        xmm0,xmm1
+ 0F5B D2                    // cvtdq2ps     xmm2,xmm2
+end
+:_CFont__SetSlantRefPoint_2
+hex
+ F3 0F5E 05 D01C015A        // divss        xmm0,[5A011CD0]         [1080.00]                                                   CHANGE THIS ADDR!!
+ 66 0F6E CE                 // movd         xmm1,esi
+ F3 0F2C C0                 // cvttss2si    eax,xmm0
+ 0F5B C9                    // cvtdq2ps     xmm1,xmm1
+ 66 0F6E C0                 // movd         xmm0,eax
+ 0F5B C0                    // cvtdq2ps     xmm0,xmm0
+ F3 0F5C D0                 // subss        xmm2,xmm0
+ F3 0F11 54 24 04           // movss        [esp+04],xmm2
+ 66 0F6E 02                 // movd         xmm0,[edx]
+ 0F5B C0                    // cvtdq2ps     xmm0,xmm0
+end
+:_CFont__SetSlantRefPoint_3
+hex
+ F3 0F59 05 C472015A        // mulss        xmm0,[5A0172C4]         [50.00]         HUD_AREA_POS_X = 50.0f;                     CHANGE THIS ADDR!!
+ F3 0F5E 05 D01C015A        // divss        xmm0,[5A011CD0]         [1080.00]                                                   CHANGE THIS ADDR!!
+ F3 0F2C C0                 // cvttss2si    eax,xmm0
+ 66 0F6E C0                 // movd         xmm0,eax
+ B8 00947100                // mov          eax,00719400            [0424448B]      CFont::SetSlantRefPoint(float, float)
+ 0F5B C0                    // cvtdq2ps     xmm0,xmm0
+ F3 0F5C C8                 // subss        xmm1,xmm0
+ F3 0F11 0C 24              // movss        [esp],xmm1
+ FF D0                      // call         eax
+end
+:_CFont__SetSlant
+hex // CFont::SetSlant(HUD_AREA_SLANT);
+ F3 0F10 05 9872015A        // movss    xmm0,[5A017298]             [0.14]                                                      CHANGE THIS ADDR!!
+ 83 C4 04                   // add      esp,04                      4
+ B8 20947100                // mov      eax,00719420                [0424448B]      CFont::SetSlant(float value)
+ F3 0F11 04 24              // movss    [esp],xmm0
+ FF D0                      // call     eax
+end
+hex
+ E8 BEF91800                // call     0071A820                    CFont::PrintStringFromBottom(float x, float y, char *text)
+ E9 2ECA4EFC                // jmp      0058AE62
+end
+
+:_Value_1080
+hex
+ 00 00 00 00
+end
+:HUD_AREA_POS_X
+hex
+ 00 00 00 00
+end
+:HUD_AREA_POS_Y
+hex
+ 00 00 00 00
+end
+:HUD_AREA_SLANT
+hex
+ 00 00 00 00
+end
+
+{======================================================================
+======================================================================}
 :ClassicHudLoop
 if 31@ == 1 
 then
@@ -1804,6 +1927,17 @@ then
         0811: 1@ = actor $PLAYER_ACTOR used_car 
         02BF:   car 1@ sunk 
     end
-else 0485:   return_true 
+else 0485:   return_true
 end
 return 
+
+:IsHudEnabled
+0A8D: 1@ = read_memory 0xA444A0 size 4 virtual_protect 0 // Hud enabled
+0A8D: 2@ = read_memory 0xB6F065 size 1 virtual_protect 0 // Cutscenes widescreen mode
+if and
+1@ == 1 // hud enabled
+2@ == 0 // cutscenes off
+then 0485:   return_true
+else 059A:  return_false
+end
+return
