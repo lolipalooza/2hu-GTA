@@ -18,6 +18,9 @@ thread 'DynamicValueMod'
 | Enjoy!
 ===============================================}
 
+0A9A: 30@ = openfile "modloader/Tools/DynamicValueMod.ini" mode "wb+"  // IF and SET
+0A9B: closefile 30@
+
 0@s='ASDF123'
 3@=0.1
 
@@ -28,16 +31,32 @@ wait 0
         if 0AB0:   key_pressed 107 // +
         then 31@=3
             32@=0
-            0A8D: 11@ = read_memory 2@ size 4 virtual_protect 0
-            005B: 11@ += 3@  // (float)
-            0A8C: write_memory 2@ size 4 value 11@ virtual_protect 1
+            2@=0
+            0AB1: @ReadFile 0 2@ 3@
+            if 2@ <> 0
+            then
+                0A8D: 11@ = read_memory 2@ size 4 virtual_protect 0
+                005B: 11@ += 3@  // (float)
+                0A8C: write_memory 2@ size 4 value 11@ virtual_protect 1
+            else
+                0AB1: @CreateLog 3 2@ 3@ false
+                0ACC: show_text_lowpriority "Error" time 500
+            end
         end
         if 0AB0:   key_pressed 109 // -
         then 31@=4
             32@=0
-            0A8D: 11@ = read_memory 2@ size 4 virtual_protect 0
-            0063: 11@ -= 3@  // (float)
-            0A8C: write_memory 2@ size 4 value 11@ virtual_protect 1
+            2@=0
+            0AB1: @ReadFile 0 2@ 3@
+            if 2@ <> 0
+            then
+                0A8D: 11@ = read_memory 2@ size 4 virtual_protect 0
+                0063: 11@ -= 3@  // (float)
+                0A8C: write_memory 2@ size 4 value 11@ virtual_protect 1
+            else
+                0AB1: @CreateLog 3 2@ 3@ false
+                0ACC: show_text_lowpriority "Error" time 500
+            end
         end
     end
     if or
@@ -57,3 +76,21 @@ wait 0
         end
     end
 until false
+
+:ReadFile
+0A9A: 30@ = openfile "modloader/Tools/DynamicValueMod.ini" mode "rb"  // IF and SET
+if 0ADA: 0@ = scan_file 30@ format "%X %f" 10@ 11@ //IF and SET
+then 0485:  return_true
+else 059A:  return_false
+end
+0A9B: closefile 30@
+0AB2: ret 2 10@ 11@
+
+:CreateLog // 0@ 1@ 2@
+if 2@ == true
+then
+    0A9A: 30@ = openfile "modloader/Tools/DynamicValueMod.log" mode "ab+"  // IF and SET
+    0AD9: write_formatted_text "Could not read values %d %d%c%c" in_file 30@ 0@ 1@ 0xd 0xa
+    0A9B: closefile 30@
+end
+0AB2: ret 0

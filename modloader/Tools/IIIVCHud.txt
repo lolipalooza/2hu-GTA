@@ -83,18 +83,18 @@ gosub @InitializeAssemblerRegion
 0AB1: @EditWeapon 10 box_xy 32.0 20.0 box_size 47.0 58.0 ammo_xy 32.0 20.0 ammo_size 0.30 0.70 ammo_border 1 ammo_color_id 3
 0AB1: @EditWantedLevelStars 13 classic_flag false rgba_addr 0xBAB22C unknown_float 47.0 active_color_id 6 position 29.0 114.0 inactive_y 114.0 size 1.21 0.605 space_between 18.0 inactive_RGB 0 0 0
 0AB1: @EditRadioStation 9 fontstyle 2 border 2291248 border_id 6 rgba 0xBAB22C unknown_id 8 unknown_rgba 0xBAB22C size 0.60 0.90 unknown_float 3000.0
-0AB1: @EditVehicleText 9 size 1.20 1.5 fontstyle 2 border_id 2 classic_flag false vehicle_zone_rgba 0xBAB22C color_id 1 pos_y 104.0 unknown 0
+0AB1: @EditVehicleText 8 size 1.20 1.5 fontstyle 2 border_id 2 classic_flag false vehicle_zone_rgba 0xBAB22C color_id 1 pos_y 104.0
 0AB1: @EditZoneText 9 unknown_float 3000.0 size 1.20 1.90 border_id 2 classic_flag false fontstyle 0 rgba 0xBAB22C vehicle_zone_rgba 0xBAB22C pos_y 76.0
 0AB1: @GeneralSettings 1 flag_activate false
 0AB1: @EditRadar 4 position 40.0 104.0 size 94.0 76.0
 0AB1: @EditStyledText1 7 classic_flag false rgba 0xBAB22C size 1.3 1.8 fontstyle 3 border 2 color 6 position 0.0 0.0 ymult 10.0 25.0 15.0
 0AB1: @EditStyledText2 8 classic_flag false rgba 0xBAB22C size 0.0 1.30 fontstyle 3 border 2 xy_pos 20.0 115.0
-0AB1: @EditStyledText3 9 classic_flag false rgba 0xBAB22C size 2.10 2.10 fontstyle 0 border 3 xy_pos 640.0 443.4285278 ymult 30.0 // WARNING!!!! posibly 640.0 won't work on screen sizes different from 1280x1024 because 640.0 = 1280 / 2
+0AB1: @EditStyledText3 10 classic_flag false rgba 0xBAB22C size 2.10 2.10 fontstyle 0 border 3 color 4 xy_pos 640.0 443.4285278 ymult 30.0 // WARNING!!!! posibly 640.0 won't work on screen sizes different from 1280x1024 because 640.0 = 1280 / 2
 0AB1: @EditStyledText4 8 classic_flag false rgba 0xBAB22C size 0.60 1.35 fontstyle 2 border 2 color 6 pos_y 155.0
 0AB1: @EditStyledText5 8 classic_flag false rgba 0xBAB22C size 0.60 1.35 fontstyle 2 border 2 color 6 pos_y 140.0
 0AB1: @EditStyledText6 8 classic_flag false rgba 0xBAB22C size 0.60 1.35 fontstyle 2 border 0 color 4 pos_y 217.0
 0AB1: @EditStyledText7 8 classic_flag false rgba 0xBAB22C size 0.0 0.0 fontstyle 3 border 0 color 0 pos_y 0.0
-0AB1: @EditGarageMessages 8 classic_flag false rgba 0xBAB22C size 0.5 1.4 fontstyle 2 border 2 color 3 pos_y 155.0
+0AB1: @EditGarageMessages 9 classic_flag false rgba 0xBAB22C size 0.5 1.4 fontstyle 2 border 2 color 3 pos_y 155.0 linewidth_factor 230.0
 0AB1: @ChangeRedStuffColor 3 red 255 green 0 blue 0
 
 // III
@@ -105,18 +105,18 @@ gosub @InitializeAssemblerRegion
 0AB1: @EditWeapon 10 box_xy -12.5 27.5 box_size 63.5 63.5 ammo_xy -12.5 27.5 ammo_size 0.40 0.60 ammo_border 0 ammo_color_id 6
 0AB1: @EditWantedLevelStars 13 classic_flag true rgba_addr 1@ unknown_float 65.0 active_color_id 4 position 52.30 87.0 inactive_y 90.0 size 1.30 0.80 space_between 23.0 inactive_RGB 0 0 0
 0AB1: @EditRadioStation 9 fontstyle 3 border 2291216 border_id 5 rgba 1@ unknown_id 0 unknown_rgba 1@ size 0.80 1.34 unknown_float 10000.0
-0AB1: @EditVehicleText 9 size 1.20 1.15 fontstyle 1 border_id 1 classic_flag true vehicle_zone_rgba 1@ color_id 4 pos_y 54.0 unknown 0
+0AB1: @EditVehicleText 8 size 1.20 1.15 fontstyle 1 border_id 1 classic_flag true vehicle_zone_rgba 1@ color_id 4 pos_y 54.0
 0AB1: @EditZoneText 9 unknown_float 10000.0 size 1.20 1.15 border_id 1 classic_flag true fontstyle 1 rgba 1@ vehicle_zone_rgba 1@ pos_y 95.5
 0AB1: @GeneralSettings 2 flag_activate true var_addr 4@
 0AB1: @EditRadar 4 position 27.0 121.0 size 90.0 72.0
 0AB1: @EditStyledText1 12 classic_flag true rgba 1@ size 1.8 1.8 fontstyle 3 border 255 color 0 position 0.0 472.0 ymult 17.49999817 0.0 0.0
 0AB1: @EditStyledText2 8 classic_flag true rgba 1@ size 0.87 1.38 fontstyle 3 border 1 xy_pos 22.0 95.0
-0AB1: @EditStyledText3 9 classic_flag true rgba 1@ size 2.0 2.0 fontstyle 3 border 3 xy_pos 1225.0 919.4285889 ymult -178.2500195
+0AB1: @EditStyledText3 10 classic_flag true rgba 1@ size 2.0 2.0 fontstyle 3 border 3 color 4 xy_pos 1225.0 919.4285889 ymult -178.2500195
 0AB1: @EditStyledText4 8 classic_flag true rgba 1@ size 1.20 1.45 fontstyle 1 border 255 color 1 pos_y 141.0
 0AB1: @EditStyledText5 8 classic_flag true rgba 1@ size 1.20 1.45 fontstyle 1 border 1 color 8 pos_y 193.0
 0AB1: @EditStyledText6 8 classic_flag true rgba 1@ size 1.0 1.17 fontstyle 1 border 0 color 2 pos_y 204.5
 0AB1: @EditStyledText7 8 classic_flag true rgba 1@ size 0.0 0.0 fontstyle 1 border 0 color 0 pos_y 0.0
-0AB1: @EditGarageMessages 8 classic_flag true rgba 1@ size 0.54 0.66 fontstyle 1 border 255 color 1 pos_y 140.1
+0AB1: @EditGarageMessages 9 classic_flag true rgba 1@ size 0.54 0.66 fontstyle 1 border 255 color 1 pos_y 140.1 linewidth_factor 230.0
 0AB1: @ChangeRedStuffColor 3 red 16 green 84 blue 192
 0AB1: @InitializeHealthArmourOxygen 12 health_pos 459.7 66.0 text 484.5 66.0 armour_pos 392.0 66.0 text 411.0 66.0 oxygen_pos 389.0 66.0 drawn_text_size 0.8 2.6
 0AB1: @InitializeMainHudColours 9 health 186 101 50 armour 124 140 95 oxygen 142 187 204
@@ -129,18 +129,18 @@ gosub @InitializeAssemblerRegion
 0AB1: @EditWeapon 10 box_xy -12.5 27.5 box_size 63.5 63.5 ammo_xy -12.0 47.0 ammo_size 0.48 0.82 ammo_border 0 ammo_color_id 3
 0AB1: @EditWantedLevelStars 13 classic_flag true rgba_addr 1@ unknown_float 65.0 active_color_id 4 position 106.30 87.0 inactive_y 90.0 size 1.30 0.80 space_between 23.0 inactive_RGB 0x1B 0x59 0x82
 0AB1: @EditRadioStation 9 fontstyle 1 border 2291216 border_id 5 rgba 1@ unknown_id 0 unknown_rgba 1@ size 0.80 1.34 unknown_float 10000.0
-0AB1: @EditVehicleText 9 size 1.20 1.15 fontstyle 0 border_id 1 classic_flag true vehicle_zone_rgba 1@ color_id 4 pos_y 54.0 unknown 0
-0AB1: @EditZoneText 9 unknown_float 10000.0 size 1.20 1.15 border_id 1 classic_flag true fontstyle 0 rgba 1@ vehicle_zone_rgba 1@ pos_y 95.5
+0AB1: @EditVehicleText 8 size 1.75 1.95 fontstyle 0 border_id 1 classic_flag true vehicle_zone_rgba 1@ color_id 4 pos_y 101.0
+0AB1: @EditZoneText 9 unknown_float 10000.0 size 1.72 1.89 border_id 1 classic_flag true fontstyle 0 rgba 1@ vehicle_zone_rgba 1@ pos_y 8.5
 0AB1: @GeneralSettings 2 flag_activate true var_addr 4@
 0AB1: @EditRadar 4 position 22.0 114.0 size 90.0 72.0
-0AB1: @EditStyledText1 12 classic_flag true rgba 1@ size 1.8 1.8 fontstyle 3 border 255 color 0 position 0.0 472.0 ymult 17.49999817 0.0 0.0
-0AB1: @EditStyledText2 8 classic_flag true rgba 1@ size 0.87 1.38 fontstyle 3 border 1 xy_pos 22.0 95.0
-0AB1: @EditStyledText3 9 classic_flag true rgba 1@ size 2.0 2.0 fontstyle 3 border 3 xy_pos 1225.0 919.4285889 ymult -178.2500195
-0AB1: @EditStyledText4 8 classic_flag true rgba 1@ size 1.20 1.45 fontstyle 1 border 255 color 1 pos_y 141.0
-0AB1: @EditStyledText5 8 classic_flag true rgba 1@ size 1.20 1.45 fontstyle 1 border 1 color 8 pos_y 193.0
-0AB1: @EditStyledText6 8 classic_flag true rgba 1@ size 1.0 1.17 fontstyle 1 border 0 color 2 pos_y 204.5
+0AB1: @EditStyledText1 12 classic_flag true rgba 1@ size 1.87 1.87 fontstyle 3 border 255 color 7 position 0.0 469.0 ymult 18.81249818 0.0 0.0
+0AB1: @EditStyledText2 8 classic_flag true rgba 1@ size 1.56 1.68 fontstyle 0 border 1 xy_pos 23.5 109.0
+0AB1: @EditStyledText3 10 classic_flag true rgba 1@ size 2.08 2.0 fontstyle 3 border 1 color 1 xy_pos 1225.0 900.0 ymult -169.75003874
+0AB1: @EditStyledText4 8 classic_flag true rgba 1@ size 1.61 1.45 fontstyle 1 border 255 color 4 pos_y 134.0
+0AB1: @EditStyledText5 8 classic_flag true rgba 1@ size 1.61 1.45 fontstyle 1 border 1 color 8 pos_y 166.0
+0AB1: @EditStyledText6 8 classic_flag true rgba 1@ size 1.34 1.17 fontstyle 1 border 0 color 4 pos_y 216.5
 0AB1: @EditStyledText7 8 classic_flag true rgba 1@ size 0.0 0.0 fontstyle 1 border 0 color 0 pos_y 0.0
-0AB1: @EditGarageMessages 8 classic_flag true rgba 1@ size 0.54 0.66 fontstyle 1 border 255 color 1 pos_y 140.1
+0AB1: @EditGarageMessages 9 classic_flag true rgba 1@ size 1.28 1.50 fontstyle 1 border 1 color 2 pos_y 140.1 linewidth_factor 80.0
 0AB1: @ChangeRedStuffColor 3 red 16 green 84 blue 192
 0AB1: @InitializeHealthArmourOxygen 12 health_pos 462.0 65.0 text 487.0 65.0 armour_pos 392.0 65.0 text 415.0 65.0 oxygen_pos 396.0 65.0 drawn_text_size 0.7 2.4
 0AB1: @InitializeMainHudColours 9 health 244 144 215 armour 0xB9 0xB9 0xB9 oxygen 142 187 204
@@ -331,13 +331,18 @@ end
 
 
 
-:EditVehicleText // size 0@ 1@ fontstyle 2@ border_id 3@ classic_flag 4@ vehicle_zone_rgba 5@ color_id 6@ pos_y 7@ unknown 8@
+:EditVehicleText // size 0@ 1@ fontstyle 2@ border_id 3@ classic_flag 4@ vehicle_zone_rgba 5@ color_id 6@ pos_y 7@
 0AC6: 20@ = label @Vehicle_Height offset 
 0A8C: write_memory 20@ size 4 value 1@ virtual_protect 0
 0A8C: write_memory 0x58B091 size 4 value 20@ virtual_protect 1 // Vehicle Height
 
 if 4@ == true
 then
+    0AC6: 20@ = label @Noname_6461 offset
+    20@ += 2
+    0AC6: 30@ = label @Vehicle_Width offset
+    0A8C: write_memory 30@ size 4 value 0@ virtual_protect 0
+    0A8C: write_memory 20@ size 4 value 30@ virtual_protect 0 // Modifying pointer in "Noname_6461" to address "Vehicle_Width"
     0AC6: 20@ = label @Noname_6461 offset 
     20@ -= 0x58B0AA 
     0A8C: write_memory 0x58B0A5 size 1 value 0xE9 virtual_protect 1 // Vehicle Width (related)
@@ -360,7 +365,7 @@ end
 
 // This makes crash game when you activate Odd Jobs (from cars) and vehicle name is still displayed!
 {0AC6: 20@ = label @Vehicle_Unknown offset 
-0A8C: write_memory 20@ size 4 value 8@ virtual_protect 0
+0A8C: write_memory 20@ size 4 value 0 virtual_protect 0
 0A8C: write_memory 0x58AEB0 size 4 value 20@ virtual_protect 1 
 0A8C: write_memory 0x58AECA size 4 value 20@ virtual_protect 1 
 0A8C: write_memory 0x58AEF0 size 4 value 20@ virtual_protect 1 
@@ -632,7 +637,7 @@ end
 
 
 
-:EditStyledText3 // classic_flag 0@ rgba 1@ size 2@ 3@ fontstyle 4@ border 5@ xy_pos 6@ 7@ ymult 8@
+:EditStyledText3 // classic_flag 0@ rgba 1@ size 2@ 3@ fontstyle 4@ border 5@ color 6@ xy_pos 7@ 8@ ymult 9@
 0AC6: 20@ = label @Styled3_Height offset 
 0A8C: write_memory 20@ size 4 value 3@ virtual_protect 0
 0A8C: write_memory 0x58CBB3 size 4 value 20@ virtual_protect 1 // Styled Text 3 Height
@@ -651,26 +656,27 @@ if 0@ == true
 then 0A8C: write_memory 0x58CBE4 size 1 value 2 virtual_protect 1 // Align Right
 else 0A8C: write_memory 0x58CBE4 size 1 value 0 virtual_protect 1 // Align Center
 end
+0A8C: write_memory 0x58CC32 size 1 value 6@ virtual_protect 1 // Styled Text 3 Color Id
 0A8C: write_memory 0x58CC35 size 4 value 1@ virtual_protect 1 // Styled Text 3 RGBA Base Colour address
 
 {0AC6: 20@ = label @Styled3_PosY offset 
-0A8C: write_memory 20@ size 4 value 7@ virtual_protect 0
+0A8C: write_memory 20@ size 4 value 8@ virtual_protect 0
 0A8C: write_memory 0x58CA99 size 4 value 20@ virtual_protect 1 // Styled Text 3 PosY
 0A8C: write_memory 0x58CB1C size 4 value 20@ virtual_protect 1 // Styled Text 3 PosY
 0A8C: write_memory 0x58CB44 size 4 value 20@ virtual_protect 1 // Styled Text 3 PosY
 0A8C: write_memory 0x58CC47 size 4 value 20@ virtual_protect 1 // Styled Text 3 PosY}
 
 0AC6: 20@ = label @Styled3_PosYMult offset 
-0A8C: write_memory 20@ size 4 value 8@ virtual_protect 0
+0A8C: write_memory 20@ size 4 value 9@ virtual_protect 0
 0A8C: write_memory 0x58CA91 size 4 value 20@ virtual_protect 1
 0A8C: write_memory 0x58CB14 size 4 value 20@ virtual_protect 1
 0A8C: write_memory 0x58CB3C size 4 value 20@ virtual_protect 1
 
-0013: 6@ *= 2.0
-0092: 9@ = float 6@ to_integer
+0013: 7@ *= 2.0
+0092: 10@ = float 7@ to_integer
 
 0AC6: 20@ = label @Styled3_MaxW offset 
-0A8C: write_memory 20@ size 4 value 9@ virtual_protect 0
+0A8C: write_memory 20@ size 4 value 10@ virtual_protect 0
 0A8C: write_memory 0x58CC55 size 4 value 20@ virtual_protect 1 // Max Width
 0AB2: ret 0
 :Styled3_MaxW
@@ -778,7 +784,7 @@ end
 
 
 
-:EditGarageMessages // classic_flag 0@ rgba 1@ size 2@ 3@ fontstyle 4@ border 5@ color 6@ pos_y 7@
+:EditGarageMessages // classic_flag 0@ rgba 1@ size 2@ 3@ fontstyle 4@ border 5@ color 6@ pos_y 7@ linewidth_factor 8@
 0AC6: 20@ = label @Garage_Height offset 
 0A8C: write_memory 20@ size 4 value 3@ virtual_protect 0
 0A8C: write_memory 0x4477BF size 4 value 20@ virtual_protect 1 // Height
@@ -801,6 +807,9 @@ if 0@ == true
 then 0A8C: write_memory 0x447841 size 4 value 0x002D1D2B virtual_protect 1 // Border
 else 0A8C: write_memory 0x447841 size 4 value 0x002D1D4B virtual_protect 1
 end
+0AC6: 20@ = label @Garage_LwidthFactor offset 
+0A8C: write_memory 20@ size 4 value 8@ virtual_protect 0
+0A8C: write_memory 0x447804 size 4 value 20@ virtual_protect 1 // Linewidth Factor      // Linewidth = RsGlobal.MaximumWidth - 0.0015625 * RsGlobal.MaximumWidth * LinewidthFactor
 0AB2: ret 0
 
 
@@ -1237,6 +1246,10 @@ end
 hex
 00 00 00 00
 end
+:Garage_LwidthFactor
+hex
+00 00 00 00
+end
 
 :IIIBaseColours
 hex
@@ -1246,9 +1259,13 @@ end
 
 :ViceCityBaseColours
 hex
- 66 85 8F FF 00 CF 85 FF BA 65 32 FF 2D 9B 5A FF
+ 66 85 8F FF 00 CF 85 FF 1B 59 82 FF 2D 9B 5A FF
  61 C2 F7 FF 8E BB CC FF 00 00 00 FF
 end
+{hex
+ 66 85 8F FF 00 CF 85 FF BA 65 32 FF 2D 9B 5A FF
+ 61 C2 F7 FF 8E BB CC FF 00 00 00 FF
+end}
 
 :HealthColours
 hex
@@ -1529,8 +1546,7 @@ end
 
 :Noname_6461
 hex
- D8                 //  add     al,bl
- 0D 00 00 00 00     //  or      eax,40AE8A5             // maybe this is interpreted as D8 0D <addr>:   fmul dword ptr [addr]
+ D8 0D 00 00 00 00  //  fmul    dword ptr [addr]
  D9 1C 24           //  fstp    dword ptr [esp]
  E8 00 00 00 00     //  call    gta_sa.exe+3193A0(007193A0)  // sub_7193A0      proc near               ; CODE XREF: CMenu__DrawTextBoxWTitle
  E9 00 00 00 00     //  jmp     0058B0AD
