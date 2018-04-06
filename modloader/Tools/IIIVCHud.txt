@@ -4,79 +4,40 @@ thread 'IIIVCHud'
 // 719570 : CFont::SetDropShadowPosition
 // 719590 : CFont::SetOutlinePosition
 
-const
-    _MoneyPosX        = 0x58F5FC
-    _MoneyPosY        = 0x58F5DC
-    _MoneyWidth       = 0x58F564
-    _MoneyHeight      = 0x58F54E
-    _MoneyBorderInt   = 0x58F58F
-    _MoneyBorderByte1 = 0x58F58D
-    _MoneyBorderByte2 = 0x58F586
-    _MoneyColor       = 0x58F499
-    
-    _ClockPosX        = 0x58EC16
-    _ClockPosY        = 0x58EC04
-    _ClockWidth       = 0x58EB47
-    _ClockHeight      = 0x58EB31
-    _ClockBorderInt   = 0x58EB72
-    _ClockBorderByte1 = 0x58EB70
-    _ClockColor       = 0x58EBD1
-    
-    _WeaponBoxPosX    = 0x58F927
-    _WeaponBoxPosY    = 0x58F913
-    _WeaponBoxWidth   = 0x58D935 // alternative addresses: 0x58D8CB    0x58D935
-    _WeaponBoxHeight  = 0x58D94D // alternative addresses: 0x58D896    0x58D94D
-    
-    _WeaponAmmoPosX   = 0x58FA02
-    _WeaponAmmoPosY   = 0x58F9DC
-    _WeaponAmmoWidth  = 0x5894CD
-    _WeaponAmmoHeight = 0x5894B7
-    _WeaponAmmoBorder = 0x589505
-    _WeaponAmmoColor2 = 0x5895FD
-    
-    _WantedUnknown                      = 0x58FA12
-    _ShowInactiveWantedStars            = 0x58DD1B
-    _WantedBorder1                      = 0x58DD43
-    _ActiveWantedStarsColorId           = 0x58DDC9
-    _ActiveWantedStarsColor             = 0x58DDD0
-    _ActiveWantedStarsPosYId            = 0x58DE23
-    
-    _WantedUnknownProp1                 = 0x58DE84
-    _WantedUnknownProp2                 = 0x58DE9F
-    _WantedUnknownProp3                 = 0x58DEBA
-    _InactiveWantedAlphaProp4           = 0x58DF29
-    _InactiveWantedHeightProp5          = 0x58DF61
-    _InactiveWantedWidthProp6           = 0x58DF7D
-    
-    _WantedStarsActiveAndInactivePosX   = 0x58DD0F
-    _WantedStarsInactivePosY            = 0x58DFB3
-    _WantedStarsActivePosY              = 0x58DDFC
-    _WantedStarsActivePosYRelated       = 0x58DEF5
-    
-    _WantedStarsHeightRelated           = 0x58DCAA
-    _ActiveWantedStarsHeight            = 0x58DD70
-    _InactiveWantedStarsHeight          = 0x58DF5D
-    
-    _WantedStarsWidthRelated            = 0x58DCC0
-    _ActiveWantedStarsWidth             = 0x58DD86
-    _InactiveWantedStarsWidth           = 0x58DF79
-    
-    _SpaceBetweenStars                  = 0x58DFED
-
-    _RadioStationFontstyle  = 0x4E9EF9
-    _RadioStationBorder     = 0x4E9F5C
-    _RadioStationBorderId   = 0x4E9F91
-    _RadioStationRGBA1      = 0x4E9F98
-    _RadioStationUnknownId  = 0x4E9FA7
-    _RadioStationRGBA2      = 0x4E9FAE
-    _RadioStationWidth      = 0x4E9F38
-    _RadioStationHeight     = 0x4E9F22
-    _RadioStationUnknown    = 0x58B01D
-end
-
 gosub @InitializeAssemblerRegion
-{
-// SA
+
+gosub @SA_Hud
+
+0ADF: add_dynamic_GXT_entry "III_HIC" text "?" 
+0ADF: add_dynamic_GXT_entry "III_AIC" text "<" 
+
+repeat
+wait 0
+    if 0ADC:   test_cheat "SAHUD"
+    then
+        0ACA: show_text_box "San Andreas Hud!"
+        gosub @SA_Hud
+    end
+    if 0ADC:   test_cheat "IIIHUD"
+    then
+        0ACA: show_text_box "GTA III Hud!"
+        gosub @III_Hud
+    end
+    if 0ADC:   test_cheat "VCHUD"
+    then
+        0ACA: show_text_box "Vice City Hud!"
+        gosub @VC_Hud
+    end
+    
+    if gosub @IsHudEnabled
+    then gosub @ClassicHealthArmourOxygen
+    end
+until false
+
+{======================================================================
+======================================================================}
+:SA_Hud
+0AB1: @WriteInClassicHud 1 flag 0
 0AB1: @EditBaseColours 6 0xFF1D19B4 0xFF2C6836 0xFF7F3C32 0xFF106290 0xFFFC6EA8 0xFF63C0E2
 0AB1: @EditMoney 10 unknown 22.0 122 pos_xy 32.0 89.0 size 0.55 1.10 classic_flag false border_ids 2 0 rgba 0xBAB22C
 0AB1: @EditClock 7 pos_xy 32.0 22.0 size 0.55 1.10 border 1616410 2 rgba 0xBAB22C
@@ -97,8 +58,10 @@ gosub @InitializeAssemblerRegion
 0AB1: @EditGarageMessages 9 classic_flag false rgba 0xBAB22C size 0.5 1.4 fontstyle 2 border 2 color 3 pos_y 155.0 linewidth_factor 230.0
 0AB1: @EditMissionTimers 20 classic_flag false rgba 0 size 0.5 1.0 fontstyle 2 border 2 timer_y 148.0 status_text_y 20.0 timer_x 32.0 timer_x_offset 90.0 stext_x 32.0 stext_x_offset 90.0 stext_space_between 20.0 bar_pos 32.0 6.0 bar_size 61.0 9.0 timer_color 4 statustext_color 0 bar_color 0
 0AB1: @ChangeRedStuffColor 3 red 255 green 0 blue 0
-}
-// III
+return
+
+:III_Hud
+0AB1: @WriteInClassicHud 1 flag 1
 0AC6: 1@ = label @IIIBaseColours offset 
 0AB1: @EditBaseColours 6 0xFF492B71 0xFF6AA05F 0xFFF3A780 0xFF02ACDC 0xFFFC6EA8 0xFF6AC4D2
 0AB1: @EditMoney 10 unknown 22.5 235 pos_xy 110.0 43.5 size 0.80 1.34 classic_flag true border_ids 1 1 rgba 1@
@@ -122,8 +85,10 @@ gosub @InitializeAssemblerRegion
 0AB1: @ChangeRedStuffColor 3 red 16 green 84 blue 192
 0AB1: @InitializeHealthArmourOxygen 12 health_pos 459.7 66.0 text 484.5 66.0 armour_pos 392.0 66.0 text 411.0 66.0 oxygen_pos 389.0 66.0 drawn_text_size 0.8 2.6
 0AB1: @InitializeMainHudColours 9 health 186 101 50 armour 124 140 95 oxygen 142 187 204
-{
-// VC
+return
+
+:VC_Hud
+0AB1: @WriteInClassicHud 1 flag 1
 0AC6: 1@ = label @ViceCityBaseColours offset 
 0AB1: @EditBaseColours 6 0xFF492B71 0xFF6AA05F 0xFFF3A780 0xFF02ACDC 0xFFFC6EA8 0xFF6AC4D2
 0AB1: @EditMoney 10 unknown 22.5 235 pos_xy 112.0 43.5 size 0.70 1.20 classic_flag true border_ids 1 1 rgba 1@
@@ -147,16 +112,16 @@ gosub @InitializeAssemblerRegion
 0AB1: @ChangeRedStuffColor 3 red 16 green 84 blue 192
 0AB1: @InitializeHealthArmourOxygen 12 health_pos 462.0 65.0 text 487.0 65.0 armour_pos 392.0 65.0 text 415.0 65.0 oxygen_pos 396.0 65.0 drawn_text_size 0.7 2.4
 0AB1: @InitializeMainHudColours 9 health 244 144 215 armour 0xB9 0xB9 0xB9 oxygen 142 187 204
-}
-0ADF: add_dynamic_GXT_entry "III_HIC" text "?" 
-0ADF: add_dynamic_GXT_entry "III_AIC" text "<" 
+return
 
-repeat
-wait 0
-    if gosub @IsHudEnabled
-    then gosub @ClassicHudLoop
-    end
-until false
+:LCS_Hud
+return
+
+:VCS_Hud
+return
+
+:CUSTOM_Hud
+return
 
 {======================================================================
 ======================================================================}
@@ -183,13 +148,13 @@ until false
 
 
 :EditClock // pos_xy 0@ 1@ size 2@ 3@ border 4@ 5@ rgba 6@
-0AB1: @WriteInPointer 3 param_label @Clock_PosX param_value 0@ mem_address _ClockPosX
-0AB1: @WriteInPointer 3 param_label @Clock_PosY param_value 1@ mem_address _ClockPosY
-0AB1: @WriteInPointer 3 param_label @Clock_Width param_value 2@ mem_address _ClockWidth
-0AB1: @WriteInPointer 3 param_label @Clock_Height param_value 3@ mem_address _ClockHeight
-0AB1: @WriteParameter 3 mem_address _ClockBorderInt param_size 4 param_value 4@
-0AB1: @WriteParameter 3 mem_address _ClockBorderByte1 param_size 1 param_value 5@
-0AB1: @WriteParameter 3 mem_address _ClockColor param_size 4 param_value 6@
+0AB1: @WriteInPointer 3 param_label @Clock_PosX param_value 0@ mem_address 0x58EC16
+0AB1: @WriteInPointer 3 param_label @Clock_PosY param_value 1@ mem_address 0x58EC04
+0AB1: @WriteInPointer 3 param_label @Clock_Width param_value 2@ mem_address 0x58EB47
+0AB1: @WriteInPointer 3 param_label @Clock_Height param_value 3@ mem_address 0x58EB31
+0AB1: @WriteParameter 3 mem_address 0x58EB72 param_size 4 param_value 4@
+0AB1: @WriteParameter 3 mem_address 0x58EB70 param_size 1 param_value 5@
+0AB1: @WriteParameter 3 mem_address 0x58EBD1 param_size 4 param_value 6@
 0AB2: ret 0
 
 
@@ -200,52 +165,53 @@ then 0A8C: write_memory 0x588B89 size 1 value 0xEB virtual_protect 1 //         
 else 0A8C: write_memory 0x588B89 size 1 value 0x7A virtual_protect 1
 end
 0AB1: @WriteParameter 3 mem_address 0x588B89 param_size 1 param_value 1@
-0AB1: @WriteInPointer 3 param_label @Money_PosX param_value 2@ mem_address _MoneyPosX
-0AB1: @WriteInPointer 3 param_label @Money_PosY param_value 3@ mem_address _MoneyPosY
-0AB1: @WriteInPointer 3 param_label @Money_Width param_value 4@ mem_address _MoneyWidth
-0AB1: @WriteInPointer 3 param_label @Money_Height param_value 5@ mem_address _MoneyHeight
+0AB1: @WriteInPointer 3 param_label @Money_PosX param_value 2@ mem_address 0x58F5FC
+0AB1: @WriteInPointer 3 param_label @Money_PosY param_value 3@ mem_address 0x58F5DC
+0AB1: @WriteInPointer 3 param_label @Money_Width param_value 4@ mem_address 0x58F564
+0AB1: @WriteInPointer 3 param_label @Money_Height param_value 5@ mem_address 0x58F54E
 if 6@ == true
-then 0A8C: write_memory _MoneyBorderInt size 4 value 0x00189F5D virtual_protect 1
-else 0A8C: write_memory _MoneyBorderInt size 4 value 0x00189FFD virtual_protect 1
+then 0A8C: write_memory 0x58F58F size 4 value 0x00189F5D virtual_protect 1
+else 0A8C: write_memory 0x58F58F size 4 value 0x00189FFD virtual_protect 1
 end
-0AB1: @WriteParameter 3 mem_address _MoneyBorderByte1 param_size 1 param_value 7@
-0AB1: @WriteParameter 3 mem_address _MoneyBorderByte2 param_size 1 param_value 8@
-0AB1: @WriteParameter 3 mem_address _MoneyColor param_size 4 param_value 9@
+0AB1: @WriteParameter 3 mem_address 0x58F58D param_size 1 param_value 7@
+0AB1: @WriteParameter 3 mem_address 0x58F586 param_size 1 param_value 8@
+0AB1: @WriteParameter 3 mem_address 0x58F499 param_size 4 param_value 9@
 0AB2: ret 0
+    
 
 
 :EditWeapon // box_xy 0@ 1@ box_size 2@ 3@ ammo_xy 4@ 5@ ammo_size 6@ 7@ ammo_border 8@ ammo_color_id 9@
-0AB1: @WriteInPointer 3 param_label @WeaponBox_PosX param_value 0@ mem_address _WeaponBoxPosX
-0AB1: @WriteInPointer 3 param_label @WeaponBox_PosY param_value 1@ mem_address _WeaponBoxPosY
-0AB1: @WriteInPointer 3 param_label @WeaponBox_Width param_value 2@ mem_address _WeaponBoxWidth
-0AB1: @WriteInPointer 3 param_label @WeaponBox_Height param_value 3@ mem_address _WeaponBoxHeight
+0AB1: @WriteInPointer 3 param_label @WeaponBox_PosX param_value 0@ mem_address 0x58F927
+0AB1: @WriteInPointer 3 param_label @WeaponBox_PosY param_value 1@ mem_address 0x58F913
+0AB1: @WriteInPointer 3 param_label @WeaponBox_Width param_value 2@ mem_address 0x58D935
 0AB1: @WriteInPointer 3 param_label @WeaponBox_Width param_value 2@ mem_address 0x58D8CB
+0AB1: @WriteInPointer 3 param_label @WeaponBox_Height param_value 3@ mem_address 0x58D94D
 0AB1: @WriteInPointer 3 param_label @WeaponBox_Height param_value 3@ mem_address 0x58D896
 
-0AB1: @WriteInPointer 3 param_label @WeaponAmmo_PosX param_value 4@ mem_address _WeaponAmmoPosX
-0AB1: @WriteInPointer 3 param_label @WeaponAmmo_PosY param_value 5@ mem_address _WeaponAmmoPosY
-0AB1: @WriteInPointer 3 param_label @WeaponAmmo_Width param_value 6@ mem_address _WeaponAmmoWidth
-0AB1: @WriteInPointer 3 param_label @WeaponAmmo_Height param_value 7@ mem_address _WeaponAmmoHeight
-0AB1: @WriteParameter 3 mem_address _WeaponAmmoBorder param_size 1 param_value 8@
-0AB1: @WriteParameter 3 mem_address _WeaponAmmoColor2 param_size 1 param_value 9@
+0AB1: @WriteInPointer 3 param_label @WeaponAmmo_PosX param_value 4@ mem_address 0x58FA02
+0AB1: @WriteInPointer 3 param_label @WeaponAmmo_PosY param_value 5@ mem_address 0x58F9DC
+0AB1: @WriteInPointer 3 param_label @WeaponAmmo_Width param_value 6@ mem_address 0x5894CD
+0AB1: @WriteInPointer 3 param_label @WeaponAmmo_Height param_value 7@ mem_address 0x5894B7
+0AB1: @WriteParameter 3 mem_address 0x589505 param_size 1 param_value 8@
+0AB1: @WriteParameter 3 mem_address 0x5895FD param_size 1 param_value 9@
 0AB2: ret 0
 
 
 
 :EditWantedLevelStars // classic_flag 0@ rgba_addr 1@ unknown_float 2@ active_color_id 3@ position 4@ 5@ inactive_y 6@ size 7@ 8@ space_between 9@ inactive_RGB 10@ 11@ 12@
-0AB1: @WriteInPointer 3 param_label @Wanted_Unknown param_value 2@ mem_address _WantedUnknown
+0AB1: @WriteInPointer 3 param_label @Wanted_Unknown param_value 2@ mem_address 0x58FA12
 if 0@ == true
 then
-    0A8C: write_memory _ShowInactiveWantedStars size 2 value 0x9090 virtual_protect 1 // Show Inactive Stars Always
-    0A8C: write_memory _WantedBorder1 size 4 value 0x0018B829 virtual_protect 1 // Remove black thin border to Active wanted stars      E8 49B81800:    call    00719590            overwriting address (29B81800)
-    0A8C: write_memory _ActiveWantedStarsPosYId size 1 value 0xEB virtual_protect 1 // Active wanted stars, position Y                  7A 22:          jp      0058DE47            changing to EB 1F: jmp 0058DE47
+    0A8C: write_memory 0x58DD1B size 2 value 0x9090 virtual_protect 1 // Show Inactive Stars Always
+    0A8C: write_memory 0x58DD43 size 4 value 0x0018B829 virtual_protect 1 // Remove black thin border to Active wanted stars    E8 49B81800:    call    00719590            overwriting address (29B81800)
+    0A8C: write_memory 0x58DE23 size 1 value 0xEB virtual_protect 1 // Active wanted stars, position Y related                  7A 22:          jp      0058DE47            changing to EB 1F: jmp 0058DE47
 else
-    0A8C: write_memory _ShowInactiveWantedStars size 2 value 0x097E virtual_protect 1 // Hide Inactive
-    0A8C: write_memory _WantedBorder1 size 4 value 0x0018B849 virtual_protect 1
-    0A8C: write_memory _ActiveWantedStarsPosYId size 1 value 0x7A virtual_protect 1
+    0A8C: write_memory 0x58DD1B size 2 value 0x097E virtual_protect 1 // Hide Inactive
+    0A8C: write_memory 0x58DD43 size 4 value 0x0018B849 virtual_protect 1
+    0A8C: write_memory 0x58DE23 size 1 value 0x7A virtual_protect 1
 end
-0AB1: @WriteParameter 3 mem_address _ActiveWantedStarsColorId param_size 1 param_value 3@
-0AB1: @WriteParameter 3 mem_address _ActiveWantedStarsColor param_size 4 param_value 1@
+0AB1: @WriteParameter 3 mem_address 0x58DDC9 param_size 1 param_value 3@
+0AB1: @WriteParameter 3 mem_address 0x58DDD0 param_size 4 param_value 1@
 
 // Flashing Stars Color
 if 0@ == true
@@ -264,57 +230,57 @@ end
 
 if 0@ == true
 then
-    0AB1: @WriteParameter 3 mem_address _WantedUnknownProp1 param_size 6 param_value 0x90
-    0AB1: @WriteParameter 3 mem_address _WantedUnknownProp2 param_size 6 param_value 0x90
-    0AB1: @WriteParameter 3 mem_address _WantedUnknownProp3 param_size 6 param_value 0x90
-    0AB1: @WriteParameter 3 mem_address _InactiveWantedAlphaProp4 param_size 6 param_value 0x90
-    0AB1: @WriteParameter 3 mem_address _InactiveWantedHeightProp5 param_size 6 param_value 0x90
-    0AB1: @WriteParameter 3 mem_address _InactiveWantedWidthProp6 param_size 6 param_value 0x90
+    0AB1: @WriteParameter 3 mem_address 0x58DE84 param_size 6 param_value 0x90
+    0AB1: @WriteParameter 3 mem_address 0x58DE9F param_size 6 param_value 0x90
+    0AB1: @WriteParameter 3 mem_address 0x58DEBA param_size 6 param_value 0x90
+    0AB1: @WriteParameter 3 mem_address 0x58DF29 param_size 6 param_value 0x90
+    0AB1: @WriteParameter 3 mem_address 0x58DF61 param_size 6 param_value 0x90
+    0AB1: @WriteParameter 3 mem_address 0x58DF7D param_size 6 param_value 0x90
 else
-    20@ = _WantedUnknownProp1
+    20@ = 0x58DE84
     0AB1: @WriteParameter 3 mem_address 20@ param_size 2 param_value 0x0DD8
     20@ += 2
     0AB1: @WriteParameter 3 mem_address 20@ param_size 4 param_value 0x00858C98
     
-    20@ = _WantedUnknownProp2
+    20@ = 0x58DE9F
     0AB1: @WriteParameter 3 mem_address 20@ param_size 2 param_value 0x0DD8
     20@ += 2
     0AB1: @WriteParameter 3 mem_address 20@ param_size 4 param_value 0x00858C98
     
-    20@ = _WantedUnknownProp3
+    20@ = 0x58DEBA
     0AB1: @WriteParameter 3 mem_address 20@ param_size 2 param_value 0x0DD8
     20@ += 2
     0AB1: @WriteParameter 3 mem_address 20@ param_size 4 param_value 0x00858C98
     
-    20@ = _InactiveWantedAlphaProp4
+    20@ = 0x58DF29
     0AB1: @WriteParameter 3 mem_address 20@ param_size 2 param_value 0x0DD8
     20@ += 2
     0AB1: @WriteParameter 3 mem_address 20@ param_size 4 param_value 0x00858CB0
     
-    20@ = _InactiveWantedHeightProp5
+    20@ = 0x58DF61
     0AB1: @WriteParameter 3 mem_address 20@ param_size 2 param_value 0x0DD8
     20@ += 2
     0AB1: @WriteParameter 3 mem_address 20@ param_size 4 param_value 0x00858F08
     
-    20@ = _InactiveWantedWidthProp6
+    20@ = 0x58DF7D
     0AB1: @WriteParameter 3 mem_address 20@ param_size 2 param_value 0x0DD8
     20@ += 2
     0AB1: @WriteParameter 3 mem_address 20@ param_size 4 param_value 0x00858F08
 end
-0AB1: @WriteInPointer 3 param_label @Wanted_ActiveAndInactive_PosX param_value 4@ mem_address _WantedStarsActiveAndInactivePosX
-0AB1: @WriteInPointer 3 param_label @Wanted_Inactive_PosY param_value 6@ mem_address _WantedStarsInactivePosY
-0AB1: @WriteInPointer 3 param_label @Wanted_Active_PosY param_value 5@ mem_address _WantedStarsActivePosY
-0AB1: @WriteInPointer 3 param_label @Wanted_Active_PosY_2 param_value 5@ mem_address _WantedStarsActivePosYRelated
+0AB1: @WriteInPointer 3 param_label @Wanted_ActiveAndInactive_PosX param_value 4@ mem_address 0x58DD0F
+0AB1: @WriteInPointer 3 param_label @Wanted_Inactive_PosY param_value 6@ mem_address 0x58DFB3
+0AB1: @WriteInPointer 3 param_label @Wanted_Active_PosY param_value 5@ mem_address 0x58DDFC
+0AB1: @WriteInPointer 3 param_label @Wanted_Active_PosY_2 param_value 5@ mem_address 0x58DEF5
 
-0AB1: @WriteInPointer 3 param_label @Wanted_Height2 param_value 7@ mem_address _WantedStarsHeightRelated
-0AB1: @WriteInPointer 3 param_label @Wanted_ActiveHeight param_value 7@ mem_address _ActiveWantedStarsHeight
-0AB1: @WriteInPointer 3 param_label @Wanted_InactiveHeight param_value 7@ mem_address _InactiveWantedStarsHeight
+0AB1: @WriteInPointer 3 param_label @Wanted_Height2 param_value 7@ mem_address 0x58DCAA
+0AB1: @WriteInPointer 3 param_label @Wanted_ActiveHeight param_value 7@ mem_address 0x58DD70
+0AB1: @WriteInPointer 3 param_label @Wanted_InactiveHeight param_value 7@ mem_address 0x58DF5D
 
-0AB1: @WriteInPointer 3 param_label @Wanted_Width2 param_value 8@ mem_address _WantedStarsWidthRelated
-0AB1: @WriteInPointer 3 param_label @Wanted_ActiveWidth param_value 8@ mem_address _ActiveWantedStarsWidth
-0AB1: @WriteInPointer 3 param_label @Wanted_InactiveWidth param_value 8@ mem_address _InactiveWantedStarsWidth
+0AB1: @WriteInPointer 3 param_label @Wanted_Width2 param_value 8@ mem_address 0x58DCC0
+0AB1: @WriteInPointer 3 param_label @Wanted_ActiveWidth param_value 8@ mem_address 0x58DD86
+0AB1: @WriteInPointer 3 param_label @Wanted_InactiveWidth param_value 8@ mem_address 0x58DF79
 
-0AB1: @WriteInPointer 3 param_label @Wanted_SpaceBetween param_value 9@ mem_address _SpaceBetweenStars
+0AB1: @WriteInPointer 3 param_label @Wanted_SpaceBetween param_value 9@ mem_address 0x58DFED
 
 0A8C: write_memory 0x58DF3D size 1 value 12@ virtual_protect 0
 0A8C: write_memory 0x58DF3F size 1 value 11@ virtual_protect 0
@@ -323,15 +289,15 @@ end
 
 
 :EditRadioStation // fontstyle 0@ border 1@ border_id 2@ rgba 3@ unknown_id 4@ unknown_rgba 5@ size 6@ 7@ unknown_float 8@
-0AB1: @WriteParameter 3 mem_address _RadioStationFontstyle param_size 1 param_value 0@
-0AB1: @WriteParameter 3 mem_address _RadioStationBorder param_size 4 param_value 1@
-0AB1: @WriteParameter 3 mem_address _RadioStationBorderId param_size 1 param_value 2@
-0AB1: @WriteParameter 3 mem_address _RadioStationRGBA1 param_size 4 param_value 3@
-0AB1: @WriteParameter 3 mem_address _RadioStationUnknownId param_size 1 param_value 4@
-0AB1: @WriteParameter 3 mem_address _RadioStationRGBA2 param_size 4 param_value 5@
-0AB1: @WriteInPointer 3 param_label @RadioStation_Width param_value 6@ mem_address _RadioStationWidth
-0AB1: @WriteInPointer 3 param_label @RadioStation_Height param_value 7@ mem_address _RadioStationHeight
-0AB1: @WriteInPointer 3 param_label @RadioStation_Unknown param_value 8@ mem_address _RadioStationUnknown
+0AB1: @WriteParameter 3 mem_address 0x4E9EF9 param_size 1 param_value 0@
+0AB1: @WriteParameter 3 mem_address 0x4E9F5C param_size 4 param_value 1@
+0AB1: @WriteParameter 3 mem_address 0x4E9F91 param_size 1 param_value 2@
+0AB1: @WriteParameter 3 mem_address 0x4E9F98 param_size 4 param_value 3@
+0AB1: @WriteParameter 3 mem_address 0x4E9FA7 param_size 1 param_value 4@
+0AB1: @WriteParameter 3 mem_address 0x4E9FAE param_size 4 param_value 5@
+0AB1: @WriteInPointer 3 param_label @RadioStation_Width param_value 6@ mem_address 0x4E9F38
+0AB1: @WriteInPointer 3 param_label @RadioStation_Height param_value 7@ mem_address 0x4E9F22
+0AB1: @WriteInPointer 3 param_label @RadioStation_Unknown param_value 8@ mem_address 0x58B01D
 0AB2: ret 0
 
 
@@ -892,7 +858,7 @@ end
 0A8C: write_memory 0x58B2B9 size 1 value 5@ virtual_protect 1 // Border Id
 if 0@ == true
 then 0A8C: write_memory 0x58B2BB size 4 value 0x0018E2B1 virtual_protect 1 // CFont::SetDropShadowPosition
-else 0A8C: write_memory 0x58B2BB size 4 value 0x002D1D4B virtual_protect 1 // CFont::SetOutlinePosition
+else 0A8C: write_memory 0x58B2BB size 4 value 0x0018E2D1 virtual_protect 1 // CFont::SetOutlinePosition
 end
 
 0AC6: 20@ = label @MTimers_Width offset 
@@ -1144,6 +1110,11 @@ end
 
 {======================================================================
 ======================================================================}
+:ClassicHudEnabled
+hex
+00
+end
+
 :Money_Unknown
 hex
 00 00 00 00
@@ -1952,7 +1923,7 @@ end
 
 {======================================================================
 ======================================================================}
-:ClassicHudLoop
+:ClassicHealthArmourOxygen
 if 31@ == 1 
 then
     03F0: enable_text_draw 1 
@@ -2115,12 +2086,20 @@ end
 return 
 
 :IsHudEnabled
+0AC6: 0@ = label @ClassicHudEnabled offset
+0A8D: 0@ = read_memory 0@ size 1 virtual_protect 0
 0A8D: 1@ = read_memory 0xA444A0 size 4 virtual_protect 0 // Hud enabled
 0A8D: 2@ = read_memory 0xB6F065 size 1 virtual_protect 0 // Cutscenes widescreen mode
 if and
+0@ > 0 // classic hud enabled
 1@ == 1 // hud enabled
 2@ == 0 // cutscenes off
 then 0485:   return_true
 else 059A:  return_false
 end
 return
+
+:WriteInClassicHud
+0AC6: 10@ = label @ClassicHudEnabled offset
+0A8C: write_memory 10@ size 1 value 0@ virtual_protect 0
+0AB2: ret 0
