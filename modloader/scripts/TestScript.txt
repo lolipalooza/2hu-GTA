@@ -80,6 +80,7 @@ wait 0
     end
 end}
 
+
 {======================================================================
 ======================================================================}
 
@@ -92,12 +93,16 @@ end}
 0213: 28@ = create_pickup #BODYARMOUR type 3 at 2498.4163 -1644.3 13.7826
 
 0247: load_model #BMX
+0247: load_model #ADMIRAL
 038B: load_requested_models
 repeat
 wait 0
-until 0248:   model #BMX available
+until 0248:   model #BMX available and 0248:   model #ADMIRAL available
 00A5: 29@ = create_car #BMX at 2504.8342 -1661.7815 13.3953
+00A5: 27@ = create_car #ADMIRAL at 1674.2986 -2113.1184 13.5469
+0175: set_car 27@ Z_angle_to 270.0
 0249: release_model #BMX
+0249: release_model #ADMIRAL
 
 //036A: put_actor $PLAYER_ACTOR in_car 29@
 
@@ -107,29 +112,47 @@ until 0248:   model #BMX available
 //03BC: 18@ = create_sphere_at 2507.2551 -1672.8655 13.3751 radius 1.0
 //06D5: 17@ = create_racing_checkpoint_at 2508.4629 -1667.5839 13.3931 point_to 2504.8342 -1661.7815 13.3953 type 2 radius 2.0
 
-{
-0ACB: show_styled_text "Styled Text 1" time 4000 style 1
-wait 4000
-0ACB: show_styled_text "Styled Text 2" time 1000 style 2
-//wait 1000
-//0ACB: show_styled_text "Styled Text 3" time 1000 style 3 // This is wasted style
-wait 1000
-0ACB: show_styled_text "Styled Text 4" time 1000 style 4
+0ADF: add_dynamic_GXT_entry "STYLED1" text "¡Fracaso en la mision!"
+0ADF: add_dynamic_GXT_entry "STYLED2" text "'Destruccion del diablo'"
+0ADF: add_dynamic_GXT_entry "STYLED3" text "'agarrado!'"
+0ADF: add_dynamic_GXT_entry "STYLED4" text "'BOMBERO'"
+0ADF: add_dynamic_GXT_entry "STYLED5" text "3...2...1... ¡VAMOS VAMOS VAMOS!"
+0ADF: add_dynamic_GXT_entry "STYLED6" text "¡Nunca te cansaras!"
+0ADF: add_dynamic_GXT_entry "STYLED7" text "Styled Text 7"
+0ADF: add_dynamic_GXT_entry "UNVJAMG" text "Un viejo amigo"
 
-//0ACB: show_styled_text "Styled Text 3" time 4000 style 3 // This is wasted style
-
+wait 2000
+{00BA: show_text_styled GXT "STYLED1" time 2000 style 1
+00BA: show_text_styled GXT "STYLED2" time 2000 style 2
+00BA: show_text_styled GXT "STYLED3" time 2000 style 3
+00BA: show_text_styled GXT "STYLED5" time 2000 style 4
+}{
+0ADF: add_dynamic_GXT_entry "STYLED1" text "Styled Text 1"
+0ADF: add_dynamic_GXT_entry "STYLED2" text "Styled Text 2"
+0ADF: add_dynamic_GXT_entry "STYLED3" text "Styled Text 3"
+0ADF: add_dynamic_GXT_entry "STYLED4" text "Styled Text 4"
 0ADF: add_dynamic_GXT_entry "STYLED5" text "Styled Text 5"
 0ADF: add_dynamic_GXT_entry "STYLED6" text "Styled Text 6"
 0ADF: add_dynamic_GXT_entry "STYLED7" text "Styled Text 7"
-
-0ACB: show_styled_text "Styled Text 4" time 3000 style 4
 wait 3000
-00BA: show_text_styled GXT "STYLED5" time 2000 style 5
+00BA: show_text_styled GXT "STYLED4" time 2000 style 5
 00BA: show_text_styled GXT "STYLED6" time 2000 style 6
-00BA: show_text_styled GXT "STYLED7" time 2000 style 7
+//00BA: show_text_styled GXT "STYLED7" time 2000 style 7
 }
-//0AB1: @MoveMoney 2 xy_pos 250.0 250.0
-
+{
+$8199=120000
+$BEEFYBARON_SCORE=50
+$9467=90
+$8200=50
+0ADF: add_dynamic_GXT_entry "_TEST1" text "Tiempo:"
+0ADF: add_dynamic_GXT_entry "_TEST2" text "Money earned: $~1~"
+0ADF: add_dynamic_GXT_entry "_TEST3" text "Salud de diaz:"
+0ADF: add_dynamic_GXT_entry "_TEST4" text "Muertes:"
+03C3: set_timer_to $8199 type 0 GXT '_TEST1' // global_variable  // TIME
+03C4: set_status_text $BEEFYBARON_SCORE type 0 GXT '_TEST4' // Money earned: ~1~
+04F7: status_text $8200 type 1 line 2 GXT '_TEST3' // global_variable  // TIP
+04F7: status_text $8200 type 1 line 3 GXT '_TEST3' // global_variable  // TIP
+}
 repeat
 wait 0
     if 31@==0
@@ -189,26 +212,49 @@ wait 0
     if 0ADC:   test_cheat "W6"
     then 010D: set_player $PLAYER_CHAR wanted_level_to 6
     end
+    
+    if 0ADC:   test_cheat "ST1"
+    then 00BA: show_text_styled GXT "UNVJAMG" time 6000 style 1
+    end
+    if 0ADC:   test_cheat "ST2"
+    then 00BA: show_text_styled GXT "UNVJAMG" time 6000 style 2
+    end
+    if 0ADC:   test_cheat "ST3"
+    then 00BA: show_text_styled GXT "UNVJAMG" time 6000 style 3
+    end
+    if 0ADC:   test_cheat "ST4"
+    then 00BA: show_text_styled GXT "UNVJAMG" time 6000 style 4
+    end
+    if 0ADC:   test_cheat "ST5"
+    then 00BA: show_text_styled GXT "UNVJAMG" time 6000 style 5
+    end
+    if 0ADC:   test_cheat "ST6"
+    then 00BA: show_text_styled GXT "UNVJAMG" time 6000 style 6
+    end
+    if 0ADC:   test_cheat "ST7"
+    then 00BA: show_text_styled GXT "STYLED7" time 6000 style 7
+    end
+    
+    if 10@ == 1
+    then
+        03F0: enable_text_draw 0
+        03E3: set_texture_to_be_drawn_antialiased 1
+        038D: draw_texture 1 position 320.0 224.0 size 640.0 448.0 RGBA 255 255 255 150
+    end
+    
+    if 0ADC:   test_cheat "TXD"
+    then
+        if 11@ == 0
+        then
+            11@=1
+            0390: load_txd_dictionary 'splash1'
+            038F: load_texture "splash1" as 1 // Load dictionary with 0390 first
+        end
+        if 10@ == 0
+        then 10@=1
+        else 10@=0
+        end
+    end
 until false
 0A93: end_custom_thread
 
-
-:MoveMoney
-0AC6: 2@ = label @Money_PosY offset 
-0A8C: write_memory 2@ size 4 value 1@ virtual_protect 0
-0A8C: write_memory 5830108 size 4 value 2@ virtual_protect 1 // Money Position Y
-
-0AC6: 2@ = label @Money_PosX offset 
-0A8C: write_memory 2@ size 4 value 0@ virtual_protect 0
-0A8C: write_memory 5830140 size 4 value 2@ virtual_protect 1 // Money Position X
-0AB2: ret 0
-
-:Money_PosX
-hex
-00 00 00 00
-end
-
-:Money_PosY
-hex
-00 00 00 00
-end
