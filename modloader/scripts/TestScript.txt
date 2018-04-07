@@ -120,6 +120,9 @@ until 0248:   model #BMX available and 0248:   model #ADMIRAL available
 0ADF: add_dynamic_GXT_entry "STYLED6" text "¡Nunca te cansaras!"
 0ADF: add_dynamic_GXT_entry "STYLED7" text "Styled Text 7"
 0ADF: add_dynamic_GXT_entry "UNVJAMG" text "Un viejo amigo"
+0ADF: add_dynamic_GXT_entry "LOWPIII" text "Color texts ~b~BLUE ~g~GREEN ~w~WHITE ~p~PURPLE ~r~RED ~l~GRAY ~y~YELLOW a b c d e f g h i j k l m n o p q r s t u v w x y z"
+0ADF: add_dynamic_GXT_entry "LOWP_VC" text "Color Texts BLUE HOT PINK WHITE PINK PURPLE PLUM PINK HOT PINK GREEN GRAY LIGHT BLUE YELLOW FLASH"
+0ADF: add_dynamic_GXT_entry "LOWP_SA" text "Color Texts ~b~BLUE ~g~GREEN ~w~WHITE ~p~PURPLE ~r~RED ~l~BLACK ~y~YELLOW ~h~HIGHLIGHT"
 
 wait 2000
 {00BA: show_text_styled GXT "STYLED1" time 2000 style 1
@@ -233,6 +236,15 @@ wait 0
     end
     if 0ADC:   test_cheat "ST7"
     then 00BA: show_text_styled GXT "STYLED7" time 6000 style 7
+    end
+    
+    if 0ADC:   test_cheat "WSCR"
+    then
+        if 12@ == 0
+        then 12@ = 1
+        else 12@ = 0
+        end
+        02A3: enable_widescreen 12@
     end
     
     if 10@ == 1

@@ -57,6 +57,8 @@ until false
 0AB1: @EditStyledText7 8 classic_flag false rgba 0xBAB22C size 0.0 0.0 fontstyle 3 border 0 color 0 pos_y 0.0
 0AB1: @EditGarageMessages 9 classic_flag false rgba 0xBAB22C size 0.5 1.4 fontstyle 2 border 2 color 3 pos_y 155.0 linewidth_factor 230.0
 0AB1: @EditMissionTimers 20 classic_flag false rgba 0 size 0.5 1.0 fontstyle 2 border 2 timer_y 148.0 status_text_y 20.0 timer_x 32.0 timer_x_offset 90.0 stext_x 32.0 stext_x_offset 90.0 stext_space_between 20.0 bar_pos 32.0 6.0 bar_size 61.0 9.0 timer_color 4 statustext_color 0 bar_color 0
+0AB1: @EditSubtitles 14 classic_flag false rgba 0xBAB22C widescr_size 0.58 1.20 widescr_pos_y 80.0 size 0.58 1.22 position 20.0 105.0 linewidth 20.0 show_stats_size 0.58 1.22 show_stats_pos_y 105.0 show_stats_linewidth 20.0
+0AB1: @EditHelpText 4 classic_flag false rgba 0xBAB22C position 34.0 28.0
 0AB1: @ChangeRedStuffColor 3 red 255 green 0 blue 0
 return
 
@@ -82,6 +84,8 @@ return
 0AB1: @EditStyledText7 8 classic_flag true rgba 1@ size 0.0 0.0 fontstyle 1 border 0 color 0 pos_y 0.0
 0AB1: @EditGarageMessages 9 classic_flag true rgba 1@ size 0.54 0.66 fontstyle 1 border 255 color 1 pos_y 140.1 linewidth_factor 230.0
 0AB1: @EditMissionTimers 20 classic_flag true rgba 1@ size 0.8 1.3 fontstyle 3 border 1 timer_y 111.0 status_text_y 22.0 timer_x 28.0 timer_x_offset 124.0 stext_x 28.0 stext_x_offset 57.0 stext_space_between 15.0 bar_pos 26.0 7.0 bar_size 50.0 11.0 timer_color 2 statustext_color 7 bar_color 8
+0AB1: @EditSubtitles 14 classic_flag true rgba 1@ widescr_size 0.58 1.20 widescr_pos_y 80.0 size 0.472 1.08 position 151.0 62.0 linewidth -45.0 show_stats_size 0.472 1.08 show_stats_pos_y 62.0 show_stats_linewidth -45.0
+0AB1: @EditHelpText 4 classic_flag true rgba 0xBAB22C position 26.0 28.0
 0AB1: @ChangeRedStuffColor 3 red 16 green 84 blue 192
 0AB1: @InitializeHealthArmourOxygen 12 health_pos 459.7 66.0 text 484.5 66.0 armour_pos 392.0 66.0 text 411.0 66.0 oxygen_pos 389.0 66.0 drawn_text_size 0.8 2.6
 0AB1: @InitializeMainHudColours 9 health 186 101 50 armour 124 140 95 oxygen 142 187 204
@@ -109,6 +113,8 @@ return
 0AB1: @EditStyledText7 8 classic_flag true rgba 1@ size 0.0 0.0 fontstyle 1 border 0 color 0 pos_y 0.0
 0AB1: @EditGarageMessages 9 classic_flag true rgba 1@ size 1.28 1.50 fontstyle 1 border 1 color 2 pos_y 140.1 linewidth_factor 80.0
 0AB1: @EditMissionTimers 20 classic_flag true rgba 1@ size 0.74 1.20 fontstyle 3 border 1 timer_y 110.0 status_text_y 22.0 timer_x 39.0 timer_x_offset 80.0 stext_x 39.0 stext_x_offset 61.0 stext_space_between 11.0 bar_pos 35.0 8.0 bar_size 51.0 11.0 timer_color 4 statustext_color 4 bar_color 4
+0AB1: @EditSubtitles 14 classic_flag true rgba 1@ widescr_size 0.58 1.20 widescr_pos_y 80.0 size 0.621 1.22 position 22.0 105.0 linewidth 20.0 show_stats_size 0.621 1.22 show_stats_pos_y 105.0 show_stats_linewidth 20.0
+0AB1: @EditHelpText 4 classic_flag false rgba 0xBAB22C position 34.0 28.0
 0AB1: @ChangeRedStuffColor 3 red 16 green 84 blue 192
 0AB1: @InitializeHealthArmourOxygen 12 health_pos 462.0 65.0 text 487.0 65.0 armour_pos 392.0 65.0 text 415.0 65.0 oxygen_pos 396.0 65.0 drawn_text_size 0.7 2.4
 0AB1: @InitializeMainHudColours 9 health 244 144 215 armour 0xB9 0xB9 0xB9 oxygen 142 187 204
@@ -289,10 +295,10 @@ end
 
 
 :EditRadioStation // fontstyle 0@ border 1@ border_id 2@ rgba 3@ unknown_id 4@ unknown_rgba 5@ size 6@ 7@ unknown_float 8@
-0AB1: @WriteParameter 3 mem_address 0x4E9EF9 param_size 1 param_value 0@
-0AB1: @WriteParameter 3 mem_address 0x4E9F5C param_size 4 param_value 1@
-0AB1: @WriteParameter 3 mem_address 0x4E9F91 param_size 1 param_value 2@
-0AB1: @WriteParameter 3 mem_address 0x4E9F98 param_size 4 param_value 3@
+0AB1: @WriteParameter 3 mem_address 0x4E9EF9 param_size 1 param_value 0@ // Fontstyle
+0AB1: @WriteParameter 3 mem_address 0x4E9F5C param_size 4 param_value 1@ // Border Registry
+0AB1: @WriteParameter 3 mem_address 0x4E9F91 param_size 1 param_value 2@ // Border Id
+0AB1: @WriteParameter 3 mem_address 0x4E9F98 param_size 4 param_value 3@ // RGBA
 0AB1: @WriteParameter 3 mem_address 0x4E9FA7 param_size 1 param_value 4@
 0AB1: @WriteParameter 3 mem_address 0x4E9FAE param_size 4 param_value 5@
 0AB1: @WriteInPointer 3 param_label @RadioStation_Width param_value 6@ mem_address 0x4E9F38
@@ -450,7 +456,7 @@ else
     2@ = 0x58F131
     0A8C: write_memory 2@ size 1 value 0xE8 virtual_protect 1 // Show breath meter
     2@ += 1
-    0A8C: write_memory 2@ size 4 value 0xFFFFA85A virtual_protect 1 // Show armour bar
+    0A8C: write_memory 2@ size 4 value 0xFFFFA85A virtual_protect 1 // Show breath meter
     
     0A8C: write_memory 0x58FAD9 size 2 value 0x9090 virtual_protect 1 
     0A8C: write_memory 0x58FADB size 4 value 0x90909090 virtual_protect 1 
@@ -977,6 +983,110 @@ end
 hex
 00 00 00 00
 end
+
+
+
+
+:EditSubtitles // classic_flag 0@ rgba 1@ widescr_size 2@ 3@ widescr_pos_y 4@ size 5@ 6@ position 7@ 8@ linewidth 9@ show_stats_size 10@ 11@ show_stats_pos_y 12@ show_stats_lwidth 13@
+0AB1: @WriteInPointer 3 param_label @Subtitles_WidescreenWidth param_value 2@ mem_address 0x58C39D
+0AB1: @WriteInPointer 3 param_label @Subtitles_WidescreenHeight param_value 3@ mem_address 0x58C387
+0AB1: @WriteInPointer 3 param_label @Subtitles_WidescreenPosY param_value 4@ mem_address 0x58C3CA
+
+0AB1: @WriteInPointer 3 param_label @Subtitles_Width param_value 5@ mem_address 0x58C425
+0AB1: @WriteInPointer 3 param_label @Subtitles_Height param_value 6@ mem_address 0x58C40F
+0AB1: @WriteInPointer 3 param_label @Subtitles_PosX param_value 7@ mem_address 0x58C66D
+0AB1: @WriteInPointer 3 param_label @Subtitles_PosY param_value 8@ mem_address 0x58C653
+0AB1: @WriteInPointer 3 param_label @Subtitles_Linewidth param_value 9@ mem_address 0x58C5E6
+
+0AB1: @WriteInPointer 3 param_label @Subtitles_PosX2 param_value 0.5 mem_address 0x58C67F
+0AB1: @WriteInPointer 3 param_label @Subtitles_UnknownY param_value 105.0 mem_address 0x58C483 // position y under unknown condition
+
+0AB1: @WriteInPointer 3 param_label @Subtitles_ShowStatsWidth param_value 10@ mem_address 0x58C4E4
+0AB1: @WriteInPointer 3 param_label @Subtitles_ShowStatsHeight param_value 11@ mem_address 0x58C4CE
+0AB1: @WriteInPointer 3 param_label @Subtitles_ShowStatsU param_value 20.0 mem_address 0x58C513 // Centre Size?
+0AB1: @WriteInPointer 3 param_label @Subtitles_ShowStatsPosY param_value 12@ mem_address 0x58C586
+0AB1: @WriteInPointer 3 param_label @Subtitles_ShowStatsLinewidth param_value 13@ mem_address 0x58C513
+0AB2: ret 0
+:Subtitles_WidescreenWidth
+hex
+00 00 00 00
+end
+:Subtitles_WidescreenHeight
+hex
+00 00 00 00
+end
+:Subtitles_WidescreenPosY
+hex
+00 00 00 00
+end
+:Subtitles_Width
+hex
+00 00 00 00
+end
+:Subtitles_Height
+hex
+00 00 00 00
+end
+:Subtitles_Linewidth
+hex
+00 00 00 00
+end
+:Subtitles_UnknownY
+hex
+00 00 00 00
+end
+:Subtitles_ShowStatsWidth
+hex
+00 00 00 00
+end
+:Subtitles_ShowStatsHeight
+hex
+00 00 00 00
+end
+:Subtitles_ShowStatsU
+hex
+00 00 00 00
+end
+:Subtitles_ShowStatsPosY
+hex
+00 00 00 00
+end
+:Subtitles_ShowStatsLinewidth
+hex
+00 00 00 00
+end
+:Subtitles_PosY
+hex
+00 00 00 00
+end
+:Subtitles_PosX
+hex
+00 00 00 00
+end
+:Subtitles_PosX2
+hex
+00 00 00 00
+end
+
+
+
+
+
+:EditHelpText // classic_flag 0@ rgba 1@ position 2@ 3@
+0A8C: write_memory 0x58BB68 size 1 value 1@ virtual_protect 1
+0AB1: @WriteInPointer 3 param_label @HelpText_PosX param_value 2@ mem_address 0x58BBE3
+0AB1: @WriteInPointer 3 param_label @HelpText_PosY param_value 3@ mem_address 0x58BBCB
+0AB2: ret 0
+:HelpText_PosX
+hex
+00 00 00 00
+end
+:HelpText_PosY
+hex
+00 00 00 00
+end
+
+
 
 
 
