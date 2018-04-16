@@ -176,8 +176,8 @@ end
 0AB1: @WriteInPointer 3 param_label @Money_Width param_value 4@ mem_address 0x58F564
 0AB1: @WriteInPointer 3 param_label @Money_Height param_value 5@ mem_address 0x58F54E
 if 6@ == true
-then 0A8C: write_memory 0x58F58F size 4 value 0x00189F5D virtual_protect 1
-else 0A8C: write_memory 0x58F58F size 4 value 0x00189FFD virtual_protect 1
+then 0A8C: write_memory 0x58F58F size 4 value 0x00189F5D virtual_protect 1 // CFont::SetRightJustifyWrap(float)
+else 0A8C: write_memory 0x58F58F size 4 value 0x00189FFD virtual_protect 1 // CFont::SetOutlinePosition(short)
 end
 0AB1: @WriteParameter 3 mem_address 0x58F58D param_size 1 param_value 7@
 0AB1: @WriteParameter 3 mem_address 0x58F586 param_size 1 param_value 8@
