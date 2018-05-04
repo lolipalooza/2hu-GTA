@@ -30,22 +30,14 @@ modloader/*
 !modloader/2huGTA/
 modloader/2huGTA/sex/
 !modloader/LC/
-modloader/LC/anim/
-modloader/LC/audio/
-modloader/LC/data/
 modloader/LC/models/
 modloader/LC/radio/
 modloader/LC/script/2hu GTAIII script/
-!modloader/LCS/
-modloader/LCS/data/test/
-modloader/LCS/models/
-modloader/LCS/radio/
+modloader/LCS/
 !modloader/scripts/
 modloader/scripts/old script \[deprecated\]/
 modloader/scripts/constants.inc
-!modloader/VCS/
-modloader/VCS/models/
-modloader/VCS/radio/
+modloader/VCS/
 !modloader/skins/
 modloader/skins/*.dff
 modloader/skins/*.txd

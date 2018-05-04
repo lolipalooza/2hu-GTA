@@ -11,7 +11,10 @@ This is a list of files you must add into the root of the project if you want to
         /touhou/*
     /modloader
         /2huGTA
+            /anim/*
             /audio/*
+            /data/*
+            /GENRL/*
             /models/*
         /LC
             /anim/*
@@ -19,29 +22,6 @@ This is a list of files you must add into the root of the project if you want to
             /data/*
             /models/*
             /radio/*
-        /LCS
-            /data
-                /LCS
-                    /sa/*
-                    /lcscolmap
-                        COLMAP.IMG
-                    COMMER.IMG
-                    INDUST.IMG
-                    SUBURB.IMG
-                    UNDERG.IMG
-                /test/*
-            /models/*
-            /radio/*
-        /VCS
-            /data
-                /VCS
-                    /sa/*
-                    /vcscolmap
-                        COLMAP.IMG
-                    BEACH.IMG
-                    MAINLA.IMG
-                    MALL.IMG
-            /models/*
-            /radio/*
-        /scripts
+        /LCS/*
+        /VCS/*
 
