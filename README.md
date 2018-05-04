@@ -1,6 +1,8 @@
 # 2hu-GTA
 Modification for the game GTA San Andreas
 
+![](https://i.imgur.com/y2ewllZ.png)
+
 # What is 2hu-GTA?
 
 Also known as Touhou Grand Theft Auto: III Era, is a modification that has as goal a full GTA-like storyline with Touhou characters as playable and protagonists of the game, based on the GTA San Andreas engine, with lot of fun missions and side missions, and even a RPG-like system to customize your characters.
