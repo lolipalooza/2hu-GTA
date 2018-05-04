@@ -36,11 +36,9 @@ modloader/LC/data/
 modloader/LC/models/
 modloader/LC/radio/
 modloader/LC/script/2hu GTAIII script/
-modloader/LCS/
 !modloader/scripts/
 modloader/scripts/old script \[deprecated\]/
 modloader/scripts/constants.inc
-modloader/VCS/
 !modloader/skins/
 modloader/skins/*.dff
 modloader/skins/*.txd
