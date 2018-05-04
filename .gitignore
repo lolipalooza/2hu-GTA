@@ -28,11 +28,8 @@ stream.ini
 !modloader/
 modloader/*
 !modloader/2huGTA/
-modloader/2huGTA/sex/
 !modloader/scripts/
-modloader/scripts/old script \[deprecated\]/
 modloader/scripts/constants.inc
-!modloader/Tools/
 
 /movies/
 /ReadMe/

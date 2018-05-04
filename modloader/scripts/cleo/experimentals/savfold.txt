@@ -1,0 +1,13 @@
+{$CLEO .cs}
+0AC6: 0@ = label @SaveFolderLocation offset
+0A8C: write_memory 0x74503F size 4 value 0@ virtual_protect 1
+0A8C: write_memory 0x74503A size 4 value 6 virtual_protect 1
+
+0@ += 2
+0A8C: write_memory 0x8747A8 size 4 value 0@ virtual_protect 1
+0A93: end_custom_thread
+
+:SaveFolderLocation
+hex
+"\\Touhou GTA User files" 00 //6
+end
