@@ -16,12 +16,8 @@ This is a list of files you must add into the root of the project if you want to
             /data/*
             /GENRL/*
             /models/*
-        /LC
-            /anim/*
-            /audio/*
-            /data/*
-            /models/*
-            /radio/*
+        /LC/*
         /LCS/*
+		/skins/*
         /VCS/*
 

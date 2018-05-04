@@ -32,9 +32,6 @@ modloader/2huGTA/sex/
 !modloader/scripts/
 modloader/scripts/old script \[deprecated\]/
 modloader/scripts/constants.inc
-!modloader/skins/
-modloader/skins/*.dff
-modloader/skins/*.txd
 !modloader/Tools/
 
 /movies/
