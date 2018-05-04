@@ -15,13 +15,13 @@ With luck, in 2054. Unless you support me of course :)
 
 # How can i support?
 
-1. Pay me! If i can earn money with this, i can dedicate my full time to this.
-2. Are you programmer/modeller/have a lot of creativity/are you fan of touhou and know a lot about its characters and its background? You can join the project!
+1. Make donations! If i can earn money with this, i can dedicate my full time to this.
+2. Are you programmer/modeller/can write funny stories and dialogs/have a lot of creativity/are you fan of touhou and know a lot about its characters and its background? You can join the project!
 
 # Is there an available demo?
 
 Yes, but it has barely 1% of all the stuff i would like to add. Besides, it still has several issues. But its playable!
-First, get a copy of GTA San Andreas v1.0 HOODLUM and install it. Then go here:
+First, get a copy of GTA San Andreas v1.0 HOODLUM (spanish option needed) and install it. Then go here:
 https://onedrive.live.com/?id=B261D6229F6EC2A7%21215&cid=B261D6229F6EC2A7
 
 Download common.zip, and extract content inside GTA SA folder (overwriting everything). Then download v0.1c.zip and again, extract content inside GTA SA folder (overwriting everything).
@@ -29,3 +29,5 @@ Download common.zip, and extract content inside GTA SA folder (overwriting every
 Alternatively you can get modloader:
 http://www.gtagarage.com/mods/show.php?id=25377
 And extract common.zip and v0.1c.zip inside GTASAfolder/modloader/2huGTA (read the modloader install instructions).
+
+It is important that you set the language to spanish. You will see some dialogs in spanish and others in english. I hope to fix the language issue in a future.
