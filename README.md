@@ -28,7 +28,7 @@ https://onedrive.live.com/?id=B261D6229F6EC2A7%21215&cid=B261D6229F6EC2A7
 
 Download common.zip, and extract content inside GTA SA folder (overwriting everything). Then download v0.1c.zip and again, extract content inside GTA SA folder (overwriting everything).
 
-Alternatively you can get modloader:
+Alternatively you can get modloader, so you don't need to overwrite stuff:
 http://www.gtagarage.com/mods/show.php?id=25377
 And extract common.zip and v0.1c.zip inside GTASAfolder/modloader/2huGTA (read the modloader install instructions).
 
