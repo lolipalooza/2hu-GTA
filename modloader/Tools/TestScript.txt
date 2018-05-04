@@ -112,6 +112,12 @@ until 0248:   model #BMX available and 0248:   model #ADMIRAL available
 0ADF: add_dynamic_GXT_entry "LOWPIII" text "Color texts ~b~BLUE ~g~GREEN ~w~WHITE ~p~PURPLE ~r~RED ~l~GRAY ~y~YELLOW a b c d e f g h i j k l m n o p q r s t u v w x y z"
 0ADF: add_dynamic_GXT_entry "LOWP_VC" text "Color Texts BLUE HOT PINK WHITE PINK PURPLE PLUM PINK HOT PINK GREEN GRAY LIGHT BLUE YELLOW FLASH"
 0ADF: add_dynamic_GXT_entry "LOWP_SA" text "Color Texts ~b~BLUE ~g~GREEN ~w~WHITE ~p~PURPLE ~r~RED ~l~BLACK ~y~YELLOW ~h~HIGHLIGHT"
+0ADF: add_dynamic_GXT_entry "ASDF" text "Asdf."
+
+00BC: show_text_highpriority GXT "LOWPIII" time 1 flag 1
+00BC: show_text_highpriority GXT "LOWP_VC" time 1 flag 1
+00BC: show_text_highpriority GXT "LOWP_SA" time 1 flag 1
+00BC: show_text_highpriority GXT "ASDF" time 1 flag 1
 
 repeat
 wait 0
@@ -131,6 +137,13 @@ wait 0
         if 80FF:   not actor $PLAYER_ACTOR sphere 1 in_sphere 2503.7124 -1677.4116 13.3714 radius 2.0 2.0 2.0 on_foot
         then 31@=0
         end
+    end
+    
+    if 0ADC:   test_cheat "FATP"
+    then 0624: add 200.0 to_float_stat 21
+    end
+    if 0ADC:   test_cheat "FATM"
+    then 0626: decrease_float_stat 21 by 200.0
     end
     
     if 0ADC:   test_cheat "W0"
@@ -232,9 +245,9 @@ wait 0
     // Show Mission Timer + Status Text
     if 0ADC:   test_cheat "TIMERS"
     then
-        if 15@ == 0
+        if 14@ == 0
         then
-            15@ = 1
+            14@ = 1
             $8199=120000
             $BEEFYBARON_SCORE=50
             $9467=90
@@ -244,10 +257,21 @@ wait 0
             04F7: status_text $8200 type 1 line 2 GXT 'BB_18' // global_variable  // Score                  // Salud de diaz:
             04F7: status_text $8200 type 1 line 3 GXT 'TX_ADDS' // global_variable  // TIP                  // Muertes:
         else
-            15@ = 0
+            14@ = 0
             014F: stop_timer $8199
             0151: remove_status_text $BEEFYBARON_SCORE
             0151: remove_status_text $8200
+        end
+    end
+    
+    // Toggle Hud/Radar
+    if 0ADC:   test_cheat "HUD"
+    then
+        0826: enable_hud 15@
+        0581: enable_radar 15@
+        if 15@ == 0
+        then 15@ = 1
+        else 15@ = 0
         end
     end
 until false

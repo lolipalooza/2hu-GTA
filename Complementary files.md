@@ -10,10 +10,13 @@ This is a list of files you must add into the root of the project if you want to
         /files/*
         /touhou/*
     /modloader
-        /2hu GTA
+        /2huGTA
             /audio/*
             /models/*
         /LC
+            /anim/*
+            /audio/*
+            /data/*
             /models/*
             /radio/*
         /LCS
