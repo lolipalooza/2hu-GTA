@@ -1,4 +1,9 @@
 {$CLEO .cs}
+/*
+    Doesn't work. Needs to be initialized on start Rw engine event.
+    Only Asi can do that.
+*/
+
 0AC6: 0@ = label @SaveFolderLocation offset
 0A8C: write_memory 0x74503F size 4 value 0@ virtual_protect 1
 0A8C: write_memory 0x74503A size 4 value 6 virtual_protect 1
