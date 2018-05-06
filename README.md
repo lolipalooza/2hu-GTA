@@ -25,12 +25,8 @@ With luck, in 2054. Unless you support me of course :)
 Yes, but it has barely 1% of all the stuff i would like to add. Besides, it still has several issues. But its playable!
 First, get a copy of GTA San Andreas v1.0 HOODLUM (spanish option needed) and install it. Then go to Releases section:
 
-Common Files:
-
-https://github.com/mumifaglalolanda/2hu-GTA/releases/tag/v0.x-common
-Most recent version (v0.1c):
-
-https://github.com/mumifaglalolanda/2hu-GTA/releases/tag/v0.1c
+Common Files: https://github.com/mumifaglalolanda/2hu-GTA/releases/tag/v0.x-common
+Most recent version (v0.1c): https://github.com/mumifaglalolanda/2hu-GTA/releases/tag/v0.1c
 
 Download common.zip, and extract content inside GTA SA folder (overwriting everything). Then download v0.1c.zip and again, extract content inside GTA SA folder (overwriting everything).
 
