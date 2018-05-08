@@ -1,0 +1,45 @@
+{$CLEO .cs}
+thread 'PlayerClothes'
+
+/*
+------------------- Changing Player Clothes ------------------------
+*/
+{
+087B: set_player $PLAYER_CHAR clothes_texture "PLAYER_FACE" model "HEAD" body_part 1 
+087B: set_player $PLAYER_CHAR clothes_texture "JEANSDENIM" model "JEANS" body_part 2 
+087B: set_player $PLAYER_CHAR clothes_texture "SNEAKERBINCBLK" model "SNEAKER" body_part 3
+087B: set_player $PLAYER_CHAR clothes_texture "VEST" model "VEST" body_part 0
+}
+
+087B: set_player $PLAYER_CHAR clothes_texture "PLAYER_FACE" model "HEAD" body_part 1 
+087B: set_player $PLAYER_CHAR clothes_texture "PLAYER_LEGS" model "LEGS" body_part 2 
+087B: set_player $PLAYER_CHAR clothes_texture "FEET" model "FEET" body_part 3
+087B: set_player $PLAYER_CHAR clothes_texture "PLAYER_TORSO" model "TORSO" body_part 0
+
+{
+// reimuhead.dff, reimulegs.dff, reimufeet.dff and reimutorso.dff must exist! 
+087B: set_player $PLAYER_CHAR clothes_texture "REIMUHEAD" model "REIMUHEAD" body_part 1        // cabeza (haircuts)
+087B: set_player $PLAYER_CHAR clothes_texture "REIMULEGS" model "REIMULEGS" body_part 2        // piernas
+087B: set_player $PLAYER_CHAR clothes_texture "REIMUFEET" model "REIMUFEET" body_part 3        // calzado
+087B: set_player $PLAYER_CHAR clothes_texture "REIMUTORSO" model "REIMUTORSO" body_part 0       // torso
+}
+070D: rebuild_player $PLAYER_CHAR 
+
+/*
+------------------- Generating an actor with Player Model with custom clothes ------------------------
+*/
+{
+087B: set_player $PLAYER_CHAR clothes_texture "PLAYER_FACE" model "HEAD" body_part 1 
+087B: set_player $PLAYER_CHAR clothes_texture "PLAYER_LEGS" model "LEGS" body_part 2 
+087B: set_player $PLAYER_CHAR clothes_texture "FEET" model "FEET" body_part 3
+087B: set_player $PLAYER_CHAR clothes_texture "PLAYER_TORSO" model "TORSO" body_part 0
+
+009A: 0@ = create_actor_pedtype 4 model #NULL at 814.5151 -247.1295 23.259
+0173: set_actor 0@ Z_angle_to 270.0
+
+087B: set_player $PLAYER_CHAR clothes_texture "PLAYER_FACE" model "HEAD" body_part 1 
+087B: set_player $PLAYER_CHAR clothes_texture "JEANSDENIM" model "JEANS" body_part 2 
+087B: set_player $PLAYER_CHAR clothes_texture "SNEAKERBINCBLK" model "SNEAKER" body_part 3 
+087B: set_player $PLAYER_CHAR clothes_texture "VEST" model "VEST" body_part 0
+070D: rebuild_player $PLAYER_CHAR
+}
