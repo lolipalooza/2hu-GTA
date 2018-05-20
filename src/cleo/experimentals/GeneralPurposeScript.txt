@@ -103,12 +103,6 @@ until 0248:   model #BMX available and 0248:   model #ADMIRAL available
 
 //036A: put_actor $PLAYER_ACTOR in_car 29@
 
-//0186: 19@ = create_marker_above_car 29@
-//07E0: set_marker 19@ type_to 1
-
-//03BC: 18@ = create_sphere_at 2507.2551 -1672.8655 13.3751 radius 1.0
-//06D5: 17@ = create_racing_checkpoint_at 2508.4629 -1667.5839 13.3931 point_to 2504.8342 -1661.7815 13.3953 type 2 radius 2.0
-
 0ADF: add_dynamic_GXT_entry "LOWPIII" text "Color texts ~b~BLUE ~g~GREEN ~w~WHITE ~p~PURPLE ~r~RED ~l~GRAY ~y~YELLOW a b c d e f g h i j k l m n o p q r s t u v w x y z"
 0ADF: add_dynamic_GXT_entry "LOWP_VC" text "Color Texts BLUE HOT PINK WHITE PINK PURPLE PLUM PINK HOT PINK GREEN GRAY LIGHT BLUE YELLOW FLASH"
 0ADF: add_dynamic_GXT_entry "LOWP_SA" text "Color Texts ~b~BLUE ~g~GREEN ~w~WHITE ~p~PURPLE ~r~RED ~l~BLACK ~y~YELLOW ~h~HIGHLIGHT"
@@ -272,6 +266,22 @@ wait 0
         if 15@ == 0
         then 15@ = 1
         else 15@ = 0
+        end
+    end
+    
+    // Toggle Markers
+    if 0ADC:   test_cheat "MARKER"
+    then
+        if 16@ == 0
+        then 16@ = 1
+            0186: 19@ = create_marker_above_car 29@
+            07E0: set_marker 19@ type_to 1
+            03BC: 18@ = create_sphere_at 2507.2551 -1672.8655 13.3751 radius 1.0
+            06D5: 17@ = create_racing_checkpoint_at 2508.4629 -1667.5839 13.3931 point_to 2504.8342 -1661.7815 13.3953 type 2 radius 2.0
+        else 16@ = 0
+            0164: disable_marker 19@
+            03BD: destroy_sphere 18@
+            06D6: disable_racing_checkpoint 17@
         end
     end
 until false
