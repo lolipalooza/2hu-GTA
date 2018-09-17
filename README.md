@@ -22,7 +22,7 @@ With luck, in 2054. Unless you support me of course :)
 
 # Is there an available demo?
 
-Yes, but it has barely 1% of all the stuff i would like to add. Besides, it still has several issues. But its playable!
+Yes, but it has barely 1% of all the stuff i would like to add. Besides, it still has several issues. But it's playable!
 First, get a copy of GTA San Andreas v1.0 HOODLUM (spanish option needed) and install it. Then go to Releases section:
 
 Common Files: https://github.com/mumifaglalolanda/2hu-GTA/releases/tag/v0.x-common
