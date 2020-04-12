@@ -15,6 +15,14 @@ Yes, but unfortunately, i cannot advance at the step i would like to.
 
 With luck, in 2054. Unless you support me of course :)
 
+# Update (11/04/2020)
+
+There are another GTA projects that are requirements to continue on the developing on this:
+* [Dear Imgui SA](https://github.com/lolipalooza/DearImguiSA): with this project, i'm trying to make functional a very advanced GUI on the GTASA engine. This is prerequisite to MissionDesigner for GTASA.
+* [MissionDesigner](https://github.com/lolipalooza/MissionDesigner): this project has the goal to create an extremely advanced interface to create missions and activities on the GTASA. This could potentially agilize the storyline creation process, converting the 2hu-GTA project in just a creative problem instead of technical.
+
+I don't recommend you to wait for this soon. Sadly, i have zero time to this and all i can do for now is just leaving the ideas in the air.
+
 # How can i support?
 
 1. Make donations! If i can earn money with this, i can dedicate my full time to this.
