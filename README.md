@@ -15,7 +15,7 @@ Yes, but unfortunately, i cannot advance at the step i would like to.
 
 With luck, in 2054. Unless you support me of course :)
 
-# Update (11/04/2020)
+# Update (Apr/11/2020)
 
 There are another GTA projects that are requirements to continue on the developing on this:
 * [Dear Imgui SA](https://github.com/lolipalooza/DearImguiSA): with this project, i'm trying to make functional a very advanced GUI on the GTASA engine. This is prerequisite to MissionDesigner for GTASA.
